@@ -1,0 +1,1313 @@
+# Data processing Study 1
+
+Let's process the raw data and get them to a format that we can work with for the analysis.
+Study 1 has three raw data files:
+
+* `personality_raw.csv` is the survey participants filled out at the beginning of the study, reporting personality traits
+* `diary_raw.csv` is the end of day survey participants filled out during the diary part of the study
+* `screen_time_raw.csv` is the objective screen time data participants reported
+
+## Personality data
+
+Let's load the personality data.
+```{r load-personality-data, message=FALSE}
+personality_raw <- read_csv(here("data", "study1", "personality_raw.csv"))
+```
+
+
+Qualtrics names aren't very informative, so I give some sensible variable names (although this data set has mostly meaningful variable names).
+Also, there are variables (i.e., anything starting with `afi` to `selfreflect`) that were part of a different study, which is why I don't include them here.
+Note that I don't want to change the raw data object, so I'll keep using `personality` as a new object from here on.
+```{r rename-personality-data}
+personality <- 
+  personality_raw %>% 
+  select(
+    # meta data
+    start_date = StartDate,
+    end_date = EndDate,
+    progress = Progress,
+    duration = Duration__in_seconds_,
+    finished = Finished,
+    recorded_date = RecordedDate,
+    id = study_id,
+    date,
+    
+    # basic psychological need satisfaction trait
+    bpns_ = starts_with("bpns"),
+    
+    # big five
+    big_five_ = starts_with("bfi"),
+    
+    # demographics
+    gender,
+    gender_entry = gender_3_TEXT,
+    age = Q42,
+    ethnicity_american_indian = ethnicity_1,
+    ethnicity_asian = ethnicity_2,
+    ethnicity_island = ethnicity_3,
+    ethnicity_black = ethnicity_4,
+    ethnicity_white = ethnicity_5,
+    ethnicity_hispanic = ethnicity_6,
+    ethnicity_multi = ethnicity_7
+  )
+```
+
+Next, I make sure those variables have the correct variable type.
+I'll also recode factor levels so that labels are readable.
+```{r recode-personality-data}
+personality <- 
+  personality %>% 
+  mutate(
+    id = paste0("pp_", id), # add pp for participant just so later I don't mistake the id variable for a count
+    across( # turn those two into factors
+      c(finished, id, gender),
+      as.factor
+    ),
+    finished = fct_recode(
+      finished,
+      "yes" = "1",
+      "no" = "0"
+    ),
+    gender = fct_recode(
+      gender,
+      "male" = "1",
+      "female" = "2",
+      "other" = "3"
+    )
+  )
+```
+
+I see that ethnicity was multiple choice although "multiracial" is an answer option.
+So I think it makes more sense to combine this all into one variable.
+That required quite a lot of code, but was still less problematic than transforming the ethnicity variables to long format.
+I took the following steps:
+
+* check who reported multiple ethnicities
+* those who did get an `NA` on all other ethnicity variables
+* recoded the variables from numeric to containing the ethnicity factor level and coalesce
+```{r recode-ethnicity-personality}
+personality <- 
+  personality %>% 
+  mutate(
+    multiple = rowSums(select(., starts_with("ethnicity")), na.rm = TRUE), # check who reported multiple ethnicities
+    
+    # those with multiple get NA for all other ethnicity variables
+    across(
+      c(ethnicity_american_indian:ethnicity_hispanic),
+      ~ case_when(
+        multiple > 1 ~ NA_real_,
+        TRUE ~ .
+      )
+    ),
+    
+    # turn into character which makes recoding below easier
+    across(
+      c(ethnicity_american_indian:ethnicity_hispanic),
+      as.character
+    ),
+    
+    # recode the individual variables
+    ethnicity_american_indian = if_else(ethnicity_american_indian == 1, "American Indian/Alaska Native", NA_character_),
+    ethnicity_asian = if_else(ethnicity_asian == 1, "Asian", NA_character_),
+    ethnicity_island = if_else(ethnicity_island == 1, "Native Hawaiian or Other Pacific Islander", NA_character_),
+    ethnicity_black = if_else(ethnicity_black == 1, "Black or African American", NA_character_),
+    ethnicity_white = if_else(ethnicity_white == 1, "White", NA_character_),
+    ethnicity_hispanic = if_else(ethnicity_hispanic == 1, "Hispanic or Latino", NA_character_),
+    ethnicity_multi = if_else(multiple > 1, "multiracial", NA_character_),
+    
+    # coalesce them (coalesce doesn't work with .select helpers, so needed to type the variables out)
+    ethnicity = as.factor(
+      coalesce(
+        ethnicity_american_indian,
+        ethnicity_asian,
+        ethnicity_island,
+        ethnicity_black,
+        ethnicity_white,
+        ethnicity_hispanic,
+        ethnicity_multi
+      )
+    )
+  ) %>% 
+  select(start_date:age, ethnicity)
+```
+
+Then I remove those cases without an `id` (aka test runs) and those with an `id` but not other entries.
+```{r exclude-test-runs-personality}
+personality <- 
+  personality %>% 
+  filter(id != "pp_NA" & !is.na(start_date))
+```
+
+Let's see how many missing values there are left per participant (aka row) in \@ref(tab:check-personality-na). 
+Most participants filled out everything, but a couple of them have basically empty rows.
+A couple of participants have quite a handful of empty cells.
+I inspected their data and most of them just didn't fill out the Big Five, but one participant didn't fill out anything.
+```{r check-personality-na, echo=FALSE}
+# check nas per row
+personality %>% 
+  mutate(
+    na_count_row = rowSums(is.na(.))
+  ) %>% 
+  count(na_count_row) %>% 
+  knitr::kable(
+    .,
+    caption = "Count of number of missing values per row"
+  )
+```
+
+I'll exclude the latter.
+```{r}
+# exclude those with > 15 missing values
+personality<- 
+  personality %>% 
+  mutate(
+    na_count_row = rowSums(is.na(.))
+  ) %>% 
+  filter(na_count_row <=70)
+```
+
+
+Alright, time to construct the means for the scales.
+But first, I check data quality by seeing whether there are instances of "straightlining" (i.e., choosing the same response option for all items of a scale).
+We also had attention checks in the survey.
+
+Let's have a look at those attention checks.
+For item `bpns_25` participants had to choose `2` as a response and for item `big_five_45` they had to choose `5`.
+When we check Table \@ref(tab:attention-check-personality), we see that `r personality %>% filter((bpns_25 != 2 & big_five_45 != 5)) %>% nrow()` participants didn't pass both attention checks.
+```{r attention-check-personality, echo=FALSE}
+knitr::kable(
+  list(
+    personality %>% 
+      count(bpns_25 != 2),
+    personality %>% 
+      count(big_five_45 != 5),
+    personality %>% 
+      count((bpns_25 != 2 & big_five_45 != 5))
+  ),
+  caption = "Failed attention checks"
+)
+```
+
+I'll exclude those participants because I don't think we can trust their data.
+```{r exclude-failed-attention-personality}
+personality <- 
+  personality %>% 
+  filter(!(bpns_25 != 2 & big_five_45 != 5) | is.na(bpns_25) | is.na(big_five_45)) # otherwise filter automatically drops rows with NA
+```
+
+Next, I check for straightlining by inspecting the variance per daily survey on the BPNS and BF scales.
+Turns out that it's not super straightforward to compute variance per row, found help [here](https://www.tidyverse.org/blog/2020/04/dplyr-1-0-0-rowwise/).
+```{r straightlining-personality}
+personality <- 
+  personality %>% 
+    rowwise() %>% 
+    mutate(
+      bpns_sd = sd(
+        c_across(starts_with("bpns")),
+        na.rm = TRUE
+      ),
+      big_five_sd = sd(
+        c_across(starts_with("big_five")),
+        na.rm = TRUE
+      )
+    ) %>% 
+  unnest(cols = c())
+```
+
+If we visualize that variance in Figure \@ref(fig:plot-variance-personality), we can see that there's little cause for concern: nobody straightlined.
+```{r plot-variance-personality, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Distribution of variances per survey on two measures"}
+plot_grid( # from cowplot
+  dens_with_points(personality, "bpns_sd"), # custom function, see custom functions under setting up
+  dens_with_points(personality, "big_five_sd"),
+  labels = c("BPNS", "Big Five"),
+  ncol = 1,
+  label_size = 8,
+  hjust = 0,
+  vjust = 0,
+  label_x = 0,
+  label_y = 0.93
+)
+```
+
+Alright, now we can aggregate the individual items to scale scores.
+Some of those items are reverse-coded (see the codebook for details).
+I'll code all scales such that a higher scores means scoring more positively on that scale.
+```{r reverse-code-personality}
+personality <- 
+  personality %>% 
+  mutate(
+    across(
+      c(
+        bpns_5:bpns_8,
+        bpns_13:bpns_15,
+        bpns_21:bpns_25,
+      ),
+      function(.) 8 - .
+    ),
+    across(
+      c(
+        big_five_2,
+        big_five_6,
+        big_five_8,
+        big_five_9,
+        big_five_12,
+        big_five_18,
+        big_five_21,
+        big_five_23,
+        big_five_27,
+        big_five_31,
+        big_five_37,
+        big_five_43
+      ),
+      function(.) 6 - .
+    )
+  )
+```
+
+Now I create the scales by taking the mean of the respective items.
+Note that I remove missing values in computing row means to ignore the occasional missing value.
+(For those with missing values throughout, see next code chunk.)
+```{r make-scales-personality}
+personality <- 
+  personality %>% 
+  mutate(
+    
+    # trait needs
+    autonomy_trait = rowMeans(select(., bpns_1:bpns_8), na.rm = TRUE),
+    competence_trait = rowMeans(select(., bpns_9:bpns_16), na.rm = TRUE),
+    relatedness_trait = rowMeans(select(., bpns_17:bpns_24), na.rm = TRUE),
+    
+    # big five
+    extraversion = rowMeans(
+      select(
+        .,
+        big_five_1,
+        big_five_6,
+        big_five_11,
+        big_five_16,
+        big_five_21,
+        big_five_26,
+        big_five_31,
+        big_five_36
+      ),
+      na.rm = TRUE
+    ),
+    agreeableness = rowMeans(
+      select(
+        .,
+        big_five_2,
+        big_five_7,
+        big_five_12,
+        big_five_17,
+        big_five_22,
+        big_five_27,
+        big_five_32,
+        big_five_37,
+        big_five_42
+      ),
+      na.rm = TRUE
+    ),
+    conscientiousness = rowMeans(
+      select(
+        .,
+        big_five_3,
+        big_five_8,
+        big_five_13,
+        big_five_18,
+        big_five_23,
+        big_five_28,
+        big_five_33,
+        big_five_38,
+        big_five_43
+      ),
+      na.rm = TRUE
+    ),
+    neuroticism = rowMeans(
+      select(
+        .,
+        big_five_4,
+        big_five_9,
+        big_five_14,
+        big_five_19,
+        big_five_24,
+        big_five_29,
+        big_five_34,
+        big_five_39
+      ),
+      na.rm = TRUE
+    ),
+    openness = rowMeans(
+      select(
+        .,
+        big_five_5,
+        big_five_10,
+        big_five_15,
+        big_five_20,
+        big_five_25,
+        big_five_30,
+        big_five_35,
+        big_five_40,
+        big_five_41,
+        big_five_44
+      ),
+      na.rm = TRUE
+    )
+  )
+```
+
+Last, some participants didn't fill out the Big Five items, so they haven an `NaN` entry for those scales now.
+I'll turn that into an `NA` value
+```{r nan-to-na-personality}
+personality <- 
+  personality %>% 
+  mutate(
+    across(
+      c(autonomy_trait:openness),
+      ~ na_if(.x, "NaN")
+    )
+  )
+```
+
+## Diary data
+
+Let's load and inspect the diary data.
+```{r load-diary-data, message=FALSE}
+# load data
+diary_raw <- read_csv(here("data", "study1", "diary_raw.csv"))
+```
+
+Qualtrics names aren't very informative, so I give some sensible variable names.
+Again, there are many variables (i.e., anything before `Q21-1`) that were part of a different study, which is why I don't include them here.
+Like before, I don't want to change the raw data object, so I'll keep using `diary` as a new object from here on.
+```{r rename-diary-data}
+diary <- 
+  diary_raw %>% 
+  select(
+    # meta data
+    start_date = StartDate,
+    end_date = EndDate,
+    progress = Progress,
+    duration = Duration__in_seconds_,
+    finished = Finished,
+    recorded_date = RecordedDate,
+    id = study_id,
+    day = Day,
+    date = Q27,
+    
+    # social media subjective estimates
+    hours_subjective = Q21_1,
+    minutes_subjective = Q21_2,
+    pickups_subjective = Q22_1,
+    notifications_subjective = Q23_1,
+    
+    # arousal
+    low_positive_peaceful = Q24_1,
+    low_positive_calm = Q24_2,
+    low_positive_related = Q24_3,
+    high_negative_anxious = Q24_4,
+    high_negative_jittery = Q24_5,
+    high_negative_tense = Q24_6,
+    high_positive_happy = Q24_7,
+    high_positive_energized = Q24_8,
+    high_positive_excited = Q24_9,
+    low_negative_sluggish = Q24_10,
+    low_negative_sad = Q24_11,
+    low_negative_gloomy = Q24_12,
+    
+    # autonomy need satisfaction
+    autonomy_ = Q25_1:Q25_4,
+    
+    # competence need satisfaction
+    competence_ = Q25_5:Q25_8,
+    
+    # relatedness need satisfaction
+    relatedness_ = Q25_9:Q25_12,
+    
+    # experiences
+    satisfied = Q30_1,
+    boring = Q30_2,
+    stessful = Q30_3,
+    enjoyable = Q30_4
+  )
+```
+
+Next, I make sure those variables have the correct variable type.
+I'll also recode factor levels so that labels are readable.
+Note that `day` goes from `1` to `5`.
+All participants started on a Monday, which is why I turn `day` into a factor.
+```{r recode-diary-data}
+diary <- 
+  diary %>% 
+  mutate(
+    id = paste0("pp_", id), # add pp for participant just so later I don't mistake the id variable for a count
+    across( # turn those two into factors
+      c(finished, id, day),
+      as.factor
+    ),
+    finished = fct_recode(
+      finished,
+      "yes" = "1",
+      "no" = "0"
+    ),
+    day = fct_recode(
+      day,
+      "monday" = "1",
+      "tuesday" = "2",
+      "wednesday" = "3",
+      "thursday" = "4",
+      "friday" = "5"
+    )
+  )
+```
+
+Then I remove all empty rows (i.e., rows without a start date).
+```{r check-diary-na}
+diary <- 
+  diary %>% 
+  filter(!is.na(start_date))
+```
+
+Afterwards, I inspect how many `NA`s there are per row in Table \@ref(tab:table-diary-na).
+Most participants filled out everything, but a couple of them have basically empty rows (e.g., those with 30 or 40 missing values per row).
+```{r table-diary-na, echo=FALSE}
+# check nas per row
+diary %>% 
+  mutate(
+    na_count_row = rowSums(is.na(.))
+  ) %>% 
+  count(na_count_row) %>% 
+  knitr::kable(
+    .,
+    caption = "Count of number of missing values per row"
+  )
+```
+
+I manually inspected those with more than 15 missing values and neither of them even finished any of the scales.
+Therefore, I'll exclude them here.
+```{r exclude-missings-diary, message=FALSE}
+# exclude those with > 15 missing values
+diary <- 
+  diary %>% 
+  mutate(
+    na_count_row = rowSums(is.na(.))
+  ) %>% 
+  filter(na_count_row <= 15) %>% 
+  mutate(id = droplevels(id))
+```
+
+Alright, time to construct the means for the scales.
+But first, as always with numbers that participants have to fill in themselves, I'll check for unrealistic entries and general data quality.
+I'll visualize the text entries for hours and minutes on social media and notifications in Figure \@ref(fig:plot-subjective-diary).
+```{r plot-subjective-diary, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Distribution of self-reported social media indicators"}
+plot_grid( # from cowplot
+  dens_with_points(diary, "hours_subjective"), # custom function, see custom functions under setting up
+  dens_with_points(diary, "minutes_subjective"),
+  dens_with_points(diary, "notifications_subjective"),
+  labels = c("Hours", "Minutes", "Notifications"),
+  ncol = 1,
+  label_size = 8,
+  hjust = 0,
+  vjust = 0,
+  label_x = 0,
+  label_y = 0.93
+)
+```
+
+For notifications, it's hard to argue that it's unrealistic that participants thought they got several hundred of them.
+So I will leave those unchanged.
+However, there are several outliers in `hours_subjective` and `minutes_subjective`.
+I manually inspected those cases and it's hard to tell whether participants just mixed up hours and minutes or whether their entry is indeed not meaningful.
+One participant filled in 50h and 500min.
+Another 40h.
+For those two, I'll set their subjective values to `NA`.
+One participant filled in 5h and 86min.
+The minutes entry might have been a typo, but it's hard to tell what the participant meant, so I'll set that to `NA` as well.
+```{r replace-impossible-subjective}
+diary <- 
+  diary %>% 
+  mutate(
+    hours_subjective = case_when(
+      hours_subjective > 24 | minutes_subjective > 60  ~ NA_real_,
+      TRUE ~ hours_subjective
+    ),
+    minutes_subjective = if_else(
+      minutes_subjective > 60,
+      NA_real_, 
+      minutes_subjective
+    )
+  )
+```
+
+Next, I check data quality further by seeing whether there are instances of "straightlining".
+For that, I check the variance per daily survey on the well-being scale, need satisfaction, and experiences.
+```{r check-straightlining-diary}
+diary <- 
+  diary %>% 
+    rowwise() %>% 
+    mutate(
+      well_being_sd = sd(
+        c_across(low_positive_peaceful:low_negative_gloomy),
+        na.rm = TRUE
+      ),
+      needs_sd = sd(
+        c_across(autonomy_1:relatedness_4),
+        na.rm = TRUE
+      ),
+      experiences_sd = sd(
+        c_across(satisfied:enjoyable),
+        na.rm = TRUE
+      )
+    ) %>% 
+  unnest(cols = c())
+```
+
+If we visualize the instances where participants didn't have any variation in their answers (aka straightlining) in Figure \@ref(fig:plot-variance-diary), we see that it's not uncommon.
+There are several daily surveys where participants straightlined.
+```{r plot-variance-diary, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Distribution of variances per survey on three scales"}
+plot_grid( # from cowplot
+  dens_with_points(diary, "well_being_sd"), # custom function, see custom functions under setting up
+  dens_with_points(diary, "needs_sd"),
+  dens_with_points(diary, "experiences_sd"),
+  labels = c("Well-being", "Need satisfaction", "Experiences"),
+  ncol = 1,
+  label_size = 8,
+  hjust = 0,
+  vjust = 0,
+  label_x = 0,
+  label_y = 0.93
+)
+```
+
+In general, it's not uncommon to select the same answer, especially for well-being measures.
+However, I'd be suspicious of those participants who straightlined for more than one scale (particularly the need satisfaction scale because it has quite a lot of items.)
+I'll check how many surveys there are that have zero variance across those scales and how many participants there are who have at least one straightlining instance in more than 50% of their surveys.
+```{r check-straightliners-diary, message=FALSE}
+diary <- 
+  diary %>% 
+  mutate(
+    zero_variances = rowSums(
+      select(., ends_with("_sd")) == 0, # count instances of zero variance across the three scales
+      na.rm = TRUE
+    )
+  )
+```
+
+Overall, Table \@ref(tab:table-straightliners-diary) shows that 94% of the sample didn't staightline.
+```{r table-straightliners-diary, echo=FALSE, message=FALSE}
+# percentage of zero variances instances
+diary %>% 
+  count(zero_variances) %>% 
+  mutate(
+    percent = n / sum(n)
+  ) %>% 
+  knitr::kable(
+    .,
+    caption = "Percentage of the number of zero variance per row"
+  )
+```
+
+But there are a couple of participants who seemed to rush through the survey, see Table \@ref(tab:table-percentage-straightliners-diary).
+Manually inspecting them indeed shows that it's hard to trust their data.
+```{r table-percentage-straightliners-diary, echo=FALSE}
+# percentage of participants
+diary %>%
+  group_by(id) %>%
+  count(zero_variances) %>% 
+  mutate(
+    zero_instance = if_else(zero_variances > 0, 1, 0) # recode such that it counts when there is at least one straightlining per survey 
+  ) %>% 
+  summarise(
+    total_surveys = sum(n),
+    total_straightline_surveys = sum(zero_instance)
+  ) %>% 
+  mutate(
+    percentage = total_straightline_surveys / total_surveys
+  ) %>% 
+  arrange(desc(percentage)) %>%
+  head(n = 10) %>% 
+  knitr::kable(
+    .,
+    caption = "Percentage of participants with a number of zero-variance scales"
+  )
+```
+
+I will exclude those participants and then surveys with more than one instance of straightlining.
+```{r exclude-straightliners-diary}
+diary <- 
+  diary %>% 
+  filter(!id %in% c("pp_172", "pp_121", "pp_164", "pp_169", "pp_103", "pp_168", "pp_290")) %>% 
+  filter(zero_variances < 2) %>% 
+  mutate(
+    id = droplevels(id)
+  )
+```
+
+Now there's very little straightlining left (see Table \@ref(tab:check-variances-again-diary) and compare to Table \@ref(tab:table-straightliners-diary)).
+```{r check-variances-again-diary, echo=FALSE}
+diary %>% 
+  count(zero_variances) %>% 
+  mutate(
+    percent = n / sum(n)
+  ) %>% 
+  knitr::kable(
+    .,
+    caption = "Percentage of the number of zero variance per row"
+  )
+```
+
+Alright, now we can aggregate the individual items to scale scores.
+Some of those items are reverse-coded.
+Namely, the third and fourth item for the need satisfaction subscales are reverse coded, as are all negative arousal items (if we want to create a score that shows higher well-being).
+See codebook for details.
+```{r reverse-code-diary}
+# reverse code need items and arousal
+diary <- 
+  diary %>% 
+  mutate(
+    across(
+      c(ends_with("_3"), ends_with("_4")),
+      function(.) 8 - .
+    ),
+    across(
+      contains("negative"),
+      function(.) 6 - .
+    )
+  )
+```
+
+I create the scales by taking the mean of the respective items.
+I also create a `social_media_subjective` measure by combining hours and minutes of estimated social media time.
+```{r make-scales-diary}
+diary <- 
+  diary %>% 
+  mutate(
+    social_media_subjective = hours_subjective * 60 + minutes_subjective,
+    well_being_state = rowMeans(select(., low_positive_peaceful:low_negative_gloomy), na.rm = TRUE),
+    autonomy_state = rowMeans(select(., contains("autonomy")), na.rm = TRUE),
+    competence_state = rowMeans(select(., contains("competence")), na.rm = TRUE),
+    relatedness_state = rowMeans(select(., contains("relatedness")), na.rm = TRUE)
+  )
+```
+
+Further, participants' first day of participation was always a Monday.
+Specifically, three days in April 2019: the 15th, 22nd, 29th.
+Let's check whether all of them indeed have their first day on one of those days.
+
+Table \@ref(tab:check-first-day) shows all day one surveys which were not recorded on one of those three dates.
+Indeed, everyone opened their first survey on one of the three start days.
+Some participants opened/recorded their answers right after midnight, which is fine.
+```{r check-first-day, echo=FALSE}
+diary %>% 
+  group_by(id) %>% 
+  filter(day == "monday") %>% 
+  select(id, start_date, recorded_date, duration, day) %>% 
+  filter(!day(recorded_date) %in% c(15,22,29)) %>% 
+  knitr::kable(
+    .,
+    caption = "Recorded dates that weren't on a Monday"
+  )
+```
+
+However, a handful of participants had their survey open for at least a day.
+In Table \@ref(tab:check-two-day-delay), we inspect all instances where there's more than one day delay between opening and responding to a survey.
+Only `pp_71` took two days to respond to a survey.
+```{r check-two-day-delay, echo=FALSE}
+diary %>% 
+  select(id, start_date, recorded_date, duration, day) %>% 
+  filter((day(recorded_date) - day(start_date)) > 1) %>% 
+  knitr::kable(
+    .,
+    caption = "More than one day between begin and response to survey"
+  )
+```
+
+I guess it's normal that participants open the survey late, forget it, and fill it out when they next day when they wake up.
+Because they're students, waking up might be quite late, so I'll check in Table \@ref(tab:next-day-late) how many of them responded to a survey later than 10am the next day.
+Two participants were really late (i.e., responded after noon).
+```{r next-day-late, echo=FALSE}
+diary %>% 
+  filter(day(recorded_date) != day(start_date)) %>% 
+  filter(hour(recorded_date) > 9) %>% 
+  select(id, start_date, recorded_date, duration, day) %>% 
+  knitr::kable(
+    .,
+    caption = "Those who filled in the survey the next day"
+  )
+```
+
+I manually checked the data from all those participants who  filled out surveys so late that two surveys were recorded on the same day.
+`pp_71` responded to the Monday survey on Wednesday, in addition to the "regular" Wednesday survey.
+For that reason, we can't know whether `day` one refers to Monday or Tuesday.
+All other participants are fine: They sometimes recorded their response late, but their response pattern shows no indication that they couldn't refer to a clear day in their response.
+
+Therefore, I remove the `day` one survey of `pp_71` because we can't tell to which day it refers, but leave the rest as is.
+```{r remove-pp71}
+diary <-  
+  diary %>% 
+  filter(!(id == "pp_71" & day == "monday"))
+```
+
+## Screen time data
+
+Load the screen time data.
+```{r load-screen-data, message=FALSE}
+screen_time_raw <- read_csv(here("data", "study1", "screen_time_raw.csv"))
+```
+
+Alright, the data are extremely wide because of the Qualtrics format.
+There are `r ncol(screen_time_raw)` variables in total.
+The data look like this:
+
+* Total time over the past week of social media, plus total time per day (`Q2_1` to `Q10_2`)
+* Typing in the top ten social networking media (`Q4_1` to `Q4_10`)
+* Then participants filled in 13 items for each of those ten apps, first total time and notifications for the week for that app, then hours and minutes per day for that app (total 130 items, `Q3_1` to `Q76_2`)
+* Then participants reported six items per each of the ten apps, the first of which was overall pickups in the past week, followed by pickups for each day of the week (`Q17_1_TEXT` to `Q17_10_5`)
+
+Before turning the data into long format, I need to give some sensible variables names.
+However, manually renaming all variables is a real pain.
+So I'll create the names systematically and store them in a vector, then assign them to the variables.
+```{r construct-variable-names}
+# define days
+days <-
+  c(
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday"
+  )
+
+# the list of apps
+apps <- 
+  paste0(
+    rep("app_", 10),
+    1:10
+  )
+
+# add hours and minutes to apps
+apps_times <- 
+  paste0(
+    rep(apps, each = 6*2),
+    "_",
+    c("hours", "minutes")
+  )
+
+# the overall time per week and day
+names1 <- 
+  paste0(
+    rep(c("hours_total_", "minutes_total_"),6),
+    rep(c("week", days), each = 2)
+  )
+
+# now app, minutes, hours, per day
+names2 <- 
+  paste0(
+    apps_times,
+    "_",
+    rep(c("week", days), each = 2)
+  )
+
+# notifications per day
+names3 <- 
+  paste0(
+    apps,
+    "_",
+    "notifications",
+    "_week"
+  )
+
+# pickups per week and day
+names4 <- 
+  paste0(
+    rep(apps, each = 6),
+    "_pickups_",
+    rep(c("week", days), 6)
+  )
+```
+
+Then I apply those names.
+Once more, I use a new object and don't overwrite the raw data.
+```{r rename-screen-time}
+# let's rename
+screen_time <- 
+  screen_time_raw %>% 
+  
+  # meta-data
+  rename(
+    start_date = StartDate,
+    end_date = EndDate,
+    progress = Progress,
+    duration = Duration__in_seconds_,
+    finished = Finished,
+    recorded_date = RecordedDate,
+    id = study_id
+  ) %>% 
+  
+  # the overall time per week and day
+  rename_with(
+    ~ names1,
+    Q2_1:Q10_2
+  ) %>% 
+  
+  # the top ten apps
+  rename(
+    app_ = Q4_1:Q4_10
+  ) %>% 
+  
+  # now rename all app minutes and hours per day
+  rename_with(
+    ~ names2,
+    c( # except the notifications because they don't fit the pattern
+      Q3_1:Q76_2,
+      -Q11_1,
+      -Q22_1,
+      -Q78_1,
+      -Q29_1,
+      -Q43_1,
+      -Q36_1,
+      -Q50_1,
+      -Q57_1,
+      -Q64_1,
+      -Q71_1
+    )
+  ) %>% 
+  
+  # the past week notifications per app
+  rename_with(
+    ~ names3,
+    c(
+      Q11_1,
+      Q22_1,
+      Q78_1,
+      Q29_1,
+      Q43_1,
+      Q36_1,
+      Q50_1,
+      Q57_1,
+      Q64_1,
+      Q71_1
+    )
+  ) %>% 
+  
+  # rename pickup variables
+  rename_with(
+    ~ names4,
+    Q17_1_TEXT:Q17_10_5
+  ) %>% 
+  
+  # only keep variables of interest
+  select(
+    -Status
+  )
+
+# remove name objects (they were only temp files)
+rm(apps, apps_times, days, names1, names2, names3, names4)
+```
+
+Before I assign variables types and factor levels, I saw that, for some reason, the past week's number of pickups for each app have text entries, not numerical (i.e., `"twenty one"` instead of `21`).
+I know that the `english` package can translate numbers to words, but not the other way around.
+Thank god, someone has written a function for this, see full details [here](https://stackoverflow.com/questions/18332463/convert-written-number-to-number-in-r).
+The function is in the [Setting up](#setting-up-study1) chapter.
+Note that this `word2num` function doesn't work well with the word "and".
+For example, `"three hundred and eleven"` turns into ``r word2num("three hundred and eleven")``, but `"three hundred eleven"` turns into the correct ``r word2num("three hundred eleven")``.
+Therefore, I first remove all "and"s from those variables, then apply the function.
+Similarly, I'll replace all "a" with "one" (e.g., "a hundred" to "one hundred").
+One participant also replied with a string (that they access facebook via their browser), so I'll set that to `NA`.
+```{r words-to-numbers}
+screen_time <- 
+  screen_time %>% 
+  mutate(
+    across(
+      ends_with("pickups_week"),
+      ~ case_when(
+        .x == "NA because accessed Facebook through Safari" ~ NA_character_,
+        .x == "NA because accessed Twitter through Safari" ~ NA_character_,
+        TRUE ~ .x
+      )
+    ),
+    across(
+      ends_with("pickups_week"),
+      ~ str_remove(.x, "and")
+    ),
+    across(
+      ends_with("pickups_week"),
+      ~ str_replace(.x, "A ", "one ")
+    )
+  ) %>% 
+  rowwise() %>% 
+  mutate(
+    across(
+      ends_with("pickups_week"),
+      word2num
+    ),
+    across(
+      ends_with("pickups_week"),
+      unlist
+    )
+  ) %>% 
+  unnest(cols = c())
+```
+
+Next, I assign correct variable types and factor levels.
+```{r recode-screen-time, warning=FALSE}
+screen_time <- 
+  screen_time %>% 
+  mutate(
+    id = paste0("pp_", id),
+    across( # turn those two into factors
+      c(finished, id),
+      as.factor
+    ),
+    finished = fct_recode(
+      finished,
+      "yes" = "1",
+      "no" = "0"
+    )
+  )
+```
+
+Then I exclude empty rows.
+The data set has all participant numbers even when they didn't participate, so I'll exclude those without a start date as well as those who didn't fill in `app_1`, which means they have empty rows other than the meta-data.
+```{r exclude-empty-rows-screen-time}
+screen_time <- 
+  screen_time %>% 
+  filter(!is.na(start_date)) %>% 
+  filter(!is.na(app_1)) %>% 
+  mutate(id = droplevels(id))
+```
+
+At this point, the data set has measures on two levels: per app and time frame (day, full week), and the total times across all apps per day.
+I think it's easiest to separate the data.
+The per app data are only informative for plotting and descriptives, but the actual data we're interested in are the total times summed across all apps.
+So I'll first get the per data app.
+Note that I add the names of the apps in a separate step and then calculate the objective social media time.
+```{r app-data-long-screen-time}
+# turn app data long
+apps_long <- 
+  screen_time %>% 
+  select(
+    start_date:id,
+    app_1_hours_week:app_10_pickups_friday
+  ) %>% 
+  pivot_longer(
+    cols = c(app_1_hours_week:app_10_pickups_friday),
+    names_to = c(
+      "app",
+      "rank",
+      "measure",
+      "time_frame"
+    ),
+    names_sep = "_"
+  ) %>% 
+  pivot_wider( # then spread the measure variable which now contains hours, minutes, notifications, pickups
+    names_from = "measure",
+    values_from = "value"
+  ) %>% 
+  select(-app) # redundant
+
+# get the names of the apps
+app_names <- 
+  screen_time %>% 
+  select(
+    id,
+    app_1:app_10
+  ) %>% 
+  pivot_longer(
+    -id,
+    names_to = c("app", "rank"),
+    names_sep = "_"
+  ) %>% 
+  select(-app) %>% # redundant
+  rename(
+    app = value # contains name of app
+  )
+
+# add them to the long data set
+apps_long <- 
+  left_join(
+    apps_long,
+    app_names,
+    by = c("id", "rank")
+  ) %>% 
+  relocate(
+    app, 
+    .after = rank
+  ) %>% 
+  
+  # if someone only filled in minutes, but not hours, turn hours to 0
+  mutate(
+   hours = case_when(
+    is.na(hours) & is.na(minutes) ~ NA_real_,
+    is.na(hours) & !is.na(minutes) ~ 0,
+    TRUE ~ hours
+   ),
+   
+   # when someone only filled in hours, but not minutes, turn minutes to 0
+   minutes = case_when(
+     is.na(hours) & is.na(minutes) ~ NA_real_,
+     !is.na(hours) & is.na(minutes) ~ 0,
+     TRUE ~ minutes
+   ),
+   
+   # total time
+   social_media_objective = hours * 60 + minutes
+  )
+```
+
+Then I get the total times across all apps in the long format.
+Note that participants reported their screen time on the weekend.
+Thus, their reports for week will not be identical with the sum of Monday to Friday, because the screen time feature measures time on the weekend as well (aka additional screen time measured from the end of Friday until the moment they reported their weekly screen time).
+```{r total-time-long-screen-time}
+# get total screen time (of all social media apps in long format)
+totals_long <- 
+  screen_time %>% 
+  select(
+    id,
+    hours_total_week:minutes_total_friday
+  ) %>% 
+  pivot_longer(
+    -id,
+    names_to = c(
+      "measure",
+      "total",
+      "time_frame"
+    ),
+    names_sep = "_"
+  ) %>% 
+  select(-total) %>% # redundant
+  
+  pivot_wider( # spread hours and minutes
+    names_from = "measure",
+    values_from = "value"
+  ) %>% 
+  
+  # same as above: if one of the two measures (hours or minutes) has an entry and the other is NA, we set that NA to 0
+  mutate(
+    hours = case_when(
+      is.na(hours) & is.na(minutes) ~ NA_real_,
+      is.na(hours) & !is.na(minutes) ~ 0,
+      TRUE ~ hours
+    ),
+  
+  # when someone only filled in hours, but not minutes, turn minutes to 0
+    minutes = case_when(
+      is.na(hours) & is.na(minutes) ~ NA_real_,
+      !is.na(hours) & is.na(minutes) ~ 0,
+      TRUE ~ minutes
+    ),
+   
+   # total time
+    social_media_objective = hours * 60 + minutes
+  )
+```
+
+The `totals_long` is the data set of interest because it has total screen time per day, which we can match with the diary data.
+Thus, to arrive at the final sample size, we'll only keep participants who have data in the `diary` data set.
+For merging, we'll need to exclude those participants in `totals_long` who don't have a match in `diary`.
+
+But first, I check how much the sum of total time across apps per day in `total_long` converges with the sum of time across all apps per day in `apps_long`.
+There will definitely be differences, simply because participants have more chances to make typos when reporting the individual apps per day (in `apps_long`) compared to reporting the overall time across all apps once per day (in `total_long`).
+Also, participants will occasionally skip an individual app per day rating.
+
+Below, I get the total time per day across all ten apps and then join that estimate with the data set containing the total times (`total_long`).
+Afterwards, per day, I see how much the two variables differ.
+```{r compare-total-time-per-day, message=FALSE}
+# get total time across apps per day
+apps_aggregated <- 
+  apps_long %>% 
+  group_by(id, time_frame) %>% 
+  filter(time_frame != "week") %>% # no week 
+  summarise(total_time = sum(social_media_objective, na.rm = TRUE))
+
+# join with total times
+compare <- 
+  left_join(
+    totals_long %>% 
+      filter(time_frame != "week"),
+    apps_aggregated
+  ) %>% 
+  
+  # and compute a deviance score
+  mutate(
+    difference = social_media_objective - total_time
+  )
+```
+Overall, the two sums of use across apps and days are highly similar, with a mean difference of *M* = `r round(mean(compare$difference), digits = 2)`, *SD* = `r round(sd(compare$difference), digits = 2)` and an extremely high correlation, *r* = `r round(with(compare, cor(social_media_objective, total_time)), digits = 2)`.
+
+There were some missing values in the total social media time per day that participants reported.
+I check who has missing data on any of the weekdays in the `totals_long` data set.
+We can check whether those participants have reported individual app use for that day and use an aggregate over apps on that day as a substitute, given their high correlation.
+In other words: When participants forgot to report their overall social media use for a day, but reported use for all social media apps they used on that day, we can just use the sum of those social media apps as a replacement for overall social media use.
+However, we see in \@ref(tab:check-social-media-na) that all participants reported social media screen time across all days, so no need for imputation.
+```{r check-social-media-na, echo=FALSE}
+compare %>% 
+  summarise_all(
+    ~ sum(is.na(.))
+  ) %>% 
+  knitr::kable(
+    .,
+    caption = "Amount of missing values in data comparing total screen time"
+  )
+```
+
+Before I merge all data sets, I need to add the objective notifications and pickups (currently in `apps_long`) to the `totals_long` data set.
+Note that at the time of the study, iOS screen time wouldn't report notifications for app per day, only for the past week.
+Therefore, the weekly notifications have the same caveat as the weekly screen time: they will include a couple of notifications that participants received on the day they retrospectively reported their objective use.
+For pickups, as with screen time, we can sum up all days to get an accurate measure of week's pickups.
+
+I'll sum up both pickups and notifications over participant.
+Pickups will be per day, but notifications only per week.
+I then add pickups to the `totals_long` data set.
+Notifications I'll add later during merging (because they are not aggregated per day).
+```{r merge-notifications-pickups, message=FALSE}
+# get total pickups across apps per day
+pickups_aggregated <- 
+  apps_long %>% 
+  group_by(id, time_frame) %>% 
+  filter(time_frame != "week") %>% # no week 
+  summarise(pickups_objective = sum(pickups, na.rm = TRUE))
+
+# get notifications across apps per participant
+notifications_aggregated <- 
+  apps_long %>% 
+  group_by(id) %>% 
+  summarise(weekly_notifications = sum(notifications, na.rm = TRUE))
+
+# add pickups to totals_long
+totals_long <- 
+  left_join(
+    totals_long,
+    pickups_aggregated,
+    by = c("id", "time_frame")
+  )
+```
+
+## Merge data sets
+
+Finally, we can merge the three data sets.
+The `diary` data set is the "master" because it has our variables of interest and the correct time structure.
+To that data set we add the objective social media measures from the `totals_long` data set.
+The identifier for a survey are the participant `id` and the `day` on which they filled out a survey/for which they reported objective use.
+Note that we omit the meta-data from `totals_long` (e.g., `start_date`) because they are different from the meta-data of `diary`.
+We also only keep the variables of interest from here on, meaning I'll exclude some variables that aren't informative.
+```{r merge-diary-totals-long}
+study1 <- 
+  left_join(
+    
+    # the diary data with only relevant variables
+    diary %>% 
+      select(
+        duration_diary = duration, # so that we can get filling out times for each data set
+        id:day,
+        pickups_subjective:enjoyable, # don't need individual minutes and hours anymore
+        social_media_subjective:relatedness_state
+      ),
+    
+    # the objective totals with only relevant variables
+    totals_long %>% 
+      filter(time_frame != "week") %>% 
+      rename(
+        day = time_frame
+      ) %>% 
+      select(id, day, social_media_objective, pickups_objective),
+    
+    # joining by the two identifiers
+    by = c("id", "day")
+  )
+```
+
+The merging above kept all cases of `diary` and added variables from `totals_long` when there was a match, otherwise setting the new variables to `NA`.
+Therefore, I remove all cases which have `NA` on the added variables to get to our final sample.
+(There were no missings in the `social_media_objective` variable.)
+```{r remove-missing-objective-study1}
+study1 <- 
+  study1 %>% 
+  filter(!is.na(social_media_objective))
+```
+
+For descriptive information, I'll also add the survey duration of the screen time data.
+```{r add-screen-time-duration}
+study1 <- 
+  left_join(
+    study1,
+    screen_time %>% 
+      select(id, duration) %>% 
+      rename(
+        duration_screen_time = duration
+      ),
+    by = "id"
+  )
+```
+
+Okay, then I add the personality variables.
+Again, `study1` is the "master" and we add personality variables (aka traits from `personality`), omitting variables that aren't of interest.
+```{r merge-diary-personality}
+study1 <- 
+  left_join(
+    study1,
+    personality %>% 
+      select(
+        duration_personality = duration,
+        id,
+        bpns_1:openness
+      ),
+    by = "id"
+  )
+```
+
+Then, I add the notifications over one week as a constant.
+```{r add-notifications-study1}
+study1 <- 
+  left_join(
+    study1,
+    notifications_aggregated,
+    by = "id"
+  )
+```
+
+Last, some housekeeping, reordering variables and making sure they all have the correct variable type.
+```{r final-study1-data}
+study1 <- 
+  study1 %>% 
+  select(
+    id,
+    age:ethnicity,
+    starts_with("duration"),
+    day,
+    social_media_subjective,
+    pickups_subjective,
+    notifications_subjective,
+    social_media_objective,
+    pickups_objective,
+    weekly_notifications,
+    well_being_state:relatedness_state,
+    low_positive_peaceful:enjoyable,
+    autonomy_trait:openness,
+    bpns_1:big_five_45
+  ) %>% 
+  mutate(
+    id = droplevels(id),
+    day = as.factor(day)
+  )
+```
+
+When plotting the app data I want them to reflect the final sample, which is why I only keep those participants and surveys in the `apps_long` data set that are also in the final data set (i.e., `study1`).
+I can't just exclude those participants in `apps_long` because I also excluded surveys in `diary` on which `study1` is based.
+Therefore, I only keep those entries in `apps_long` which have a corresponding row in `study1` (aka entries in both `id` and `day`).
+Sidenote: The participants with a failed attention check in the `personality` data are not included in `study1` because they were excludedat other steps during merging, so no need to manually remove them here.
+```{r apps-long-valid-only}
+apps_long <- 
+  left_join(
+    
+    # only those participants and days that are in final data set
+    study1 %>% 
+      select(id, day),
+    
+    # and the rest of the variables from apps_long, but without week
+    apps_long %>% 
+      rename(day = time_frame) %>% 
+      filter(day != "week"),
+    
+    by = c("id", "day")
+  )
+```

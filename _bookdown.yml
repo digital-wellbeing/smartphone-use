@@ -4,4 +4,4 @@ repo: https://github.com/digital-wellbeing/smartphone-use
 output_dir: "docs"
 rmd_files:
 clean: [packages.bib, bookdown.bbl]
-new_session: yes
+new_session: no

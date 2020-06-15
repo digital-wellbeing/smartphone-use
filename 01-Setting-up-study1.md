@@ -24,4 +24,3 @@ p_load(
 # set seed
 set.seed(42)
 ```
-

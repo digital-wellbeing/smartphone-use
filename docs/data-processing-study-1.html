@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Data processing Study 1 | Analysis Report</title>
+  <meta name="description" content="Analysis report detailing alls steps from data processing to final analyses." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Data processing Study 1 | Analysis Report" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://github.com/digital-wellbeing/smartphone-use" />
+  
+  <meta property="og:description" content="Analysis report detailing alls steps from data processing to final analyses." />
+  <meta name="github-repo" content="digital-wellbeing/smartphone-use" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Data processing Study 1 | Analysis Report" />
+  
+  <meta name="twitter:description" content="Analysis report detailing alls steps from data processing to final analyses." />
+  
+
+<meta name="author" content="Niklas Johannes" />
+
+
+<meta name="date" content="2020-06-15" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="setting-up-study1.html"/>
+<link rel="next" href="descriptives-and-visualizations-study-1.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Analysis Report</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="part"><span><b>I Study 1</b></span></li>
+<li class="chapter" data-level="1" data-path="setting-up-study1.html"><a href="setting-up-study1.html"><i class="fa fa-check"></i><b>1</b> Setting up</a></li>
+<li class="chapter" data-level="2" data-path="data-processing-study-1.html"><a href="data-processing-study-1.html"><i class="fa fa-check"></i><b>2</b> Data processing Study 1</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-processing-study-1.html"><a href="data-processing-study-1.html#personality-data"><i class="fa fa-check"></i><b>2.1</b> Personality data</a></li>
+<li class="chapter" data-level="2.2" data-path="data-processing-study-1.html"><a href="data-processing-study-1.html#diary-data"><i class="fa fa-check"></i><b>2.2</b> Diary data</a></li>
+<li class="chapter" data-level="2.3" data-path="data-processing-study-1.html"><a href="data-processing-study-1.html#screen-time-data"><i class="fa fa-check"></i><b>2.3</b> Screen time data</a></li>
+<li class="chapter" data-level="2.4" data-path="data-processing-study-1.html"><a href="data-processing-study-1.html#merge-data-sets"><i class="fa fa-check"></i><b>2.4</b> Merge data sets</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html"><i class="fa fa-check"></i><b>3</b> Descriptives and Visualizations Study 1</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analysis Report</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-processing-study-1" class="section level1">
+<h1><span class="header-section-number">2</span> Data processing Study 1</h1>
+<p>Let’s process the raw data and get them to a format that we can work with for the analysis.
+Study 1 has three raw data files:</p>
+<ul>
+<li><code>personality_raw.csv</code> is the survey participants filled out at the beginning of the study, reporting personality traits</li>
+<li><code>diary_raw.csv</code> is the end of day survey participants filled out during the diary part of the study</li>
+<li><code>screen_time_raw.csv</code> is the objective screen time data participants reported</li>
+</ul>
+<div id="personality-data" class="section level2">
+<h2><span class="header-section-number">2.1</span> Personality data</h2>
+<p>Let’s load the personality data.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-processing-study-1.html#cb2-1"></a>personality_raw &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;personality_raw.csv&quot;</span>))</span></code></pre></div>
+<p>Qualtrics names aren’t very informative, so I give some sensible variable names (although this data set has mostly meaningful variable names).
+Also, there are variables (i.e., anything starting with <code>afi</code> to <code>selfreflect</code>) that were part of a different study, which is why I don’t include them here.
+Note that I don’t want to change the raw data object, so I’ll keep using <code>personality</code> as a new object from here on.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data-processing-study-1.html#cb3-1"></a>personality &lt;-<span class="st"> </span></span>
+<span id="cb3-2"><a href="data-processing-study-1.html#cb3-2"></a><span class="st">  </span>personality_raw <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb3-3"><a href="data-processing-study-1.html#cb3-3"></a><span class="st">  </span><span class="kw">select</span>(</span>
+<span id="cb3-4"><a href="data-processing-study-1.html#cb3-4"></a>    <span class="co"># meta data</span></span>
+<span id="cb3-5"><a href="data-processing-study-1.html#cb3-5"></a>    <span class="dt">start_date =</span> StartDate,</span>
+<span id="cb3-6"><a href="data-processing-study-1.html#cb3-6"></a>    <span class="dt">end_date =</span> EndDate,</span>
+<span id="cb3-7"><a href="data-processing-study-1.html#cb3-7"></a>    <span class="dt">progress =</span> Progress,</span>
+<span id="cb3-8"><a href="data-processing-study-1.html#cb3-8"></a>    <span class="dt">duration =</span> Duration__in_seconds_,</span>
+<span id="cb3-9"><a href="data-processing-study-1.html#cb3-9"></a>    <span class="dt">finished =</span> Finished,</span>
+<span id="cb3-10"><a href="data-processing-study-1.html#cb3-10"></a>    <span class="dt">recorded_date =</span> RecordedDate,</span>
+<span id="cb3-11"><a href="data-processing-study-1.html#cb3-11"></a>    <span class="dt">id =</span> study_id,</span>
+<span id="cb3-12"><a href="data-processing-study-1.html#cb3-12"></a>    date,</span>
+<span id="cb3-13"><a href="data-processing-study-1.html#cb3-13"></a>    </span>
+<span id="cb3-14"><a href="data-processing-study-1.html#cb3-14"></a>    <span class="co"># basic psychological need satisfaction trait</span></span>
+<span id="cb3-15"><a href="data-processing-study-1.html#cb3-15"></a>    <span class="dt">bpns_ =</span> <span class="kw">starts_with</span>(<span class="st">&quot;bpns&quot;</span>),</span>
+<span id="cb3-16"><a href="data-processing-study-1.html#cb3-16"></a>    </span>
+<span id="cb3-17"><a href="data-processing-study-1.html#cb3-17"></a>    <span class="co"># big five</span></span>
+<span id="cb3-18"><a href="data-processing-study-1.html#cb3-18"></a>    <span class="dt">big_five_ =</span> <span class="kw">starts_with</span>(<span class="st">&quot;bfi&quot;</span>),</span>
+<span id="cb3-19"><a href="data-processing-study-1.html#cb3-19"></a>    </span>
+<span id="cb3-20"><a href="data-processing-study-1.html#cb3-20"></a>    <span class="co"># demographics</span></span>
+<span id="cb3-21"><a href="data-processing-study-1.html#cb3-21"></a>    gender,</span>
+<span id="cb3-22"><a href="data-processing-study-1.html#cb3-22"></a>    <span class="dt">gender_entry =</span> gender_<span class="dv">3</span>_TEXT,</span>
+<span id="cb3-23"><a href="data-processing-study-1.html#cb3-23"></a>    <span class="dt">age =</span> Q42,</span>
+<span id="cb3-24"><a href="data-processing-study-1.html#cb3-24"></a>    <span class="dt">ethnicity_american_indian =</span> ethnicity_<span class="dv">1</span>,</span>
+<span id="cb3-25"><a href="data-processing-study-1.html#cb3-25"></a>    <span class="dt">ethnicity_asian =</span> ethnicity_<span class="dv">2</span>,</span>
+<span id="cb3-26"><a href="data-processing-study-1.html#cb3-26"></a>    <span class="dt">ethnicity_island =</span> ethnicity_<span class="dv">3</span>,</span>
+<span id="cb3-27"><a href="data-processing-study-1.html#cb3-27"></a>    <span class="dt">ethnicity_black =</span> ethnicity_<span class="dv">4</span>,</span>
+<span id="cb3-28"><a href="data-processing-study-1.html#cb3-28"></a>    <span class="dt">ethnicity_white =</span> ethnicity_<span class="dv">5</span>,</span>
+<span id="cb3-29"><a href="data-processing-study-1.html#cb3-29"></a>    <span class="dt">ethnicity_hispanic =</span> ethnicity_<span class="dv">6</span>,</span>
+<span id="cb3-30"><a href="data-processing-study-1.html#cb3-30"></a>    <span class="dt">ethnicity_multi =</span> ethnicity_<span class="dv">7</span></span>
+<span id="cb3-31"><a href="data-processing-study-1.html#cb3-31"></a>  )</span></code></pre></div>
+<p>Next, I make sure those variables have the correct variable type.
+I’ll also recode factor levels so that labels are readable.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="data-processing-study-1.html#cb4-1"></a>personality &lt;-<span class="st"> </span></span>
+<span id="cb4-2"><a href="data-processing-study-1.html#cb4-2"></a><span class="st">  </span>personality <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb4-3"><a href="data-processing-study-1.html#cb4-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb4-4"><a href="data-processing-study-1.html#cb4-4"></a>    <span class="dt">id =</span> <span class="kw">paste0</span>(<span class="st">&quot;pp_&quot;</span>, id), <span class="co"># add pp for participant just so later I don&#39;t mistake the id variable for a count</span></span>
+<span id="cb4-5"><a href="data-processing-study-1.html#cb4-5"></a>    <span class="kw">across</span>( <span class="co"># turn those two into factors</span></span>
+<span id="cb4-6"><a href="data-processing-study-1.html#cb4-6"></a>      <span class="kw">c</span>(finished, id, gender),</span>
+<span id="cb4-7"><a href="data-processing-study-1.html#cb4-7"></a>      as.factor</span>
+<span id="cb4-8"><a href="data-processing-study-1.html#cb4-8"></a>    ),</span>
+<span id="cb4-9"><a href="data-processing-study-1.html#cb4-9"></a>    <span class="dt">finished =</span> <span class="kw">fct_recode</span>(</span>
+<span id="cb4-10"><a href="data-processing-study-1.html#cb4-10"></a>      finished,</span>
+<span id="cb4-11"><a href="data-processing-study-1.html#cb4-11"></a>      <span class="st">&quot;yes&quot;</span> =<span class="st"> &quot;1&quot;</span>,</span>
+<span id="cb4-12"><a href="data-processing-study-1.html#cb4-12"></a>      <span class="st">&quot;no&quot;</span> =<span class="st"> &quot;0&quot;</span></span>
+<span id="cb4-13"><a href="data-processing-study-1.html#cb4-13"></a>    ),</span>
+<span id="cb4-14"><a href="data-processing-study-1.html#cb4-14"></a>    <span class="dt">gender =</span> <span class="kw">fct_recode</span>(</span>
+<span id="cb4-15"><a href="data-processing-study-1.html#cb4-15"></a>      gender,</span>
+<span id="cb4-16"><a href="data-processing-study-1.html#cb4-16"></a>      <span class="st">&quot;male&quot;</span> =<span class="st"> &quot;1&quot;</span>,</span>
+<span id="cb4-17"><a href="data-processing-study-1.html#cb4-17"></a>      <span class="st">&quot;female&quot;</span> =<span class="st"> &quot;2&quot;</span>,</span>
+<span id="cb4-18"><a href="data-processing-study-1.html#cb4-18"></a>      <span class="st">&quot;other&quot;</span> =<span class="st"> &quot;3&quot;</span></span>
+<span id="cb4-19"><a href="data-processing-study-1.html#cb4-19"></a>    )</span>
+<span id="cb4-20"><a href="data-processing-study-1.html#cb4-20"></a>  )</span></code></pre></div>
+<p>I see that ethnicity was multiple choice although “multiracial” is an answer option.
+So I think it makes more sense to combine this all into one variable.
+That required quite a lot of code, but was still less problematic than transforming the ethnicity variables to long format.
+I took the following steps:</p>
+<ul>
+<li>check who reported multiple ethnicities</li>
+<li>those who did get an <code>NA</code> on all other ethnicity variables</li>
+<li>recoded the variables from numeric to containing the ethnicity factor level and coalesce</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-processing-study-1.html#cb5-1"></a>personality &lt;-<span class="st"> </span></span>
+<span id="cb5-2"><a href="data-processing-study-1.html#cb5-2"></a><span class="st">  </span>personality <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-3"><a href="data-processing-study-1.html#cb5-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb5-4"><a href="data-processing-study-1.html#cb5-4"></a>    <span class="dt">multiple =</span> <span class="kw">rowSums</span>(<span class="kw">select</span>(., <span class="kw">starts_with</span>(<span class="st">&quot;ethnicity&quot;</span>)), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>), <span class="co"># check who reported multiple ethnicities</span></span>
+<span id="cb5-5"><a href="data-processing-study-1.html#cb5-5"></a>    </span>
+<span id="cb5-6"><a href="data-processing-study-1.html#cb5-6"></a>    <span class="co"># those with multiple get NA for all other ethnicity variables</span></span>
+<span id="cb5-7"><a href="data-processing-study-1.html#cb5-7"></a>    <span class="kw">across</span>(</span>
+<span id="cb5-8"><a href="data-processing-study-1.html#cb5-8"></a>      <span class="kw">c</span>(ethnicity_american_indian<span class="op">:</span>ethnicity_hispanic),</span>
+<span id="cb5-9"><a href="data-processing-study-1.html#cb5-9"></a>      <span class="op">~</span><span class="st"> </span><span class="kw">case_when</span>(</span>
+<span id="cb5-10"><a href="data-processing-study-1.html#cb5-10"></a>        multiple <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span> <span class="op">~</span><span class="st"> </span><span class="ot">NA_real_</span>,</span>
+<span id="cb5-11"><a href="data-processing-study-1.html#cb5-11"></a>        <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>.</span>
+<span id="cb5-12"><a href="data-processing-study-1.html#cb5-12"></a>      )</span>
+<span id="cb5-13"><a href="data-processing-study-1.html#cb5-13"></a>    ),</span>
+<span id="cb5-14"><a href="data-processing-study-1.html#cb5-14"></a>    </span>
+<span id="cb5-15"><a href="data-processing-study-1.html#cb5-15"></a>    <span class="co"># turn into character which makes recoding below easier</span></span>
+<span id="cb5-16"><a href="data-processing-study-1.html#cb5-16"></a>    <span class="kw">across</span>(</span>
+<span id="cb5-17"><a href="data-processing-study-1.html#cb5-17"></a>      <span class="kw">c</span>(ethnicity_american_indian<span class="op">:</span>ethnicity_hispanic),</span>
+<span id="cb5-18"><a href="data-processing-study-1.html#cb5-18"></a>      as.character</span>
+<span id="cb5-19"><a href="data-processing-study-1.html#cb5-19"></a>    ),</span>
+<span id="cb5-20"><a href="data-processing-study-1.html#cb5-20"></a>    </span>
+<span id="cb5-21"><a href="data-processing-study-1.html#cb5-21"></a>    <span class="co"># recode the individual variables</span></span>
+<span id="cb5-22"><a href="data-processing-study-1.html#cb5-22"></a>    <span class="dt">ethnicity_american_indian =</span> <span class="kw">if_else</span>(ethnicity_american_indian <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;American Indian/Alaska Native&quot;</span>, <span class="ot">NA_character_</span>),</span>
+<span id="cb5-23"><a href="data-processing-study-1.html#cb5-23"></a>    <span class="dt">ethnicity_asian =</span> <span class="kw">if_else</span>(ethnicity_asian <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Asian&quot;</span>, <span class="ot">NA_character_</span>),</span>
+<span id="cb5-24"><a href="data-processing-study-1.html#cb5-24"></a>    <span class="dt">ethnicity_island =</span> <span class="kw">if_else</span>(ethnicity_island <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Native Hawaiian or Other Pacific Islander&quot;</span>, <span class="ot">NA_character_</span>),</span>
+<span id="cb5-25"><a href="data-processing-study-1.html#cb5-25"></a>    <span class="dt">ethnicity_black =</span> <span class="kw">if_else</span>(ethnicity_black <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Black or African American&quot;</span>, <span class="ot">NA_character_</span>),</span>
+<span id="cb5-26"><a href="data-processing-study-1.html#cb5-26"></a>    <span class="dt">ethnicity_white =</span> <span class="kw">if_else</span>(ethnicity_white <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;White&quot;</span>, <span class="ot">NA_character_</span>),</span>
+<span id="cb5-27"><a href="data-processing-study-1.html#cb5-27"></a>    <span class="dt">ethnicity_hispanic =</span> <span class="kw">if_else</span>(ethnicity_hispanic <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Hispanic or Latino&quot;</span>, <span class="ot">NA_character_</span>),</span>
+<span id="cb5-28"><a href="data-processing-study-1.html#cb5-28"></a>    <span class="dt">ethnicity_multi =</span> <span class="kw">if_else</span>(multiple <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;multiracial&quot;</span>, <span class="ot">NA_character_</span>),</span>
+<span id="cb5-29"><a href="data-processing-study-1.html#cb5-29"></a>    </span>
+<span id="cb5-30"><a href="data-processing-study-1.html#cb5-30"></a>    <span class="co"># coalesce them (coalesce doesn&#39;t work with .select helpers, so needed to type the variables out)</span></span>
+<span id="cb5-31"><a href="data-processing-study-1.html#cb5-31"></a>    <span class="dt">ethnicity =</span> <span class="kw">as.factor</span>(</span>
+<span id="cb5-32"><a href="data-processing-study-1.html#cb5-32"></a>      <span class="kw">coalesce</span>(</span>
+<span id="cb5-33"><a href="data-processing-study-1.html#cb5-33"></a>        ethnicity_american_indian,</span>
+<span id="cb5-34"><a href="data-processing-study-1.html#cb5-34"></a>        ethnicity_asian,</span>
+<span id="cb5-35"><a href="data-processing-study-1.html#cb5-35"></a>        ethnicity_island,</span>
+<span id="cb5-36"><a href="data-processing-study-1.html#cb5-36"></a>        ethnicity_black,</span>
+<span id="cb5-37"><a href="data-processing-study-1.html#cb5-37"></a>        ethnicity_white,</span>
+<span id="cb5-38"><a href="data-processing-study-1.html#cb5-38"></a>        ethnicity_hispanic,</span>
+<span id="cb5-39"><a href="data-processing-study-1.html#cb5-39"></a>        ethnicity_multi</span>
+<span id="cb5-40"><a href="data-processing-study-1.html#cb5-40"></a>      )</span>
+<span id="cb5-41"><a href="data-processing-study-1.html#cb5-41"></a>    )</span>
+<span id="cb5-42"><a href="data-processing-study-1.html#cb5-42"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb5-43"><a href="data-processing-study-1.html#cb5-43"></a><span class="st">  </span><span class="kw">select</span>(start_date<span class="op">:</span>age, ethnicity)</span></code></pre></div>
+<p>Then I remove those cases without an <code>id</code> (aka test runs) and those with an <code>id</code> but not other entries.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-processing-study-1.html#cb6-1"></a>personality &lt;-<span class="st"> </span></span>
+<span id="cb6-2"><a href="data-processing-study-1.html#cb6-2"></a><span class="st">  </span>personality <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-3"><a href="data-processing-study-1.html#cb6-3"></a><span class="st">  </span><span class="kw">filter</span>(id <span class="op">!=</span><span class="st"> &quot;pp_NA&quot;</span> <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(start_date))</span></code></pre></div>
+<p>Let’s see how many missing values there are left per participant (aka row) in <a href="data-processing-study-1.html#tab:check-personality-na">2.1</a>.
+Most participants filled out everything, but a couple of them have basically empty rows.
+A couple of participants have quite a handful of empty cells.
+I inspected their data and most of them just didn’t fill out the Big Five, but one participant didn’t fill out anything.</p>
+<table>
+<caption><span id="tab:check-personality-na">Table 2.1: </span>Count of number of missing values per row</caption>
+<thead>
+<tr class="header">
+<th align="right">na_count_row</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">246</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">29</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="right">5</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">7</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">25</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">49</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="right">74</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>I’ll exclude the latter.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="data-processing-study-1.html#cb7-1"></a><span class="co"># exclude those with &gt; 15 missing values</span></span>
+<span id="cb7-2"><a href="data-processing-study-1.html#cb7-2"></a>personality&lt;-<span class="st"> </span></span>
+<span id="cb7-3"><a href="data-processing-study-1.html#cb7-3"></a><span class="st">  </span>personality <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-4"><a href="data-processing-study-1.html#cb7-4"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb7-5"><a href="data-processing-study-1.html#cb7-5"></a>    <span class="dt">na_count_row =</span> <span class="kw">rowSums</span>(<span class="kw">is.na</span>(.))</span>
+<span id="cb7-6"><a href="data-processing-study-1.html#cb7-6"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-7"><a href="data-processing-study-1.html#cb7-7"></a><span class="st">  </span><span class="kw">filter</span>(na_count_row <span class="op">&lt;=</span><span class="dv">70</span>)</span></code></pre></div>
+<p>Alright, time to construct the means for the scales.
+But first, I check data quality by seeing whether there are instances of “straightlining” (i.e., choosing the same response option for all items of a scale).
+We also had attention checks in the survey.</p>
+<p>Let’s have a look at those attention checks.
+For item <code>bpns_25</code> participants had to choose <code>2</code> as a response and for item <code>big_five_45</code> they had to choose <code>5</code>.
+When we check Table <a href="data-processing-study-1.html#tab:attention-check-personality">2.2</a>, we see that 5 participants didn’t pass both attention checks.</p>
+<table class="kable_wrapper">
+<caption>
+<span id="tab:attention-check-personality">Table 2.2: </span>Failed attention checks
+</caption>
+<tbody>
+<tr>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th align="left">bpns_25 != 2</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">FALSE</td>
+<td align="right">277</td>
+</tr>
+<tr class="even">
+<td align="left">TRUE</td>
+<td align="right">13</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th align="left">big_five_45 != 5</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">FALSE</td>
+<td align="right">275</td>
+</tr>
+<tr class="even">
+<td align="left">TRUE</td>
+<td align="right">7</td>
+</tr>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">9</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table>
+<thead>
+<tr class="header">
+<th align="left">(bpns_25 != 2 &amp; big_five_45 != 5)</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">FALSE</td>
+<td align="right">286</td>
+</tr>
+<tr class="even">
+<td align="left">TRUE</td>
+<td align="right">5</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>I’ll exclude those participants because I don’t think we can trust their data.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-processing-study-1.html#cb8-1"></a>personality &lt;-<span class="st"> </span></span>
+<span id="cb8-2"><a href="data-processing-study-1.html#cb8-2"></a><span class="st">  </span>personality <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb8-3"><a href="data-processing-study-1.html#cb8-3"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>(bpns_<span class="dv">25</span> <span class="op">!=</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>big_five_<span class="dv">45</span> <span class="op">!=</span><span class="st"> </span><span class="dv">5</span>) <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(bpns_<span class="dv">25</span>) <span class="op">|</span><span class="st"> </span><span class="kw">is.na</span>(big_five_<span class="dv">45</span>)) <span class="co"># otherwise filter automatically drops rows with NA</span></span></code></pre></div>
+<p>Next, I check for straightlining by inspecting the variance per daily survey on the BPNS and BF scales.
+Turns out that it’s not super straightforward to compute variance per row, found help <a href="https://www.tidyverse.org/blog/2020/04/dplyr-1-0-0-rowwise/">here</a>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="data-processing-study-1.html#cb9-1"></a>personality &lt;-<span class="st"> </span></span>
+<span id="cb9-2"><a href="data-processing-study-1.html#cb9-2"></a><span class="st">  </span>personality <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-3"><a href="data-processing-study-1.html#cb9-3"></a><span class="st">    </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-4"><a href="data-processing-study-1.html#cb9-4"></a><span class="st">    </span><span class="kw">mutate</span>(</span>
+<span id="cb9-5"><a href="data-processing-study-1.html#cb9-5"></a>      <span class="dt">bpns_sd =</span> <span class="kw">sd</span>(</span>
+<span id="cb9-6"><a href="data-processing-study-1.html#cb9-6"></a>        <span class="kw">c_across</span>(<span class="kw">starts_with</span>(<span class="st">&quot;bpns&quot;</span>)),</span>
+<span id="cb9-7"><a href="data-processing-study-1.html#cb9-7"></a>        <span class="dt">na.rm =</span> <span class="ot">TRUE</span></span>
+<span id="cb9-8"><a href="data-processing-study-1.html#cb9-8"></a>      ),</span>
+<span id="cb9-9"><a href="data-processing-study-1.html#cb9-9"></a>      <span class="dt">big_five_sd =</span> <span class="kw">sd</span>(</span>
+<span id="cb9-10"><a href="data-processing-study-1.html#cb9-10"></a>        <span class="kw">c_across</span>(<span class="kw">starts_with</span>(<span class="st">&quot;big_five&quot;</span>)),</span>
+<span id="cb9-11"><a href="data-processing-study-1.html#cb9-11"></a>        <span class="dt">na.rm =</span> <span class="ot">TRUE</span></span>
+<span id="cb9-12"><a href="data-processing-study-1.html#cb9-12"></a>      )</span>
+<span id="cb9-13"><a href="data-processing-study-1.html#cb9-13"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-14"><a href="data-processing-study-1.html#cb9-14"></a><span class="st">  </span><span class="kw">unnest</span>(<span class="dt">cols =</span> <span class="kw">c</span>())</span></code></pre></div>
+If we visualize that variance in Figure <a href="data-processing-study-1.html#fig:plot-variance-personality">2.1</a>, we can see that there’s little cause for concern: nobody straightlined.
+<div class="figure"><span id="fig:plot-variance-personality"></span>
+<img src="analysis_report_files/figure-html/plot-variance-personality-1.png" alt="Distribution of variances per survey on two measures" width="672" />
+<p class="caption">
+Figure 2.1: Distribution of variances per survey on two measures
+</p>
+</div>
+<p>Alright, now we can aggregate the individual items to scale scores.
+Some of those items are reverse-coded (see the codebook for details).
+I’ll code all scales such that a higher scores means scoring more positively on that scale.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-processing-study-1.html#cb10-1"></a>personality &lt;-<span class="st"> </span></span>
+<span id="cb10-2"><a href="data-processing-study-1.html#cb10-2"></a><span class="st">  </span>personality <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-3"><a href="data-processing-study-1.html#cb10-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb10-4"><a href="data-processing-study-1.html#cb10-4"></a>    <span class="kw">across</span>(</span>
+<span id="cb10-5"><a href="data-processing-study-1.html#cb10-5"></a>      <span class="kw">c</span>(</span>
+<span id="cb10-6"><a href="data-processing-study-1.html#cb10-6"></a>        bpns_<span class="dv">5</span><span class="op">:</span>bpns_<span class="dv">8</span>,</span>
+<span id="cb10-7"><a href="data-processing-study-1.html#cb10-7"></a>        bpns_<span class="dv">13</span><span class="op">:</span>bpns_<span class="dv">15</span>,</span>
+<span id="cb10-8"><a href="data-processing-study-1.html#cb10-8"></a>        bpns_<span class="dv">21</span><span class="op">:</span>bpns_<span class="dv">25</span>,</span>
+<span id="cb10-9"><a href="data-processing-study-1.html#cb10-9"></a>      ),</span>
+<span id="cb10-10"><a href="data-processing-study-1.html#cb10-10"></a>      <span class="cf">function</span>(.) <span class="dv">8</span> <span class="op">-</span><span class="st"> </span>.</span>
+<span id="cb10-11"><a href="data-processing-study-1.html#cb10-11"></a>    ),</span>
+<span id="cb10-12"><a href="data-processing-study-1.html#cb10-12"></a>    <span class="kw">across</span>(</span>
+<span id="cb10-13"><a href="data-processing-study-1.html#cb10-13"></a>      <span class="kw">c</span>(</span>
+<span id="cb10-14"><a href="data-processing-study-1.html#cb10-14"></a>        big_five_<span class="dv">2</span>,</span>
+<span id="cb10-15"><a href="data-processing-study-1.html#cb10-15"></a>        big_five_<span class="dv">6</span>,</span>
+<span id="cb10-16"><a href="data-processing-study-1.html#cb10-16"></a>        big_five_<span class="dv">8</span>,</span>
+<span id="cb10-17"><a href="data-processing-study-1.html#cb10-17"></a>        big_five_<span class="dv">9</span>,</span>
+<span id="cb10-18"><a href="data-processing-study-1.html#cb10-18"></a>        big_five_<span class="dv">12</span>,</span>
+<span id="cb10-19"><a href="data-processing-study-1.html#cb10-19"></a>        big_five_<span class="dv">18</span>,</span>
+<span id="cb10-20"><a href="data-processing-study-1.html#cb10-20"></a>        big_five_<span class="dv">21</span>,</span>
+<span id="cb10-21"><a href="data-processing-study-1.html#cb10-21"></a>        big_five_<span class="dv">23</span>,</span>
+<span id="cb10-22"><a href="data-processing-study-1.html#cb10-22"></a>        big_five_<span class="dv">27</span>,</span>
+<span id="cb10-23"><a href="data-processing-study-1.html#cb10-23"></a>        big_five_<span class="dv">31</span>,</span>
+<span id="cb10-24"><a href="data-processing-study-1.html#cb10-24"></a>        big_five_<span class="dv">37</span>,</span>
+<span id="cb10-25"><a href="data-processing-study-1.html#cb10-25"></a>        big_five_<span class="dv">43</span></span>
+<span id="cb10-26"><a href="data-processing-study-1.html#cb10-26"></a>      ),</span>
+<span id="cb10-27"><a href="data-processing-study-1.html#cb10-27"></a>      <span class="cf">function</span>(.) <span class="dv">6</span> <span class="op">-</span><span class="st"> </span>.</span>
+<span id="cb10-28"><a href="data-processing-study-1.html#cb10-28"></a>    )</span>
+<span id="cb10-29"><a href="data-processing-study-1.html#cb10-29"></a>  )</span></code></pre></div>
+<p>Now I create the scales by taking the mean of the respective items.
+Note that I remove missing values in computing row means to ignore the occasional missing value.
+(For those with missing values throughout, see next code chunk.)</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="data-processing-study-1.html#cb11-1"></a>personality &lt;-<span class="st"> </span></span>
+<span id="cb11-2"><a href="data-processing-study-1.html#cb11-2"></a><span class="st">  </span>personality <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-3"><a href="data-processing-study-1.html#cb11-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb11-4"><a href="data-processing-study-1.html#cb11-4"></a>    </span>
+<span id="cb11-5"><a href="data-processing-study-1.html#cb11-5"></a>    <span class="co"># trait needs</span></span>
+<span id="cb11-6"><a href="data-processing-study-1.html#cb11-6"></a>    <span class="dt">autonomy_trait =</span> <span class="kw">rowMeans</span>(<span class="kw">select</span>(., bpns_<span class="dv">1</span><span class="op">:</span>bpns_<span class="dv">8</span>), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb11-7"><a href="data-processing-study-1.html#cb11-7"></a>    <span class="dt">competence_trait =</span> <span class="kw">rowMeans</span>(<span class="kw">select</span>(., bpns_<span class="dv">9</span><span class="op">:</span>bpns_<span class="dv">16</span>), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb11-8"><a href="data-processing-study-1.html#cb11-8"></a>    <span class="dt">relatedness_trait =</span> <span class="kw">rowMeans</span>(<span class="kw">select</span>(., bpns_<span class="dv">17</span><span class="op">:</span>bpns_<span class="dv">24</span>), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb11-9"><a href="data-processing-study-1.html#cb11-9"></a>    </span>
+<span id="cb11-10"><a href="data-processing-study-1.html#cb11-10"></a>    <span class="co"># big five</span></span>
+<span id="cb11-11"><a href="data-processing-study-1.html#cb11-11"></a>    <span class="dt">extraversion =</span> <span class="kw">rowMeans</span>(</span>
+<span id="cb11-12"><a href="data-processing-study-1.html#cb11-12"></a>      <span class="kw">select</span>(</span>
+<span id="cb11-13"><a href="data-processing-study-1.html#cb11-13"></a>        .,</span>
+<span id="cb11-14"><a href="data-processing-study-1.html#cb11-14"></a>        big_five_<span class="dv">1</span>,</span>
+<span id="cb11-15"><a href="data-processing-study-1.html#cb11-15"></a>        big_five_<span class="dv">6</span>,</span>
+<span id="cb11-16"><a href="data-processing-study-1.html#cb11-16"></a>        big_five_<span class="dv">11</span>,</span>
+<span id="cb11-17"><a href="data-processing-study-1.html#cb11-17"></a>        big_five_<span class="dv">16</span>,</span>
+<span id="cb11-18"><a href="data-processing-study-1.html#cb11-18"></a>        big_five_<span class="dv">21</span>,</span>
+<span id="cb11-19"><a href="data-processing-study-1.html#cb11-19"></a>        big_five_<span class="dv">26</span>,</span>
+<span id="cb11-20"><a href="data-processing-study-1.html#cb11-20"></a>        big_five_<span class="dv">31</span>,</span>
+<span id="cb11-21"><a href="data-processing-study-1.html#cb11-21"></a>        big_five_<span class="dv">36</span></span>
+<span id="cb11-22"><a href="data-processing-study-1.html#cb11-22"></a>      ),</span>
+<span id="cb11-23"><a href="data-processing-study-1.html#cb11-23"></a>      <span class="dt">na.rm =</span> <span class="ot">TRUE</span></span>
+<span id="cb11-24"><a href="data-processing-study-1.html#cb11-24"></a>    ),</span>
+<span id="cb11-25"><a href="data-processing-study-1.html#cb11-25"></a>    <span class="dt">agreeableness =</span> <span class="kw">rowMeans</span>(</span>
+<span id="cb11-26"><a href="data-processing-study-1.html#cb11-26"></a>      <span class="kw">select</span>(</span>
+<span id="cb11-27"><a href="data-processing-study-1.html#cb11-27"></a>        .,</span>
+<span id="cb11-28"><a href="data-processing-study-1.html#cb11-28"></a>        big_five_<span class="dv">2</span>,</span>
+<span id="cb11-29"><a href="data-processing-study-1.html#cb11-29"></a>        big_five_<span class="dv">7</span>,</span>
+<span id="cb11-30"><a href="data-processing-study-1.html#cb11-30"></a>        big_five_<span class="dv">12</span>,</span>
+<span id="cb11-31"><a href="data-processing-study-1.html#cb11-31"></a>        big_five_<span class="dv">17</span>,</span>
+<span id="cb11-32"><a href="data-processing-study-1.html#cb11-32"></a>        big_five_<span class="dv">22</span>,</span>
+<span id="cb11-33"><a href="data-processing-study-1.html#cb11-33"></a>        big_five_<span class="dv">27</span>,</span>
+<span id="cb11-34"><a href="data-processing-study-1.html#cb11-34"></a>        big_five_<span class="dv">32</span>,</span>
+<span id="cb11-35"><a href="data-processing-study-1.html#cb11-35"></a>        big_five_<span class="dv">37</span>,</span>
+<span id="cb11-36"><a href="data-processing-study-1.html#cb11-36"></a>        big_five_<span class="dv">42</span></span>
+<span id="cb11-37"><a href="data-processing-study-1.html#cb11-37"></a>      ),</span>
+<span id="cb11-38"><a href="data-processing-study-1.html#cb11-38"></a>      <span class="dt">na.rm =</span> <span class="ot">TRUE</span></span>
+<span id="cb11-39"><a href="data-processing-study-1.html#cb11-39"></a>    ),</span>
+<span id="cb11-40"><a href="data-processing-study-1.html#cb11-40"></a>    <span class="dt">conscientiousness =</span> <span class="kw">rowMeans</span>(</span>
+<span id="cb11-41"><a href="data-processing-study-1.html#cb11-41"></a>      <span class="kw">select</span>(</span>
+<span id="cb11-42"><a href="data-processing-study-1.html#cb11-42"></a>        .,</span>
+<span id="cb11-43"><a href="data-processing-study-1.html#cb11-43"></a>        big_five_<span class="dv">3</span>,</span>
+<span id="cb11-44"><a href="data-processing-study-1.html#cb11-44"></a>        big_five_<span class="dv">8</span>,</span>
+<span id="cb11-45"><a href="data-processing-study-1.html#cb11-45"></a>        big_five_<span class="dv">13</span>,</span>
+<span id="cb11-46"><a href="data-processing-study-1.html#cb11-46"></a>        big_five_<span class="dv">18</span>,</span>
+<span id="cb11-47"><a href="data-processing-study-1.html#cb11-47"></a>        big_five_<span class="dv">23</span>,</span>
+<span id="cb11-48"><a href="data-processing-study-1.html#cb11-48"></a>        big_five_<span class="dv">28</span>,</span>
+<span id="cb11-49"><a href="data-processing-study-1.html#cb11-49"></a>        big_five_<span class="dv">33</span>,</span>
+<span id="cb11-50"><a href="data-processing-study-1.html#cb11-50"></a>        big_five_<span class="dv">38</span>,</span>
+<span id="cb11-51"><a href="data-processing-study-1.html#cb11-51"></a>        big_five_<span class="dv">43</span></span>
+<span id="cb11-52"><a href="data-processing-study-1.html#cb11-52"></a>      ),</span>
+<span id="cb11-53"><a href="data-processing-study-1.html#cb11-53"></a>      <span class="dt">na.rm =</span> <span class="ot">TRUE</span></span>
+<span id="cb11-54"><a href="data-processing-study-1.html#cb11-54"></a>    ),</span>
+<span id="cb11-55"><a href="data-processing-study-1.html#cb11-55"></a>    <span class="dt">neuroticism =</span> <span class="kw">rowMeans</span>(</span>
+<span id="cb11-56"><a href="data-processing-study-1.html#cb11-56"></a>      <span class="kw">select</span>(</span>
+<span id="cb11-57"><a href="data-processing-study-1.html#cb11-57"></a>        .,</span>
+<span id="cb11-58"><a href="data-processing-study-1.html#cb11-58"></a>        big_five_<span class="dv">4</span>,</span>
+<span id="cb11-59"><a href="data-processing-study-1.html#cb11-59"></a>        big_five_<span class="dv">9</span>,</span>
+<span id="cb11-60"><a href="data-processing-study-1.html#cb11-60"></a>        big_five_<span class="dv">14</span>,</span>
+<span id="cb11-61"><a href="data-processing-study-1.html#cb11-61"></a>        big_five_<span class="dv">19</span>,</span>
+<span id="cb11-62"><a href="data-processing-study-1.html#cb11-62"></a>        big_five_<span class="dv">24</span>,</span>
+<span id="cb11-63"><a href="data-processing-study-1.html#cb11-63"></a>        big_five_<span class="dv">29</span>,</span>
+<span id="cb11-64"><a href="data-processing-study-1.html#cb11-64"></a>        big_five_<span class="dv">34</span>,</span>
+<span id="cb11-65"><a href="data-processing-study-1.html#cb11-65"></a>        big_five_<span class="dv">39</span></span>
+<span id="cb11-66"><a href="data-processing-study-1.html#cb11-66"></a>      ),</span>
+<span id="cb11-67"><a href="data-processing-study-1.html#cb11-67"></a>      <span class="dt">na.rm =</span> <span class="ot">TRUE</span></span>
+<span id="cb11-68"><a href="data-processing-study-1.html#cb11-68"></a>    ),</span>
+<span id="cb11-69"><a href="data-processing-study-1.html#cb11-69"></a>    <span class="dt">openness =</span> <span class="kw">rowMeans</span>(</span>
+<span id="cb11-70"><a href="data-processing-study-1.html#cb11-70"></a>      <span class="kw">select</span>(</span>
+<span id="cb11-71"><a href="data-processing-study-1.html#cb11-71"></a>        .,</span>
+<span id="cb11-72"><a href="data-processing-study-1.html#cb11-72"></a>        big_five_<span class="dv">5</span>,</span>
+<span id="cb11-73"><a href="data-processing-study-1.html#cb11-73"></a>        big_five_<span class="dv">10</span>,</span>
+<span id="cb11-74"><a href="data-processing-study-1.html#cb11-74"></a>        big_five_<span class="dv">15</span>,</span>
+<span id="cb11-75"><a href="data-processing-study-1.html#cb11-75"></a>        big_five_<span class="dv">20</span>,</span>
+<span id="cb11-76"><a href="data-processing-study-1.html#cb11-76"></a>        big_five_<span class="dv">25</span>,</span>
+<span id="cb11-77"><a href="data-processing-study-1.html#cb11-77"></a>        big_five_<span class="dv">30</span>,</span>
+<span id="cb11-78"><a href="data-processing-study-1.html#cb11-78"></a>        big_five_<span class="dv">35</span>,</span>
+<span id="cb11-79"><a href="data-processing-study-1.html#cb11-79"></a>        big_five_<span class="dv">40</span>,</span>
+<span id="cb11-80"><a href="data-processing-study-1.html#cb11-80"></a>        big_five_<span class="dv">41</span>,</span>
+<span id="cb11-81"><a href="data-processing-study-1.html#cb11-81"></a>        big_five_<span class="dv">44</span></span>
+<span id="cb11-82"><a href="data-processing-study-1.html#cb11-82"></a>      ),</span>
+<span id="cb11-83"><a href="data-processing-study-1.html#cb11-83"></a>      <span class="dt">na.rm =</span> <span class="ot">TRUE</span></span>
+<span id="cb11-84"><a href="data-processing-study-1.html#cb11-84"></a>    )</span>
+<span id="cb11-85"><a href="data-processing-study-1.html#cb11-85"></a>  )</span></code></pre></div>
+<p>Last, some participants didn’t fill out the Big Five items, so they haven an <code>NaN</code> entry for those scales now.
+I’ll turn that into an <code>NA</code> value</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-processing-study-1.html#cb12-1"></a>personality &lt;-<span class="st"> </span></span>
+<span id="cb12-2"><a href="data-processing-study-1.html#cb12-2"></a><span class="st">  </span>personality <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-3"><a href="data-processing-study-1.html#cb12-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb12-4"><a href="data-processing-study-1.html#cb12-4"></a>    <span class="kw">across</span>(</span>
+<span id="cb12-5"><a href="data-processing-study-1.html#cb12-5"></a>      <span class="kw">c</span>(autonomy_trait<span class="op">:</span>openness),</span>
+<span id="cb12-6"><a href="data-processing-study-1.html#cb12-6"></a>      <span class="op">~</span><span class="st"> </span><span class="kw">na_if</span>(.x, <span class="st">&quot;NaN&quot;</span>)</span>
+<span id="cb12-7"><a href="data-processing-study-1.html#cb12-7"></a>    )</span>
+<span id="cb12-8"><a href="data-processing-study-1.html#cb12-8"></a>  )</span></code></pre></div>
+</div>
+<div id="diary-data" class="section level2">
+<h2><span class="header-section-number">2.2</span> Diary data</h2>
+<p>Let’s load and inspect the diary data.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="data-processing-study-1.html#cb13-1"></a><span class="co"># load data</span></span>
+<span id="cb13-2"><a href="data-processing-study-1.html#cb13-2"></a>diary_raw &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;diary_raw.csv&quot;</span>))</span></code></pre></div>
+<p>Qualtrics names aren’t very informative, so I give some sensible variable names.
+Again, there are many variables (i.e., anything before <code>Q21-1</code>) that were part of a different study, which is why I don’t include them here.
+Like before, I don’t want to change the raw data object, so I’ll keep using <code>diary</code> as a new object from here on.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="data-processing-study-1.html#cb14-1"></a>diary &lt;-<span class="st"> </span></span>
+<span id="cb14-2"><a href="data-processing-study-1.html#cb14-2"></a><span class="st">  </span>diary_raw <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-3"><a href="data-processing-study-1.html#cb14-3"></a><span class="st">  </span><span class="kw">select</span>(</span>
+<span id="cb14-4"><a href="data-processing-study-1.html#cb14-4"></a>    <span class="co"># meta data</span></span>
+<span id="cb14-5"><a href="data-processing-study-1.html#cb14-5"></a>    <span class="dt">start_date =</span> StartDate,</span>
+<span id="cb14-6"><a href="data-processing-study-1.html#cb14-6"></a>    <span class="dt">end_date =</span> EndDate,</span>
+<span id="cb14-7"><a href="data-processing-study-1.html#cb14-7"></a>    <span class="dt">progress =</span> Progress,</span>
+<span id="cb14-8"><a href="data-processing-study-1.html#cb14-8"></a>    <span class="dt">duration =</span> Duration__in_seconds_,</span>
+<span id="cb14-9"><a href="data-processing-study-1.html#cb14-9"></a>    <span class="dt">finished =</span> Finished,</span>
+<span id="cb14-10"><a href="data-processing-study-1.html#cb14-10"></a>    <span class="dt">recorded_date =</span> RecordedDate,</span>
+<span id="cb14-11"><a href="data-processing-study-1.html#cb14-11"></a>    <span class="dt">id =</span> study_id,</span>
+<span id="cb14-12"><a href="data-processing-study-1.html#cb14-12"></a>    <span class="dt">day =</span> Day,</span>
+<span id="cb14-13"><a href="data-processing-study-1.html#cb14-13"></a>    <span class="dt">date =</span> Q27,</span>
+<span id="cb14-14"><a href="data-processing-study-1.html#cb14-14"></a>    </span>
+<span id="cb14-15"><a href="data-processing-study-1.html#cb14-15"></a>    <span class="co"># social media subjective estimates</span></span>
+<span id="cb14-16"><a href="data-processing-study-1.html#cb14-16"></a>    <span class="dt">hours_subjective =</span> Q21_<span class="dv">1</span>,</span>
+<span id="cb14-17"><a href="data-processing-study-1.html#cb14-17"></a>    <span class="dt">minutes_subjective =</span> Q21_<span class="dv">2</span>,</span>
+<span id="cb14-18"><a href="data-processing-study-1.html#cb14-18"></a>    <span class="dt">pickups_subjective =</span> Q22_<span class="dv">1</span>,</span>
+<span id="cb14-19"><a href="data-processing-study-1.html#cb14-19"></a>    <span class="dt">notifications_subjective =</span> Q23_<span class="dv">1</span>,</span>
+<span id="cb14-20"><a href="data-processing-study-1.html#cb14-20"></a>    </span>
+<span id="cb14-21"><a href="data-processing-study-1.html#cb14-21"></a>    <span class="co"># arousal</span></span>
+<span id="cb14-22"><a href="data-processing-study-1.html#cb14-22"></a>    <span class="dt">low_positive_peaceful =</span> Q24_<span class="dv">1</span>,</span>
+<span id="cb14-23"><a href="data-processing-study-1.html#cb14-23"></a>    <span class="dt">low_positive_calm =</span> Q24_<span class="dv">2</span>,</span>
+<span id="cb14-24"><a href="data-processing-study-1.html#cb14-24"></a>    <span class="dt">low_positive_related =</span> Q24_<span class="dv">3</span>,</span>
+<span id="cb14-25"><a href="data-processing-study-1.html#cb14-25"></a>    <span class="dt">high_negative_anxious =</span> Q24_<span class="dv">4</span>,</span>
+<span id="cb14-26"><a href="data-processing-study-1.html#cb14-26"></a>    <span class="dt">high_negative_jittery =</span> Q24_<span class="dv">5</span>,</span>
+<span id="cb14-27"><a href="data-processing-study-1.html#cb14-27"></a>    <span class="dt">high_negative_tense =</span> Q24_<span class="dv">6</span>,</span>
+<span id="cb14-28"><a href="data-processing-study-1.html#cb14-28"></a>    <span class="dt">high_positive_happy =</span> Q24_<span class="dv">7</span>,</span>
+<span id="cb14-29"><a href="data-processing-study-1.html#cb14-29"></a>    <span class="dt">high_positive_energized =</span> Q24_<span class="dv">8</span>,</span>
+<span id="cb14-30"><a href="data-processing-study-1.html#cb14-30"></a>    <span class="dt">high_positive_excited =</span> Q24_<span class="dv">9</span>,</span>
+<span id="cb14-31"><a href="data-processing-study-1.html#cb14-31"></a>    <span class="dt">low_negative_sluggish =</span> Q24_<span class="dv">10</span>,</span>
+<span id="cb14-32"><a href="data-processing-study-1.html#cb14-32"></a>    <span class="dt">low_negative_sad =</span> Q24_<span class="dv">11</span>,</span>
+<span id="cb14-33"><a href="data-processing-study-1.html#cb14-33"></a>    <span class="dt">low_negative_gloomy =</span> Q24_<span class="dv">12</span>,</span>
+<span id="cb14-34"><a href="data-processing-study-1.html#cb14-34"></a>    </span>
+<span id="cb14-35"><a href="data-processing-study-1.html#cb14-35"></a>    <span class="co"># autonomy need satisfaction</span></span>
+<span id="cb14-36"><a href="data-processing-study-1.html#cb14-36"></a>    <span class="dt">autonomy_ =</span> Q25_<span class="dv">1</span><span class="op">:</span>Q25_<span class="dv">4</span>,</span>
+<span id="cb14-37"><a href="data-processing-study-1.html#cb14-37"></a>    </span>
+<span id="cb14-38"><a href="data-processing-study-1.html#cb14-38"></a>    <span class="co"># competence need satisfaction</span></span>
+<span id="cb14-39"><a href="data-processing-study-1.html#cb14-39"></a>    <span class="dt">competence_ =</span> Q25_<span class="dv">5</span><span class="op">:</span>Q25_<span class="dv">8</span>,</span>
+<span id="cb14-40"><a href="data-processing-study-1.html#cb14-40"></a>    </span>
+<span id="cb14-41"><a href="data-processing-study-1.html#cb14-41"></a>    <span class="co"># relatedness need satisfaction</span></span>
+<span id="cb14-42"><a href="data-processing-study-1.html#cb14-42"></a>    <span class="dt">relatedness_ =</span> Q25_<span class="dv">9</span><span class="op">:</span>Q25_<span class="dv">12</span>,</span>
+<span id="cb14-43"><a href="data-processing-study-1.html#cb14-43"></a>    </span>
+<span id="cb14-44"><a href="data-processing-study-1.html#cb14-44"></a>    <span class="co"># experiences</span></span>
+<span id="cb14-45"><a href="data-processing-study-1.html#cb14-45"></a>    <span class="dt">satisfied =</span> Q30_<span class="dv">1</span>,</span>
+<span id="cb14-46"><a href="data-processing-study-1.html#cb14-46"></a>    <span class="dt">boring =</span> Q30_<span class="dv">2</span>,</span>
+<span id="cb14-47"><a href="data-processing-study-1.html#cb14-47"></a>    <span class="dt">stessful =</span> Q30_<span class="dv">3</span>,</span>
+<span id="cb14-48"><a href="data-processing-study-1.html#cb14-48"></a>    <span class="dt">enjoyable =</span> Q30_<span class="dv">4</span></span>
+<span id="cb14-49"><a href="data-processing-study-1.html#cb14-49"></a>  )</span></code></pre></div>
+<p>Next, I make sure those variables have the correct variable type.
+I’ll also recode factor levels so that labels are readable.
+Note that <code>day</code> goes from <code>1</code> to <code>5</code>.
+All participants started on a Monday, which is why I turn <code>day</code> into a factor.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="data-processing-study-1.html#cb15-1"></a>diary &lt;-<span class="st"> </span></span>
+<span id="cb15-2"><a href="data-processing-study-1.html#cb15-2"></a><span class="st">  </span>diary <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-3"><a href="data-processing-study-1.html#cb15-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb15-4"><a href="data-processing-study-1.html#cb15-4"></a>    <span class="dt">id =</span> <span class="kw">paste0</span>(<span class="st">&quot;pp_&quot;</span>, id), <span class="co"># add pp for participant just so later I don&#39;t mistake the id variable for a count</span></span>
+<span id="cb15-5"><a href="data-processing-study-1.html#cb15-5"></a>    <span class="kw">across</span>( <span class="co"># turn those two into factors</span></span>
+<span id="cb15-6"><a href="data-processing-study-1.html#cb15-6"></a>      <span class="kw">c</span>(finished, id, day),</span>
+<span id="cb15-7"><a href="data-processing-study-1.html#cb15-7"></a>      as.factor</span>
+<span id="cb15-8"><a href="data-processing-study-1.html#cb15-8"></a>    ),</span>
+<span id="cb15-9"><a href="data-processing-study-1.html#cb15-9"></a>    <span class="dt">finished =</span> <span class="kw">fct_recode</span>(</span>
+<span id="cb15-10"><a href="data-processing-study-1.html#cb15-10"></a>      finished,</span>
+<span id="cb15-11"><a href="data-processing-study-1.html#cb15-11"></a>      <span class="st">&quot;yes&quot;</span> =<span class="st"> &quot;1&quot;</span>,</span>
+<span id="cb15-12"><a href="data-processing-study-1.html#cb15-12"></a>      <span class="st">&quot;no&quot;</span> =<span class="st"> &quot;0&quot;</span></span>
+<span id="cb15-13"><a href="data-processing-study-1.html#cb15-13"></a>    ),</span>
+<span id="cb15-14"><a href="data-processing-study-1.html#cb15-14"></a>    <span class="dt">day =</span> <span class="kw">fct_recode</span>(</span>
+<span id="cb15-15"><a href="data-processing-study-1.html#cb15-15"></a>      day,</span>
+<span id="cb15-16"><a href="data-processing-study-1.html#cb15-16"></a>      <span class="st">&quot;monday&quot;</span> =<span class="st"> &quot;1&quot;</span>,</span>
+<span id="cb15-17"><a href="data-processing-study-1.html#cb15-17"></a>      <span class="st">&quot;tuesday&quot;</span> =<span class="st"> &quot;2&quot;</span>,</span>
+<span id="cb15-18"><a href="data-processing-study-1.html#cb15-18"></a>      <span class="st">&quot;wednesday&quot;</span> =<span class="st"> &quot;3&quot;</span>,</span>
+<span id="cb15-19"><a href="data-processing-study-1.html#cb15-19"></a>      <span class="st">&quot;thursday&quot;</span> =<span class="st"> &quot;4&quot;</span>,</span>
+<span id="cb15-20"><a href="data-processing-study-1.html#cb15-20"></a>      <span class="st">&quot;friday&quot;</span> =<span class="st"> &quot;5&quot;</span></span>
+<span id="cb15-21"><a href="data-processing-study-1.html#cb15-21"></a>    )</span>
+<span id="cb15-22"><a href="data-processing-study-1.html#cb15-22"></a>  )</span></code></pre></div>
+<p>Then I remove all empty rows (i.e., rows without a start date).</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="data-processing-study-1.html#cb16-1"></a>diary &lt;-<span class="st"> </span></span>
+<span id="cb16-2"><a href="data-processing-study-1.html#cb16-2"></a><span class="st">  </span>diary <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb16-3"><a href="data-processing-study-1.html#cb16-3"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(start_date))</span></code></pre></div>
+<p>Afterwards, I inspect how many <code>NA</code>s there are per row in Table <a href="data-processing-study-1.html#tab:table-diary-na">2.3</a>.
+Most participants filled out everything, but a couple of them have basically empty rows (e.g., those with 30 or 40 missing values per row).</p>
+<table>
+<caption><span id="tab:table-diary-na">Table 2.3: </span>Count of number of missing values per row</caption>
+<thead>
+<tr class="header">
+<th align="right">na_count_row</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">1072</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">49</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">16</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">8</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">9</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">16</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">20</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">23</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">28</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">32</td>
+<td align="right">24</td>
+</tr>
+</tbody>
+</table>
+<p>I manually inspected those with more than 15 missing values and neither of them even finished any of the scales.
+Therefore, I’ll exclude them here.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="data-processing-study-1.html#cb17-1"></a><span class="co"># exclude those with &gt; 15 missing values</span></span>
+<span id="cb17-2"><a href="data-processing-study-1.html#cb17-2"></a>diary &lt;-<span class="st"> </span></span>
+<span id="cb17-3"><a href="data-processing-study-1.html#cb17-3"></a><span class="st">  </span>diary <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-4"><a href="data-processing-study-1.html#cb17-4"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb17-5"><a href="data-processing-study-1.html#cb17-5"></a>    <span class="dt">na_count_row =</span> <span class="kw">rowSums</span>(<span class="kw">is.na</span>(.))</span>
+<span id="cb17-6"><a href="data-processing-study-1.html#cb17-6"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-7"><a href="data-processing-study-1.html#cb17-7"></a><span class="st">  </span><span class="kw">filter</span>(na_count_row <span class="op">&lt;=</span><span class="st"> </span><span class="dv">15</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-8"><a href="data-processing-study-1.html#cb17-8"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">id =</span> <span class="kw">droplevels</span>(id))</span></code></pre></div>
+Alright, time to construct the means for the scales.
+But first, as always with numbers that participants have to fill in themselves, I’ll check for unrealistic entries and general data quality.
+I’ll visualize the text entries for hours and minutes on social media and notifications in Figure <a href="data-processing-study-1.html#fig:plot-subjective-diary">2.2</a>.
+<div class="figure"><span id="fig:plot-subjective-diary"></span>
+<img src="analysis_report_files/figure-html/plot-subjective-diary-1.png" alt="Distribution of self-reported social media indicators" width="672" />
+<p class="caption">
+Figure 2.2: Distribution of self-reported social media indicators
+</p>
+</div>
+<p>For notifications, it’s hard to argue that it’s unrealistic that participants thought they got several hundred of them.
+So I will leave those unchanged.
+However, there are several outliers in <code>hours_subjective</code> and <code>minutes_subjective</code>.
+I manually inspected those cases and it’s hard to tell whether participants just mixed up hours and minutes or whether their entry is indeed not meaningful.
+One participant filled in 50h and 500min.
+Another 40h.
+For those two, I’ll set their subjective values to <code>NA</code>.
+One participant filled in 5h and 86min.
+The minutes entry might have been a typo, but it’s hard to tell what the participant meant, so I’ll set that to <code>NA</code> as well.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="data-processing-study-1.html#cb18-1"></a>diary &lt;-<span class="st"> </span></span>
+<span id="cb18-2"><a href="data-processing-study-1.html#cb18-2"></a><span class="st">  </span>diary <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb18-3"><a href="data-processing-study-1.html#cb18-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb18-4"><a href="data-processing-study-1.html#cb18-4"></a>    <span class="dt">hours_subjective =</span> <span class="kw">case_when</span>(</span>
+<span id="cb18-5"><a href="data-processing-study-1.html#cb18-5"></a>      hours_subjective <span class="op">&gt;</span><span class="st"> </span><span class="dv">24</span> <span class="op">|</span><span class="st"> </span>minutes_subjective <span class="op">&gt;</span><span class="st"> </span><span class="dv">60</span>  <span class="op">~</span><span class="st"> </span><span class="ot">NA_real_</span>,</span>
+<span id="cb18-6"><a href="data-processing-study-1.html#cb18-6"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>hours_subjective</span>
+<span id="cb18-7"><a href="data-processing-study-1.html#cb18-7"></a>    ),</span>
+<span id="cb18-8"><a href="data-processing-study-1.html#cb18-8"></a>    <span class="dt">minutes_subjective =</span> <span class="kw">if_else</span>(</span>
+<span id="cb18-9"><a href="data-processing-study-1.html#cb18-9"></a>      minutes_subjective <span class="op">&gt;</span><span class="st"> </span><span class="dv">60</span>,</span>
+<span id="cb18-10"><a href="data-processing-study-1.html#cb18-10"></a>      <span class="ot">NA_real_</span>, </span>
+<span id="cb18-11"><a href="data-processing-study-1.html#cb18-11"></a>      minutes_subjective</span>
+<span id="cb18-12"><a href="data-processing-study-1.html#cb18-12"></a>    )</span>
+<span id="cb18-13"><a href="data-processing-study-1.html#cb18-13"></a>  )</span></code></pre></div>
+<p>Next, I check data quality further by seeing whether there are instances of “straightlining”.
+For that, I check the variance per daily survey on the well-being scale, need satisfaction, and experiences.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="data-processing-study-1.html#cb19-1"></a>diary &lt;-<span class="st"> </span></span>
+<span id="cb19-2"><a href="data-processing-study-1.html#cb19-2"></a><span class="st">  </span>diary <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb19-3"><a href="data-processing-study-1.html#cb19-3"></a><span class="st">    </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb19-4"><a href="data-processing-study-1.html#cb19-4"></a><span class="st">    </span><span class="kw">mutate</span>(</span>
+<span id="cb19-5"><a href="data-processing-study-1.html#cb19-5"></a>      <span class="dt">well_being_sd =</span> <span class="kw">sd</span>(</span>
+<span id="cb19-6"><a href="data-processing-study-1.html#cb19-6"></a>        <span class="kw">c_across</span>(low_positive_peaceful<span class="op">:</span>low_negative_gloomy),</span>
+<span id="cb19-7"><a href="data-processing-study-1.html#cb19-7"></a>        <span class="dt">na.rm =</span> <span class="ot">TRUE</span></span>
+<span id="cb19-8"><a href="data-processing-study-1.html#cb19-8"></a>      ),</span>
+<span id="cb19-9"><a href="data-processing-study-1.html#cb19-9"></a>      <span class="dt">needs_sd =</span> <span class="kw">sd</span>(</span>
+<span id="cb19-10"><a href="data-processing-study-1.html#cb19-10"></a>        <span class="kw">c_across</span>(autonomy_<span class="dv">1</span><span class="op">:</span>relatedness_<span class="dv">4</span>),</span>
+<span id="cb19-11"><a href="data-processing-study-1.html#cb19-11"></a>        <span class="dt">na.rm =</span> <span class="ot">TRUE</span></span>
+<span id="cb19-12"><a href="data-processing-study-1.html#cb19-12"></a>      ),</span>
+<span id="cb19-13"><a href="data-processing-study-1.html#cb19-13"></a>      <span class="dt">experiences_sd =</span> <span class="kw">sd</span>(</span>
+<span id="cb19-14"><a href="data-processing-study-1.html#cb19-14"></a>        <span class="kw">c_across</span>(satisfied<span class="op">:</span>enjoyable),</span>
+<span id="cb19-15"><a href="data-processing-study-1.html#cb19-15"></a>        <span class="dt">na.rm =</span> <span class="ot">TRUE</span></span>
+<span id="cb19-16"><a href="data-processing-study-1.html#cb19-16"></a>      )</span>
+<span id="cb19-17"><a href="data-processing-study-1.html#cb19-17"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb19-18"><a href="data-processing-study-1.html#cb19-18"></a><span class="st">  </span><span class="kw">unnest</span>(<span class="dt">cols =</span> <span class="kw">c</span>())</span></code></pre></div>
+If we visualize the instances where participants didn’t have any variation in their answers (aka straightlining) in Figure <a href="data-processing-study-1.html#fig:plot-variance-diary">2.3</a>, we see that it’s not uncommon.
+There are several daily surveys where participants straightlined.
+<div class="figure"><span id="fig:plot-variance-diary"></span>
+<img src="analysis_report_files/figure-html/plot-variance-diary-1.png" alt="Distribution of variances per survey on three scales" width="672" />
+<p class="caption">
+Figure 2.3: Distribution of variances per survey on three scales
+</p>
+</div>
+<p>In general, it’s not uncommon to select the same answer, especially for well-being measures.
+However, I’d be suspicious of those participants who straightlined for more than one scale (particularly the need satisfaction scale because it has quite a lot of items.)
+I’ll check how many surveys there are that have zero variance across those scales and how many participants there are who have at least one straightlining instance in more than 50% of their surveys.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="data-processing-study-1.html#cb20-1"></a>diary &lt;-<span class="st"> </span></span>
+<span id="cb20-2"><a href="data-processing-study-1.html#cb20-2"></a><span class="st">  </span>diary <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb20-3"><a href="data-processing-study-1.html#cb20-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb20-4"><a href="data-processing-study-1.html#cb20-4"></a>    <span class="dt">zero_variances =</span> <span class="kw">rowSums</span>(</span>
+<span id="cb20-5"><a href="data-processing-study-1.html#cb20-5"></a>      <span class="kw">select</span>(., <span class="kw">ends_with</span>(<span class="st">&quot;_sd&quot;</span>)) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, <span class="co"># count instances of zero variance across the three scales</span></span>
+<span id="cb20-6"><a href="data-processing-study-1.html#cb20-6"></a>      <span class="dt">na.rm =</span> <span class="ot">TRUE</span></span>
+<span id="cb20-7"><a href="data-processing-study-1.html#cb20-7"></a>    )</span>
+<span id="cb20-8"><a href="data-processing-study-1.html#cb20-8"></a>  )</span></code></pre></div>
+<p>Overall, Table <a href="data-processing-study-1.html#tab:table-straightliners-diary">2.4</a> shows that 94% of the sample didn’t staightline.</p>
+<table>
+<caption><span id="tab:table-straightliners-diary">Table 2.4: </span>Percentage of the number of zero variance per row</caption>
+<thead>
+<tr class="header">
+<th align="right">zero_variances</th>
+<th align="right">n</th>
+<th align="right">percent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">1077</td>
+<td align="right">0.9406114</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">27</td>
+<td align="right">0.0235808</td>
+</tr>
+<tr class="odd">
+<td align="right">2</td>
+<td align="right">21</td>
+<td align="right">0.0183406</td>
+</tr>
+<tr class="even">
+<td align="right">3</td>
+<td align="right">20</td>
+<td align="right">0.0174672</td>
+</tr>
+</tbody>
+</table>
+<p>But there are a couple of participants who seemed to rush through the survey, see Table <a href="data-processing-study-1.html#tab:table-percentage-straightliners-diary">2.5</a>.
+Manually inspecting them indeed shows that it’s hard to trust their data.</p>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<table>
+<caption><span id="tab:table-percentage-straightliners-diary">Table 2.5: </span>Percentage of participants with a number of zero-variance scales</caption>
+<thead>
+<tr class="header">
+<th align="left">id</th>
+<th align="right">total_surveys</th>
+<th align="right">total_straightline_surveys</th>
+<th align="right">percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">pp_172</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">0.75</td>
+</tr>
+<tr class="even">
+<td align="left">pp_121</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">0.60</td>
+</tr>
+<tr class="odd">
+<td align="left">pp_164</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">0.60</td>
+</tr>
+<tr class="even">
+<td align="left">pp_169</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">0.60</td>
+</tr>
+<tr class="odd">
+<td align="left">pp_103</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">0.50</td>
+</tr>
+<tr class="even">
+<td align="left">pp_168</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">0.50</td>
+</tr>
+<tr class="odd">
+<td align="left">pp_290</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">0.50</td>
+</tr>
+<tr class="even">
+<td align="left">pp_154</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">0.40</td>
+</tr>
+<tr class="odd">
+<td align="left">pp_198</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">0.40</td>
+</tr>
+<tr class="even">
+<td align="left">pp_35</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">0.40</td>
+</tr>
+</tbody>
+</table>
+<p>I will exclude those participants and then surveys with more than one instance of straightlining.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="data-processing-study-1.html#cb22-1"></a>diary &lt;-<span class="st"> </span></span>
+<span id="cb22-2"><a href="data-processing-study-1.html#cb22-2"></a><span class="st">  </span>diary <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb22-3"><a href="data-processing-study-1.html#cb22-3"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>id <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;pp_172&quot;</span>, <span class="st">&quot;pp_121&quot;</span>, <span class="st">&quot;pp_164&quot;</span>, <span class="st">&quot;pp_169&quot;</span>, <span class="st">&quot;pp_103&quot;</span>, <span class="st">&quot;pp_168&quot;</span>, <span class="st">&quot;pp_290&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb22-4"><a href="data-processing-study-1.html#cb22-4"></a><span class="st">  </span><span class="kw">filter</span>(zero_variances <span class="op">&lt;</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb22-5"><a href="data-processing-study-1.html#cb22-5"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb22-6"><a href="data-processing-study-1.html#cb22-6"></a>    <span class="dt">id =</span> <span class="kw">droplevels</span>(id)</span>
+<span id="cb22-7"><a href="data-processing-study-1.html#cb22-7"></a>  )</span></code></pre></div>
+<p>Now there’s very little straightlining left (see Table <a href="data-processing-study-1.html#tab:check-variances-again-diary">2.6</a> and compare to Table <a href="data-processing-study-1.html#tab:table-straightliners-diary">2.4</a>).</p>
+<table>
+<caption><span id="tab:check-variances-again-diary">Table 2.6: </span>Percentage of the number of zero variance per row</caption>
+<thead>
+<tr class="header">
+<th align="right">zero_variances</th>
+<th align="right">n</th>
+<th align="right">percent</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">1072</td>
+<td align="right">0.981685</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="right">20</td>
+<td align="right">0.018315</td>
+</tr>
+</tbody>
+</table>
+<p>Alright, now we can aggregate the individual items to scale scores.
+Some of those items are reverse-coded.
+Namely, the third and fourth item for the need satisfaction subscales are reverse coded, as are all negative arousal items (if we want to create a score that shows higher well-being).
+See codebook for details.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="data-processing-study-1.html#cb23-1"></a><span class="co"># reverse code need items and arousal</span></span>
+<span id="cb23-2"><a href="data-processing-study-1.html#cb23-2"></a>diary &lt;-<span class="st"> </span></span>
+<span id="cb23-3"><a href="data-processing-study-1.html#cb23-3"></a><span class="st">  </span>diary <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb23-4"><a href="data-processing-study-1.html#cb23-4"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb23-5"><a href="data-processing-study-1.html#cb23-5"></a>    <span class="kw">across</span>(</span>
+<span id="cb23-6"><a href="data-processing-study-1.html#cb23-6"></a>      <span class="kw">c</span>(<span class="kw">ends_with</span>(<span class="st">&quot;_3&quot;</span>), <span class="kw">ends_with</span>(<span class="st">&quot;_4&quot;</span>)),</span>
+<span id="cb23-7"><a href="data-processing-study-1.html#cb23-7"></a>      <span class="cf">function</span>(.) <span class="dv">8</span> <span class="op">-</span><span class="st"> </span>.</span>
+<span id="cb23-8"><a href="data-processing-study-1.html#cb23-8"></a>    ),</span>
+<span id="cb23-9"><a href="data-processing-study-1.html#cb23-9"></a>    <span class="kw">across</span>(</span>
+<span id="cb23-10"><a href="data-processing-study-1.html#cb23-10"></a>      <span class="kw">contains</span>(<span class="st">&quot;negative&quot;</span>),</span>
+<span id="cb23-11"><a href="data-processing-study-1.html#cb23-11"></a>      <span class="cf">function</span>(.) <span class="dv">6</span> <span class="op">-</span><span class="st"> </span>.</span>
+<span id="cb23-12"><a href="data-processing-study-1.html#cb23-12"></a>    )</span>
+<span id="cb23-13"><a href="data-processing-study-1.html#cb23-13"></a>  )</span></code></pre></div>
+<p>I create the scales by taking the mean of the respective items.
+I also create a <code>social_media_subjective</code> measure by combining hours and minutes of estimated social media time.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="data-processing-study-1.html#cb24-1"></a>diary &lt;-<span class="st"> </span></span>
+<span id="cb24-2"><a href="data-processing-study-1.html#cb24-2"></a><span class="st">  </span>diary <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb24-3"><a href="data-processing-study-1.html#cb24-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb24-4"><a href="data-processing-study-1.html#cb24-4"></a>    <span class="dt">social_media_subjective =</span> hours_subjective <span class="op">*</span><span class="st"> </span><span class="dv">60</span> <span class="op">+</span><span class="st"> </span>minutes_subjective,</span>
+<span id="cb24-5"><a href="data-processing-study-1.html#cb24-5"></a>    <span class="dt">well_being_state =</span> <span class="kw">rowMeans</span>(<span class="kw">select</span>(., low_positive_peaceful<span class="op">:</span>low_negative_gloomy), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb24-6"><a href="data-processing-study-1.html#cb24-6"></a>    <span class="dt">autonomy_state =</span> <span class="kw">rowMeans</span>(<span class="kw">select</span>(., <span class="kw">contains</span>(<span class="st">&quot;autonomy&quot;</span>)), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb24-7"><a href="data-processing-study-1.html#cb24-7"></a>    <span class="dt">competence_state =</span> <span class="kw">rowMeans</span>(<span class="kw">select</span>(., <span class="kw">contains</span>(<span class="st">&quot;competence&quot;</span>)), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb24-8"><a href="data-processing-study-1.html#cb24-8"></a>    <span class="dt">relatedness_state =</span> <span class="kw">rowMeans</span>(<span class="kw">select</span>(., <span class="kw">contains</span>(<span class="st">&quot;relatedness&quot;</span>)), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb24-9"><a href="data-processing-study-1.html#cb24-9"></a>  )</span></code></pre></div>
+<p>Further, participants’ first day of participation was always a Monday.
+Specifically, three days in April 2019: the 15th, 22nd, 29th.
+Let’s check whether all of them indeed have their first day on one of those days.</p>
+<p>Table <a href="data-processing-study-1.html#tab:check-first-day">2.7</a> shows all day one surveys which were not recorded on one of those three dates.
+Indeed, everyone opened their first survey on one of the three start days.
+Some participants opened/recorded their answers right after midnight, which is fine.</p>
+<table>
+<caption><span id="tab:check-first-day">Table 2.7: </span>Recorded dates that weren’t on a Monday</caption>
+<thead>
+<tr class="header">
+<th align="left">id</th>
+<th align="left">start_date</th>
+<th align="left">recorded_date</th>
+<th align="right">duration</th>
+<th align="left">day</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">pp_21</td>
+<td align="left">2019-04-30 00:35:48</td>
+<td align="left">2019-04-30 00:57:14</td>
+<td align="right">1284</td>
+<td align="left">monday</td>
+</tr>
+<tr class="even">
+<td align="left">pp_71</td>
+<td align="left">2019-04-22 16:01:29</td>
+<td align="left">2019-04-24 11:00:01</td>
+<td align="right">154711</td>
+<td align="left">monday</td>
+</tr>
+<tr class="odd">
+<td align="left">pp_110</td>
+<td align="left">2019-04-22 20:16:35</td>
+<td align="left">2019-04-23 00:30:27</td>
+<td align="right">15231</td>
+<td align="left">monday</td>
+</tr>
+<tr class="even">
+<td align="left">pp_120</td>
+<td align="left">2019-04-23 00:08:15</td>
+<td align="left">2019-04-23 00:20:35</td>
+<td align="right">739</td>
+<td align="left">monday</td>
+</tr>
+<tr class="odd">
+<td align="left">pp_192</td>
+<td align="left">2019-04-15 20:36:47</td>
+<td align="left">2019-04-16 00:27:47</td>
+<td align="right">13859</td>
+<td align="left">monday</td>
+</tr>
+<tr class="even">
+<td align="left">pp_201</td>
+<td align="left">2019-04-30 00:27:10</td>
+<td align="left">2019-04-30 00:52:59</td>
+<td align="right">1548</td>
+<td align="left">monday</td>
+</tr>
+<tr class="odd">
+<td align="left">pp_211</td>
+<td align="left">2019-04-22 17:24:37</td>
+<td align="left">2019-04-23 12:13:59</td>
+<td align="right">67761</td>
+<td align="left">monday</td>
+</tr>
+<tr class="even">
+<td align="left">pp_257</td>
+<td align="left">2019-04-30 00:52:05</td>
+<td align="left">2019-04-30 01:21:55</td>
+<td align="right">1789</td>
+<td align="left">monday</td>
+</tr>
+<tr class="odd">
+<td align="left">pp_265</td>
+<td align="left">2019-04-29 23:28:18</td>
+<td align="left">2019-04-30 01:34:43</td>
+<td align="right">7584</td>
+<td align="left">monday</td>
+</tr>
+</tbody>
+</table>
+<p>However, a handful of participants had their survey open for at least a day.
+In Table <a href="data-processing-study-1.html#tab:check-two-day-delay">2.8</a>, we inspect all instances where there’s more than one day delay between opening and responding to a survey.
+Only <code>pp_71</code> took two days to respond to a survey.</p>
+<table>
+<caption><span id="tab:check-two-day-delay">Table 2.8: </span>More than one day between begin and response to survey</caption>
+<thead>
+<tr class="header">
+<th align="left">id</th>
+<th align="left">start_date</th>
+<th align="left">recorded_date</th>
+<th align="right">duration</th>
+<th align="left">day</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">pp_71</td>
+<td align="left">2019-04-22 16:01:29</td>
+<td align="left">2019-04-24 11:00:01</td>
+<td align="right">154711</td>
+<td align="left">monday</td>
+</tr>
+</tbody>
+</table>
+<p>I guess it’s normal that participants open the survey late, forget it, and fill it out when they next day when they wake up.
+Because they’re students, waking up might be quite late, so I’ll check in Table <a href="data-processing-study-1.html#tab:next-day-late">2.9</a> how many of them responded to a survey later than 10am the next day.
+Two participants were really late (i.e., responded after noon).</p>
+<table>
+<caption><span id="tab:next-day-late">Table 2.9: </span>Those who filled in the survey the next day</caption>
+<thead>
+<tr class="header">
+<th align="left">id</th>
+<th align="left">start_date</th>
+<th align="left">recorded_date</th>
+<th align="right">duration</th>
+<th align="left">day</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">pp_53</td>
+<td align="left">2019-04-18 16:11:51</td>
+<td align="left">2019-04-19 10:08:16</td>
+<td align="right">64584</td>
+<td align="left">thursday</td>
+</tr>
+<tr class="even">
+<td align="left">pp_71</td>
+<td align="left">2019-04-22 16:01:29</td>
+<td align="left">2019-04-24 11:00:01</td>
+<td align="right">154711</td>
+<td align="left">monday</td>
+</tr>
+<tr class="odd">
+<td align="left">pp_98</td>
+<td align="left">2019-04-30 17:21:21</td>
+<td align="left">2019-05-01 12:03:12</td>
+<td align="right">67310</td>
+<td align="left">tuesday</td>
+</tr>
+<tr class="even">
+<td align="left">pp_161</td>
+<td align="left">2019-05-02 18:15:49</td>
+<td align="left">2019-05-03 10:05:25</td>
+<td align="right">56975</td>
+<td align="left">thursday</td>
+</tr>
+<tr class="odd">
+<td align="left">pp_162</td>
+<td align="left">2019-04-30 22:00:37</td>
+<td align="left">2019-05-01 10:52:15</td>
+<td align="right">46297</td>
+<td align="left">tuesday</td>
+</tr>
+<tr class="even">
+<td align="left">pp_211</td>
+<td align="left">2019-04-22 17:24:37</td>
+<td align="left">2019-04-23 12:13:59</td>
+<td align="right">67761</td>
+<td align="left">monday</td>
+</tr>
+<tr class="odd">
+<td align="left">pp_211</td>
+<td align="left">2019-04-23 23:40:53</td>
+<td align="left">2019-04-24 10:30:27</td>
+<td align="right">38972</td>
+<td align="left">tuesday</td>
+</tr>
+<tr class="even">
+<td align="left">pp_244</td>
+<td align="left">2019-04-19 18:45:44</td>
+<td align="left">2019-04-20 11:52:12</td>
+<td align="right">61587</td>
+<td align="left">friday</td>
+</tr>
+</tbody>
+</table>
+<p>I manually checked the data from all those participants who filled out surveys so late that two surveys were recorded on the same day.
+<code>pp_71</code> responded to the Monday survey on Wednesday, in addition to the “regular” Wednesday survey.
+For that reason, we can’t know whether <code>day</code> one refers to Monday or Tuesday.
+All other participants are fine: They sometimes recorded their response late, but their response pattern shows no indication that they couldn’t refer to a clear day in their response.</p>
+<p>Therefore, I remove the <code>day</code> one survey of <code>pp_71</code> because we can’t tell to which day it refers, but leave the rest as is.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="data-processing-study-1.html#cb25-1"></a>diary &lt;-<span class="st">  </span></span>
+<span id="cb25-2"><a href="data-processing-study-1.html#cb25-2"></a><span class="st">  </span>diary <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb25-3"><a href="data-processing-study-1.html#cb25-3"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span>(id <span class="op">==</span><span class="st"> &quot;pp_71&quot;</span> <span class="op">&amp;</span><span class="st"> </span>day <span class="op">==</span><span class="st"> &quot;monday&quot;</span>))</span></code></pre></div>
+</div>
+<div id="screen-time-data" class="section level2">
+<h2><span class="header-section-number">2.3</span> Screen time data</h2>
+<p>Load the screen time data.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="data-processing-study-1.html#cb26-1"></a>screen_time_raw &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;screen_time_raw.csv&quot;</span>))</span></code></pre></div>
+<p>Alright, the data are extremely wide because of the Qualtrics format.
+There are 220 variables in total.
+The data look like this:</p>
+<ul>
+<li>Total time over the past week of social media, plus total time per day (<code>Q2_1</code> to <code>Q10_2</code>)</li>
+<li>Typing in the top ten social networking media (<code>Q4_1</code> to <code>Q4_10</code>)</li>
+<li>Then participants filled in 13 items for each of those ten apps, first total time and notifications for the week for that app, then hours and minutes per day for that app (total 130 items, <code>Q3_1</code> to <code>Q76_2</code>)</li>
+<li>Then participants reported six items per each of the ten apps, the first of which was overall pickups in the past week, followed by pickups for each day of the week (<code>Q17_1_TEXT</code> to <code>Q17_10_5</code>)</li>
+</ul>
+<p>Before turning the data into long format, I need to give some sensible variables names.
+However, manually renaming all variables is a real pain.
+So I’ll create the names systematically and store them in a vector, then assign them to the variables.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="data-processing-study-1.html#cb27-1"></a><span class="co"># define days</span></span>
+<span id="cb27-2"><a href="data-processing-study-1.html#cb27-2"></a>days &lt;-</span>
+<span id="cb27-3"><a href="data-processing-study-1.html#cb27-3"></a><span class="st">  </span><span class="kw">c</span>(</span>
+<span id="cb27-4"><a href="data-processing-study-1.html#cb27-4"></a>    <span class="st">&quot;monday&quot;</span>,</span>
+<span id="cb27-5"><a href="data-processing-study-1.html#cb27-5"></a>    <span class="st">&quot;tuesday&quot;</span>,</span>
+<span id="cb27-6"><a href="data-processing-study-1.html#cb27-6"></a>    <span class="st">&quot;wednesday&quot;</span>,</span>
+<span id="cb27-7"><a href="data-processing-study-1.html#cb27-7"></a>    <span class="st">&quot;thursday&quot;</span>,</span>
+<span id="cb27-8"><a href="data-processing-study-1.html#cb27-8"></a>    <span class="st">&quot;friday&quot;</span></span>
+<span id="cb27-9"><a href="data-processing-study-1.html#cb27-9"></a>  )</span>
+<span id="cb27-10"><a href="data-processing-study-1.html#cb27-10"></a></span>
+<span id="cb27-11"><a href="data-processing-study-1.html#cb27-11"></a><span class="co"># the list of apps</span></span>
+<span id="cb27-12"><a href="data-processing-study-1.html#cb27-12"></a>apps &lt;-<span class="st"> </span></span>
+<span id="cb27-13"><a href="data-processing-study-1.html#cb27-13"></a><span class="st">  </span><span class="kw">paste0</span>(</span>
+<span id="cb27-14"><a href="data-processing-study-1.html#cb27-14"></a>    <span class="kw">rep</span>(<span class="st">&quot;app_&quot;</span>, <span class="dv">10</span>),</span>
+<span id="cb27-15"><a href="data-processing-study-1.html#cb27-15"></a>    <span class="dv">1</span><span class="op">:</span><span class="dv">10</span></span>
+<span id="cb27-16"><a href="data-processing-study-1.html#cb27-16"></a>  )</span>
+<span id="cb27-17"><a href="data-processing-study-1.html#cb27-17"></a></span>
+<span id="cb27-18"><a href="data-processing-study-1.html#cb27-18"></a><span class="co"># add hours and minutes to apps</span></span>
+<span id="cb27-19"><a href="data-processing-study-1.html#cb27-19"></a>apps_times &lt;-<span class="st"> </span></span>
+<span id="cb27-20"><a href="data-processing-study-1.html#cb27-20"></a><span class="st">  </span><span class="kw">paste0</span>(</span>
+<span id="cb27-21"><a href="data-processing-study-1.html#cb27-21"></a>    <span class="kw">rep</span>(apps, <span class="dt">each =</span> <span class="dv">6</span><span class="op">*</span><span class="dv">2</span>),</span>
+<span id="cb27-22"><a href="data-processing-study-1.html#cb27-22"></a>    <span class="st">&quot;_&quot;</span>,</span>
+<span id="cb27-23"><a href="data-processing-study-1.html#cb27-23"></a>    <span class="kw">c</span>(<span class="st">&quot;hours&quot;</span>, <span class="st">&quot;minutes&quot;</span>)</span>
+<span id="cb27-24"><a href="data-processing-study-1.html#cb27-24"></a>  )</span>
+<span id="cb27-25"><a href="data-processing-study-1.html#cb27-25"></a></span>
+<span id="cb27-26"><a href="data-processing-study-1.html#cb27-26"></a><span class="co"># the overall time per week and day</span></span>
+<span id="cb27-27"><a href="data-processing-study-1.html#cb27-27"></a>names1 &lt;-<span class="st"> </span></span>
+<span id="cb27-28"><a href="data-processing-study-1.html#cb27-28"></a><span class="st">  </span><span class="kw">paste0</span>(</span>
+<span id="cb27-29"><a href="data-processing-study-1.html#cb27-29"></a>    <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;hours_total_&quot;</span>, <span class="st">&quot;minutes_total_&quot;</span>),<span class="dv">6</span>),</span>
+<span id="cb27-30"><a href="data-processing-study-1.html#cb27-30"></a>    <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;week&quot;</span>, days), <span class="dt">each =</span> <span class="dv">2</span>)</span>
+<span id="cb27-31"><a href="data-processing-study-1.html#cb27-31"></a>  )</span>
+<span id="cb27-32"><a href="data-processing-study-1.html#cb27-32"></a></span>
+<span id="cb27-33"><a href="data-processing-study-1.html#cb27-33"></a><span class="co"># now app, minutes, hours, per day</span></span>
+<span id="cb27-34"><a href="data-processing-study-1.html#cb27-34"></a>names2 &lt;-<span class="st"> </span></span>
+<span id="cb27-35"><a href="data-processing-study-1.html#cb27-35"></a><span class="st">  </span><span class="kw">paste0</span>(</span>
+<span id="cb27-36"><a href="data-processing-study-1.html#cb27-36"></a>    apps_times,</span>
+<span id="cb27-37"><a href="data-processing-study-1.html#cb27-37"></a>    <span class="st">&quot;_&quot;</span>,</span>
+<span id="cb27-38"><a href="data-processing-study-1.html#cb27-38"></a>    <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;week&quot;</span>, days), <span class="dt">each =</span> <span class="dv">2</span>)</span>
+<span id="cb27-39"><a href="data-processing-study-1.html#cb27-39"></a>  )</span>
+<span id="cb27-40"><a href="data-processing-study-1.html#cb27-40"></a></span>
+<span id="cb27-41"><a href="data-processing-study-1.html#cb27-41"></a><span class="co"># notifications per day</span></span>
+<span id="cb27-42"><a href="data-processing-study-1.html#cb27-42"></a>names3 &lt;-<span class="st"> </span></span>
+<span id="cb27-43"><a href="data-processing-study-1.html#cb27-43"></a><span class="st">  </span><span class="kw">paste0</span>(</span>
+<span id="cb27-44"><a href="data-processing-study-1.html#cb27-44"></a>    apps,</span>
+<span id="cb27-45"><a href="data-processing-study-1.html#cb27-45"></a>    <span class="st">&quot;_&quot;</span>,</span>
+<span id="cb27-46"><a href="data-processing-study-1.html#cb27-46"></a>    <span class="st">&quot;notifications&quot;</span>,</span>
+<span id="cb27-47"><a href="data-processing-study-1.html#cb27-47"></a>    <span class="st">&quot;_week&quot;</span></span>
+<span id="cb27-48"><a href="data-processing-study-1.html#cb27-48"></a>  )</span>
+<span id="cb27-49"><a href="data-processing-study-1.html#cb27-49"></a></span>
+<span id="cb27-50"><a href="data-processing-study-1.html#cb27-50"></a><span class="co"># pickups per week and day</span></span>
+<span id="cb27-51"><a href="data-processing-study-1.html#cb27-51"></a>names4 &lt;-<span class="st"> </span></span>
+<span id="cb27-52"><a href="data-processing-study-1.html#cb27-52"></a><span class="st">  </span><span class="kw">paste0</span>(</span>
+<span id="cb27-53"><a href="data-processing-study-1.html#cb27-53"></a>    <span class="kw">rep</span>(apps, <span class="dt">each =</span> <span class="dv">6</span>),</span>
+<span id="cb27-54"><a href="data-processing-study-1.html#cb27-54"></a>    <span class="st">&quot;_pickups_&quot;</span>,</span>
+<span id="cb27-55"><a href="data-processing-study-1.html#cb27-55"></a>    <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;week&quot;</span>, days), <span class="dv">6</span>)</span>
+<span id="cb27-56"><a href="data-processing-study-1.html#cb27-56"></a>  )</span></code></pre></div>
+<p>Then I apply those names.
+Once more, I use a new object and don’t overwrite the raw data.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="data-processing-study-1.html#cb28-1"></a><span class="co"># let&#39;s rename</span></span>
+<span id="cb28-2"><a href="data-processing-study-1.html#cb28-2"></a>screen_time &lt;-<span class="st"> </span></span>
+<span id="cb28-3"><a href="data-processing-study-1.html#cb28-3"></a><span class="st">  </span>screen_time_raw <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb28-4"><a href="data-processing-study-1.html#cb28-4"></a><span class="st">  </span></span>
+<span id="cb28-5"><a href="data-processing-study-1.html#cb28-5"></a><span class="st">  </span><span class="co"># meta-data</span></span>
+<span id="cb28-6"><a href="data-processing-study-1.html#cb28-6"></a><span class="st">  </span><span class="kw">rename</span>(</span>
+<span id="cb28-7"><a href="data-processing-study-1.html#cb28-7"></a>    <span class="dt">start_date =</span> StartDate,</span>
+<span id="cb28-8"><a href="data-processing-study-1.html#cb28-8"></a>    <span class="dt">end_date =</span> EndDate,</span>
+<span id="cb28-9"><a href="data-processing-study-1.html#cb28-9"></a>    <span class="dt">progress =</span> Progress,</span>
+<span id="cb28-10"><a href="data-processing-study-1.html#cb28-10"></a>    <span class="dt">duration =</span> Duration__in_seconds_,</span>
+<span id="cb28-11"><a href="data-processing-study-1.html#cb28-11"></a>    <span class="dt">finished =</span> Finished,</span>
+<span id="cb28-12"><a href="data-processing-study-1.html#cb28-12"></a>    <span class="dt">recorded_date =</span> RecordedDate,</span>
+<span id="cb28-13"><a href="data-processing-study-1.html#cb28-13"></a>    <span class="dt">id =</span> study_id</span>
+<span id="cb28-14"><a href="data-processing-study-1.html#cb28-14"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb28-15"><a href="data-processing-study-1.html#cb28-15"></a><span class="st">  </span></span>
+<span id="cb28-16"><a href="data-processing-study-1.html#cb28-16"></a><span class="st">  </span><span class="co"># the overall time per week and day</span></span>
+<span id="cb28-17"><a href="data-processing-study-1.html#cb28-17"></a><span class="st">  </span><span class="kw">rename_with</span>(</span>
+<span id="cb28-18"><a href="data-processing-study-1.html#cb28-18"></a>    <span class="op">~</span><span class="st"> </span>names1,</span>
+<span id="cb28-19"><a href="data-processing-study-1.html#cb28-19"></a>    Q2_<span class="dv">1</span><span class="op">:</span>Q10_<span class="dv">2</span></span>
+<span id="cb28-20"><a href="data-processing-study-1.html#cb28-20"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb28-21"><a href="data-processing-study-1.html#cb28-21"></a><span class="st">  </span></span>
+<span id="cb28-22"><a href="data-processing-study-1.html#cb28-22"></a><span class="st">  </span><span class="co"># the top ten apps</span></span>
+<span id="cb28-23"><a href="data-processing-study-1.html#cb28-23"></a><span class="st">  </span><span class="kw">rename</span>(</span>
+<span id="cb28-24"><a href="data-processing-study-1.html#cb28-24"></a>    <span class="dt">app_ =</span> Q4_<span class="dv">1</span><span class="op">:</span>Q4_<span class="dv">10</span></span>
+<span id="cb28-25"><a href="data-processing-study-1.html#cb28-25"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb28-26"><a href="data-processing-study-1.html#cb28-26"></a><span class="st">  </span></span>
+<span id="cb28-27"><a href="data-processing-study-1.html#cb28-27"></a><span class="st">  </span><span class="co"># now rename all app minutes and hours per day</span></span>
+<span id="cb28-28"><a href="data-processing-study-1.html#cb28-28"></a><span class="st">  </span><span class="kw">rename_with</span>(</span>
+<span id="cb28-29"><a href="data-processing-study-1.html#cb28-29"></a>    <span class="op">~</span><span class="st"> </span>names2,</span>
+<span id="cb28-30"><a href="data-processing-study-1.html#cb28-30"></a>    <span class="kw">c</span>( <span class="co"># except the notifications because they don&#39;t fit the pattern</span></span>
+<span id="cb28-31"><a href="data-processing-study-1.html#cb28-31"></a>      Q3_<span class="dv">1</span><span class="op">:</span>Q76_<span class="dv">2</span>,</span>
+<span id="cb28-32"><a href="data-processing-study-1.html#cb28-32"></a>      <span class="op">-</span>Q11_<span class="dv">1</span>,</span>
+<span id="cb28-33"><a href="data-processing-study-1.html#cb28-33"></a>      <span class="op">-</span>Q22_<span class="dv">1</span>,</span>
+<span id="cb28-34"><a href="data-processing-study-1.html#cb28-34"></a>      <span class="op">-</span>Q78_<span class="dv">1</span>,</span>
+<span id="cb28-35"><a href="data-processing-study-1.html#cb28-35"></a>      <span class="op">-</span>Q29_<span class="dv">1</span>,</span>
+<span id="cb28-36"><a href="data-processing-study-1.html#cb28-36"></a>      <span class="op">-</span>Q43_<span class="dv">1</span>,</span>
+<span id="cb28-37"><a href="data-processing-study-1.html#cb28-37"></a>      <span class="op">-</span>Q36_<span class="dv">1</span>,</span>
+<span id="cb28-38"><a href="data-processing-study-1.html#cb28-38"></a>      <span class="op">-</span>Q50_<span class="dv">1</span>,</span>
+<span id="cb28-39"><a href="data-processing-study-1.html#cb28-39"></a>      <span class="op">-</span>Q57_<span class="dv">1</span>,</span>
+<span id="cb28-40"><a href="data-processing-study-1.html#cb28-40"></a>      <span class="op">-</span>Q64_<span class="dv">1</span>,</span>
+<span id="cb28-41"><a href="data-processing-study-1.html#cb28-41"></a>      <span class="op">-</span>Q71_<span class="dv">1</span></span>
+<span id="cb28-42"><a href="data-processing-study-1.html#cb28-42"></a>    )</span>
+<span id="cb28-43"><a href="data-processing-study-1.html#cb28-43"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb28-44"><a href="data-processing-study-1.html#cb28-44"></a><span class="st">  </span></span>
+<span id="cb28-45"><a href="data-processing-study-1.html#cb28-45"></a><span class="st">  </span><span class="co"># the past week notifications per app</span></span>
+<span id="cb28-46"><a href="data-processing-study-1.html#cb28-46"></a><span class="st">  </span><span class="kw">rename_with</span>(</span>
+<span id="cb28-47"><a href="data-processing-study-1.html#cb28-47"></a>    <span class="op">~</span><span class="st"> </span>names3,</span>
+<span id="cb28-48"><a href="data-processing-study-1.html#cb28-48"></a>    <span class="kw">c</span>(</span>
+<span id="cb28-49"><a href="data-processing-study-1.html#cb28-49"></a>      Q11_<span class="dv">1</span>,</span>
+<span id="cb28-50"><a href="data-processing-study-1.html#cb28-50"></a>      Q22_<span class="dv">1</span>,</span>
+<span id="cb28-51"><a href="data-processing-study-1.html#cb28-51"></a>      Q78_<span class="dv">1</span>,</span>
+<span id="cb28-52"><a href="data-processing-study-1.html#cb28-52"></a>      Q29_<span class="dv">1</span>,</span>
+<span id="cb28-53"><a href="data-processing-study-1.html#cb28-53"></a>      Q43_<span class="dv">1</span>,</span>
+<span id="cb28-54"><a href="data-processing-study-1.html#cb28-54"></a>      Q36_<span class="dv">1</span>,</span>
+<span id="cb28-55"><a href="data-processing-study-1.html#cb28-55"></a>      Q50_<span class="dv">1</span>,</span>
+<span id="cb28-56"><a href="data-processing-study-1.html#cb28-56"></a>      Q57_<span class="dv">1</span>,</span>
+<span id="cb28-57"><a href="data-processing-study-1.html#cb28-57"></a>      Q64_<span class="dv">1</span>,</span>
+<span id="cb28-58"><a href="data-processing-study-1.html#cb28-58"></a>      Q71_<span class="dv">1</span></span>
+<span id="cb28-59"><a href="data-processing-study-1.html#cb28-59"></a>    )</span>
+<span id="cb28-60"><a href="data-processing-study-1.html#cb28-60"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb28-61"><a href="data-processing-study-1.html#cb28-61"></a><span class="st">  </span></span>
+<span id="cb28-62"><a href="data-processing-study-1.html#cb28-62"></a><span class="st">  </span><span class="co"># rename pickup variables</span></span>
+<span id="cb28-63"><a href="data-processing-study-1.html#cb28-63"></a><span class="st">  </span><span class="kw">rename_with</span>(</span>
+<span id="cb28-64"><a href="data-processing-study-1.html#cb28-64"></a>    <span class="op">~</span><span class="st"> </span>names4,</span>
+<span id="cb28-65"><a href="data-processing-study-1.html#cb28-65"></a>    Q17_<span class="dv">1</span>_TEXT<span class="op">:</span>Q17_<span class="dv">10</span>_<span class="dv">5</span></span>
+<span id="cb28-66"><a href="data-processing-study-1.html#cb28-66"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb28-67"><a href="data-processing-study-1.html#cb28-67"></a><span class="st">  </span></span>
+<span id="cb28-68"><a href="data-processing-study-1.html#cb28-68"></a><span class="st">  </span><span class="co"># only keep variables of interest</span></span>
+<span id="cb28-69"><a href="data-processing-study-1.html#cb28-69"></a><span class="st">  </span><span class="kw">select</span>(</span>
+<span id="cb28-70"><a href="data-processing-study-1.html#cb28-70"></a>    <span class="op">-</span>Status</span>
+<span id="cb28-71"><a href="data-processing-study-1.html#cb28-71"></a>  )</span>
+<span id="cb28-72"><a href="data-processing-study-1.html#cb28-72"></a></span>
+<span id="cb28-73"><a href="data-processing-study-1.html#cb28-73"></a><span class="co"># remove name objects (they were only temp files)</span></span>
+<span id="cb28-74"><a href="data-processing-study-1.html#cb28-74"></a><span class="kw">rm</span>(apps, apps_times, days, names1, names2, names3, names4)</span></code></pre></div>
+<p>Before I assign variables types and factor levels, I saw that, for some reason, the past week’s number of pickups for each app have text entries, not numerical (i.e., <code>"twenty one"</code> instead of <code>21</code>).
+I know that the <code>english</code> package can translate numbers to words, but not the other way around.
+Thank god, someone has written a function for this, see full details <a href="https://stackoverflow.com/questions/18332463/convert-written-number-to-number-in-r">here</a>.
+The function is in the <a href="setting-up-study1.html#setting-up-study1">Setting up</a> chapter.
+Note that this <code>word2num</code> function doesn’t work well with the word “and”.
+For example, <code>"three hundred and eleven"</code> turns into <code>611</code>, but <code>"three hundred eleven"</code> turns into the correct <code>311</code>.
+Therefore, I first remove all “and”s from those variables, then apply the function.
+Similarly, I’ll replace all “a” with “one” (e.g., “a hundred” to “one hundred”).
+One participant also replied with a string (that they access facebook via their browser), so I’ll set that to <code>NA</code>.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="data-processing-study-1.html#cb29-1"></a>screen_time &lt;-<span class="st"> </span></span>
+<span id="cb29-2"><a href="data-processing-study-1.html#cb29-2"></a><span class="st">  </span>screen_time <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb29-3"><a href="data-processing-study-1.html#cb29-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb29-4"><a href="data-processing-study-1.html#cb29-4"></a>    <span class="kw">across</span>(</span>
+<span id="cb29-5"><a href="data-processing-study-1.html#cb29-5"></a>      <span class="kw">ends_with</span>(<span class="st">&quot;pickups_week&quot;</span>),</span>
+<span id="cb29-6"><a href="data-processing-study-1.html#cb29-6"></a>      <span class="op">~</span><span class="st"> </span><span class="kw">case_when</span>(</span>
+<span id="cb29-7"><a href="data-processing-study-1.html#cb29-7"></a>        .x <span class="op">==</span><span class="st"> &quot;NA because accessed Facebook through Safari&quot;</span> <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span>,</span>
+<span id="cb29-8"><a href="data-processing-study-1.html#cb29-8"></a>        .x <span class="op">==</span><span class="st"> &quot;NA because accessed Twitter through Safari&quot;</span> <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span>,</span>
+<span id="cb29-9"><a href="data-processing-study-1.html#cb29-9"></a>        <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>.x</span>
+<span id="cb29-10"><a href="data-processing-study-1.html#cb29-10"></a>      )</span>
+<span id="cb29-11"><a href="data-processing-study-1.html#cb29-11"></a>    ),</span>
+<span id="cb29-12"><a href="data-processing-study-1.html#cb29-12"></a>    <span class="kw">across</span>(</span>
+<span id="cb29-13"><a href="data-processing-study-1.html#cb29-13"></a>      <span class="kw">ends_with</span>(<span class="st">&quot;pickups_week&quot;</span>),</span>
+<span id="cb29-14"><a href="data-processing-study-1.html#cb29-14"></a>      <span class="op">~</span><span class="st"> </span><span class="kw">str_remove</span>(.x, <span class="st">&quot;and&quot;</span>)</span>
+<span id="cb29-15"><a href="data-processing-study-1.html#cb29-15"></a>    ),</span>
+<span id="cb29-16"><a href="data-processing-study-1.html#cb29-16"></a>    <span class="kw">across</span>(</span>
+<span id="cb29-17"><a href="data-processing-study-1.html#cb29-17"></a>      <span class="kw">ends_with</span>(<span class="st">&quot;pickups_week&quot;</span>),</span>
+<span id="cb29-18"><a href="data-processing-study-1.html#cb29-18"></a>      <span class="op">~</span><span class="st"> </span><span class="kw">str_replace</span>(.x, <span class="st">&quot;A &quot;</span>, <span class="st">&quot;one &quot;</span>)</span>
+<span id="cb29-19"><a href="data-processing-study-1.html#cb29-19"></a>    )</span>
+<span id="cb29-20"><a href="data-processing-study-1.html#cb29-20"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb29-21"><a href="data-processing-study-1.html#cb29-21"></a><span class="st">  </span><span class="kw">rowwise</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb29-22"><a href="data-processing-study-1.html#cb29-22"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb29-23"><a href="data-processing-study-1.html#cb29-23"></a>    <span class="kw">across</span>(</span>
+<span id="cb29-24"><a href="data-processing-study-1.html#cb29-24"></a>      <span class="kw">ends_with</span>(<span class="st">&quot;pickups_week&quot;</span>),</span>
+<span id="cb29-25"><a href="data-processing-study-1.html#cb29-25"></a>      word2num</span>
+<span id="cb29-26"><a href="data-processing-study-1.html#cb29-26"></a>    ),</span>
+<span id="cb29-27"><a href="data-processing-study-1.html#cb29-27"></a>    <span class="kw">across</span>(</span>
+<span id="cb29-28"><a href="data-processing-study-1.html#cb29-28"></a>      <span class="kw">ends_with</span>(<span class="st">&quot;pickups_week&quot;</span>),</span>
+<span id="cb29-29"><a href="data-processing-study-1.html#cb29-29"></a>      unlist</span>
+<span id="cb29-30"><a href="data-processing-study-1.html#cb29-30"></a>    )</span>
+<span id="cb29-31"><a href="data-processing-study-1.html#cb29-31"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb29-32"><a href="data-processing-study-1.html#cb29-32"></a><span class="st">  </span><span class="kw">unnest</span>(<span class="dt">cols =</span> <span class="kw">c</span>())</span></code></pre></div>
+<p>Next, I assign correct variable types and factor levels.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="data-processing-study-1.html#cb30-1"></a>screen_time &lt;-<span class="st"> </span></span>
+<span id="cb30-2"><a href="data-processing-study-1.html#cb30-2"></a><span class="st">  </span>screen_time <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb30-3"><a href="data-processing-study-1.html#cb30-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb30-4"><a href="data-processing-study-1.html#cb30-4"></a>    <span class="dt">id =</span> <span class="kw">paste0</span>(<span class="st">&quot;pp_&quot;</span>, id),</span>
+<span id="cb30-5"><a href="data-processing-study-1.html#cb30-5"></a>    <span class="kw">across</span>( <span class="co"># turn those two into factors</span></span>
+<span id="cb30-6"><a href="data-processing-study-1.html#cb30-6"></a>      <span class="kw">c</span>(finished, id),</span>
+<span id="cb30-7"><a href="data-processing-study-1.html#cb30-7"></a>      as.factor</span>
+<span id="cb30-8"><a href="data-processing-study-1.html#cb30-8"></a>    ),</span>
+<span id="cb30-9"><a href="data-processing-study-1.html#cb30-9"></a>    <span class="dt">finished =</span> <span class="kw">fct_recode</span>(</span>
+<span id="cb30-10"><a href="data-processing-study-1.html#cb30-10"></a>      finished,</span>
+<span id="cb30-11"><a href="data-processing-study-1.html#cb30-11"></a>      <span class="st">&quot;yes&quot;</span> =<span class="st"> &quot;1&quot;</span>,</span>
+<span id="cb30-12"><a href="data-processing-study-1.html#cb30-12"></a>      <span class="st">&quot;no&quot;</span> =<span class="st"> &quot;0&quot;</span></span>
+<span id="cb30-13"><a href="data-processing-study-1.html#cb30-13"></a>    )</span>
+<span id="cb30-14"><a href="data-processing-study-1.html#cb30-14"></a>  )</span></code></pre></div>
+<p>Then I exclude empty rows.
+The data set has all participant numbers even when they didn’t participate, so I’ll exclude those without a start date as well as those who didn’t fill in <code>app_1</code>, which means they have empty rows other than the meta-data.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="data-processing-study-1.html#cb31-1"></a>screen_time &lt;-<span class="st"> </span></span>
+<span id="cb31-2"><a href="data-processing-study-1.html#cb31-2"></a><span class="st">  </span>screen_time <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb31-3"><a href="data-processing-study-1.html#cb31-3"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(start_date)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb31-4"><a href="data-processing-study-1.html#cb31-4"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(app_<span class="dv">1</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb31-5"><a href="data-processing-study-1.html#cb31-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">id =</span> <span class="kw">droplevels</span>(id))</span></code></pre></div>
+<p>At this point, the data set has measures on two levels: per app and time frame (day, full week), and the total times across all apps per day.
+I think it’s easiest to separate the data.
+The per app data are only informative for plotting and descriptives, but the actual data we’re interested in are the total times summed across all apps.
+So I’ll first get the per data app.
+Note that I add the names of the apps in a separate step and then calculate the objective social media time.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="data-processing-study-1.html#cb32-1"></a><span class="co"># turn app data long</span></span>
+<span id="cb32-2"><a href="data-processing-study-1.html#cb32-2"></a>apps_long &lt;-<span class="st"> </span></span>
+<span id="cb32-3"><a href="data-processing-study-1.html#cb32-3"></a><span class="st">  </span>screen_time <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-4"><a href="data-processing-study-1.html#cb32-4"></a><span class="st">  </span><span class="kw">select</span>(</span>
+<span id="cb32-5"><a href="data-processing-study-1.html#cb32-5"></a>    start_date<span class="op">:</span>id,</span>
+<span id="cb32-6"><a href="data-processing-study-1.html#cb32-6"></a>    app_<span class="dv">1</span>_hours_week<span class="op">:</span>app_<span class="dv">10</span>_pickups_friday</span>
+<span id="cb32-7"><a href="data-processing-study-1.html#cb32-7"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-8"><a href="data-processing-study-1.html#cb32-8"></a><span class="st">  </span><span class="kw">pivot_longer</span>(</span>
+<span id="cb32-9"><a href="data-processing-study-1.html#cb32-9"></a>    <span class="dt">cols =</span> <span class="kw">c</span>(app_<span class="dv">1</span>_hours_week<span class="op">:</span>app_<span class="dv">10</span>_pickups_friday),</span>
+<span id="cb32-10"><a href="data-processing-study-1.html#cb32-10"></a>    <span class="dt">names_to =</span> <span class="kw">c</span>(</span>
+<span id="cb32-11"><a href="data-processing-study-1.html#cb32-11"></a>      <span class="st">&quot;app&quot;</span>,</span>
+<span id="cb32-12"><a href="data-processing-study-1.html#cb32-12"></a>      <span class="st">&quot;rank&quot;</span>,</span>
+<span id="cb32-13"><a href="data-processing-study-1.html#cb32-13"></a>      <span class="st">&quot;measure&quot;</span>,</span>
+<span id="cb32-14"><a href="data-processing-study-1.html#cb32-14"></a>      <span class="st">&quot;time_frame&quot;</span></span>
+<span id="cb32-15"><a href="data-processing-study-1.html#cb32-15"></a>    ),</span>
+<span id="cb32-16"><a href="data-processing-study-1.html#cb32-16"></a>    <span class="dt">names_sep =</span> <span class="st">&quot;_&quot;</span></span>
+<span id="cb32-17"><a href="data-processing-study-1.html#cb32-17"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-18"><a href="data-processing-study-1.html#cb32-18"></a><span class="st">  </span><span class="kw">pivot_wider</span>( <span class="co"># then spread the measure variable which now contains hours, minutes, notifications, pickups</span></span>
+<span id="cb32-19"><a href="data-processing-study-1.html#cb32-19"></a>    <span class="dt">names_from =</span> <span class="st">&quot;measure&quot;</span>,</span>
+<span id="cb32-20"><a href="data-processing-study-1.html#cb32-20"></a>    <span class="dt">values_from =</span> <span class="st">&quot;value&quot;</span></span>
+<span id="cb32-21"><a href="data-processing-study-1.html#cb32-21"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-22"><a href="data-processing-study-1.html#cb32-22"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>app) <span class="co"># redundant</span></span>
+<span id="cb32-23"><a href="data-processing-study-1.html#cb32-23"></a></span>
+<span id="cb32-24"><a href="data-processing-study-1.html#cb32-24"></a><span class="co"># get the names of the apps</span></span>
+<span id="cb32-25"><a href="data-processing-study-1.html#cb32-25"></a>app_names &lt;-<span class="st"> </span></span>
+<span id="cb32-26"><a href="data-processing-study-1.html#cb32-26"></a><span class="st">  </span>screen_time <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-27"><a href="data-processing-study-1.html#cb32-27"></a><span class="st">  </span><span class="kw">select</span>(</span>
+<span id="cb32-28"><a href="data-processing-study-1.html#cb32-28"></a>    id,</span>
+<span id="cb32-29"><a href="data-processing-study-1.html#cb32-29"></a>    app_<span class="dv">1</span><span class="op">:</span>app_<span class="dv">10</span></span>
+<span id="cb32-30"><a href="data-processing-study-1.html#cb32-30"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-31"><a href="data-processing-study-1.html#cb32-31"></a><span class="st">  </span><span class="kw">pivot_longer</span>(</span>
+<span id="cb32-32"><a href="data-processing-study-1.html#cb32-32"></a>    <span class="op">-</span>id,</span>
+<span id="cb32-33"><a href="data-processing-study-1.html#cb32-33"></a>    <span class="dt">names_to =</span> <span class="kw">c</span>(<span class="st">&quot;app&quot;</span>, <span class="st">&quot;rank&quot;</span>),</span>
+<span id="cb32-34"><a href="data-processing-study-1.html#cb32-34"></a>    <span class="dt">names_sep =</span> <span class="st">&quot;_&quot;</span></span>
+<span id="cb32-35"><a href="data-processing-study-1.html#cb32-35"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-36"><a href="data-processing-study-1.html#cb32-36"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>app) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># redundant</span></span>
+<span id="cb32-37"><a href="data-processing-study-1.html#cb32-37"></a><span class="st">  </span><span class="kw">rename</span>(</span>
+<span id="cb32-38"><a href="data-processing-study-1.html#cb32-38"></a>    <span class="dt">app =</span> value <span class="co"># contains name of app</span></span>
+<span id="cb32-39"><a href="data-processing-study-1.html#cb32-39"></a>  )</span>
+<span id="cb32-40"><a href="data-processing-study-1.html#cb32-40"></a></span>
+<span id="cb32-41"><a href="data-processing-study-1.html#cb32-41"></a><span class="co"># add them to the long data set</span></span>
+<span id="cb32-42"><a href="data-processing-study-1.html#cb32-42"></a>apps_long &lt;-<span class="st"> </span></span>
+<span id="cb32-43"><a href="data-processing-study-1.html#cb32-43"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb32-44"><a href="data-processing-study-1.html#cb32-44"></a>    apps_long,</span>
+<span id="cb32-45"><a href="data-processing-study-1.html#cb32-45"></a>    app_names,</span>
+<span id="cb32-46"><a href="data-processing-study-1.html#cb32-46"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;rank&quot;</span>)</span>
+<span id="cb32-47"><a href="data-processing-study-1.html#cb32-47"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-48"><a href="data-processing-study-1.html#cb32-48"></a><span class="st">  </span><span class="kw">relocate</span>(</span>
+<span id="cb32-49"><a href="data-processing-study-1.html#cb32-49"></a>    app, </span>
+<span id="cb32-50"><a href="data-processing-study-1.html#cb32-50"></a>    <span class="dt">.after =</span> rank</span>
+<span id="cb32-51"><a href="data-processing-study-1.html#cb32-51"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-52"><a href="data-processing-study-1.html#cb32-52"></a><span class="st">  </span></span>
+<span id="cb32-53"><a href="data-processing-study-1.html#cb32-53"></a><span class="st">  </span><span class="co"># if someone only filled in minutes, but not hours, turn hours to 0</span></span>
+<span id="cb32-54"><a href="data-processing-study-1.html#cb32-54"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb32-55"><a href="data-processing-study-1.html#cb32-55"></a>   <span class="dt">hours =</span> <span class="kw">case_when</span>(</span>
+<span id="cb32-56"><a href="data-processing-study-1.html#cb32-56"></a>    <span class="kw">is.na</span>(hours) <span class="op">&amp;</span><span class="st"> </span><span class="kw">is.na</span>(minutes) <span class="op">~</span><span class="st"> </span><span class="ot">NA_real_</span>,</span>
+<span id="cb32-57"><a href="data-processing-study-1.html#cb32-57"></a>    <span class="kw">is.na</span>(hours) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(minutes) <span class="op">~</span><span class="st"> </span><span class="dv">0</span>,</span>
+<span id="cb32-58"><a href="data-processing-study-1.html#cb32-58"></a>    <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>hours</span>
+<span id="cb32-59"><a href="data-processing-study-1.html#cb32-59"></a>   ),</span>
+<span id="cb32-60"><a href="data-processing-study-1.html#cb32-60"></a>   </span>
+<span id="cb32-61"><a href="data-processing-study-1.html#cb32-61"></a>   <span class="co"># when someone only filled in hours, but not minutes, turn minutes to 0</span></span>
+<span id="cb32-62"><a href="data-processing-study-1.html#cb32-62"></a>   <span class="dt">minutes =</span> <span class="kw">case_when</span>(</span>
+<span id="cb32-63"><a href="data-processing-study-1.html#cb32-63"></a>     <span class="kw">is.na</span>(hours) <span class="op">&amp;</span><span class="st"> </span><span class="kw">is.na</span>(minutes) <span class="op">~</span><span class="st"> </span><span class="ot">NA_real_</span>,</span>
+<span id="cb32-64"><a href="data-processing-study-1.html#cb32-64"></a>     <span class="op">!</span><span class="kw">is.na</span>(hours) <span class="op">&amp;</span><span class="st"> </span><span class="kw">is.na</span>(minutes) <span class="op">~</span><span class="st"> </span><span class="dv">0</span>,</span>
+<span id="cb32-65"><a href="data-processing-study-1.html#cb32-65"></a>     <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>minutes</span>
+<span id="cb32-66"><a href="data-processing-study-1.html#cb32-66"></a>   ),</span>
+<span id="cb32-67"><a href="data-processing-study-1.html#cb32-67"></a>   </span>
+<span id="cb32-68"><a href="data-processing-study-1.html#cb32-68"></a>   <span class="co"># total time</span></span>
+<span id="cb32-69"><a href="data-processing-study-1.html#cb32-69"></a>   <span class="dt">social_media_objective =</span> hours <span class="op">*</span><span class="st"> </span><span class="dv">60</span> <span class="op">+</span><span class="st"> </span>minutes</span>
+<span id="cb32-70"><a href="data-processing-study-1.html#cb32-70"></a>  )</span></code></pre></div>
+<p>Then I get the total times across all apps in the long format.
+Note that participants reported their screen time on the weekend.
+Thus, their reports for week will not be identical with the sum of Monday to Friday, because the screen time feature measures time on the weekend as well (aka additional screen time measured from the end of Friday until the moment they reported their weekly screen time).</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="data-processing-study-1.html#cb33-1"></a><span class="co"># get total screen time (of all social media apps in long format)</span></span>
+<span id="cb33-2"><a href="data-processing-study-1.html#cb33-2"></a>totals_long &lt;-<span class="st"> </span></span>
+<span id="cb33-3"><a href="data-processing-study-1.html#cb33-3"></a><span class="st">  </span>screen_time <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb33-4"><a href="data-processing-study-1.html#cb33-4"></a><span class="st">  </span><span class="kw">select</span>(</span>
+<span id="cb33-5"><a href="data-processing-study-1.html#cb33-5"></a>    id,</span>
+<span id="cb33-6"><a href="data-processing-study-1.html#cb33-6"></a>    hours_total_week<span class="op">:</span>minutes_total_friday</span>
+<span id="cb33-7"><a href="data-processing-study-1.html#cb33-7"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb33-8"><a href="data-processing-study-1.html#cb33-8"></a><span class="st">  </span><span class="kw">pivot_longer</span>(</span>
+<span id="cb33-9"><a href="data-processing-study-1.html#cb33-9"></a>    <span class="op">-</span>id,</span>
+<span id="cb33-10"><a href="data-processing-study-1.html#cb33-10"></a>    <span class="dt">names_to =</span> <span class="kw">c</span>(</span>
+<span id="cb33-11"><a href="data-processing-study-1.html#cb33-11"></a>      <span class="st">&quot;measure&quot;</span>,</span>
+<span id="cb33-12"><a href="data-processing-study-1.html#cb33-12"></a>      <span class="st">&quot;total&quot;</span>,</span>
+<span id="cb33-13"><a href="data-processing-study-1.html#cb33-13"></a>      <span class="st">&quot;time_frame&quot;</span></span>
+<span id="cb33-14"><a href="data-processing-study-1.html#cb33-14"></a>    ),</span>
+<span id="cb33-15"><a href="data-processing-study-1.html#cb33-15"></a>    <span class="dt">names_sep =</span> <span class="st">&quot;_&quot;</span></span>
+<span id="cb33-16"><a href="data-processing-study-1.html#cb33-16"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb33-17"><a href="data-processing-study-1.html#cb33-17"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>total) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># redundant</span></span>
+<span id="cb33-18"><a href="data-processing-study-1.html#cb33-18"></a><span class="st">  </span></span>
+<span id="cb33-19"><a href="data-processing-study-1.html#cb33-19"></a><span class="st">  </span><span class="kw">pivot_wider</span>( <span class="co"># spread hours and minutes</span></span>
+<span id="cb33-20"><a href="data-processing-study-1.html#cb33-20"></a>    <span class="dt">names_from =</span> <span class="st">&quot;measure&quot;</span>,</span>
+<span id="cb33-21"><a href="data-processing-study-1.html#cb33-21"></a>    <span class="dt">values_from =</span> <span class="st">&quot;value&quot;</span></span>
+<span id="cb33-22"><a href="data-processing-study-1.html#cb33-22"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb33-23"><a href="data-processing-study-1.html#cb33-23"></a><span class="st">  </span></span>
+<span id="cb33-24"><a href="data-processing-study-1.html#cb33-24"></a><span class="st">  </span><span class="co"># same as above: if one of the two measures (hours or minutes) has an entry and the other is NA, we set that NA to 0</span></span>
+<span id="cb33-25"><a href="data-processing-study-1.html#cb33-25"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb33-26"><a href="data-processing-study-1.html#cb33-26"></a>    <span class="dt">hours =</span> <span class="kw">case_when</span>(</span>
+<span id="cb33-27"><a href="data-processing-study-1.html#cb33-27"></a>      <span class="kw">is.na</span>(hours) <span class="op">&amp;</span><span class="st"> </span><span class="kw">is.na</span>(minutes) <span class="op">~</span><span class="st"> </span><span class="ot">NA_real_</span>,</span>
+<span id="cb33-28"><a href="data-processing-study-1.html#cb33-28"></a>      <span class="kw">is.na</span>(hours) <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(minutes) <span class="op">~</span><span class="st"> </span><span class="dv">0</span>,</span>
+<span id="cb33-29"><a href="data-processing-study-1.html#cb33-29"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>hours</span>
+<span id="cb33-30"><a href="data-processing-study-1.html#cb33-30"></a>    ),</span>
+<span id="cb33-31"><a href="data-processing-study-1.html#cb33-31"></a>  </span>
+<span id="cb33-32"><a href="data-processing-study-1.html#cb33-32"></a>  <span class="co"># when someone only filled in hours, but not minutes, turn minutes to 0</span></span>
+<span id="cb33-33"><a href="data-processing-study-1.html#cb33-33"></a>    <span class="dt">minutes =</span> <span class="kw">case_when</span>(</span>
+<span id="cb33-34"><a href="data-processing-study-1.html#cb33-34"></a>      <span class="kw">is.na</span>(hours) <span class="op">&amp;</span><span class="st"> </span><span class="kw">is.na</span>(minutes) <span class="op">~</span><span class="st"> </span><span class="ot">NA_real_</span>,</span>
+<span id="cb33-35"><a href="data-processing-study-1.html#cb33-35"></a>      <span class="op">!</span><span class="kw">is.na</span>(hours) <span class="op">&amp;</span><span class="st"> </span><span class="kw">is.na</span>(minutes) <span class="op">~</span><span class="st"> </span><span class="dv">0</span>,</span>
+<span id="cb33-36"><a href="data-processing-study-1.html#cb33-36"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>minutes</span>
+<span id="cb33-37"><a href="data-processing-study-1.html#cb33-37"></a>    ),</span>
+<span id="cb33-38"><a href="data-processing-study-1.html#cb33-38"></a>   </span>
+<span id="cb33-39"><a href="data-processing-study-1.html#cb33-39"></a>   <span class="co"># total time</span></span>
+<span id="cb33-40"><a href="data-processing-study-1.html#cb33-40"></a>    <span class="dt">social_media_objective =</span> hours <span class="op">*</span><span class="st"> </span><span class="dv">60</span> <span class="op">+</span><span class="st"> </span>minutes</span>
+<span id="cb33-41"><a href="data-processing-study-1.html#cb33-41"></a>  )</span></code></pre></div>
+<p>The <code>totals_long</code> is the data set of interest because it has total screen time per day, which we can match with the diary data.
+Thus, to arrive at the final sample size, we’ll only keep participants who have data in the <code>diary</code> data set.
+For merging, we’ll need to exclude those participants in <code>totals_long</code> who don’t have a match in <code>diary</code>.</p>
+<p>But first, I check how much the sum of total time across apps per day in <code>total_long</code> converges with the sum of time across all apps per day in <code>apps_long</code>.
+There will definitely be differences, simply because participants have more chances to make typos when reporting the individual apps per day (in <code>apps_long</code>) compared to reporting the overall time across all apps once per day (in <code>total_long</code>).
+Also, participants will occasionally skip an individual app per day rating.</p>
+<p>Below, I get the total time per day across all ten apps and then join that estimate with the data set containing the total times (<code>total_long</code>).
+Afterwards, per day, I see how much the two variables differ.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="data-processing-study-1.html#cb34-1"></a><span class="co"># get total time across apps per day</span></span>
+<span id="cb34-2"><a href="data-processing-study-1.html#cb34-2"></a>apps_aggregated &lt;-<span class="st"> </span></span>
+<span id="cb34-3"><a href="data-processing-study-1.html#cb34-3"></a><span class="st">  </span>apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-4"><a href="data-processing-study-1.html#cb34-4"></a><span class="st">  </span><span class="kw">group_by</span>(id, time_frame) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-5"><a href="data-processing-study-1.html#cb34-5"></a><span class="st">  </span><span class="kw">filter</span>(time_frame <span class="op">!=</span><span class="st"> &quot;week&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># no week </span></span>
+<span id="cb34-6"><a href="data-processing-study-1.html#cb34-6"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">total_time =</span> <span class="kw">sum</span>(social_media_objective, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb34-7"><a href="data-processing-study-1.html#cb34-7"></a></span>
+<span id="cb34-8"><a href="data-processing-study-1.html#cb34-8"></a><span class="co"># join with total times</span></span>
+<span id="cb34-9"><a href="data-processing-study-1.html#cb34-9"></a>compare &lt;-<span class="st"> </span></span>
+<span id="cb34-10"><a href="data-processing-study-1.html#cb34-10"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb34-11"><a href="data-processing-study-1.html#cb34-11"></a>    totals_long <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-12"><a href="data-processing-study-1.html#cb34-12"></a><span class="st">      </span><span class="kw">filter</span>(time_frame <span class="op">!=</span><span class="st"> &quot;week&quot;</span>),</span>
+<span id="cb34-13"><a href="data-processing-study-1.html#cb34-13"></a>    apps_aggregated</span>
+<span id="cb34-14"><a href="data-processing-study-1.html#cb34-14"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-15"><a href="data-processing-study-1.html#cb34-15"></a><span class="st">  </span></span>
+<span id="cb34-16"><a href="data-processing-study-1.html#cb34-16"></a><span class="st">  </span><span class="co"># and compute a deviance score</span></span>
+<span id="cb34-17"><a href="data-processing-study-1.html#cb34-17"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb34-18"><a href="data-processing-study-1.html#cb34-18"></a>    <span class="dt">difference =</span> social_media_objective <span class="op">-</span><span class="st"> </span>total_time</span>
+<span id="cb34-19"><a href="data-processing-study-1.html#cb34-19"></a>  )</span></code></pre></div>
+<p>Overall, the two sums of use across apps and days are highly similar, with a mean difference of <em>M</em> = 4.09, <em>SD</em> = 17.4 and an extremely high correlation, <em>r</em> = 0.98.</p>
+<p>There were some missing values in the total social media time per day that participants reported.
+I check who has missing data on any of the weekdays in the <code>totals_long</code> data set.
+We can check whether those participants have reported individual app use for that day and use an aggregate over apps on that day as a substitute, given their high correlation.
+In other words: When participants forgot to report their overall social media use for a day, but reported use for all social media apps they used on that day, we can just use the sum of those social media apps as a replacement for overall social media use.
+However, we see in <a href="data-processing-study-1.html#tab:check-social-media-na">2.10</a> that all participants reported social media screen time across all days, so no need for imputation.</p>
+<table>
+<caption><span id="tab:check-social-media-na">Table 2.10: </span>Amount of missing values in data comparing total screen time</caption>
+<thead>
+<tr class="header">
+<th align="right">id</th>
+<th align="right">time_frame</th>
+<th align="right">hours</th>
+<th align="right">minutes</th>
+<th align="right">social_media_objective</th>
+<th align="right">total_time</th>
+<th align="right">difference</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>Before I merge all data sets, I need to add the objective notifications and pickups (currently in <code>apps_long</code>) to the <code>totals_long</code> data set.
+Note that at the time of the study, iOS screen time wouldn’t report notifications for app per day, only for the past week.
+Therefore, the weekly notifications have the same caveat as the weekly screen time: they will include a couple of notifications that participants received on the day they retrospectively reported their objective use.
+For pickups, as with screen time, we can sum up all days to get an accurate measure of week’s pickups.</p>
+<p>I’ll sum up both pickups and notifications over participant.
+Pickups will be per day, but notifications only per week.
+I then add pickups to the <code>totals_long</code> data set.
+Notifications I’ll add later during merging (because they are not aggregated per day).</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="data-processing-study-1.html#cb35-1"></a><span class="co"># get total pickups across apps per day</span></span>
+<span id="cb35-2"><a href="data-processing-study-1.html#cb35-2"></a>pickups_aggregated &lt;-<span class="st"> </span></span>
+<span id="cb35-3"><a href="data-processing-study-1.html#cb35-3"></a><span class="st">  </span>apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-4"><a href="data-processing-study-1.html#cb35-4"></a><span class="st">  </span><span class="kw">group_by</span>(id, time_frame) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-5"><a href="data-processing-study-1.html#cb35-5"></a><span class="st">  </span><span class="kw">filter</span>(time_frame <span class="op">!=</span><span class="st"> &quot;week&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># no week </span></span>
+<span id="cb35-6"><a href="data-processing-study-1.html#cb35-6"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">pickups_objective =</span> <span class="kw">sum</span>(pickups, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb35-7"><a href="data-processing-study-1.html#cb35-7"></a></span>
+<span id="cb35-8"><a href="data-processing-study-1.html#cb35-8"></a><span class="co"># get notifications across apps per participant</span></span>
+<span id="cb35-9"><a href="data-processing-study-1.html#cb35-9"></a>notifications_aggregated &lt;-<span class="st"> </span></span>
+<span id="cb35-10"><a href="data-processing-study-1.html#cb35-10"></a><span class="st">  </span>apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-11"><a href="data-processing-study-1.html#cb35-11"></a><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-12"><a href="data-processing-study-1.html#cb35-12"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">weekly_notifications =</span> <span class="kw">sum</span>(notifications, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb35-13"><a href="data-processing-study-1.html#cb35-13"></a></span>
+<span id="cb35-14"><a href="data-processing-study-1.html#cb35-14"></a><span class="co"># add pickups to totals_long</span></span>
+<span id="cb35-15"><a href="data-processing-study-1.html#cb35-15"></a>totals_long &lt;-<span class="st"> </span></span>
+<span id="cb35-16"><a href="data-processing-study-1.html#cb35-16"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb35-17"><a href="data-processing-study-1.html#cb35-17"></a>    totals_long,</span>
+<span id="cb35-18"><a href="data-processing-study-1.html#cb35-18"></a>    pickups_aggregated,</span>
+<span id="cb35-19"><a href="data-processing-study-1.html#cb35-19"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;time_frame&quot;</span>)</span>
+<span id="cb35-20"><a href="data-processing-study-1.html#cb35-20"></a>  )</span></code></pre></div>
+</div>
+<div id="merge-data-sets" class="section level2">
+<h2><span class="header-section-number">2.4</span> Merge data sets</h2>
+<p>Finally, we can merge the three data sets.
+The <code>diary</code> data set is the “master” because it has our variables of interest and the correct time structure.
+To that data set we add the objective social media measures from the <code>totals_long</code> data set.
+The identifier for a survey are the participant <code>id</code> and the <code>day</code> on which they filled out a survey/for which they reported objective use.
+Note that we omit the meta-data from <code>totals_long</code> (e.g., <code>start_date</code>) because they are different from the meta-data of <code>diary</code>.
+We also only keep the variables of interest from here on, meaning I’ll exclude some variables that aren’t informative.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="data-processing-study-1.html#cb36-1"></a>study1 &lt;-<span class="st"> </span></span>
+<span id="cb36-2"><a href="data-processing-study-1.html#cb36-2"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb36-3"><a href="data-processing-study-1.html#cb36-3"></a>    </span>
+<span id="cb36-4"><a href="data-processing-study-1.html#cb36-4"></a>    <span class="co"># the diary data with only relevant variables</span></span>
+<span id="cb36-5"><a href="data-processing-study-1.html#cb36-5"></a>    diary <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb36-6"><a href="data-processing-study-1.html#cb36-6"></a><span class="st">      </span><span class="kw">select</span>(</span>
+<span id="cb36-7"><a href="data-processing-study-1.html#cb36-7"></a>        <span class="dt">duration_diary =</span> duration, <span class="co"># so that we can get filling out times for each data set</span></span>
+<span id="cb36-8"><a href="data-processing-study-1.html#cb36-8"></a>        id<span class="op">:</span>day,</span>
+<span id="cb36-9"><a href="data-processing-study-1.html#cb36-9"></a>        pickups_subjective<span class="op">:</span>enjoyable, <span class="co"># don&#39;t need individual minutes and hours anymore</span></span>
+<span id="cb36-10"><a href="data-processing-study-1.html#cb36-10"></a>        social_media_subjective<span class="op">:</span>relatedness_state</span>
+<span id="cb36-11"><a href="data-processing-study-1.html#cb36-11"></a>      ),</span>
+<span id="cb36-12"><a href="data-processing-study-1.html#cb36-12"></a>    </span>
+<span id="cb36-13"><a href="data-processing-study-1.html#cb36-13"></a>    <span class="co"># the objective totals with only relevant variables</span></span>
+<span id="cb36-14"><a href="data-processing-study-1.html#cb36-14"></a>    totals_long <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb36-15"><a href="data-processing-study-1.html#cb36-15"></a><span class="st">      </span><span class="kw">filter</span>(time_frame <span class="op">!=</span><span class="st"> &quot;week&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb36-16"><a href="data-processing-study-1.html#cb36-16"></a><span class="st">      </span><span class="kw">rename</span>(</span>
+<span id="cb36-17"><a href="data-processing-study-1.html#cb36-17"></a>        <span class="dt">day =</span> time_frame</span>
+<span id="cb36-18"><a href="data-processing-study-1.html#cb36-18"></a>      ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb36-19"><a href="data-processing-study-1.html#cb36-19"></a><span class="st">      </span><span class="kw">select</span>(id, day, social_media_objective, pickups_objective),</span>
+<span id="cb36-20"><a href="data-processing-study-1.html#cb36-20"></a>    </span>
+<span id="cb36-21"><a href="data-processing-study-1.html#cb36-21"></a>    <span class="co"># joining by the two identifiers</span></span>
+<span id="cb36-22"><a href="data-processing-study-1.html#cb36-22"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;day&quot;</span>)</span>
+<span id="cb36-23"><a href="data-processing-study-1.html#cb36-23"></a>  )</span></code></pre></div>
+<p>The merging above kept all cases of <code>diary</code> and added variables from <code>totals_long</code> when there was a match, otherwise setting the new variables to <code>NA</code>.
+Therefore, I remove all cases which have <code>NA</code> on the added variables to get to our final sample.
+(There were no missings in the <code>social_media_objective</code> variable.)</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="data-processing-study-1.html#cb37-1"></a>study1 &lt;-<span class="st"> </span></span>
+<span id="cb37-2"><a href="data-processing-study-1.html#cb37-2"></a><span class="st">  </span>study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb37-3"><a href="data-processing-study-1.html#cb37-3"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(social_media_objective))</span></code></pre></div>
+<p>For descriptive information, I’ll also add the survey duration of the screen time data.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="data-processing-study-1.html#cb38-1"></a>study1 &lt;-<span class="st"> </span></span>
+<span id="cb38-2"><a href="data-processing-study-1.html#cb38-2"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb38-3"><a href="data-processing-study-1.html#cb38-3"></a>    study1,</span>
+<span id="cb38-4"><a href="data-processing-study-1.html#cb38-4"></a>    screen_time <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb38-5"><a href="data-processing-study-1.html#cb38-5"></a><span class="st">      </span><span class="kw">select</span>(id, duration) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb38-6"><a href="data-processing-study-1.html#cb38-6"></a><span class="st">      </span><span class="kw">rename</span>(</span>
+<span id="cb38-7"><a href="data-processing-study-1.html#cb38-7"></a>        <span class="dt">duration_screen_time =</span> duration</span>
+<span id="cb38-8"><a href="data-processing-study-1.html#cb38-8"></a>      ),</span>
+<span id="cb38-9"><a href="data-processing-study-1.html#cb38-9"></a>    <span class="dt">by =</span> <span class="st">&quot;id&quot;</span></span>
+<span id="cb38-10"><a href="data-processing-study-1.html#cb38-10"></a>  )</span></code></pre></div>
+<p>Okay, then I add the personality variables.
+Again, <code>study1</code> is the “master” and we add personality variables (aka traits from <code>personality</code>), omitting variables that aren’t of interest.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="data-processing-study-1.html#cb39-1"></a>study1 &lt;-<span class="st"> </span></span>
+<span id="cb39-2"><a href="data-processing-study-1.html#cb39-2"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb39-3"><a href="data-processing-study-1.html#cb39-3"></a>    study1,</span>
+<span id="cb39-4"><a href="data-processing-study-1.html#cb39-4"></a>    personality <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb39-5"><a href="data-processing-study-1.html#cb39-5"></a><span class="st">      </span><span class="kw">select</span>(</span>
+<span id="cb39-6"><a href="data-processing-study-1.html#cb39-6"></a>        <span class="dt">duration_personality =</span> duration,</span>
+<span id="cb39-7"><a href="data-processing-study-1.html#cb39-7"></a>        id,</span>
+<span id="cb39-8"><a href="data-processing-study-1.html#cb39-8"></a>        bpns_<span class="dv">1</span><span class="op">:</span>openness</span>
+<span id="cb39-9"><a href="data-processing-study-1.html#cb39-9"></a>      ),</span>
+<span id="cb39-10"><a href="data-processing-study-1.html#cb39-10"></a>    <span class="dt">by =</span> <span class="st">&quot;id&quot;</span></span>
+<span id="cb39-11"><a href="data-processing-study-1.html#cb39-11"></a>  )</span></code></pre></div>
+<p>Then, I add the notifications over one week as a constant.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="data-processing-study-1.html#cb40-1"></a>study1 &lt;-<span class="st"> </span></span>
+<span id="cb40-2"><a href="data-processing-study-1.html#cb40-2"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb40-3"><a href="data-processing-study-1.html#cb40-3"></a>    study1,</span>
+<span id="cb40-4"><a href="data-processing-study-1.html#cb40-4"></a>    notifications_aggregated,</span>
+<span id="cb40-5"><a href="data-processing-study-1.html#cb40-5"></a>    <span class="dt">by =</span> <span class="st">&quot;id&quot;</span></span>
+<span id="cb40-6"><a href="data-processing-study-1.html#cb40-6"></a>  )</span></code></pre></div>
+<p>Last, some housekeeping, reordering variables and making sure they all have the correct variable type.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="data-processing-study-1.html#cb41-1"></a>study1 &lt;-<span class="st"> </span></span>
+<span id="cb41-2"><a href="data-processing-study-1.html#cb41-2"></a><span class="st">  </span>study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb41-3"><a href="data-processing-study-1.html#cb41-3"></a><span class="st">  </span><span class="kw">select</span>(</span>
+<span id="cb41-4"><a href="data-processing-study-1.html#cb41-4"></a>    id,</span>
+<span id="cb41-5"><a href="data-processing-study-1.html#cb41-5"></a>    age<span class="op">:</span>ethnicity,</span>
+<span id="cb41-6"><a href="data-processing-study-1.html#cb41-6"></a>    <span class="kw">starts_with</span>(<span class="st">&quot;duration&quot;</span>),</span>
+<span id="cb41-7"><a href="data-processing-study-1.html#cb41-7"></a>    day,</span>
+<span id="cb41-8"><a href="data-processing-study-1.html#cb41-8"></a>    social_media_subjective,</span>
+<span id="cb41-9"><a href="data-processing-study-1.html#cb41-9"></a>    pickups_subjective,</span>
+<span id="cb41-10"><a href="data-processing-study-1.html#cb41-10"></a>    notifications_subjective,</span>
+<span id="cb41-11"><a href="data-processing-study-1.html#cb41-11"></a>    social_media_objective,</span>
+<span id="cb41-12"><a href="data-processing-study-1.html#cb41-12"></a>    pickups_objective,</span>
+<span id="cb41-13"><a href="data-processing-study-1.html#cb41-13"></a>    weekly_notifications,</span>
+<span id="cb41-14"><a href="data-processing-study-1.html#cb41-14"></a>    well_being_state<span class="op">:</span>relatedness_state,</span>
+<span id="cb41-15"><a href="data-processing-study-1.html#cb41-15"></a>    low_positive_peaceful<span class="op">:</span>enjoyable,</span>
+<span id="cb41-16"><a href="data-processing-study-1.html#cb41-16"></a>    autonomy_trait<span class="op">:</span>openness,</span>
+<span id="cb41-17"><a href="data-processing-study-1.html#cb41-17"></a>    bpns_<span class="dv">1</span><span class="op">:</span>big_five_<span class="dv">45</span></span>
+<span id="cb41-18"><a href="data-processing-study-1.html#cb41-18"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb41-19"><a href="data-processing-study-1.html#cb41-19"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb41-20"><a href="data-processing-study-1.html#cb41-20"></a>    <span class="dt">id =</span> <span class="kw">droplevels</span>(id),</span>
+<span id="cb41-21"><a href="data-processing-study-1.html#cb41-21"></a>    <span class="dt">day =</span> <span class="kw">as.factor</span>(day)</span>
+<span id="cb41-22"><a href="data-processing-study-1.html#cb41-22"></a>  )</span></code></pre></div>
+<p>When plotting the app data I want them to reflect the final sample, which is why I only keep those participants and surveys in the <code>apps_long</code> data set that are also in the final data set (i.e., <code>study1</code>).
+I can’t just exclude those participants in <code>apps_long</code> because I also excluded surveys in <code>diary</code> on which <code>study1</code> is based.
+Therefore, I only keep those entries in <code>apps_long</code> which have a corresponding row in <code>study1</code> (aka entries in both <code>id</code> and <code>day</code>).
+Sidenote: The participants with a failed attention check in the <code>personality</code> data are not included in <code>study1</code> because they were excludedat other steps during merging, so no need to manually remove them here.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="data-processing-study-1.html#cb42-1"></a>apps_long &lt;-<span class="st"> </span></span>
+<span id="cb42-2"><a href="data-processing-study-1.html#cb42-2"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb42-3"><a href="data-processing-study-1.html#cb42-3"></a>    </span>
+<span id="cb42-4"><a href="data-processing-study-1.html#cb42-4"></a>    <span class="co"># only those participants and days that are in final data set</span></span>
+<span id="cb42-5"><a href="data-processing-study-1.html#cb42-5"></a>    study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-6"><a href="data-processing-study-1.html#cb42-6"></a><span class="st">      </span><span class="kw">select</span>(id, day),</span>
+<span id="cb42-7"><a href="data-processing-study-1.html#cb42-7"></a>    </span>
+<span id="cb42-8"><a href="data-processing-study-1.html#cb42-8"></a>    <span class="co"># and the rest of the variables from apps_long, but without week</span></span>
+<span id="cb42-9"><a href="data-processing-study-1.html#cb42-9"></a>    apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-10"><a href="data-processing-study-1.html#cb42-10"></a><span class="st">      </span><span class="kw">rename</span>(<span class="dt">day =</span> time_frame) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-11"><a href="data-processing-study-1.html#cb42-11"></a><span class="st">      </span><span class="kw">filter</span>(day <span class="op">!=</span><span class="st"> &quot;week&quot;</span>),</span>
+<span id="cb42-12"><a href="data-processing-study-1.html#cb42-12"></a>    </span>
+<span id="cb42-13"><a href="data-processing-study-1.html#cb42-13"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;day&quot;</span>)</span>
+<span id="cb42-14"><a href="data-processing-study-1.html#cb42-14"></a>  )</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="setting-up-study1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="descriptives-and-visualizations-study-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
