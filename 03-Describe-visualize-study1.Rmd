@@ -1,1 +1,1327 @@
 # Descriptives and Visualizations Study 1
+
+## Overview
+
+In this section, I describe and visualize the sample and variables.
+We have variables on the meta-level (about the survey), the person-level, the app-level, and the day-level.
+App-level data is in the `apps_long` data file; all other in the `study1` data file.
+
+**Meta-level**
+
+* Duration of the entry survey, when participants reported traits (`duration_personality`)
+* Duration of the exit survey, when participants reported their screen time (`duration_screen_time`)
+
+**Person-level**
+
+* Participant identifier (`id`)
+* `age` in years
+* `ethnicity`
+* Notifications of social media apps over the past week (`weekly_notifications`)
+* Basic Psychological Need Satisfaction (`autonomy_trait`, `competence_trait`, `relatedness_trait`) plus their individual items (starting with `bpns_`)
+* Big Five (`extraversion`, `agreeableness`, `conscientiousness`, `neuroticsim`, `openness`) plus their individual items (starting with `big_five_`)
+
+**App-level**
+
+* What app participants report use for (`app`)
+* On what rank was that app on participants' top ten (`rank`)
+* Notifications for that app for the week (`notifications_per_week`)
+* Pickups for that app on that day (`pickups`)
+* Screen time for that app on that day (`social_media_objective`)
+
+**Day-level**
+
+* Duration of the survey on that day (`duration_diary`)
+* `day` the survey was answered
+* Estimated time on social media on that day (`social_media_subjective`)
+* Estimated pickups of social media apps on that day (`pickups_subjective`)
+* Estimated notifications of social media apps on that day (`notifications_subjective`)
+* Objective time on social media on that day (`social_media_objective`)
+* Objective pickups of social media apps on that day (`pickups_objective`)
+* Well-being on that day (`well_being`) plus its individual items (starting with `low_` and `high_`)
+* Basic psychological needs on that day (`autonomy_state`, `competence_state`, `relatedness_state`) plus their individual items (starting with `autonomy_`, `competence_`, `relatedness_` respectively)
+* Experiences of satisfaction, boredom, stress, enjoyment on that day (`satisfied`, `boring`, `stressful`, `enoyable`)
+
+## Meta-level
+
+I begin with describing and plotting the duration of the entry and exit surveys.
+Table \@ref(tab:describe-durations-study1) shows descriptive stats; Figure \@ref(fig:visualize-durations-study1) shows that twp participants had their entry surveys open for a day before pressing send, which skews the mean massively.
+However, those people's data look good, so I wouldn't exclude them here.
+Note: Colors are from [here](https://www.datanovia.com/en/blog/ggplot-colors-best-tricks-you-will-love/#use-a-colorblind-friendly-palette).
+```{r describe-durations-study1, echo=FALSE}
+# get the descriptives and bind them into a data frame (see custom functions)
+durations <- 
+  bind_rows(
+    list(
+      describe(
+        study1,
+        "duration_personality",
+        trait = TRUE
+      ),
+      describe(
+        study1,
+        "duration_screen_time",
+        trait = TRUE
+      )
+    )
+  )
+
+# round seconds and then transform into time
+durations <-  
+  durations %>% 
+  mutate(
+    across(
+      -variable,
+      round
+    )
+  ) %>% 
+  mutate_at( #note: I didn't get this to go with across()
+    vars(-variable),
+    list(~seconds_to_period(.))
+  )
+
+knitr::kable(
+  durations,
+  caption = "Duration of entry and exit surveys"
+)
+```
+
+```{r visualize-durations-study1, fig.cap= "Duration of surveys", echo=FALSE}
+plot_grid(
+  single_cloud( # custom function, see setting up chapter
+    study1,
+    durations,
+    "duration_personality",
+    "#009E73",
+    title = "Density of duration of entry survey (in s)",
+    trait = TRUE
+  ),
+  single_cloud(
+    study1,
+    durations,
+    "duration_screen_time",
+    "#D55E00",
+    title = "Density of duration of exit survey (in s)",
+    trait = TRUE
+  ),
+  ncol = 1
+)
+```
+
+## Person-level
+
+Let's have a look at the final sample.
+Overall, our sample size is **N = `r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow()`**.
+The sample has a mean age of *M* = `r round(study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% mean())`, *SD* = `r round(study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% sd())`.
+The sample consists mostly of women (`r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% filter(gender == "female") %>% nrow()` women, `r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% filter(gender == "male") %>% nrow()` men, and one non-binary participant).
+```{r describe-age-study1, echo=FALSE}
+age <- 
+  describe(
+    study1,
+    "age",
+    trait = TRUE
+  )
+```
+```{r visualize-age-study1, echo=FALSE}
+single_cloud(
+  study1,
+  age,
+  "age",
+  "#009E73",
+  title = NULL,
+  trait = TRUE
+)
+```
+
+Most participants are Asian, followed by White, Black, and Hispanic, see Table \@ref(tab:ethnicity-table-study1)
+```{r ethnicity-table-study1, echo = FALSE}
+study1 %>% 
+  group_by(id) %>% 
+  slice(1) %>% 
+  ungroup() %>% 
+  count(ethnicity) %>% 
+  rename(count = n) %>% 
+  mutate(percent = 100 * round(count / sum(count), digits = 2)) %>% 
+  arrange(desc(percent)) %>% 
+  knitr::kable(
+    .,
+    caption = "Ethnicity of the sample"
+  )
+```
+
+Alright, next we look at the objective count of notifications over the past week, aggregated across all apps.
+Table \@ref(tab:weekly-notifications-table-study1) shows that participants received quite a lot of notifications from social media apps only.
+That distribution is heavily skewed (Figure \@ref(fig:visualize-weekly-notifications-study1) by a couple of participants who received several thousand notifications over the week.
+```{r weekly-notifications-table-study1, echo=FALSE}
+notifications <- 
+  describe(
+    study1,
+    "weekly_notifications",
+    trait = TRUE
+  )
+
+notifications %>% 
+  knitr::kable(
+    .,
+    caption = "Weekly notifications (objective) across all apps"
+  )
+```
+
+```{r visualize-weekly-notifications-study1, ech=FALSE, fig.cap="Weekly notifications (objective) across all apps"}
+single_cloud(
+  study1,
+  notifications,
+  "weekly_notifications",
+  "#009E73",
+  title = NULL,
+  trait = TRUE
+)
+```
+
+Now we look at the trait variables: the basic psychological need satisfaction and the big five.
+Note that I follow recent recommendations and calculate $\omega$ for reliability.
+Table \@ref(tab:traits-descriptives-study1) shows the descriptive information of the three psychological needs and the big five.
+Figure \@ref(fig:traits-visualize-study1) shows their distribution.
+The sample isn't too large, so considering the small size, I'd say everything looks pretty good.
+```{r traits-descriptives-study1, echo=FALSE}
+### descriptives for BPNS
+bpns <- 
+  bind_rows(
+    list(
+      describe(
+        study1,
+        "autonomy_trait",
+        trait = TRUE
+      ),
+      describe(
+        study1,
+        "competence_trait",
+        trait = TRUE
+      ),
+      describe(
+        study1,
+        "relatedness_trait",
+        trait = TRUE
+      )
+    )
+  )
+
+# get omega with the MBESS package
+autonomy_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      group_by(id) %>% 
+      slice(1) %>% 
+      ungroup() %>% 
+      select(bpns_1:bpns_8),
+    type = "omega",
+    B = 1e4
+  )$est
+
+competence_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      group_by(id) %>% 
+      slice(1) %>% 
+      ungroup() %>% 
+      select(bpns_9:bpns_16),
+    type = "omega",
+    B = 1e4
+  )$est
+
+competence_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      group_by(id) %>% 
+      slice(1) %>% 
+      ungroup() %>% 
+      select(bpns_9:bpns_16),
+    type = "omega",
+    B = 1e4
+  )$est
+
+relatedness_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      group_by(id) %>% 
+      slice(1) %>% 
+      ungroup() %>% 
+      select(bpns_17:bpns_24),
+    type = "omega",
+    B = 1e4
+  )$est
+
+# add omega to scales
+bpns <- 
+  bpns %>% 
+  mutate(
+    omega = c(autonomy_omega, competence_omega, relatedness_omega)
+  )
+
+### Descriptives for big five
+big_five <- 
+  bind_rows(
+    list(
+      describe(
+        study1,
+        "extraversion",
+        trait = TRUE
+      ),
+      describe(
+        study1,
+        "agreeableness",
+        trait = TRUE
+      ),
+      describe(
+        study1,
+        "conscientiousness",
+        trait = TRUE
+      ),
+      describe(
+        study1,
+        "neuroticism",
+        trait = TRUE
+      ),
+      describe(
+        study1,
+        "openness",
+        trait = TRUE
+      )
+    )
+  )
+
+# get omegas
+extraversion_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      group_by(id) %>% 
+      slice(1) %>% 
+      ungroup() %>% 
+      select(
+        big_five_1,
+        big_five_6,
+        big_five_11,
+        big_five_16,
+        big_five_21,
+        big_five_26,
+        big_five_31,
+        big_five_36
+      ),
+    type = "omega",
+    B = 1e4
+  )$est
+
+agreeableness_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      group_by(id) %>% 
+      slice(1) %>% 
+      ungroup() %>% 
+      select(
+        big_five_2,
+        big_five_7,
+        big_five_12,
+        big_five_17,
+        big_five_22,
+        big_five_27,
+        big_five_32,
+        big_five_37,
+        big_five_42
+      ),
+    type = "omega",
+    B = 1e4
+  )$est
+
+conscientiousness_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      group_by(id) %>% 
+      slice(1) %>% 
+      ungroup() %>% 
+      select(
+        big_five_3,
+        big_five_8,
+        big_five_13,
+        big_five_18,
+        big_five_23,
+        big_five_28,
+        big_five_33,
+        big_five_38,
+        big_five_43
+      ),
+    type = "omega",
+    B = 1e4
+  )$est
+
+neuroticism_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      group_by(id) %>% 
+      slice(1) %>% 
+      ungroup() %>% 
+      select(
+        big_five_4,
+        big_five_9,
+        big_five_14,
+        big_five_19,
+        big_five_24,
+        big_five_29,
+        big_five_34,
+        big_five_39
+      ),
+    type = "omega",
+    B = 1e4
+  )$est
+
+openness_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      group_by(id) %>% 
+      slice(1) %>% 
+      ungroup() %>% 
+      select(
+        big_five_5,
+        big_five_10,
+        big_five_15,
+        big_five_20,
+        big_five_25,
+        big_five_30,
+        big_five_35,
+        big_five_40,
+        big_five_41,
+        big_five_44
+      ),
+    type = "omega",
+    B = 1e4
+  )$est
+
+# add omegas to descriptives
+big_five <- 
+  big_five %>% 
+  mutate(
+    omega = c(
+      extraversion_omega,
+      agreeableness_omega,
+      conscientiousness_omega,
+      neuroticism_omega,
+      openness_omega
+    )
+  )
+
+# bind those two and round to two decimals
+trait_descriptives <- 
+  bind_rows(
+    bpns,
+    big_five
+  ) %>% 
+  mutate(
+    across(
+      -variable,
+      ~ round(.x, digits = 2)
+    )
+  )
+
+knitr::kable(
+  trait_descriptives,
+  caption = "Descriptives for trait variables"
+)
+
+# clear up workspace
+rm(
+  bpns,
+  autonomy_omega,
+  competence_omega,
+  relatedness_omega,
+  big_five,
+  extraversion_omega,
+  agreeableness_omega,
+  conscientiousness_omega,
+  neuroticism_omega,
+  openness_omega
+)
+```
+
+```{r traits-visualize-study1, fig.cap="Distribution of trait variables", fig.dim=c(8.5,9), echo=FALSE}
+plot_grid(
+  # bpns
+  single_cloud(
+    study1,
+    trait_descriptives,
+    "autonomy_trait",
+    "#999999",
+    title = "Autonomy",
+    trait = TRUE
+  ),
+  single_cloud(
+    study1,
+    trait_descriptives,
+    "competence_trait",
+    "#E69F00",
+    title = "Competence",
+    trait = TRUE
+  ),
+  single_cloud(
+    study1,
+    trait_descriptives,
+    "relatedness_trait",
+    "#56B4E9",
+    title = "Relatedness",
+    trait = TRUE
+  ),
+  
+  # big five
+  single_cloud(
+    study1,
+    trait_descriptives,
+    "extraversion",
+    "#009E73",
+    title = "Extraversion",
+    trait = TRUE
+  ),
+  single_cloud(
+    study1,
+    trait_descriptives,
+    "agreeableness",
+    "#F0E442",
+    title = "Agreeableness",
+    trait = TRUE
+  ),
+  single_cloud(
+    study1,
+    trait_descriptives,
+    "conscientiousness",
+    "#0072B2",
+    title = "Conscientiousness",
+    trait = TRUE
+  ),
+  single_cloud(
+    study1,
+    trait_descriptives,
+    "neuroticism",
+    "#D55E00",
+    title = "Neuroticism",
+    trait = TRUE
+  ),
+  single_cloud(
+    study1,
+    trait_descriptives,
+    "openness",
+    "#CC79A7",
+    title = "Openness",
+    trait = TRUE
+  ),
+  ncol = 2
+)
+```
+
+In Figure \@ref(fig:visualize-correlations-traits-study1) we see the correlations between those traits.
+As expected psychological needs are correlated highly with each other.
+Credit for the `lm` lines goes to [data prone](https://www.r-bloggers.com/multiple-regression-lines-in-ggpairs/), whose idea I adapted.
+```{r visualize-correlations-traits-study1, fig.cap="Correlation matrix", fig.dim=c(12,12), echo=FALSE, message=FALSE}
+ggpairs(
+  data = study1 %>%
+    group_by(id) %>% 
+    slice(1) %>% 
+    ungroup() %>% 
+    select(
+      autonomy_trait:relatedness_trait,
+      extraversion:openness
+    ) %>% 
+    rename_with(
+      ~ str_remove(.x, "_trait"),
+      autonomy_trait:relatedness_trait
+    ),
+  lower = list(
+    continuous = lm_function # custom helper function
+  ),
+  diag = list(
+    continuous = dens_function # custom helper function
+  )
+) +
+  theme(
+    axis.line=element_blank(),
+    axis.text.x=element_blank(),
+    axis.text.y=element_blank(),
+    axis.ticks=element_blank(),
+    axis.title.y=element_blank(),
+    axis.title.x=element_blank(),
+    legend.position="none",
+    panel.background=element_blank(),
+    panel.border=element_blank(),
+    panel.grid.major=element_blank(),
+    panel.grid.minor=element_blank(),
+    plot.background=element_blank(),
+    strip.background = element_blank()
+  )
+```
+
+## App-level
+
+First, Figure \@ref(fig:visualize-nominated-apps) shows what apps mostly nominated (i.e., used).
+We see that out of the sample, most participants had Messaging, Snapchat, Whatsapp etc. as part of their top ten.
+```{r visualize-nominated-apps, echo=FALSE, fig.cap="Percentage of nominated apps", fig.dim=c(11,11)}
+app_names %>% 
+  mutate(
+    app = str_to_lower(app)
+  ) %>% 
+  filter(!is.na(app)) %>% 
+  count(app) %>% 
+  mutate(percent = round((n / sum(n)), digits = 3) * 100) %>% 
+  rename(
+    count = n
+  ) %>%
+  ggplot(
+    aes(
+      reorder(x = app, percent),
+      y = percent
+    )
+  ) +
+  geom_point(size = 3, color = "#D55E00") +
+  geom_segment(
+    aes(
+      x = app,
+      xend = app,
+      y = 0,
+      yend = percent
+    ),
+    color = "#D55E00",
+    alpha = 0.5
+  ) + 
+  coord_flip() +
+  theme(
+    axis.line=element_blank(),
+    axis.ticks=element_blank(),
+    axis.title.y=element_blank(),
+    legend.position="none",
+    panel.background=element_blank(),
+    panel.border=element_blank(),
+    panel.grid.major=element_blank(),
+    panel.grid.minor=element_blank(),
+    plot.background=element_blank(),
+    strip.background = element_blank()
+  )
+```
+
+Next, I visualize how many minutes each of those apps was used across the sample.
+For that, I need to reshape the data a bit to get the mean minutes per app across all days and all participants.
+In Figure \@ref(fig:visualize-minutes-per-app), I show the average objective time per app.
+Note that the CIs are across the entire data and not nested by app or day.
+Also, a high mean doesn't mean that much because it could just be from one participant who used it a lot on two days.
+The size of the points shows how often an app was reported across the entire sample.
+For apps that only had one or two entries, those CI will be nonexistent/small.
+In addition, I now exclude entries on `social_media_objective` that have `NA`.
+The `NA` here can mean participants just didn't fill in anything, or they had zero duration on that day.
+Because adding up the raw scores across apps was so close to the daily total, I'll exclude `NA`s here.
+```{r visualize-minutes-per-app, echo=FALSE, warning=FALSE, message=FALSE, fig.cap="Average daily objective time for all apps across participants and days", fig.dim=c(12,10)}
+apps_long %>%
+  filter(!is.na(app)) %>%
+  filter(!is.na(social_media_objective)) %>% 
+  group_by(app) %>% 
+  summarise(
+    count = n(),
+    time = mean(social_media_objective, na.rm = TRUE),
+    ci_upper = Rmisc::CI(social_media_objective)[[1]],
+    ci_lower = Rmisc::CI(social_media_objective)[[3]]
+  ) %>% 
+  ungroup() %>% 
+  ggplot(
+    .,
+    aes(
+      x =  reorder(x = app, time),
+      y = time,
+      color = app
+    )
+  ) +
+  geom_point(
+    aes(
+      size = count
+    )
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = ci_lower,
+      ymax = ci_upper
+    ),
+    width = 0
+  ) +
+  guides(
+    color = FALSE
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.title.x=element_blank(),
+    panel.background=element_blank(),
+    panel.border=element_blank(),
+    panel.grid.major=element_blank(),
+    panel.grid.minor=element_blank(),
+    plot.background=element_blank(),
+    strip.background = element_blank()
+  )
+```
+
+I'll do the same for objective pickups per app, averaged across day and participant.
+Figure \@ref(fig:visualize-pickups-per-app) shows that the same apps that got a lot of screen time had a lot of pickups.
+```{r visualize-pickups-per-app, echo=FALSE, warning=FALSE, message=FALSE, fig.cap="Average daily pickups for all apps across participants and days", fig.dim=c(12,10)}
+apps_long %>%
+  filter(!is.na(app)) %>% 
+  filter(!is.na(pickups)) %>% 
+  group_by(app) %>% 
+  summarise(
+    count = n(),
+    mean_pickups = mean(pickups, na.rm = TRUE),
+    ci_upper = Rmisc::CI(pickups)[[1]],
+    ci_lower = Rmisc::CI(pickups)[[3]]
+  ) %>%
+  ungroup() %>% 
+  ggplot(
+    .,
+    aes(
+      x =  reorder(x = app, mean_pickups),
+      y = mean_pickups,
+      color = app
+    )
+  ) +
+  geom_point(
+    aes(
+      size = count
+    )
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = ci_lower,
+      ymax = ci_upper
+    ),
+    width = 0
+  ) +
+  guides(
+    color = FALSE
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.title.x=element_blank(),
+    panel.background=element_blank(),
+    panel.border=element_blank(),
+    panel.grid.major=element_blank(),
+    panel.grid.minor=element_blank(),
+    plot.background=element_blank(),
+    strip.background = element_blank()
+  )
+```
+
+Last, I check which apps got the most notifications over the week in Figure \@ref(fig:visualize-notifications-per-app), on average.
+It's interesting to see that Facebook had a lot of screen time and pickups, but much fewer notifications.
+Also, these notifications are per week, and not per day, as the previous two figures.
+```{r visualize-notifications-per-app, echo=FALSE, warning=FALSE, message=FALSE, fig.cap="Average notifications per week for all apps across participants", fig.dim=c(12,10)}
+apps_long %>%
+  filter(!is.na(app)) %>% 
+  filter(!is.na(notifications_per_week)) %>% 
+  group_by(app) %>% 
+  summarise(
+    count = n(),
+    weekly_notifications = mean(notifications_per_week, na.rm = TRUE),
+    ci_upper = Rmisc::CI(notifications_per_week)[[1]],
+    ci_lower = Rmisc::CI(notifications_per_week)[[3]]
+  ) %>%
+  ungroup() %>% 
+  ggplot(
+    .,
+    aes(
+      x =  reorder(x = app, weekly_notifications),
+      y = weekly_notifications,
+      color = app
+    )
+  ) +
+  geom_point(
+    aes(
+      size = count
+    )
+  ) +
+  geom_errorbar(
+    aes(
+      ymin = ci_lower,
+      ymax = ci_upper
+    ),
+    width = 0
+  ) +
+  guides(
+    color = FALSE
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    axis.title.x=element_blank(),
+    panel.background=element_blank(),
+    panel.border=element_blank(),
+    panel.grid.major=element_blank(),
+    panel.grid.minor=element_blank(),
+    plot.background=element_blank(),
+    strip.background = element_blank()
+  )
+```
+
+## Day level
+
+Alright, we're at the most interesting section, the daily surveys.
+I first look at how long people typically took for a survey.
+Table \@ref(tab:describe-survey-duration-study1) shows that the mean is highly skewed because of outliers and the median more appropriate to describe the duration.
+In Figure \@ref(fig:visualize-survey-duration-study1) we see that a couple of people took a long time from opening to submitting the survey.
+I checked those participants who took a long time in the [data processing section](#data-processing-study1).
+```{r describe-survey-duration-study1, echo=FALSE}
+knitr::kable(
+  describe(
+    study1,
+    "duration_diary"
+  ) %>% 
+    mutate(
+      across(
+        -variable,
+        round
+      )
+    ) %>% 
+    mutate_at(
+      vars(-variable),
+      list(~seconds_to_period(.))
+    ),
+  caption = "Duration of daily surveys"
+)
+```
+
+```{r visualize-survey-duration-study1, fig.cap= "Duration of daily surveys", echo=FALSE}
+single_cloud(
+  study1,
+  describe(
+    study1,
+    "duration_diary"
+  ),
+  "duration_diary",
+  color = "#009E73",
+  title = NULL,
+  trait = FALSE
+)
+```
+
+Alright, next I inspect overall response rate in the final sample, aka how many valid surveys do we have among the final sample. Each participant received five surveys, one for each day, so `r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow()` participants x 5 = `r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow() * 5`. We have `r nrow(study1)` surveys in the final sample, which means a `r round(nrow(study1) / (study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow() * 5) * 100)`% response rate among the final sample.
+
+Let's inspect response rate per day.
+As is to be expected, participants lost motivation over the course of the week.
+However, even the response rate on Friday is really high (at least among our sample of valid responses).
+We should still consider to take the day grouping into account when modelling the data later in the analysis.
+```{r responses-per-day-study1, echo=FALSE, fig.cap="Survey responses per day"}
+study1 %>% 
+  count(day) %>% 
+  mutate(percent = round(n / nrow(study1 %>% group_by(id) %>% slice(1)) * 100)) %>%  # divide by maximum number of surveys, which is number of valid participants
+  ggplot(
+    aes(
+      x = day,
+      y = percent,
+      color = day
+    )
+  ) +
+  geom_segment(
+    aes(
+      x = day,
+      xend = day,
+      y = 0,
+      yend = percent
+    ),
+    alpha = 0.5
+  ) +
+  geom_point(alpha = 0.5, size = 2) +
+  scale_color_manual(values = c("#E69F00", "#56B4E9", "#009E73", "#D55E00", "#0072B2")) +
+  geom_text(
+    aes(
+      label = percent,
+      y = percent + 4
+    )
+  ) +
+  theme(
+    axis.title.x=element_blank(),
+    legend.position = "none",
+    panel.background=element_blank(),
+    panel.border=element_blank(),
+    panel.grid.major=element_blank(),
+    panel.grid.minor=element_blank(),
+    plot.background=element_blank(),
+    strip.background = element_blank()
+  )
+```
+
+Next, I describe and plot the distributions of the social media use variables.
+The distribution and CI is of the entire sample, not aggregated by participant or day first.
+Table \@ref(tab:social-media-descriptives-study1) shows that participants weren't too far off in their estimates, which is interesting.
+As expected (Figure \@ref(fig:social-media-visualize-study1)), the social media variables are a bit skewed, but overall, they look fine.
+```{r social-media-descriptives-study1, echo=FALSE}
+### descriptives for BPNS
+social_media <- 
+  bind_rows(
+    list(
+      describe(
+        study1,
+        "social_media_subjective",
+        trait = FALSE
+      ),
+      describe(
+        study1,
+        "social_media_objective",
+        trait = FALSE
+      ),
+      describe(
+        study1,
+        "pickups_subjective",
+        trait = FALSE
+      ),
+      describe(
+        study1,
+        "pickups_objective",
+        trait = FALSE
+      ),
+      describe(
+        study1,
+        "notifications_subjective",
+        trait = FALSE
+      )
+    )
+  ) %>% 
+  mutate(
+    across(
+      -variable,
+      round
+    )
+  )
+
+social_media %>% 
+  knitr::kable(
+    .,
+    caption = "Descriptive information on social media variables"
+  )
+```
+
+```{r social-media-visualize-study1, warning=FALSE, message=FALSE, fig.cap="Distribution of social media variables", fig.dim=c(8.5,9), echo=FALSE}
+plot_grid(
+  # screen time
+  single_cloud(
+    study1,
+    social_media,
+    "social_media_subjective",
+    "#999999",
+    title = "Subjective screen time",
+    trait = FALSE
+  ),
+  single_cloud(
+    study1,
+    social_media,
+    "social_media_objective",
+    "#E69F00",
+    title = "Objective screen time",
+    trait = FALSE
+  ),
+  single_cloud(
+    study1,
+    social_media,
+    "pickups_subjective",
+    "#56B4E9",
+    title = "Subjective pickups",
+    trait = FALSE
+  ),
+  single_cloud(
+    study1,
+    social_media,
+    "pickups_objective",
+    "#009E73",
+    title = "Objective pickups",
+    trait = FALSE
+  ),
+  single_cloud(
+    study1,
+    social_media,
+    "notifications_subjective",
+    "#F0E442",
+    title = "Subjective notifications",
+    trait = FALSE
+  ),
+  ncol = 2
+)
+```
+
+I also want to see how much variability there is between the objective and subjective measures.
+In Figure \@ref(fig:dumbbell-social-media) we see per participant the difference between objective and subjective social media use.
+The numbers in the grey box show whether the subjective report is an underestimate (negative number) or overestimate (positive number).
+Inspiration for the plot from [here](https://rud.is/b/2016/04/17/ggplot2-exercising-with-ggalt-dumbbells/) and [here](https://stackoverflow.com/questions/44653597/adding-a-traditional-legend-to-dumbbell-plot-in-ggaltgeom-dumbbell-in-r).
+```{r dumbbell-social-media, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Difference between subjective and objective social media use (difference in grey box)", fig.dim=c(8,20)}
+# aggregate by participant over day
+plot_data <- 
+  study1 %>% 
+  group_by(id) %>% 
+  summarise(
+    social_media_objective = mean(social_media_objective, na.rm = T),
+    social_media_subjective = mean(social_media_subjective, na.rm = T)
+  ) %>% 
+  ungroup() %>% 
+  mutate(diff = round(social_media_subjective - social_media_objective),
+         id = as.factor(parse_number(as.character(id)))) %>% 
+  arrange(id)
+
+# same as above, but in long format so we can get a legend
+plot_data_long <- 
+  study1 %>% 
+  group_by(id) %>% 
+  summarise(
+    social_media_objective = mean(social_media_objective, na.rm = T),
+    social_media_subjective = mean(social_media_subjective, na.rm = T)
+  ) %>% 
+  ungroup() %>% 
+  pivot_longer(
+    cols = -id,
+    names_to = "measure",
+    names_prefix = "social_media_",
+    values_to = "time"
+  ) %>% 
+  mutate(id = as.factor(parse_number(as.character(id)))) %>% 
+  arrange(id)
+
+# dumbbell plot
+ggplot(
+  plot_data,
+  aes(
+    y = id
+  )
+) +
+  geom_dumbbell(
+    aes(
+      x = social_media_subjective,
+      xend = social_media_objective
+    ),
+    size = 2,
+    colour_x = "lightblue",
+    colour_xend = "darkblue",
+    color = "lightgrey"
+  ) +
+  geom_point(
+    data = plot_data_long,
+    aes(
+      x = time,
+      color = measure
+    ),
+    size = 5
+  ) + 
+  geom_rect(
+    data = plot_data,
+    aes(
+      xmin = 530,
+      xmax = 570,
+      ymin = -Inf,
+      ymax = Inf
+    ),
+    fill = "lightgrey"
+  ) +
+  # add difference
+  geom_text(
+    data = plot_data,
+    aes(
+      label = diff,
+      y = id,
+      x = 550
+    )
+  ) +
+  labs(
+    x = "Minutes",
+    y = "Participant"
+  ) +
+  scale_color_manual(
+    label = c("Objective", "Subjective"),
+    name = "Legend",
+    values = c("darkblue", "lightblue"))
+
+# clear workspace
+rm(
+  plot_data,
+  plot_data_long
+)
+```
+
+
+Now let's look at the state well-being and psychological needs variables plus the four experiences (e.g., `boring`).
+Again, I calculate $\omega$, but this time for the entire sample in Table \@ref(tab:states-descriptives-study1).
+That will necessarily bias the estimate because there's multiple measures per person.
+I'm not aware of a consensus reliability procedure for repeated measures.
+Figure \@ref(fig:states-visualize-study1) shows that the data look pretty good.
+```{r states-descriptives-study1, echo=FALSE}
+### well-being
+well_being <- 
+  describe(
+    study1,
+    "well_being_state",
+    trait = FALSE
+  )
+
+# get omega
+well_being_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      select(low_positive_peaceful:low_negative_gloomy),
+    type = "omega",
+    B = 1e4
+  )$est
+
+# add omega to scales
+well_being <- 
+  well_being %>% 
+  mutate(
+    omega = well_being_omega
+  )
+
+### psychological needs
+needs <- 
+  bind_rows(
+    list(
+      describe(
+        study1,
+        "autonomy_state",
+        trait = FALSE
+      ),
+      describe(
+        study1,
+        "competence_state",
+        trait = FALSE
+      ),
+      describe(
+        study1,
+        "relatedness_state",
+        trait = FALSE
+      )
+    )
+  )
+
+# get omegas
+autonomy_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      select(
+        autonomy_1:autonomy_4
+      ),
+    type = "omega",
+    B = 1e4
+  )$est
+
+competence_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      select(
+        competence_1:competence_4
+      ),
+    type = "omega",
+    B = 1e4
+  )$est
+
+relatedness_omega <- 
+  ci.reliability(
+    data = study1 %>% 
+      select(
+        relatedness_1:relatedness_4
+      ),
+    type = "omega",
+    B = 1e4
+  )$est
+
+# add omegas to descriptives
+needs <- 
+  needs %>% 
+  mutate(
+    omega = c(
+      autonomy_omega,
+      competence_omega,
+      relatedness_omega
+    )
+  )
+
+### experiences
+experiences <- 
+  bind_rows(
+    list(
+      describe(
+        study1,
+        "satisfied",
+        trait = FALSE
+      ),
+      describe(
+        study1,
+        "boring",
+        trait = FALSE
+      ),
+      describe(
+        study1,
+        "stressful",
+        trait = FALSE
+      ),
+      describe(
+        study1,
+        "enjoyable",
+        trait = FALSE
+      )
+    )
+  )
+
+
+# bind those three and round to two decimals
+state_descriptives <- 
+  bind_rows(
+    well_being,
+    needs,
+    experiences
+  ) %>% 
+  mutate(
+    across(
+      -variable,
+      ~ round(.x, digits = 2)
+    )
+  )
+
+knitr::kable(
+  state_descriptives,
+  caption = "Descriptives for state variables"
+)
+
+# clear up workspace
+rm(
+  well_being,
+  needs,
+  well_being_omega,
+  autonomy_omega,
+  competence_omega,
+  relatedness_omega
+)
+```
+
+```{r states-visualize-study1, warning=FALSE, message=FALSE, fig.cap="Distribution of state variables", fig.dim=c(8.5,9), echo=FALSE}
+plot_grid(
+  # well-being
+  single_cloud(
+    study1,
+    state_descriptives,
+    "well_being_state",
+    "#999999",
+    title = "State well-being",
+    trait = FALSE
+    ),
+  # needs
+  single_cloud(
+    study1,
+    state_descriptives,
+    "autonomy_state",
+    "#E69F00",
+    title = "Autonomy",
+    trait = FALSE
+  ),
+  single_cloud(
+    study1,
+    state_descriptives,
+    "competence_state",
+    "#56B4E9",
+    title = "Competence",
+    trait = FALSE
+  ),
+  single_cloud(
+    study1,
+    state_descriptives,
+    "relatedness_state",
+    "#009E73",
+    title = "Relatedness",
+    trait = FALSE
+  ),
+  single_cloud(
+    study1,
+    experiences,
+    "satisfied",
+    "#F0E442",
+    title = "Satisfaction",
+    trait = FALSE
+  ),
+  single_cloud(
+    study1,
+    experiences,
+    "boring",
+    "#0072B2",
+    title = "Boredom",
+    trait = FALSE
+  ),
+  single_cloud(
+    study1,
+    experiences,
+    "stressful",
+    "#D55E00",
+    title = "Stress",
+    trait = FALSE
+  ),
+  single_cloud(
+    study1,
+    experiences,
+    "enjoyable",
+    "#CC79A7",
+    title = "Enjoyment",
+    trait = FALSE
+  ),
+  ncol = 2
+)
+```
+In Figure \@ref(fig:visualize-correlations-objective-subjective) we see the correlations between variables on the state level.
+```{r visualize-correlations-objective-subjective, message=FALSE, warning=F, echo=FALSE, fig.cap="Correlation matrix 2", fig.dim=c(12,12)}
+ggpairs(
+  data = study1 %>%
+    select(
+      social_media_subjective:weekly_notifications,
+      well_being_state:relatedness_state
+    ),
+  lower = list(
+    continuous = lm_function # custom helper function
+  ),
+  diag = list(
+    continuous = dens_function # custom helper function
+  )
+) +
+  theme(
+    axis.line=element_blank(),
+    axis.text.x=element_blank(),
+    axis.text.y=element_blank(),
+    axis.ticks=element_blank(),
+    axis.title.y=element_blank(),
+    axis.title.x=element_blank(),
+    legend.position="none",
+    panel.background=element_blank(),
+    panel.border=element_blank(),
+    panel.grid.major=element_blank(),
+    panel.grid.minor=element_blank(),
+    plot.background=element_blank(),
+    strip.background = element_blank()
+  )
+```
+
+In Figure \@ref(fig:visualize-correlations-objective-trait) we see the correlations between use variables on the state level and the trait level.
+```{r visualize-correlations-objective-trait, message=FALSE, warning=F, echo=FALSE, fig.cap="Correlation matrix 3", fig.dim=c(15,15)}
+ggpairs(
+  data = study1 %>%
+    select(
+      social_media_subjective:weekly_notifications,
+      contains("trait"),
+      extraversion:openness
+    ),
+  lower = list(
+    continuous = lm_function # custom helper function
+  ),
+  diag = list(
+    continuous = dens_function # custom helper function
+  )
+) +
+  theme(
+    axis.line=element_blank(),
+    axis.text.x=element_blank(),
+    axis.text.y=element_blank(),
+    axis.ticks=element_blank(),
+    axis.title.y=element_blank(),
+    axis.title.x=element_blank(),
+    legend.position="none",
+    panel.background=element_blank(),
+    panel.border=element_blank(),
+    panel.grid.major=element_blank(),
+    panel.grid.minor=element_blank(),
+    plot.background=element_blank(),
+    strip.background = element_blank()
+  )
+```

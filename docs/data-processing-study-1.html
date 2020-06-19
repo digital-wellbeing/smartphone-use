@@ -24,7 +24,7 @@
 <meta name="author" content="Niklas Johannes" />
 
 
-<meta name="date" content="2020-06-15" />
+<meta name="date" content="2020-06-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -142,7 +142,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3" data-path="data-processing-study-1.html"><a href="data-processing-study-1.html#screen-time-data"><i class="fa fa-check"></i><b>2.3</b> Screen time data</a></li>
 <li class="chapter" data-level="2.4" data-path="data-processing-study-1.html"><a href="data-processing-study-1.html#merge-data-sets"><i class="fa fa-check"></i><b>2.4</b> Merge data sets</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html"><i class="fa fa-check"></i><b>3</b> Descriptives and Visualizations Study 1</a></li>
+<li class="chapter" data-level="3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html"><i class="fa fa-check"></i><b>3</b> Descriptives and Visualizations Study 1</a><ul>
+<li class="chapter" data-level="3.1" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#overview"><i class="fa fa-check"></i><b>3.1</b> Overview</a></li>
+<li class="chapter" data-level="3.2" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#meta-level"><i class="fa fa-check"></i><b>3.2</b> Meta-level</a></li>
+<li class="chapter" data-level="3.3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#person-level"><i class="fa fa-check"></i><b>3.3</b> Person-level</a></li>
+<li class="chapter" data-level="3.4" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#app-level"><i class="fa fa-check"></i><b>3.4</b> App-level</a></li>
+<li class="chapter" data-level="3.5" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#day-level"><i class="fa fa-check"></i><b>3.5</b> Day level</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -268,7 +274,7 @@ I took the following steps:</p>
 <span id="cb5-25"><a href="data-processing-study-1.html#cb5-25"></a>    <span class="dt">ethnicity_black =</span> <span class="kw">if_else</span>(ethnicity_black <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Black or African American&quot;</span>, <span class="ot">NA_character_</span>),</span>
 <span id="cb5-26"><a href="data-processing-study-1.html#cb5-26"></a>    <span class="dt">ethnicity_white =</span> <span class="kw">if_else</span>(ethnicity_white <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;White&quot;</span>, <span class="ot">NA_character_</span>),</span>
 <span id="cb5-27"><a href="data-processing-study-1.html#cb5-27"></a>    <span class="dt">ethnicity_hispanic =</span> <span class="kw">if_else</span>(ethnicity_hispanic <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Hispanic or Latino&quot;</span>, <span class="ot">NA_character_</span>),</span>
-<span id="cb5-28"><a href="data-processing-study-1.html#cb5-28"></a>    <span class="dt">ethnicity_multi =</span> <span class="kw">if_else</span>(multiple <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;multiracial&quot;</span>, <span class="ot">NA_character_</span>),</span>
+<span id="cb5-28"><a href="data-processing-study-1.html#cb5-28"></a>    <span class="dt">ethnicity_multi =</span> <span class="kw">if_else</span>(multiple <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;Multiracial&quot;</span>, <span class="ot">NA_character_</span>),</span>
 <span id="cb5-29"><a href="data-processing-study-1.html#cb5-29"></a>    </span>
 <span id="cb5-30"><a href="data-processing-study-1.html#cb5-30"></a>    <span class="co"># coalesce them (coalesce doesn&#39;t work with .select helpers, so needed to type the variables out)</span></span>
 <span id="cb5-31"><a href="data-processing-study-1.html#cb5-31"></a>    <span class="dt">ethnicity =</span> <span class="kw">as.factor</span>(</span>
@@ -1672,41 +1678,65 @@ Again, <code>study1</code> is the “master” and we add personality variables 
 <span id="cb41-3"><a href="data-processing-study-1.html#cb41-3"></a><span class="st">  </span><span class="kw">select</span>(</span>
 <span id="cb41-4"><a href="data-processing-study-1.html#cb41-4"></a>    id,</span>
 <span id="cb41-5"><a href="data-processing-study-1.html#cb41-5"></a>    age<span class="op">:</span>ethnicity,</span>
-<span id="cb41-6"><a href="data-processing-study-1.html#cb41-6"></a>    <span class="kw">starts_with</span>(<span class="st">&quot;duration&quot;</span>),</span>
-<span id="cb41-7"><a href="data-processing-study-1.html#cb41-7"></a>    day,</span>
-<span id="cb41-8"><a href="data-processing-study-1.html#cb41-8"></a>    social_media_subjective,</span>
-<span id="cb41-9"><a href="data-processing-study-1.html#cb41-9"></a>    pickups_subjective,</span>
-<span id="cb41-10"><a href="data-processing-study-1.html#cb41-10"></a>    notifications_subjective,</span>
-<span id="cb41-11"><a href="data-processing-study-1.html#cb41-11"></a>    social_media_objective,</span>
-<span id="cb41-12"><a href="data-processing-study-1.html#cb41-12"></a>    pickups_objective,</span>
-<span id="cb41-13"><a href="data-processing-study-1.html#cb41-13"></a>    weekly_notifications,</span>
-<span id="cb41-14"><a href="data-processing-study-1.html#cb41-14"></a>    well_being_state<span class="op">:</span>relatedness_state,</span>
-<span id="cb41-15"><a href="data-processing-study-1.html#cb41-15"></a>    low_positive_peaceful<span class="op">:</span>enjoyable,</span>
-<span id="cb41-16"><a href="data-processing-study-1.html#cb41-16"></a>    autonomy_trait<span class="op">:</span>openness,</span>
-<span id="cb41-17"><a href="data-processing-study-1.html#cb41-17"></a>    bpns_<span class="dv">1</span><span class="op">:</span>big_five_<span class="dv">45</span></span>
-<span id="cb41-18"><a href="data-processing-study-1.html#cb41-18"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-19"><a href="data-processing-study-1.html#cb41-19"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb41-20"><a href="data-processing-study-1.html#cb41-20"></a>    <span class="dt">id =</span> <span class="kw">droplevels</span>(id),</span>
-<span id="cb41-21"><a href="data-processing-study-1.html#cb41-21"></a>    <span class="dt">day =</span> <span class="kw">as.factor</span>(day)</span>
-<span id="cb41-22"><a href="data-processing-study-1.html#cb41-22"></a>  )</span></code></pre></div>
+<span id="cb41-6"><a href="data-processing-study-1.html#cb41-6"></a>    gender,</span>
+<span id="cb41-7"><a href="data-processing-study-1.html#cb41-7"></a>    <span class="kw">starts_with</span>(<span class="st">&quot;duration&quot;</span>),</span>
+<span id="cb41-8"><a href="data-processing-study-1.html#cb41-8"></a>    day,</span>
+<span id="cb41-9"><a href="data-processing-study-1.html#cb41-9"></a>    social_media_subjective,</span>
+<span id="cb41-10"><a href="data-processing-study-1.html#cb41-10"></a>    pickups_subjective,</span>
+<span id="cb41-11"><a href="data-processing-study-1.html#cb41-11"></a>    notifications_subjective,</span>
+<span id="cb41-12"><a href="data-processing-study-1.html#cb41-12"></a>    social_media_objective,</span>
+<span id="cb41-13"><a href="data-processing-study-1.html#cb41-13"></a>    pickups_objective,</span>
+<span id="cb41-14"><a href="data-processing-study-1.html#cb41-14"></a>    weekly_notifications,</span>
+<span id="cb41-15"><a href="data-processing-study-1.html#cb41-15"></a>    well_being_state<span class="op">:</span>relatedness_state,</span>
+<span id="cb41-16"><a href="data-processing-study-1.html#cb41-16"></a>    low_positive_peaceful<span class="op">:</span>enjoyable,</span>
+<span id="cb41-17"><a href="data-processing-study-1.html#cb41-17"></a>    autonomy_trait<span class="op">:</span>openness,</span>
+<span id="cb41-18"><a href="data-processing-study-1.html#cb41-18"></a>    bpns_<span class="dv">1</span><span class="op">:</span>big_five_<span class="dv">45</span></span>
+<span id="cb41-19"><a href="data-processing-study-1.html#cb41-19"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb41-20"><a href="data-processing-study-1.html#cb41-20"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb41-21"><a href="data-processing-study-1.html#cb41-21"></a>    <span class="dt">id =</span> <span class="kw">droplevels</span>(id),</span>
+<span id="cb41-22"><a href="data-processing-study-1.html#cb41-22"></a>    <span class="dt">day =</span> <span class="kw">as.factor</span>(day)</span>
+<span id="cb41-23"><a href="data-processing-study-1.html#cb41-23"></a>  )</span></code></pre></div>
 <p>When plotting the app data I want them to reflect the final sample, which is why I only keep those participants and surveys in the <code>apps_long</code> data set that are also in the final data set (i.e., <code>study1</code>).
 I can’t just exclude those participants in <code>apps_long</code> because I also excluded surveys in <code>diary</code> on which <code>study1</code> is based.
 Therefore, I only keep those entries in <code>apps_long</code> which have a corresponding row in <code>study1</code> (aka entries in both <code>id</code> and <code>day</code>).
-Sidenote: The participants with a failed attention check in the <code>personality</code> data are not included in <code>study1</code> because they were excludedat other steps during merging, so no need to manually remove them here.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="data-processing-study-1.html#cb42-1"></a>apps_long &lt;-<span class="st"> </span></span>
-<span id="cb42-2"><a href="data-processing-study-1.html#cb42-2"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
-<span id="cb42-3"><a href="data-processing-study-1.html#cb42-3"></a>    </span>
-<span id="cb42-4"><a href="data-processing-study-1.html#cb42-4"></a>    <span class="co"># only those participants and days that are in final data set</span></span>
-<span id="cb42-5"><a href="data-processing-study-1.html#cb42-5"></a>    study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb42-6"><a href="data-processing-study-1.html#cb42-6"></a><span class="st">      </span><span class="kw">select</span>(id, day),</span>
-<span id="cb42-7"><a href="data-processing-study-1.html#cb42-7"></a>    </span>
-<span id="cb42-8"><a href="data-processing-study-1.html#cb42-8"></a>    <span class="co"># and the rest of the variables from apps_long, but without week</span></span>
-<span id="cb42-9"><a href="data-processing-study-1.html#cb42-9"></a>    apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb42-10"><a href="data-processing-study-1.html#cb42-10"></a><span class="st">      </span><span class="kw">rename</span>(<span class="dt">day =</span> time_frame) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb42-11"><a href="data-processing-study-1.html#cb42-11"></a><span class="st">      </span><span class="kw">filter</span>(day <span class="op">!=</span><span class="st"> &quot;week&quot;</span>),</span>
-<span id="cb42-12"><a href="data-processing-study-1.html#cb42-12"></a>    </span>
-<span id="cb42-13"><a href="data-processing-study-1.html#cb42-13"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;day&quot;</span>)</span>
-<span id="cb42-14"><a href="data-processing-study-1.html#cb42-14"></a>  )</span></code></pre></div>
+Also, I’ll remove “week” as a time frame and add the notifications for that app over whole week as a constant per app.</p>
+<p>Sidenote: The participants with a failed attention check in the <code>personality</code> data are not included in <code>study1</code> because they were excluded at other steps during merging, so no need to manually remove them here.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="data-processing-study-1.html#cb42-1"></a>apps_week &lt;-<span class="st"> </span></span>
+<span id="cb42-2"><a href="data-processing-study-1.html#cb42-2"></a><span class="st">  </span>apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-3"><a href="data-processing-study-1.html#cb42-3"></a><span class="st">  </span><span class="kw">select</span>(</span>
+<span id="cb42-4"><a href="data-processing-study-1.html#cb42-4"></a>    id,</span>
+<span id="cb42-5"><a href="data-processing-study-1.html#cb42-5"></a>    time_frame,</span>
+<span id="cb42-6"><a href="data-processing-study-1.html#cb42-6"></a>    app,</span>
+<span id="cb42-7"><a href="data-processing-study-1.html#cb42-7"></a>    rank,</span>
+<span id="cb42-8"><a href="data-processing-study-1.html#cb42-8"></a>    notifications</span>
+<span id="cb42-9"><a href="data-processing-study-1.html#cb42-9"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-10"><a href="data-processing-study-1.html#cb42-10"></a><span class="st">  </span><span class="kw">filter</span>(time_frame <span class="op">==</span><span class="st"> &quot;week&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-11"><a href="data-processing-study-1.html#cb42-11"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>time_frame)</span>
+<span id="cb42-12"><a href="data-processing-study-1.html#cb42-12"></a></span>
+<span id="cb42-13"><a href="data-processing-study-1.html#cb42-13"></a>apps_long &lt;-<span class="st"> </span></span>
+<span id="cb42-14"><a href="data-processing-study-1.html#cb42-14"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb42-15"><a href="data-processing-study-1.html#cb42-15"></a>    </span>
+<span id="cb42-16"><a href="data-processing-study-1.html#cb42-16"></a>    <span class="co"># only those participants and days that are in final data set</span></span>
+<span id="cb42-17"><a href="data-processing-study-1.html#cb42-17"></a>    study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-18"><a href="data-processing-study-1.html#cb42-18"></a><span class="st">      </span><span class="kw">select</span>(id, day),</span>
+<span id="cb42-19"><a href="data-processing-study-1.html#cb42-19"></a>    </span>
+<span id="cb42-20"><a href="data-processing-study-1.html#cb42-20"></a>    <span class="co"># and the rest of the variables from apps_long, but without week</span></span>
+<span id="cb42-21"><a href="data-processing-study-1.html#cb42-21"></a>    apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-22"><a href="data-processing-study-1.html#cb42-22"></a><span class="st">      </span><span class="kw">rename</span>(<span class="dt">day =</span> time_frame) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-23"><a href="data-processing-study-1.html#cb42-23"></a><span class="st">      </span><span class="kw">filter</span>(day <span class="op">!=</span><span class="st"> &quot;week&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-24"><a href="data-processing-study-1.html#cb42-24"></a><span class="st">      </span><span class="kw">select</span>(<span class="op">-</span>notifications),</span>
+<span id="cb42-25"><a href="data-processing-study-1.html#cb42-25"></a>    </span>
+<span id="cb42-26"><a href="data-processing-study-1.html#cb42-26"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;day&quot;</span>)</span>
+<span id="cb42-27"><a href="data-processing-study-1.html#cb42-27"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-28"><a href="data-processing-study-1.html#cb42-28"></a><span class="st">  </span></span>
+<span id="cb42-29"><a href="data-processing-study-1.html#cb42-29"></a><span class="st">  </span><span class="co"># add the notifications for that app per week as a constant</span></span>
+<span id="cb42-30"><a href="data-processing-study-1.html#cb42-30"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb42-31"><a href="data-processing-study-1.html#cb42-31"></a>    .,</span>
+<span id="cb42-32"><a href="data-processing-study-1.html#cb42-32"></a>    apps_week,</span>
+<span id="cb42-33"><a href="data-processing-study-1.html#cb42-33"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;app&quot;</span>, <span class="st">&quot;rank&quot;</span>)</span>
+<span id="cb42-34"><a href="data-processing-study-1.html#cb42-34"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-35"><a href="data-processing-study-1.html#cb42-35"></a><span class="st">  </span><span class="kw">select</span>(id, day, rank<span class="op">:</span>notifications) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-36"><a href="data-processing-study-1.html#cb42-36"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">notifications_per_week =</span> notifications)</span></code></pre></div>
 
 </div>
 </div>
@@ -1766,6 +1796,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

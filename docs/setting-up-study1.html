@@ -24,7 +24,7 @@
 <meta name="author" content="Niklas Johannes" />
 
 
-<meta name="date" content="2020-06-15" />
+<meta name="date" content="2020-06-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="index.html"/>
-<link rel="next" href="data-processing-study-1.html"/>
+<link rel="next" href="data-processing-study1.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -136,13 +136,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="part"><span><b>I Study 1</b></span></li>
 <li class="chapter" data-level="1" data-path="setting-up-study1.html"><a href="setting-up-study1.html"><i class="fa fa-check"></i><b>1</b> Setting up</a></li>
-<li class="chapter" data-level="2" data-path="data-processing-study-1.html"><a href="data-processing-study-1.html"><i class="fa fa-check"></i><b>2</b> Data processing Study 1</a><ul>
-<li class="chapter" data-level="2.1" data-path="data-processing-study-1.html"><a href="data-processing-study-1.html#personality-data"><i class="fa fa-check"></i><b>2.1</b> Personality data</a></li>
-<li class="chapter" data-level="2.2" data-path="data-processing-study-1.html"><a href="data-processing-study-1.html#diary-data"><i class="fa fa-check"></i><b>2.2</b> Diary data</a></li>
-<li class="chapter" data-level="2.3" data-path="data-processing-study-1.html"><a href="data-processing-study-1.html#screen-time-data"><i class="fa fa-check"></i><b>2.3</b> Screen time data</a></li>
-<li class="chapter" data-level="2.4" data-path="data-processing-study-1.html"><a href="data-processing-study-1.html#merge-data-sets"><i class="fa fa-check"></i><b>2.4</b> Merge data sets</a></li>
+<li class="chapter" data-level="2" data-path="data-processing-study1.html"><a href="data-processing-study1.html"><i class="fa fa-check"></i><b>2</b> Data processing Study 1</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-processing-study1.html"><a href="data-processing-study1.html#personality-data"><i class="fa fa-check"></i><b>2.1</b> Personality data</a></li>
+<li class="chapter" data-level="2.2" data-path="data-processing-study1.html"><a href="data-processing-study1.html#diary-data"><i class="fa fa-check"></i><b>2.2</b> Diary data</a></li>
+<li class="chapter" data-level="2.3" data-path="data-processing-study1.html"><a href="data-processing-study1.html#screen-time-data"><i class="fa fa-check"></i><b>2.3</b> Screen time data</a></li>
+<li class="chapter" data-level="2.4" data-path="data-processing-study1.html"><a href="data-processing-study1.html#merge-data-sets"><i class="fa fa-check"></i><b>2.4</b> Merge data sets</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html"><i class="fa fa-check"></i><b>3</b> Descriptives and Visualizations Study 1</a></li>
+<li class="chapter" data-level="3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html"><i class="fa fa-check"></i><b>3</b> Descriptives and Visualizations Study 1</a><ul>
+<li class="chapter" data-level="3.1" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#overview"><i class="fa fa-check"></i><b>3.1</b> Overview</a></li>
+<li class="chapter" data-level="3.2" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#meta-level"><i class="fa fa-check"></i><b>3.2</b> Meta-level</a></li>
+<li class="chapter" data-level="3.3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#person-level"><i class="fa fa-check"></i><b>3.3</b> Person-level</a></li>
+<li class="chapter" data-level="3.4" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#app-level"><i class="fa fa-check"></i><b>3.4</b> App-level</a></li>
+<li class="chapter" data-level="3.5" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#day-level"><i class="fa fa-check"></i><b>3.5</b> Day level</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -180,12 +186,18 @@ If you’re fine with them being installed, set <code>eval = TRUE</code>.</p>
 <span id="cb1-8"><a href="setting-up-study1.html#cb1-8"></a>  tidyverse,</span>
 <span id="cb1-9"><a href="setting-up-study1.html#cb1-9"></a>  lubridate,</span>
 <span id="cb1-10"><a href="setting-up-study1.html#cb1-10"></a>  here,</span>
-<span id="cb1-11"><a href="setting-up-study1.html#cb1-11"></a>  ggridges,</span>
-<span id="cb1-12"><a href="setting-up-study1.html#cb1-12"></a>  cowplot</span>
-<span id="cb1-13"><a href="setting-up-study1.html#cb1-13"></a>)</span>
-<span id="cb1-14"><a href="setting-up-study1.html#cb1-14"></a></span>
-<span id="cb1-15"><a href="setting-up-study1.html#cb1-15"></a><span class="co"># set seed</span></span>
-<span id="cb1-16"><a href="setting-up-study1.html#cb1-16"></a><span class="kw">set.seed</span>(<span class="dv">42</span>)</span></code></pre></div>
+<span id="cb1-11"><a href="setting-up-study1.html#cb1-11"></a>  MBESS,</span>
+<span id="cb1-12"><a href="setting-up-study1.html#cb1-12"></a>  ggridges,</span>
+<span id="cb1-13"><a href="setting-up-study1.html#cb1-13"></a>  GGally,</span>
+<span id="cb1-14"><a href="setting-up-study1.html#cb1-14"></a>  ggalt,</span>
+<span id="cb1-15"><a href="setting-up-study1.html#cb1-15"></a>  cowplot</span>
+<span id="cb1-16"><a href="setting-up-study1.html#cb1-16"></a>)</span>
+<span id="cb1-17"><a href="setting-up-study1.html#cb1-17"></a></span>
+<span id="cb1-18"><a href="setting-up-study1.html#cb1-18"></a><span class="co"># set seed</span></span>
+<span id="cb1-19"><a href="setting-up-study1.html#cb1-19"></a><span class="kw">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb1-20"><a href="setting-up-study1.html#cb1-20"></a></span>
+<span id="cb1-21"><a href="setting-up-study1.html#cb1-21"></a><span class="co"># set theme</span></span>
+<span id="cb1-22"><a href="setting-up-study1.html#cb1-22"></a><span class="kw">theme_set</span>(<span class="kw">theme_cowplot</span>())</span></code></pre></div>
 
 </div>
             </section>
@@ -194,7 +206,7 @@ If you’re fine with them being installed, set <code>eval = TRUE</code>.</p>
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="data-processing-study-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="data-processing-study1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -244,6 +256,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-# Data processing Study 1
+# Data processing Study 1 {#data-processing-study1}
 
 Let's process the raw data and get them to a format that we can work with for the analysis.
 Study 1 has three raw data files:
@@ -54,6 +54,9 @@ personality <-
 
 Next, I make sure those variables have the correct variable type.
 I'll also recode factor levels so that labels are readable.
+Note that participants filled in their age from a dropdown menu to prevent typos.
+The dropdown went from age 18 (`1`) to 30+ (`13`).
+Nobody was older than thirty, so I'll recode age as well.
 ```{r recode-personality-data}
 personality <- 
   personality %>% 
@@ -73,7 +76,8 @@ personality <-
       "male" = "1",
       "female" = "2",
       "other" = "3"
-    )
+    ),
+    age = age + 17
   )
 ```
 
@@ -113,7 +117,7 @@ personality <-
     ethnicity_black = if_else(ethnicity_black == 1, "Black or African American", NA_character_),
     ethnicity_white = if_else(ethnicity_white == 1, "White", NA_character_),
     ethnicity_hispanic = if_else(ethnicity_hispanic == 1, "Hispanic or Latino", NA_character_),
-    ethnicity_multi = if_else(multiple > 1, "multiracial", NA_character_),
+    ethnicity_multi = if_else(multiple > 1, "Multiracial", NA_character_),
     
     # coalesce them (coalesce doesn't work with .select helpers, so needed to type the variables out)
     ethnicity = as.factor(
@@ -426,7 +430,7 @@ diary <-
     # experiences
     satisfied = Q30_1,
     boring = Q30_2,
-    stessful = Q30_3,
+    stressful = Q30_3,
     enjoyable = Q30_4
   )
 ```
@@ -434,7 +438,7 @@ diary <-
 Next, I make sure those variables have the correct variable type.
 I'll also recode factor levels so that labels are readable.
 Note that `day` goes from `1` to `5`.
-All participants started on a Monday, which is why I turn `day` into a factor.
+All participants started on a Monday, which is why I turn `day` into a factor and reorder the levels.
 ```{r recode-diary-data}
 diary <- 
   diary %>% 
@@ -608,7 +612,7 @@ diary %>%
 
 But there are a couple of participants who seemed to rush through the survey, see Table \@ref(tab:table-percentage-straightliners-diary).
 Manually inspecting them indeed shows that it's hard to trust their data.
-```{r table-percentage-straightliners-diary, echo=FALSE}
+```{r table-percentage-straightliners-diary, message=FALSE, echo=FALSE}
 # percentage of participants
 diary %>%
   group_by(id) %>%
@@ -1265,13 +1269,14 @@ study1 <-
   )
 ```
 
-Last, some housekeeping, reordering variables and making sure they all have the correct variable type.
+Last, some housekeeping, reordering variables and making sure they all have the correct variable type, plus reordering the `day` factor.
 ```{r final-study1-data}
 study1 <- 
   study1 %>% 
   select(
     id,
     age:ethnicity,
+    gender,
     starts_with("duration"),
     day,
     social_media_subjective,
@@ -1287,15 +1292,37 @@ study1 <-
   ) %>% 
   mutate(
     id = droplevels(id),
-    day = as.factor(day)
+    day = as.factor(day),
+    day = fct_relevel(
+      day,
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday"
+    )
   )
 ```
 
 When plotting the app data I want them to reflect the final sample, which is why I only keep those participants and surveys in the `apps_long` data set that are also in the final data set (i.e., `study1`).
 I can't just exclude those participants in `apps_long` because I also excluded surveys in `diary` on which `study1` is based.
 Therefore, I only keep those entries in `apps_long` which have a corresponding row in `study1` (aka entries in both `id` and `day`).
-Sidenote: The participants with a failed attention check in the `personality` data are not included in `study1` because they were excludedat other steps during merging, so no need to manually remove them here.
+Also, I'll remove "week" as a time frame and add the notifications for that app over whole week as a constant per app.
+
+Sidenote: The participants with a failed attention check in the `personality` data are not included in `study1` because they were excluded at other steps during merging, so no need to manually remove them here.
 ```{r apps-long-valid-only}
+apps_week <- 
+  apps_long %>% 
+  select(
+    id,
+    time_frame,
+    app,
+    rank,
+    notifications
+  ) %>% 
+  filter(time_frame == "week") %>% 
+  select(-time_frame)
+
 apps_long <- 
   left_join(
     
@@ -1306,8 +1333,18 @@ apps_long <-
     # and the rest of the variables from apps_long, but without week
     apps_long %>% 
       rename(day = time_frame) %>% 
-      filter(day != "week"),
+      filter(day != "week") %>% 
+      select(-notifications),
     
     by = c("id", "day")
-  )
+  ) %>% 
+  
+  # add the notifications for that app per week as a constant
+  left_join(
+    .,
+    apps_week,
+    by = c("id", "app", "rank")
+  ) %>% 
+  select(id, day, rank:notifications) %>% 
+  rename(notifications_per_week = notifications)
 ```
