@@ -24,7 +24,7 @@
 <meta name="author" content="Niklas Johannes" />
 
 
-<meta name="date" content="2020-06-19" />
+<meta name="date" content="2020-06-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -352,14 +352,6 @@ That distribution is heavily skewed (Figure <a href="descriptives-and-visualizat
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="descriptives-and-visualizations-study-1.html#cb42-1"></a><span class="kw">single_cloud</span>(</span>
-<span id="cb42-2"><a href="descriptives-and-visualizations-study-1.html#cb42-2"></a>  study1,</span>
-<span id="cb42-3"><a href="descriptives-and-visualizations-study-1.html#cb42-3"></a>  notifications,</span>
-<span id="cb42-4"><a href="descriptives-and-visualizations-study-1.html#cb42-4"></a>  <span class="st">&quot;weekly_notifications&quot;</span>,</span>
-<span id="cb42-5"><a href="descriptives-and-visualizations-study-1.html#cb42-5"></a>  <span class="st">&quot;#009E73&quot;</span>,</span>
-<span id="cb42-6"><a href="descriptives-and-visualizations-study-1.html#cb42-6"></a>  <span class="dt">title =</span> <span class="ot">NULL</span>,</span>
-<span id="cb42-7"><a href="descriptives-and-visualizations-study-1.html#cb42-7"></a>  <span class="dt">trait =</span> <span class="ot">TRUE</span></span>
-<span id="cb42-8"><a href="descriptives-and-visualizations-study-1.html#cb42-8"></a>)</span></code></pre></div>
 <div class="figure"><span id="fig:visualize-weekly-notifications-study1"></span>
 <img src="analysis_report_files/figure-html/visualize-weekly-notifications-study1-1.png" alt="Weekly notifications (objective) across all apps" width="672" />
 <p class="caption">
@@ -496,9 +488,9 @@ In Figure <a href="descriptives-and-visualizations-study-1.html#fig:visualize-co
 As expected psychological needs are correlated highly with each other.
 Credit for the <code>lm</code> lines goes to <a href="https://www.r-bloggers.com/multiple-regression-lines-in-ggpairs/">data prone</a>, whose idea I adapted.
 <div class="figure"><span id="fig:visualize-correlations-traits-study1"></span>
-<img src="analysis_report_files/figure-html/visualize-correlations-traits-study1-1.png" alt="Correlation matrix" width="1152" />
+<img src="analysis_report_files/figure-html/visualize-correlations-traits-study1-1.png" alt="Correlation matrix of trait level variables" width="1152" />
 <p class="caption">
-Figure 3.4: Correlation matrix
+Figure 3.4: Correlation matrix of trait level variables
 </p>
 </div>
 </div>
@@ -820,16 +812,16 @@ Figure 3.13: Distribution of state variables
 </div>
 In Figure <a href="descriptives-and-visualizations-study-1.html#fig:visualize-correlations-objective-subjective">3.14</a> we see the correlations between variables on the state level.
 <div class="figure"><span id="fig:visualize-correlations-objective-subjective"></span>
-<img src="analysis_report_files/figure-html/visualize-correlations-objective-subjective-1.png" alt="Correlation matrix 2" width="1152" />
+<img src="analysis_report_files/figure-html/visualize-correlations-objective-subjective-1.png" alt="Correlation matrix of state level variables. social = screen time on social media; _s = subjective; _o = objective; not = notifications" width="1344" />
 <p class="caption">
-Figure 3.14: Correlation matrix 2
+Figure 3.14: Correlation matrix of state level variables. social = screen time on social media; _s = subjective; _o = objective; not = notifications
 </p>
 </div>
 In Figure <a href="descriptives-and-visualizations-study-1.html#fig:visualize-correlations-objective-trait">3.15</a> we see the correlations between use variables on the state level and the trait level.
 <div class="figure"><span id="fig:visualize-correlations-objective-trait"></span>
-<img src="analysis_report_files/figure-html/visualize-correlations-objective-trait-1.png" alt="Correlation matrix 3" width="1440" />
+<img src="analysis_report_files/figure-html/visualize-correlations-objective-trait-1.png" alt="Correlation matrix of use variables (state) and personality traits. social = screen time on social media; _s = subjective; _o = objective; not = notifications; extra = extraversion; agree = agreeableness; con = conscientiousness; neuo = neuroticism; open = openness" width="1440" />
 <p class="caption">
-Figure 3.15: Correlation matrix 3
+Figure 3.15: Correlation matrix of use variables (state) and personality traits. social = screen time on social media; _s = subjective; _o = objective; not = notifications; extra = extraversion; agree = agreeableness; con = conscientiousness; neuo = neuroticism; open = openness
 </p>
 </div>
 

@@ -166,7 +166,7 @@ notifications %>%
   )
 ```
 
-```{r visualize-weekly-notifications-study1, ech=FALSE, fig.cap="Weekly notifications (objective) across all apps"}
+```{r visualize-weekly-notifications-study1, echo=FALSE, fig.cap="Weekly notifications (objective) across all apps"}
 single_cloud(
   study1,
   notifications,
@@ -516,7 +516,7 @@ plot_grid(
 In Figure \@ref(fig:visualize-correlations-traits-study1) we see the correlations between those traits.
 As expected psychological needs are correlated highly with each other.
 Credit for the `lm` lines goes to [data prone](https://www.r-bloggers.com/multiple-regression-lines-in-ggpairs/), whose idea I adapted.
-```{r visualize-correlations-traits-study1, fig.cap="Correlation matrix", fig.dim=c(12,12), echo=FALSE, message=FALSE}
+```{r visualize-correlations-traits-study1, fig.cap="Correlation matrix of trait level variables", fig.dim=c(12,12), echo=FALSE, message=FALSE}
 ggpairs(
   data = study1 %>%
     group_by(id) %>% 
@@ -1262,12 +1262,24 @@ plot_grid(
 )
 ```
 In Figure \@ref(fig:visualize-correlations-objective-subjective) we see the correlations between variables on the state level.
-```{r visualize-correlations-objective-subjective, message=FALSE, warning=F, echo=FALSE, fig.cap="Correlation matrix 2", fig.dim=c(12,12)}
+```{r visualize-correlations-objective-subjective, message=FALSE, warning=F, echo=FALSE, fig.cap="Correlation matrix of state level variables. social = screen time on social media; _s = subjective; _o = objective; not = notifications", fig.dim=c(14,14)}
 ggpairs(
   data = study1 %>%
     select(
       social_media_subjective:weekly_notifications,
       well_being_state:relatedness_state
+    ) %>% 
+    rename( # just to make labels shorter for this figure
+      social_s = social_media_subjective,
+      pickups_s = pickups_subjective,
+      not_s = notifications_subjective,
+      social_o = social_media_objective,
+      pickups_o = pickups_objective,
+      not_weekly = weekly_notifications,
+      well_being = well_being_state,
+      autonomy = autonomy_state,
+      competence = competence_state,
+      relatedness = relatedness_state
     ),
   lower = list(
     continuous = lm_function # custom helper function
@@ -1294,13 +1306,30 @@ ggpairs(
 ```
 
 In Figure \@ref(fig:visualize-correlations-objective-trait) we see the correlations between use variables on the state level and the trait level.
-```{r visualize-correlations-objective-trait, message=FALSE, warning=F, echo=FALSE, fig.cap="Correlation matrix 3", fig.dim=c(15,15)}
+```{r visualize-correlations-objective-trait, message=FALSE, warning=F, echo=FALSE, fig.cap="Correlation matrix of use variables (state) and personality traits. social = screen time on social media; _s = subjective; _o = objective; not = notifications; extra = extraversion; agree = agreeableness; con = conscientiousness; neuo = neuroticism; open = openness", fig.dim=c(15,15)}
 ggpairs(
   data = study1 %>%
     select(
       social_media_subjective:weekly_notifications,
       contains("trait"),
       extraversion:openness
+    ) %>% 
+    rename(
+      social_s = social_media_subjective,
+      pickups_s = pickups_subjective,
+      not_s = notifications_subjective,
+      social_o = social_media_objective,
+      pickups_o = pickups_objective,
+      not_weekly = weekly_notifications,
+      autonomy = autonomy_trait,
+      competence = competence_trait,
+      relatedness = relatedness_trait,
+      extra = extraversion,
+      agree = agreeableness,
+      con = conscientiousness,
+      neuro = neuroticism,
+      open = openness
+      
     ),
   lower = list(
     continuous = lm_function # custom helper function
