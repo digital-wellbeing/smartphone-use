@@ -1169,7 +1169,8 @@ pickups_aggregated <-
   apps_long %>% 
   group_by(id, time_frame) %>% 
   filter(time_frame != "week") %>% # no week 
-  summarise(pickups_objective = sum(pickups, na.rm = TRUE))
+  filter(!is.na(pickups)) %>% # exclude missing values (if I do na.rm = T in sum below it will result in zeros to sum NAs)
+  summarise(pickups_objective = sum(pickups))
 
 # get notifications across apps per participant
 notifications_aggregated <- 
@@ -1269,6 +1270,40 @@ study1 <-
   )
 ```
 
+Next, I create an accuracy score for the comparison of objective and subjective phone use indicators.
+The objective measure is our "true" estimate.
+We want to know how far off participants were, relative to that true value, in their estimate.
+For that, we calculate the percentage error by subtracting the objective value from the subjective value (to get difference) and dividing by the objective value (to get error percent).
+Afterwards, we multiply by 100 to get a percentage.
+Say I estimated 110 subjective minutes, but the true value (i.e., the objective minutes) is 100. Then the error is 10%, an overestimate.
+If I estimated 100 subjective minutes, but the true value is 110, the error is -10%, an underestimate.
+I calculate error percent for social media screen time.
+```{r calculate-error-study1}
+study1 <- 
+  study1 %>% 
+  mutate(
+    # error social media time
+    error = (social_media_subjective - social_media_objective) / social_media_objective * 100
+  )
+```
+
+Let's inspect the distribution in Figure \@ref(fig:error-distribution-study1).
+We see that a couple of participants have massive overestimation errors.
+```{r error-distribution-study1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Distribution of percent error for screen time"}
+dens_with_points(study1, "error")
+```
+
+I checked their raw data: One participant indicated exactly five hours, but probably meant five minutes (i.e., the participant with an error of `r max(study1$error)`.
+Similarly, the second largest entry seems to be a type (i.e., 58 minutes).
+I'll set those all entries that are larger than 1500% to `NA`.
+```{r remove-large-errors-study1}
+study1 <- 
+  study1 %>% 
+  mutate(
+    error = if_else(error > 1500, NA_real_, error)
+  )
+```
+
 Last, some housekeeping, reordering variables and making sure they all have the correct variable type, plus reordering the `day` factor.
 ```{r final-study1-data}
 study1 <- 
@@ -1283,6 +1318,7 @@ study1 <-
     pickups_subjective,
     notifications_subjective,
     social_media_objective,
+    error,
     pickups_objective,
     weekly_notifications,
     well_being_state:relatedness_state,

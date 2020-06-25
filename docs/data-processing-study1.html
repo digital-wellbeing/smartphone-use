@@ -24,7 +24,7 @@
 <meta name="author" content="Niklas Johannes" />
 
 
-<meta name="date" content="2020-06-24" />
+<meta name="date" content="2020-06-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1591,21 +1591,22 @@ Notifications I’ll add later during merging (because they are not aggregated p
 <span id="cb34-3"><a href="data-processing-study1.html#cb34-3"></a><span class="st">  </span>apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb34-4"><a href="data-processing-study1.html#cb34-4"></a><span class="st">  </span><span class="kw">group_by</span>(id, time_frame) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb34-5"><a href="data-processing-study1.html#cb34-5"></a><span class="st">  </span><span class="kw">filter</span>(time_frame <span class="op">!=</span><span class="st"> &quot;week&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># no week </span></span>
-<span id="cb34-6"><a href="data-processing-study1.html#cb34-6"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">pickups_objective =</span> <span class="kw">sum</span>(pickups, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
-<span id="cb34-7"><a href="data-processing-study1.html#cb34-7"></a></span>
-<span id="cb34-8"><a href="data-processing-study1.html#cb34-8"></a><span class="co"># get notifications across apps per participant</span></span>
-<span id="cb34-9"><a href="data-processing-study1.html#cb34-9"></a>notifications_aggregated &lt;-<span class="st"> </span></span>
-<span id="cb34-10"><a href="data-processing-study1.html#cb34-10"></a><span class="st">  </span>apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb34-11"><a href="data-processing-study1.html#cb34-11"></a><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb34-12"><a href="data-processing-study1.html#cb34-12"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">weekly_notifications =</span> <span class="kw">sum</span>(notifications, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
-<span id="cb34-13"><a href="data-processing-study1.html#cb34-13"></a></span>
-<span id="cb34-14"><a href="data-processing-study1.html#cb34-14"></a><span class="co"># add pickups to totals_long</span></span>
-<span id="cb34-15"><a href="data-processing-study1.html#cb34-15"></a>totals_long &lt;-<span class="st"> </span></span>
-<span id="cb34-16"><a href="data-processing-study1.html#cb34-16"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
-<span id="cb34-17"><a href="data-processing-study1.html#cb34-17"></a>    totals_long,</span>
-<span id="cb34-18"><a href="data-processing-study1.html#cb34-18"></a>    pickups_aggregated,</span>
-<span id="cb34-19"><a href="data-processing-study1.html#cb34-19"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;time_frame&quot;</span>)</span>
-<span id="cb34-20"><a href="data-processing-study1.html#cb34-20"></a>  )</span></code></pre></div>
+<span id="cb34-6"><a href="data-processing-study1.html#cb34-6"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(pickups)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># exclude missing values (if I do na.rm = T in sum below it will result in zeros to sum NAs)</span></span>
+<span id="cb34-7"><a href="data-processing-study1.html#cb34-7"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">pickups_objective =</span> <span class="kw">sum</span>(pickups))</span>
+<span id="cb34-8"><a href="data-processing-study1.html#cb34-8"></a></span>
+<span id="cb34-9"><a href="data-processing-study1.html#cb34-9"></a><span class="co"># get notifications across apps per participant</span></span>
+<span id="cb34-10"><a href="data-processing-study1.html#cb34-10"></a>notifications_aggregated &lt;-<span class="st"> </span></span>
+<span id="cb34-11"><a href="data-processing-study1.html#cb34-11"></a><span class="st">  </span>apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-12"><a href="data-processing-study1.html#cb34-12"></a><span class="st">  </span><span class="kw">group_by</span>(id) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-13"><a href="data-processing-study1.html#cb34-13"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">weekly_notifications =</span> <span class="kw">sum</span>(notifications, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb34-14"><a href="data-processing-study1.html#cb34-14"></a></span>
+<span id="cb34-15"><a href="data-processing-study1.html#cb34-15"></a><span class="co"># add pickups to totals_long</span></span>
+<span id="cb34-16"><a href="data-processing-study1.html#cb34-16"></a>totals_long &lt;-<span class="st"> </span></span>
+<span id="cb34-17"><a href="data-processing-study1.html#cb34-17"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb34-18"><a href="data-processing-study1.html#cb34-18"></a>    totals_long,</span>
+<span id="cb34-19"><a href="data-processing-study1.html#cb34-19"></a>    pickups_aggregated,</span>
+<span id="cb34-20"><a href="data-processing-study1.html#cb34-20"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;time_frame&quot;</span>)</span>
+<span id="cb34-21"><a href="data-processing-study1.html#cb34-21"></a>  )</span></code></pre></div>
 </div>
 <div id="merge-data-sets" class="section level2">
 <h2><span class="header-section-number">2.4</span> Merge data sets</h2>
@@ -1675,79 +1676,110 @@ Again, <code>study1</code> is the “master” and we add personality variables 
 <span id="cb39-4"><a href="data-processing-study1.html#cb39-4"></a>    notifications_aggregated,</span>
 <span id="cb39-5"><a href="data-processing-study1.html#cb39-5"></a>    <span class="dt">by =</span> <span class="st">&quot;id&quot;</span></span>
 <span id="cb39-6"><a href="data-processing-study1.html#cb39-6"></a>  )</span></code></pre></div>
-<p>Last, some housekeeping, reordering variables and making sure they all have the correct variable type, plus reordering the <code>day</code> factor.</p>
+<p>Next, I create an accuracy score for the comparison of objective and subjective phone use indicators.
+The objective measure is our “true” estimate.
+We want to know how far off participants were, relative to that true value, in their estimate.
+For that, we calculate the percentage error by subtracting the objective value from the subjective value (to get difference) and dividing by the objective value (to get error percent).
+Afterwards, we multiply by 100 to get a percentage.
+Say I estimated 110 subjective minutes, but the true value (i.e., the objective minutes) is 100. Then the error is 10%, an overestimate.
+If I estimated 100 subjective minutes, but the true value is 110, the error is -10%, an underestimate.
+I calculate error percent for social media screen time.</p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="data-processing-study1.html#cb40-1"></a>study1 &lt;-<span class="st"> </span></span>
 <span id="cb40-2"><a href="data-processing-study1.html#cb40-2"></a><span class="st">  </span>study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb40-3"><a href="data-processing-study1.html#cb40-3"></a><span class="st">  </span><span class="kw">select</span>(</span>
-<span id="cb40-4"><a href="data-processing-study1.html#cb40-4"></a>    id,</span>
-<span id="cb40-5"><a href="data-processing-study1.html#cb40-5"></a>    age<span class="op">:</span>ethnicity,</span>
-<span id="cb40-6"><a href="data-processing-study1.html#cb40-6"></a>    gender,</span>
-<span id="cb40-7"><a href="data-processing-study1.html#cb40-7"></a>    <span class="kw">starts_with</span>(<span class="st">&quot;duration&quot;</span>),</span>
-<span id="cb40-8"><a href="data-processing-study1.html#cb40-8"></a>    day,</span>
-<span id="cb40-9"><a href="data-processing-study1.html#cb40-9"></a>    social_media_subjective,</span>
-<span id="cb40-10"><a href="data-processing-study1.html#cb40-10"></a>    pickups_subjective,</span>
-<span id="cb40-11"><a href="data-processing-study1.html#cb40-11"></a>    notifications_subjective,</span>
-<span id="cb40-12"><a href="data-processing-study1.html#cb40-12"></a>    social_media_objective,</span>
-<span id="cb40-13"><a href="data-processing-study1.html#cb40-13"></a>    pickups_objective,</span>
-<span id="cb40-14"><a href="data-processing-study1.html#cb40-14"></a>    weekly_notifications,</span>
-<span id="cb40-15"><a href="data-processing-study1.html#cb40-15"></a>    well_being_state<span class="op">:</span>relatedness_state,</span>
-<span id="cb40-16"><a href="data-processing-study1.html#cb40-16"></a>    low_positive_peaceful<span class="op">:</span>enjoyable,</span>
-<span id="cb40-17"><a href="data-processing-study1.html#cb40-17"></a>    autonomy_trait<span class="op">:</span>openness,</span>
-<span id="cb40-18"><a href="data-processing-study1.html#cb40-18"></a>    bpns_<span class="dv">1</span><span class="op">:</span>big_five_<span class="dv">45</span></span>
-<span id="cb40-19"><a href="data-processing-study1.html#cb40-19"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb40-20"><a href="data-processing-study1.html#cb40-20"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb40-21"><a href="data-processing-study1.html#cb40-21"></a>    <span class="dt">id =</span> <span class="kw">droplevels</span>(id),</span>
-<span id="cb40-22"><a href="data-processing-study1.html#cb40-22"></a>    <span class="dt">day =</span> <span class="kw">as.factor</span>(day),</span>
-<span id="cb40-23"><a href="data-processing-study1.html#cb40-23"></a>    <span class="dt">day =</span> <span class="kw">fct_relevel</span>(</span>
-<span id="cb40-24"><a href="data-processing-study1.html#cb40-24"></a>      day,</span>
-<span id="cb40-25"><a href="data-processing-study1.html#cb40-25"></a>      <span class="st">&quot;monday&quot;</span>,</span>
-<span id="cb40-26"><a href="data-processing-study1.html#cb40-26"></a>      <span class="st">&quot;tuesday&quot;</span>,</span>
-<span id="cb40-27"><a href="data-processing-study1.html#cb40-27"></a>      <span class="st">&quot;wednesday&quot;</span>,</span>
-<span id="cb40-28"><a href="data-processing-study1.html#cb40-28"></a>      <span class="st">&quot;thursday&quot;</span>,</span>
-<span id="cb40-29"><a href="data-processing-study1.html#cb40-29"></a>      <span class="st">&quot;friday&quot;</span></span>
-<span id="cb40-30"><a href="data-processing-study1.html#cb40-30"></a>    )</span>
-<span id="cb40-31"><a href="data-processing-study1.html#cb40-31"></a>  )</span></code></pre></div>
+<span id="cb40-3"><a href="data-processing-study1.html#cb40-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb40-4"><a href="data-processing-study1.html#cb40-4"></a>    <span class="co"># error social media time</span></span>
+<span id="cb40-5"><a href="data-processing-study1.html#cb40-5"></a>    <span class="dt">error =</span> (social_media_subjective <span class="op">-</span><span class="st"> </span>social_media_objective) <span class="op">/</span><span class="st"> </span>social_media_objective <span class="op">*</span><span class="st"> </span><span class="dv">100</span></span>
+<span id="cb40-6"><a href="data-processing-study1.html#cb40-6"></a>  )</span></code></pre></div>
+Let’s inspect the distribution in Figure <a href="data-processing-study1.html#fig:error-distribution-study1">2.4</a>.
+We see that a couple of participants have massive overestimation errors.
+<div class="figure"><span id="fig:error-distribution-study1"></span>
+<img src="analysis_report_files/figure-html/error-distribution-study1-1.png" alt="Distribution of percent error for screen time" width="672" />
+<p class="caption">
+Figure 2.4: Distribution of percent error for screen time
+</p>
+</div>
+<p>I checked their raw data: One participant indicated exactly five hours, but probably meant five minutes (i.e., the participant with an error of NA.
+Similarly, the second largest entry seems to be a type (i.e., 58 minutes).
+I’ll set those all entries that are larger than 1500% to <code>NA</code>.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="data-processing-study1.html#cb41-1"></a>study1 &lt;-<span class="st"> </span></span>
+<span id="cb41-2"><a href="data-processing-study1.html#cb41-2"></a><span class="st">  </span>study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb41-3"><a href="data-processing-study1.html#cb41-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb41-4"><a href="data-processing-study1.html#cb41-4"></a>    <span class="dt">error =</span> <span class="kw">if_else</span>(error <span class="op">&gt;</span><span class="st"> </span><span class="dv">1500</span>, <span class="ot">NA_real_</span>, error)</span>
+<span id="cb41-5"><a href="data-processing-study1.html#cb41-5"></a>  )</span></code></pre></div>
+<p>Last, some housekeeping, reordering variables and making sure they all have the correct variable type, plus reordering the <code>day</code> factor.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="data-processing-study1.html#cb42-1"></a>study1 &lt;-<span class="st"> </span></span>
+<span id="cb42-2"><a href="data-processing-study1.html#cb42-2"></a><span class="st">  </span>study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-3"><a href="data-processing-study1.html#cb42-3"></a><span class="st">  </span><span class="kw">select</span>(</span>
+<span id="cb42-4"><a href="data-processing-study1.html#cb42-4"></a>    id,</span>
+<span id="cb42-5"><a href="data-processing-study1.html#cb42-5"></a>    age<span class="op">:</span>ethnicity,</span>
+<span id="cb42-6"><a href="data-processing-study1.html#cb42-6"></a>    gender,</span>
+<span id="cb42-7"><a href="data-processing-study1.html#cb42-7"></a>    <span class="kw">starts_with</span>(<span class="st">&quot;duration&quot;</span>),</span>
+<span id="cb42-8"><a href="data-processing-study1.html#cb42-8"></a>    day,</span>
+<span id="cb42-9"><a href="data-processing-study1.html#cb42-9"></a>    social_media_subjective,</span>
+<span id="cb42-10"><a href="data-processing-study1.html#cb42-10"></a>    pickups_subjective,</span>
+<span id="cb42-11"><a href="data-processing-study1.html#cb42-11"></a>    notifications_subjective,</span>
+<span id="cb42-12"><a href="data-processing-study1.html#cb42-12"></a>    social_media_objective,</span>
+<span id="cb42-13"><a href="data-processing-study1.html#cb42-13"></a>    error,</span>
+<span id="cb42-14"><a href="data-processing-study1.html#cb42-14"></a>    pickups_objective,</span>
+<span id="cb42-15"><a href="data-processing-study1.html#cb42-15"></a>    weekly_notifications,</span>
+<span id="cb42-16"><a href="data-processing-study1.html#cb42-16"></a>    well_being_state<span class="op">:</span>relatedness_state,</span>
+<span id="cb42-17"><a href="data-processing-study1.html#cb42-17"></a>    low_positive_peaceful<span class="op">:</span>enjoyable,</span>
+<span id="cb42-18"><a href="data-processing-study1.html#cb42-18"></a>    autonomy_trait<span class="op">:</span>openness,</span>
+<span id="cb42-19"><a href="data-processing-study1.html#cb42-19"></a>    bpns_<span class="dv">1</span><span class="op">:</span>big_five_<span class="dv">45</span></span>
+<span id="cb42-20"><a href="data-processing-study1.html#cb42-20"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-21"><a href="data-processing-study1.html#cb42-21"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb42-22"><a href="data-processing-study1.html#cb42-22"></a>    <span class="dt">id =</span> <span class="kw">droplevels</span>(id),</span>
+<span id="cb42-23"><a href="data-processing-study1.html#cb42-23"></a>    <span class="dt">day =</span> <span class="kw">as.factor</span>(day),</span>
+<span id="cb42-24"><a href="data-processing-study1.html#cb42-24"></a>    <span class="dt">day =</span> <span class="kw">fct_relevel</span>(</span>
+<span id="cb42-25"><a href="data-processing-study1.html#cb42-25"></a>      day,</span>
+<span id="cb42-26"><a href="data-processing-study1.html#cb42-26"></a>      <span class="st">&quot;monday&quot;</span>,</span>
+<span id="cb42-27"><a href="data-processing-study1.html#cb42-27"></a>      <span class="st">&quot;tuesday&quot;</span>,</span>
+<span id="cb42-28"><a href="data-processing-study1.html#cb42-28"></a>      <span class="st">&quot;wednesday&quot;</span>,</span>
+<span id="cb42-29"><a href="data-processing-study1.html#cb42-29"></a>      <span class="st">&quot;thursday&quot;</span>,</span>
+<span id="cb42-30"><a href="data-processing-study1.html#cb42-30"></a>      <span class="st">&quot;friday&quot;</span></span>
+<span id="cb42-31"><a href="data-processing-study1.html#cb42-31"></a>    )</span>
+<span id="cb42-32"><a href="data-processing-study1.html#cb42-32"></a>  )</span></code></pre></div>
 <p>When plotting the app data I want them to reflect the final sample, which is why I only keep those participants and surveys in the <code>apps_long</code> data set that are also in the final data set (i.e., <code>study1</code>).
 I can’t just exclude those participants in <code>apps_long</code> because I also excluded surveys in <code>diary</code> on which <code>study1</code> is based.
 Therefore, I only keep those entries in <code>apps_long</code> which have a corresponding row in <code>study1</code> (aka entries in both <code>id</code> and <code>day</code>).
 Also, I’ll remove “week” as a time frame and add the notifications for that app over whole week as a constant per app.</p>
 <p>Sidenote: The participants with a failed attention check in the <code>personality</code> data are not included in <code>study1</code> because they were excluded at other steps during merging, so no need to manually remove them here.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="data-processing-study1.html#cb41-1"></a>apps_week &lt;-<span class="st"> </span></span>
-<span id="cb41-2"><a href="data-processing-study1.html#cb41-2"></a><span class="st">  </span>apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-3"><a href="data-processing-study1.html#cb41-3"></a><span class="st">  </span><span class="kw">select</span>(</span>
-<span id="cb41-4"><a href="data-processing-study1.html#cb41-4"></a>    id,</span>
-<span id="cb41-5"><a href="data-processing-study1.html#cb41-5"></a>    time_frame,</span>
-<span id="cb41-6"><a href="data-processing-study1.html#cb41-6"></a>    app,</span>
-<span id="cb41-7"><a href="data-processing-study1.html#cb41-7"></a>    rank,</span>
-<span id="cb41-8"><a href="data-processing-study1.html#cb41-8"></a>    notifications</span>
-<span id="cb41-9"><a href="data-processing-study1.html#cb41-9"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-10"><a href="data-processing-study1.html#cb41-10"></a><span class="st">  </span><span class="kw">filter</span>(time_frame <span class="op">==</span><span class="st"> &quot;week&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-11"><a href="data-processing-study1.html#cb41-11"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>time_frame)</span>
-<span id="cb41-12"><a href="data-processing-study1.html#cb41-12"></a></span>
-<span id="cb41-13"><a href="data-processing-study1.html#cb41-13"></a>apps_long &lt;-<span class="st"> </span></span>
-<span id="cb41-14"><a href="data-processing-study1.html#cb41-14"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
-<span id="cb41-15"><a href="data-processing-study1.html#cb41-15"></a>    </span>
-<span id="cb41-16"><a href="data-processing-study1.html#cb41-16"></a>    <span class="co"># only those participants and days that are in final data set</span></span>
-<span id="cb41-17"><a href="data-processing-study1.html#cb41-17"></a>    study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-18"><a href="data-processing-study1.html#cb41-18"></a><span class="st">      </span><span class="kw">select</span>(id, day),</span>
-<span id="cb41-19"><a href="data-processing-study1.html#cb41-19"></a>    </span>
-<span id="cb41-20"><a href="data-processing-study1.html#cb41-20"></a>    <span class="co"># and the rest of the variables from apps_long, but without week</span></span>
-<span id="cb41-21"><a href="data-processing-study1.html#cb41-21"></a>    apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-22"><a href="data-processing-study1.html#cb41-22"></a><span class="st">      </span><span class="kw">rename</span>(<span class="dt">day =</span> time_frame) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-23"><a href="data-processing-study1.html#cb41-23"></a><span class="st">      </span><span class="kw">filter</span>(day <span class="op">!=</span><span class="st"> &quot;week&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-24"><a href="data-processing-study1.html#cb41-24"></a><span class="st">      </span><span class="kw">select</span>(<span class="op">-</span>notifications),</span>
-<span id="cb41-25"><a href="data-processing-study1.html#cb41-25"></a>    </span>
-<span id="cb41-26"><a href="data-processing-study1.html#cb41-26"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;day&quot;</span>)</span>
-<span id="cb41-27"><a href="data-processing-study1.html#cb41-27"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-28"><a href="data-processing-study1.html#cb41-28"></a><span class="st">  </span></span>
-<span id="cb41-29"><a href="data-processing-study1.html#cb41-29"></a><span class="st">  </span><span class="co"># add the notifications for that app per week as a constant</span></span>
-<span id="cb41-30"><a href="data-processing-study1.html#cb41-30"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
-<span id="cb41-31"><a href="data-processing-study1.html#cb41-31"></a>    .,</span>
-<span id="cb41-32"><a href="data-processing-study1.html#cb41-32"></a>    apps_week,</span>
-<span id="cb41-33"><a href="data-processing-study1.html#cb41-33"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;app&quot;</span>, <span class="st">&quot;rank&quot;</span>)</span>
-<span id="cb41-34"><a href="data-processing-study1.html#cb41-34"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-35"><a href="data-processing-study1.html#cb41-35"></a><span class="st">  </span><span class="kw">select</span>(id, day, rank<span class="op">:</span>notifications) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb41-36"><a href="data-processing-study1.html#cb41-36"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">notifications_per_week =</span> notifications)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="data-processing-study1.html#cb43-1"></a>apps_week &lt;-<span class="st"> </span></span>
+<span id="cb43-2"><a href="data-processing-study1.html#cb43-2"></a><span class="st">  </span>apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb43-3"><a href="data-processing-study1.html#cb43-3"></a><span class="st">  </span><span class="kw">select</span>(</span>
+<span id="cb43-4"><a href="data-processing-study1.html#cb43-4"></a>    id,</span>
+<span id="cb43-5"><a href="data-processing-study1.html#cb43-5"></a>    time_frame,</span>
+<span id="cb43-6"><a href="data-processing-study1.html#cb43-6"></a>    app,</span>
+<span id="cb43-7"><a href="data-processing-study1.html#cb43-7"></a>    rank,</span>
+<span id="cb43-8"><a href="data-processing-study1.html#cb43-8"></a>    notifications</span>
+<span id="cb43-9"><a href="data-processing-study1.html#cb43-9"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb43-10"><a href="data-processing-study1.html#cb43-10"></a><span class="st">  </span><span class="kw">filter</span>(time_frame <span class="op">==</span><span class="st"> &quot;week&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb43-11"><a href="data-processing-study1.html#cb43-11"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>time_frame)</span>
+<span id="cb43-12"><a href="data-processing-study1.html#cb43-12"></a></span>
+<span id="cb43-13"><a href="data-processing-study1.html#cb43-13"></a>apps_long &lt;-<span class="st"> </span></span>
+<span id="cb43-14"><a href="data-processing-study1.html#cb43-14"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb43-15"><a href="data-processing-study1.html#cb43-15"></a>    </span>
+<span id="cb43-16"><a href="data-processing-study1.html#cb43-16"></a>    <span class="co"># only those participants and days that are in final data set</span></span>
+<span id="cb43-17"><a href="data-processing-study1.html#cb43-17"></a>    study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb43-18"><a href="data-processing-study1.html#cb43-18"></a><span class="st">      </span><span class="kw">select</span>(id, day),</span>
+<span id="cb43-19"><a href="data-processing-study1.html#cb43-19"></a>    </span>
+<span id="cb43-20"><a href="data-processing-study1.html#cb43-20"></a>    <span class="co"># and the rest of the variables from apps_long, but without week</span></span>
+<span id="cb43-21"><a href="data-processing-study1.html#cb43-21"></a>    apps_long <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb43-22"><a href="data-processing-study1.html#cb43-22"></a><span class="st">      </span><span class="kw">rename</span>(<span class="dt">day =</span> time_frame) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb43-23"><a href="data-processing-study1.html#cb43-23"></a><span class="st">      </span><span class="kw">filter</span>(day <span class="op">!=</span><span class="st"> &quot;week&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb43-24"><a href="data-processing-study1.html#cb43-24"></a><span class="st">      </span><span class="kw">select</span>(<span class="op">-</span>notifications),</span>
+<span id="cb43-25"><a href="data-processing-study1.html#cb43-25"></a>    </span>
+<span id="cb43-26"><a href="data-processing-study1.html#cb43-26"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;day&quot;</span>)</span>
+<span id="cb43-27"><a href="data-processing-study1.html#cb43-27"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb43-28"><a href="data-processing-study1.html#cb43-28"></a><span class="st">  </span></span>
+<span id="cb43-29"><a href="data-processing-study1.html#cb43-29"></a><span class="st">  </span><span class="co"># add the notifications for that app per week as a constant</span></span>
+<span id="cb43-30"><a href="data-processing-study1.html#cb43-30"></a><span class="st">  </span><span class="kw">left_join</span>(</span>
+<span id="cb43-31"><a href="data-processing-study1.html#cb43-31"></a>    .,</span>
+<span id="cb43-32"><a href="data-processing-study1.html#cb43-32"></a>    apps_week,</span>
+<span id="cb43-33"><a href="data-processing-study1.html#cb43-33"></a>    <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>, <span class="st">&quot;app&quot;</span>, <span class="st">&quot;rank&quot;</span>)</span>
+<span id="cb43-34"><a href="data-processing-study1.html#cb43-34"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb43-35"><a href="data-processing-study1.html#cb43-35"></a><span class="st">  </span><span class="kw">select</span>(id, day, rank<span class="op">:</span>notifications) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb43-36"><a href="data-processing-study1.html#cb43-36"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">notifications_per_week =</span> notifications)</span></code></pre></div>
 
 </div>
 </div>

@@ -865,6 +865,11 @@ social_media <-
       ),
       describe(
         study1,
+        "error",
+        trait = FALSE
+      ),
+      describe(
+        study1,
         "pickups_subjective",
         trait = FALSE
       ),
@@ -911,6 +916,14 @@ plot_grid(
     "social_media_objective",
     "#E69F00",
     title = "Objective screen time",
+    trait = FALSE
+  ),
+  single_cloud(
+    study1,
+    social_media,
+    "error",
+    "#CC79A7",
+    title = "Percent error",
     trait = FALSE
   ),
   single_cloud(
