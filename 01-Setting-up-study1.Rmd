@@ -23,7 +23,8 @@ p_load(
   ggridges,
   GGally,
   ggalt,
-  cowplot
+  cowplot,
+  brms
 )
 
 # set seed
