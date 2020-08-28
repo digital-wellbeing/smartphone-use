@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3 Descriptives and Visualizations Study 1 | Analysis Report</title>
   <meta name="description" content="Analysis report detailing alls steps from data processing to final analyses." />
-  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3 Descriptives and Visualizations Study 1 | Analysis Report" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Niklas Johannes" />
 
 
-<meta name="date" content="2020-06-25" />
+<meta name="date" content="2020-08-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="data-processing-study1.html"/>
-
+<link rel="next" href="analysis-study-1.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,6 +50,7 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
@@ -149,6 +150,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.4" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#app-level"><i class="fa fa-check"></i><b>3.4</b> App-level</a></li>
 <li class="chapter" data-level="3.5" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#day-level"><i class="fa fa-check"></i><b>3.5</b> Day level</a></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="analysis-study-1.html"><a href="analysis-study-1.html"><i class="fa fa-check"></i><b>4</b> Analysis Study 1</a><ul>
+<li class="chapter" data-level="4.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#research-questions"><i class="fa fa-check"></i><b>4.1</b> Research questions</a></li>
+<li class="chapter" data-level="4.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#data-preparation"><i class="fa fa-check"></i><b>4.2</b> Data preparation</a></li>
+<li class="chapter" data-level="4.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#do-trait-variables-predict-social-media-use-and-accuracy"><i class="fa fa-check"></i><b>4.3</b> Do trait variables predict social media use and accuracy?</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-1-trait-variables-predicting-objective-use"><i class="fa fa-check"></i><b>4.3.1</b> Model 1: Trait variables predicting objective use</a></li>
+<li class="chapter" data-level="4.3.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-2-trait-variables-predicting-subjective-use"><i class="fa fa-check"></i><b>4.3.2</b> Model 2: Trait variables predicting subjective use</a></li>
+<li class="chapter" data-level="4.3.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-3-trait-variables-predicting-accuracy"><i class="fa fa-check"></i><b>4.3.3</b> Model 3: Trait variables predicting accuracy</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="analysis-study-1.html"><a href="analysis-study-1.html#do-state-i.e.-day-level-variables-predict-social-media-use-and-accuracy"><i class="fa fa-check"></i><b>4.4</b> Do state (i.e., day-level) variables predict social media use and accuracy?</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-4-state-variables-predicting-objective-use"><i class="fa fa-check"></i><b>4.4.1</b> Model 4: State variables predicting objective use</a></li>
+<li class="chapter" data-level="4.4.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-5-state-variables-predicting-subjective-use"><i class="fa fa-check"></i><b>4.4.2</b> Model 5: State variables predicting subjective use</a></li>
+<li class="chapter" data-level="4.4.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-6-state-variables-predicting-accuracy"><i class="fa fa-check"></i><b>4.4.3</b> Model 6: State variables predicting accuracy</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="analysis-study-1.html"><a href="analysis-study-1.html#does-social-media-use-predict-well-being-and-vice-versa"><i class="fa fa-check"></i><b>4.5</b> Does social media use predict well-being and vice versa?</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#do-day-level-variables-predict-day-level-well-being"><i class="fa fa-check"></i><b>4.5.1</b> Do day-level variables predict day-level well-being?</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -218,8 +236,19 @@ App-level data is in the <code>apps_long</code> data file; all other in the <cod
 Table <a href="descriptives-and-visualizations-study-1.html#tab:describe-durations-study1">3.1</a> shows descriptive stats; Figure <a href="descriptives-and-visualizations-study-1.html#fig:visualize-durations-study1">3.1</a> shows that twp participants had their entry surveys open for a day before pressing send, which skews the mean massively.
 However, those people’s data look good, so I wouldn’t exclude them here.
 Note: Colors are from <a href="https://www.datanovia.com/en/blog/ggplot-colors-best-tricks-you-will-love/#use-a-colorblind-friendly-palette">here</a>.</p>
-<table>
+<table style="width:100%;">
 <caption><span id="tab:describe-durations-study1">Table 3.1: </span>Duration of entry and exit surveys</caption>
+<colgroup>
+<col width="20%" />
+<col width="9%" />
+<col width="10%" />
+<col width="7%" />
+<col width="6%" />
+<col width="13%" />
+<col width="13%" />
+<col width="7%" />
+<col width="9%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">variable</th>
@@ -547,6 +576,17 @@ In Figure <a href="descriptives-and-visualizations-study-1.html#fig:visualize-su
 I checked those participants who took a long time in the <a href="data-processing-study1.html#data-processing-study1">data processing section</a>.</p>
 <table>
 <caption><span id="tab:describe-survey-duration-study1">Table 3.5: </span>Duration of daily surveys</caption>
+<colgroup>
+<col width="17%" />
+<col width="9%" />
+<col width="11%" />
+<col width="9%" />
+<col width="8%" />
+<col width="12%" />
+<col width="12%" />
+<col width="9%" />
+<col width="8%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">variable</th>
@@ -843,8 +883,8 @@ Figure 3.15: Correlation matrix of use variables (state) and personality traits.
           </div>
         </div>
       </div>
-<a href="data-processing-study1.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="data-processing-study1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="analysis-study-1.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

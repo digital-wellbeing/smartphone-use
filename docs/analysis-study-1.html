@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Analysis Study 1 | Analysis Report</title>
+  <meta name="description" content="Analysis report detailing alls steps from data processing to final analyses." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Analysis Study 1 | Analysis Report" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://github.com/digital-wellbeing/smartphone-use" />
+  
+  <meta property="og:description" content="Analysis report detailing alls steps from data processing to final analyses." />
+  <meta name="github-repo" content="digital-wellbeing/smartphone-use" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Analysis Study 1 | Analysis Report" />
+  
+  <meta name="twitter:description" content="Analysis report detailing alls steps from data processing to final analyses." />
+  
+
+<meta name="author" content="Niklas Johannes" />
+
+
+<meta name="date" content="2020-08-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="descriptives-and-visualizations-study-1.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Analysis Report</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="part"><span><b>I Study 1</b></span></li>
+<li class="chapter" data-level="1" data-path="setting-up-study1.html"><a href="setting-up-study1.html"><i class="fa fa-check"></i><b>1</b> Setting up</a></li>
+<li class="chapter" data-level="2" data-path="data-processing-study1.html"><a href="data-processing-study1.html"><i class="fa fa-check"></i><b>2</b> Data processing Study 1</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-processing-study1.html"><a href="data-processing-study1.html#personality-data"><i class="fa fa-check"></i><b>2.1</b> Personality data</a></li>
+<li class="chapter" data-level="2.2" data-path="data-processing-study1.html"><a href="data-processing-study1.html#diary-data"><i class="fa fa-check"></i><b>2.2</b> Diary data</a></li>
+<li class="chapter" data-level="2.3" data-path="data-processing-study1.html"><a href="data-processing-study1.html#screen-time-data"><i class="fa fa-check"></i><b>2.3</b> Screen time data</a></li>
+<li class="chapter" data-level="2.4" data-path="data-processing-study1.html"><a href="data-processing-study1.html#merge-data-sets"><i class="fa fa-check"></i><b>2.4</b> Merge data sets</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html"><i class="fa fa-check"></i><b>3</b> Descriptives and Visualizations Study 1</a><ul>
+<li class="chapter" data-level="3.1" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#overview"><i class="fa fa-check"></i><b>3.1</b> Overview</a></li>
+<li class="chapter" data-level="3.2" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#meta-level"><i class="fa fa-check"></i><b>3.2</b> Meta-level</a></li>
+<li class="chapter" data-level="3.3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#person-level"><i class="fa fa-check"></i><b>3.3</b> Person-level</a></li>
+<li class="chapter" data-level="3.4" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#app-level"><i class="fa fa-check"></i><b>3.4</b> App-level</a></li>
+<li class="chapter" data-level="3.5" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#day-level"><i class="fa fa-check"></i><b>3.5</b> Day level</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="analysis-study-1.html"><a href="analysis-study-1.html"><i class="fa fa-check"></i><b>4</b> Analysis Study 1</a><ul>
+<li class="chapter" data-level="4.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#research-questions"><i class="fa fa-check"></i><b>4.1</b> Research questions</a></li>
+<li class="chapter" data-level="4.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#data-preparation"><i class="fa fa-check"></i><b>4.2</b> Data preparation</a></li>
+<li class="chapter" data-level="4.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#do-trait-variables-predict-social-media-use-and-accuracy"><i class="fa fa-check"></i><b>4.3</b> Do trait variables predict social media use and accuracy?</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-1-trait-variables-predicting-objective-use"><i class="fa fa-check"></i><b>4.3.1</b> Model 1: Trait variables predicting objective use</a></li>
+<li class="chapter" data-level="4.3.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-2-trait-variables-predicting-subjective-use"><i class="fa fa-check"></i><b>4.3.2</b> Model 2: Trait variables predicting subjective use</a></li>
+<li class="chapter" data-level="4.3.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-3-trait-variables-predicting-accuracy"><i class="fa fa-check"></i><b>4.3.3</b> Model 3: Trait variables predicting accuracy</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="analysis-study-1.html"><a href="analysis-study-1.html#do-state-i.e.-day-level-variables-predict-social-media-use-and-accuracy"><i class="fa fa-check"></i><b>4.4</b> Do state (i.e., day-level) variables predict social media use and accuracy?</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-4-state-variables-predicting-objective-use"><i class="fa fa-check"></i><b>4.4.1</b> Model 4: State variables predicting objective use</a></li>
+<li class="chapter" data-level="4.4.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-5-state-variables-predicting-subjective-use"><i class="fa fa-check"></i><b>4.4.2</b> Model 5: State variables predicting subjective use</a></li>
+<li class="chapter" data-level="4.4.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-6-state-variables-predicting-accuracy"><i class="fa fa-check"></i><b>4.4.3</b> Model 6: State variables predicting accuracy</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="analysis-study-1.html"><a href="analysis-study-1.html#does-social-media-use-predict-well-being-and-vice-versa"><i class="fa fa-check"></i><b>4.5</b> Does social media use predict well-being and vice versa?</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#do-day-level-variables-predict-day-level-well-being"><i class="fa fa-check"></i><b>4.5.1</b> Do day-level variables predict day-level well-being?</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analysis Report</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="analysis-study-1" class="section level1">
+<h1><span class="header-section-number">4</span> Analysis Study 1</h1>
+<p>I move on to the analyses.
+We have about a dozen models to run.
+All of these models should take into account that the data are nested (in participants and days).
+That means quite complex model structures, especially when we have many predictors.
+The <code>lme4</code> package can handle such multi-level models, but in my experience suffers from many convergence issues that a Bayesian approach (i.e., the <code>brms</code> package) can handle better [paper on convergence comparison].
+Moreover, corrections for multiple comparisons are less of a problem with Bayesian models.
+Last, although the models here are mostly exploratory, we can still incorporate prior knowledge from the literature (and common sense about our variables).</p>
+<div id="research-questions" class="section level2">
+<h2><span class="header-section-number">4.1</span> Research questions</h2>
+<p>We have a total of X research questions.
+I divide them in three blocks:</p>
+<ol style="list-style-type: decimal">
+<li>To what extent do specific person-level variables such as personality and motivational factors shape the accuracy of social media time engagement?</li>
+<li>To what extent do subjective experiences such as mood predict and or interact with person-level factors to shape the accuracy of social media time engagement?</li>
+<li>What are the unique relations relating objective and subjective engagement to well-being outcomes?</li>
+</ol>
+<p>Each of those questions comes with a number of models.
+I’ll structure the analysis section according to those blocks.</p>
+</div>
+<div id="data-preparation" class="section level2">
+<h2><span class="header-section-number">4.2</span> Data preparation</h2>
+<p>I processed the <code>study1</code> data set in previous sections.
+Specifying priors on the untransformed variables can be tough.
+In some analyses (e.g., predicting social media use) I’ll use centered predictors to make it easier to interpret the intercept.
+In other analyses (e.g., predicting error), I want to standardize outcomes and predictors of interest because standardized variables make it easier to choose sensible priors, especially because we can use standardized effect sizes reported in the literature.
+Standardizing also makes it easier to interpret the effect sizes.</p>
+<p>First, I transform all variables of interest (into new variables).</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="analysis-study-1.html#cb44-1"></a><span class="kw">load</span>(<span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;workspace_study1.RData&quot;</span>))</span>
+<span id="cb44-2"><a href="analysis-study-1.html#cb44-2"></a></span>
+<span id="cb44-3"><a href="analysis-study-1.html#cb44-3"></a>study1 &lt;-<span class="st"> </span></span>
+<span id="cb44-4"><a href="analysis-study-1.html#cb44-4"></a><span class="st">  </span>study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb44-5"><a href="analysis-study-1.html#cb44-5"></a><span class="st">  </span><span class="co"># center personality variables</span></span>
+<span id="cb44-6"><a href="analysis-study-1.html#cb44-6"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb44-7"><a href="analysis-study-1.html#cb44-7"></a>    <span class="kw">across</span>(</span>
+<span id="cb44-8"><a href="analysis-study-1.html#cb44-8"></a>      <span class="kw">c</span>(</span>
+<span id="cb44-9"><a href="analysis-study-1.html#cb44-9"></a>        autonomy_state<span class="op">:</span>relatedness_state,</span>
+<span id="cb44-10"><a href="analysis-study-1.html#cb44-10"></a>        satisfied<span class="op">:</span>enjoyable,</span>
+<span id="cb44-11"><a href="analysis-study-1.html#cb44-11"></a>        autonomy_trait<span class="op">:</span>openness</span>
+<span id="cb44-12"><a href="analysis-study-1.html#cb44-12"></a>      ),</span>
+<span id="cb44-13"><a href="analysis-study-1.html#cb44-13"></a>      <span class="op">~</span><span class="st"> </span><span class="kw">scale</span>(.x, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">scale =</span> <span class="ot">FALSE</span>),</span>
+<span id="cb44-14"><a href="analysis-study-1.html#cb44-14"></a>      <span class="dt">.names =</span> <span class="st">&quot;{col}_c&quot;</span> <span class="co"># add &quot;_c&quot; suffix to new variables for &quot;centered&quot;</span></span>
+<span id="cb44-15"><a href="analysis-study-1.html#cb44-15"></a>    )</span>
+<span id="cb44-16"><a href="analysis-study-1.html#cb44-16"></a>  )</span></code></pre></div>
+<p>Next, let’s have a look of how many <code>NA</code>s there are per variable.
+Table <a href="analysis-study-1.html#tab:missings-study1">4.1</a> shows that missing values aren’t a big problem.
+Pickups is the only variable with many missing values, but pickups aren’t a central variable in our research questions.</p>
+<table>
+<caption><span id="tab:missings-study1">Table 4.1: </span>Missing values per variable (column)</caption>
+<thead>
+<tr class="header">
+<th align="left">name</th>
+<th align="right">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">social_media_subjective</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">pickups_subjective</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">notifications_subjective</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">social_media_objective</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">error</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">pickups_objective</td>
+<td align="right">28</td>
+</tr>
+<tr class="odd">
+<td align="left">weekly_notifications</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">well_being_state</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">autonomy_state</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">competence_state</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">relatedness_state</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">satisfied</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">boring</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">stressful</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">enjoyable</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">autonomy_trait</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">competence_trait</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">relatedness_trait</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">extraversion</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">agreeableness</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">conscientiousness</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">neuroticism</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">openness</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="do-trait-variables-predict-social-media-use-and-accuracy" class="section level2">
+<h2><span class="header-section-number">4.3</span> Do trait variables predict social media use and accuracy?</h2>
+<p>Our first research question asks whether personality traits and trait motivations predict the accuracy of social media time engagement.
+Specifically, we have three models that address the following sub-questions:</p>
+<ol style="list-style-type: decimal">
+<li>Do person-level variables predict objective-only engagement?</li>
+<li>Do person-level variables predict subjective-only engagement?</li>
+<li>Do person-level variables predict accuracy?</li>
+</ol>
+<p>I’ll construct a model for each of those three questions.
+Our dependent variables are clear-cut: <code>social_media_objective</code>, <code>social_media_subjective</code>, and <code>error</code>.</p>
+<p>Our predictors will be variables on the person-level, so trait/personality variables: the Big Five and the three self-determination motivations.</p>
+<div id="model-1-trait-variables-predicting-objective-use" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> Model 1: Trait variables predicting objective use</h3>
+<p>First, I choose sensible priors.
+There’s some literature out there on Big Five and smartphone use, as well as motivations and smartphone use.
+If we only knew the mean and variance of the social media estimates, a Gaussian distribution would be most appropriate.
+However, we do know more than just those two parameters.
+Namely, we know that the scale is continuous (i.e., time) and cannot be less than zero.
+Also, if we look at the distribution of time on an activity, the variance usually increases with the mean.
+Therefore, a gamma distribution appears more adequate to me.</p>
+<p>That means the models will use a log-link, which makes it hard to have an intuition about prior distributions (at least for me).
+Thus, I follow the recommendations of McElreath and simulate the priors.</p>
+<ul>
+<li>For the intercept, we can look at previous research.
+For example, this <a href="https://www.sciencedirect.com/science/article/abs/pii/S1071581919300473">paper</a> has average phone use times of about two hours per participant per day.
+Here, we only looked at social media use, so as a guess-timate with reasonable uncertainty, I’ll choose a lognormal distribution with a meanlog of 4.5 and a meansd of 0.8. See the upper left panel of Figure <a href="analysis-study-1.html#fig:simulate-priors-model1-study1">4.1</a>. That intercept has mots its value below two hours, but allows substantial skew for a couple of heavy users.</li>
+<li>For the shape of the gamma distribution, I also played around and settled on one that somewhat resembles our assumptions on the intercept, such that the majority of values will be below five hours with a couple of heavy users (see left side upper panel).</li>
+<li>For the Big Five fixed effects, this <a href="https://www.liebertpub.com/doi/full/10.1089/cyber.2019.0744">paper</a> predicted social media use with the Big Five over two time period in a longitudinal design. They found that only neuroticism was related to social media use, but that effect was extremely small (<span class="math inline">\(\beta\)</span> = .028). None of the other effects were large. Therefore, I’ll use rather flat, weakly regularizing priors for those effects.
+In <a href="analysis-study-1.html#fig:simulate-priors-model1-study1">4.1</a>, lower panel, I’ll use the prior on the left, because it’s skeptical, but regularizing.
+The one on the right might be too optimistic by suggesting a small positive effect.</li>
+<li>For basic psychological needs, there’s quite some literature on these needs and pathological smartphone use (“smartphone addiction”). However, there’s little info we could use for priors, so I’ll just go with the same prior as for the Big Five.
+See the top right of the Figure below.</li>
+<li>For all other parameters, I’ll take the <code>brms</code> default priors.</li>
+</ul>
+Credit for the code for the figures goes to <a href="https://bookdown.org/connect/#/apps/4857/access">Solomon Kurz</a>.
+<div class="figure"><span id="fig:simulate-priors-model1-study1"></span>
+<img src="analysis_report_files/figure-html/simulate-priors-model1-study1-1.png" alt="Prior simmulations for Model 1" width="672" />
+<p class="caption">
+Figure 4.1: Prior simmulations for Model 1
+</p>
+</div>
+<p>Let’s set those priors we simulated above.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="analysis-study-1.html#cb45-1"></a>priors_model1 &lt;-<span class="st"> </span></span>
+<span id="cb45-2"><a href="analysis-study-1.html#cb45-2"></a><span class="st">  </span><span class="kw">c</span>(</span>
+<span id="cb45-3"><a href="analysis-study-1.html#cb45-3"></a>    <span class="co"># intercept</span></span>
+<span id="cb45-4"><a href="analysis-study-1.html#cb45-4"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="fl">4.5</span>, <span class="fl">0.8</span>), <span class="dt">class =</span> Intercept),</span>
+<span id="cb45-5"><a href="analysis-study-1.html#cb45-5"></a>    </span>
+<span id="cb45-6"><a href="analysis-study-1.html#cb45-6"></a>    <span class="co"># prior on effects</span></span>
+<span id="cb45-7"><a href="analysis-study-1.html#cb45-7"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="dt">class =</span> b),</span>
+<span id="cb45-8"><a href="analysis-study-1.html#cb45-8"></a>    </span>
+<span id="cb45-9"><a href="analysis-study-1.html#cb45-9"></a>    <span class="co"># all other effects</span></span>
+<span id="cb45-10"><a href="analysis-study-1.html#cb45-10"></a>    <span class="kw">prior</span>(<span class="kw">gamma</span>(<span class="fl">2.5</span>, <span class="dv">100</span>), <span class="dt">class =</span> shape)</span>
+<span id="cb45-11"><a href="analysis-study-1.html#cb45-11"></a>  )</span></code></pre></div>
+<p>Alright, time to run the model.
+Luckily, none of these variables have missing values, so I won’t need to model missings in this model.
+Note that I ran the block below once and stored the model.
+Those fit objects are too large for Github, so you can download them here [give Onedrive link].
+Also, note that I add a constant to the social media use variable, because there’s a single zero in that variable, which doesn’t warrant a mixture model where we give zeros their own distribution.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="analysis-study-1.html#cb46-1"></a>model1 &lt;-<span class="st"> </span></span>
+<span id="cb46-2"><a href="analysis-study-1.html#cb46-2"></a><span class="st">  </span><span class="kw">brm</span>(</span>
+<span id="cb46-3"><a href="analysis-study-1.html#cb46-3"></a>    <span class="dt">data =</span> study1,</span>
+<span id="cb46-4"><a href="analysis-study-1.html#cb46-4"></a>    <span class="dt">family =</span> <span class="kw">Gamma</span>(<span class="dt">link =</span> <span class="st">&quot;log&quot;</span>),</span>
+<span id="cb46-5"><a href="analysis-study-1.html#cb46-5"></a>    <span class="dt">prior =</span> priors_model1,</span>
+<span id="cb46-6"><a href="analysis-study-1.html#cb46-6"></a>    social_media_objective <span class="op">+</span><span class="st"> </span><span class="fl">1e-6</span> <span class="op">~</span></span>
+<span id="cb46-7"><a href="analysis-study-1.html#cb46-7"></a><span class="st">      </span><span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb46-8"><a href="analysis-study-1.html#cb46-8"></a><span class="st">      </span>openness_c <span class="op">+</span></span>
+<span id="cb46-9"><a href="analysis-study-1.html#cb46-9"></a><span class="st">      </span>conscientiousness_c <span class="op">+</span></span>
+<span id="cb46-10"><a href="analysis-study-1.html#cb46-10"></a><span class="st">      </span>extraversion_c <span class="op">+</span></span>
+<span id="cb46-11"><a href="analysis-study-1.html#cb46-11"></a><span class="st">      </span>agreeableness_c <span class="op">+</span></span>
+<span id="cb46-12"><a href="analysis-study-1.html#cb46-12"></a><span class="st">      </span>neuroticism_c <span class="op">+</span></span>
+<span id="cb46-13"><a href="analysis-study-1.html#cb46-13"></a><span class="st">      </span>competence_trait_c <span class="op">+</span></span>
+<span id="cb46-14"><a href="analysis-study-1.html#cb46-14"></a><span class="st">      </span>relatedness_trait_c <span class="op">+</span></span>
+<span id="cb46-15"><a href="analysis-study-1.html#cb46-15"></a><span class="st">      </span>autonomy_trait_c <span class="op">+</span></span>
+<span id="cb46-16"><a href="analysis-study-1.html#cb46-16"></a><span class="st">      </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>id) <span class="op">+</span></span>
+<span id="cb46-17"><a href="analysis-study-1.html#cb46-17"></a><span class="st">      </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>day),</span>
+<span id="cb46-18"><a href="analysis-study-1.html#cb46-18"></a>    <span class="dt">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb46-19"><a href="analysis-study-1.html#cb46-19"></a>    <span class="dt">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb46-20"><a href="analysis-study-1.html#cb46-20"></a>    <span class="dt">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb46-21"><a href="analysis-study-1.html#cb46-21"></a>    <span class="dt">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb46-22"><a href="analysis-study-1.html#cb46-22"></a>    <span class="dt">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb46-23"><a href="analysis-study-1.html#cb46-23"></a>    <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">adapt_delta =</span> <span class="fl">0.99</span>),</span>
+<span id="cb46-24"><a href="analysis-study-1.html#cb46-24"></a>    <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model1_study1&quot;</span>)</span>
+<span id="cb46-25"><a href="analysis-study-1.html#cb46-25"></a>  )</span></code></pre></div>
+Let’s inspect the traceplots.
+Overall, they look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model1-study1"><strong>??</strong></a>).
+The residual standard deviation around the day grouping doesn’t look ideal though.
+Variation between days wasn’t that great, so the model estimates quite a lot variances that are close to zero.
+We could remove the day grouping, but I think we have theoretical reasons to keep it, namely to account for all known sources of variation.
+<div class="figure"><span id="fig:inspect-model1-study1-1"></span>
+<img src="analysis_report_files/figure-html/inspect-model1-study1-1.png" alt="Traceplots and posterior distributions for Model 1" width="672" />
+<p class="caption">
+Figure 4.2: Traceplots and posterior distributions for Model 1
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model1-study1-2"></span>
+<img src="analysis_report_files/figure-html/inspect-model1-study1-2.png" alt="Traceplots and posterior distributions for Model 1" width="672" />
+<p class="caption">
+Figure 4.3: Traceplots and posterior distributions for Model 1
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model1-study1-3"></span>
+<img src="analysis_report_files/figure-html/inspect-model1-study1-3.png" alt="Traceplots and posterior distributions for Model 1" width="672" />
+<p class="caption">
+Figure 4.4: Traceplots and posterior distributions for Model 1
+</p>
+</div>
+The posterior predictive distribution (Figure <a href="analysis-study-1.html#fig:ppc-model1-study1">4.5</a>) shows that the model does an okay job in predicting our outcome, with little indication of overfitting.
+If anything, it looks like the model somewhat underestimates the social media time of users.
+Then again, the LOO-PIT graphs show that the model could be better, possibly because it doesn’t do the best job in predicting the majority of cases (i.e., the underestimate).
+<div class="figure"><span id="fig:ppc-model1-study1"></span>
+<img src="analysis_report_files/figure-html/ppc-model1-study1-1.png" alt="Posterior predictive checks for Model 1" width="672" />
+<p class="caption">
+Figure 4.5: Posterior predictive checks for Model 1
+</p>
+</div>
+<p>Let’s also check for potentially influential values.
+None are tagged as influential, which increases my trust in the model.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="analysis-study-1.html#cb47-1"></a><span class="kw">loo</span>(model1)</span></code></pre></div>
+<pre><code>## 
+## Computed from 12000 by 431 log-likelihood matrix
+## 
+##          Estimate   SE
+## elpd_loo  -2474.7 15.2
+## p_loo        21.2  2.5
+## looic      4949.4 30.5
+## ------
+## Monte Carlo SE of elpd_loo is 0.1.
+## 
+## Pareto k diagnostic values:
+##                          Count Pct.    Min. n_eff
+## (-Inf, 0.5]   (good)     426   98.8%   5202      
+##  (0.5, 0.7]   (ok)         5    1.2%   532       
+##    (0.7, 1]   (bad)        0    0.0%   &lt;NA&gt;      
+##    (1, Inf)   (very bad)   0    0.0%   &lt;NA&gt;      
+## 
+## All Pareto k estimates are ok (k &lt; 0.7).
+## See help(&#39;pareto-k-diagnostic&#39;) for details.</code></pre>
+<p>Alright, time to look at the summary: neuroticism and competence are the only predictors whose posterior distribution isn’t centered on zero.
+That said, we cannot be 95% certain the true value doesn’t contain zero.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="analysis-study-1.html#cb49-1"></a><span class="kw">summary</span>(model1, <span class="dt">priors =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>##  Family: gamma 
+##   Links: mu = log; shape = identity 
+## Formula: social_media_objective + 1e-06 ~ 1 + openness_c + conscientiousness_c + extraversion_c + agreeableness_c + neuroticism_c + competence_trait_c + relatedness_trait_c + autonomy_trait_c + (1 | id) + (1 | day) 
+##    Data: study1 (Number of observations: 431) 
+## Samples: 4 chains, each with iter = 5000; warmup = 2000; thin = 1;
+##          total post-warmup samples = 12000
+## 
+## Priors: 
+## b ~ normal(0, 0.1)
+## Intercept ~ normal(4.5, 0.8)
+## sd ~ student_t(3, 0, 2.5)
+## shape ~ gamma(2.5, 100)
+## 
+## Group-Level Effects: 
+## ~day (Number of levels: 5) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     0.07      0.07     0.00     0.25 1.00     5550     5242
+## 
+## ~id (Number of levels: 95) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     0.49      0.08     0.34     0.64 1.00     3514     5799
+## 
+## Population-Level Effects: 
+##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept               4.81      0.08     4.66     4.96 1.00     5471     6527
+## openness_c             -0.01      0.08    -0.17     0.15 1.00    11136     9744
+## conscientiousness_c     0.01      0.08    -0.15     0.17 1.00     8984     8356
+## extraversion_c          0.07      0.07    -0.06     0.21 1.00     8190     8394
+## agreeableness_c        -0.07      0.08    -0.22     0.09 1.00    10473     9765
+## neuroticism_c           0.11      0.08    -0.05     0.27 1.00     9884     9423
+## competence_trait_c     -0.11      0.07    -0.26     0.04 1.00     8081     8841
+## relatedness_trait_c    -0.00      0.06    -0.13     0.12 1.00     7910     8576
+## autonomy_trait_c       -0.03      0.07    -0.16     0.10 1.00     7789     9054
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## shape     1.32      0.09     1.14     1.51 1.00     9116     7480
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+The effects plot (Figure <a href="analysis-study-1.html#fig:effects-model1-study1">4.6</a>) shows that visually, but also shows that the model does a fine job in describing the data, given the relatively (at least on the log scale) narrow 95% credible interval.
+Overall, there’s little evidence that personality traits are related so smartphone use, except for some tentative evidence that neurotic people use more social media and those who generally feel a level of competence in their lives use them less.
+<div class="figure"><span id="fig:effects-model1-study1"></span>
+<img src="analysis_report_files/figure-html/effects-model1-study1-1.png" alt="Effects plot for Model 1" width="672" />
+<p class="caption">
+Figure 4.6: Effects plot for Model 1
+</p>
+</div>
+</div>
+<div id="model-2-trait-variables-predicting-subjective-use" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> Model 2: Trait variables predicting subjective use</h3>
+<p>Next up, I predict subjective use from the same predictors.
+We know that objective and subjective use aren’t perfectly correlated.
+Then again, the priors for Model 1 were only weakly regularizing, which is why I use the same priors again.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="analysis-study-1.html#cb51-1"></a>priors_model2 &lt;-<span class="st"> </span></span>
+<span id="cb51-2"><a href="analysis-study-1.html#cb51-2"></a><span class="st">  </span><span class="kw">c</span>(</span>
+<span id="cb51-3"><a href="analysis-study-1.html#cb51-3"></a>    <span class="co"># intercept</span></span>
+<span id="cb51-4"><a href="analysis-study-1.html#cb51-4"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="fl">4.5</span>, <span class="fl">0.8</span>), <span class="dt">class =</span> Intercept),</span>
+<span id="cb51-5"><a href="analysis-study-1.html#cb51-5"></a>    </span>
+<span id="cb51-6"><a href="analysis-study-1.html#cb51-6"></a>    <span class="co"># prior on effects</span></span>
+<span id="cb51-7"><a href="analysis-study-1.html#cb51-7"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="dt">class =</span> b),</span>
+<span id="cb51-8"><a href="analysis-study-1.html#cb51-8"></a>    </span>
+<span id="cb51-9"><a href="analysis-study-1.html#cb51-9"></a>    <span class="co"># all other effects</span></span>
+<span id="cb51-10"><a href="analysis-study-1.html#cb51-10"></a>    <span class="kw">prior</span>(<span class="kw">gamma</span>(<span class="fl">2.5</span>, <span class="dv">100</span>), <span class="dt">class =</span> shape)</span>
+<span id="cb51-11"><a href="analysis-study-1.html#cb51-11"></a>  )</span></code></pre></div>
+<p>Alright, time to run the model.
+The subjective social media estimate had one missing value.
+Usually I’d impute missing values during model fitting, but with one, I think it’s safe to drop it.
+Again, I add a small constant to the zero values, of which there are 12; not enough, in my opinion, to model zeroes separately.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="analysis-study-1.html#cb52-1"></a>model2 &lt;-<span class="st"> </span></span>
+<span id="cb52-2"><a href="analysis-study-1.html#cb52-2"></a><span class="st">  </span><span class="kw">brm</span>(</span>
+<span id="cb52-3"><a href="analysis-study-1.html#cb52-3"></a>    <span class="dt">data =</span> study1,</span>
+<span id="cb52-4"><a href="analysis-study-1.html#cb52-4"></a>    <span class="dt">family =</span> <span class="kw">Gamma</span>(<span class="dt">link =</span> <span class="st">&quot;log&quot;</span>),</span>
+<span id="cb52-5"><a href="analysis-study-1.html#cb52-5"></a>    <span class="dt">prior =</span> priors_model2,</span>
+<span id="cb52-6"><a href="analysis-study-1.html#cb52-6"></a>    social_media_subjective <span class="op">+</span><span class="st"> </span><span class="fl">1e-6</span> <span class="op">~</span></span>
+<span id="cb52-7"><a href="analysis-study-1.html#cb52-7"></a><span class="st">      </span><span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb52-8"><a href="analysis-study-1.html#cb52-8"></a><span class="st">      </span>openness_c <span class="op">+</span></span>
+<span id="cb52-9"><a href="analysis-study-1.html#cb52-9"></a><span class="st">      </span>conscientiousness_c <span class="op">+</span></span>
+<span id="cb52-10"><a href="analysis-study-1.html#cb52-10"></a><span class="st">      </span>extraversion_c <span class="op">+</span></span>
+<span id="cb52-11"><a href="analysis-study-1.html#cb52-11"></a><span class="st">      </span>agreeableness_c <span class="op">+</span></span>
+<span id="cb52-12"><a href="analysis-study-1.html#cb52-12"></a><span class="st">      </span>neuroticism_c <span class="op">+</span></span>
+<span id="cb52-13"><a href="analysis-study-1.html#cb52-13"></a><span class="st">      </span>competence_trait_c <span class="op">+</span></span>
+<span id="cb52-14"><a href="analysis-study-1.html#cb52-14"></a><span class="st">      </span>relatedness_trait_c <span class="op">+</span></span>
+<span id="cb52-15"><a href="analysis-study-1.html#cb52-15"></a><span class="st">      </span>autonomy_trait_c <span class="op">+</span></span>
+<span id="cb52-16"><a href="analysis-study-1.html#cb52-16"></a><span class="st">      </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>id) <span class="op">+</span></span>
+<span id="cb52-17"><a href="analysis-study-1.html#cb52-17"></a><span class="st">      </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>day),</span>
+<span id="cb52-18"><a href="analysis-study-1.html#cb52-18"></a>    <span class="dt">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb52-19"><a href="analysis-study-1.html#cb52-19"></a>    <span class="dt">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb52-20"><a href="analysis-study-1.html#cb52-20"></a>    <span class="dt">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb52-21"><a href="analysis-study-1.html#cb52-21"></a>    <span class="dt">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb52-22"><a href="analysis-study-1.html#cb52-22"></a>    <span class="dt">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb52-23"><a href="analysis-study-1.html#cb52-23"></a>    <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">adapt_delta =</span> <span class="fl">0.99</span>),</span>
+<span id="cb52-24"><a href="analysis-study-1.html#cb52-24"></a>    <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model2_study1&quot;</span>)</span>
+<span id="cb52-25"><a href="analysis-study-1.html#cb52-25"></a>  )</span></code></pre></div>
+Let’s inspect the traceplots.
+Overall, they look fine and the chains seem to have mixed well (Figure <a href="#fig:inspect-model2-study1"><strong>??</strong></a>).
+Again, everything looks fine.
+<div class="figure"><span id="fig:inspect-model2-study1-1"></span>
+<img src="analysis_report_files/figure-html/inspect-model2-study1-1.png" alt="Traceplots and posterior distributions for Model 2" width="672" />
+<p class="caption">
+Figure 4.7: Traceplots and posterior distributions for Model 2
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model2-study1-2"></span>
+<img src="analysis_report_files/figure-html/inspect-model2-study1-2.png" alt="Traceplots and posterior distributions for Model 2" width="672" />
+<p class="caption">
+Figure 4.8: Traceplots and posterior distributions for Model 2
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model2-study1-3"></span>
+<img src="analysis_report_files/figure-html/inspect-model2-study1-3.png" alt="Traceplots and posterior distributions for Model 2" width="672" />
+<p class="caption">
+Figure 4.9: Traceplots and posterior distributions for Model 2
+</p>
+</div>
+The posterior predictive distribution (Figure <a href="#fig:ppc-model2-study2"><strong>??</strong></a>) looks similar to Model 1, with a tendency of the model to underestimate self-reported social media use.
+All other diagnostics look similar, which is not surprising given that the outcomes of Model 1 and Model 2 are correlated.
+Overall, the model fit is okay-ish, but certainly not excellent.
+<div class="figure"><span id="fig:ppc-model2-study1"></span>
+<img src="analysis_report_files/figure-html/ppc-model2-study1-1.png" alt="Posterior predictive checks for Model 2" width="672" />
+<p class="caption">
+Figure 4.10: Posterior predictive checks for Model 2
+</p>
+</div>
+<p>Let’s again check for potentially influential values.
+The model diagnostics look good.
+Even though there were several rather large raw values on the outcome variable, the model expects them because we model the outcome as a Gamma distribution.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="analysis-study-1.html#cb53-1"></a><span class="kw">loo</span>(model2)</span></code></pre></div>
+<p>Alright, time to look at the summary.
+This time, all posterior distributions are mostly centered around zero, so we can be 95% (always conditional on the model) certain that personality traits and motivations are not meaningfully (i.e., large effect) related to self-reported social media use.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="analysis-study-1.html#cb54-1"></a><span class="kw">summary</span>(model2, <span class="dt">priors =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>##  Family: gamma 
+##   Links: mu = log; shape = identity 
+## Formula: social_media_subjective + 1e-06 ~ 1 + openness_c + conscientiousness_c + extraversion_c + agreeableness_c + neuroticism_c + competence_trait_c + relatedness_trait_c + autonomy_trait_c + (1 | id) + (1 | day) 
+##    Data: study1 (Number of observations: 430) 
+## Samples: 4 chains, each with iter = 5000; warmup = 2000; thin = 1;
+##          total post-warmup samples = 12000
+## 
+## Priors: 
+## b ~ normal(0, 0.1)
+## Intercept ~ normal(4.5, 0.8)
+## sd ~ student_t(3, 0, 2.5)
+## shape ~ gamma(2.5, 100)
+## 
+## Group-Level Effects: 
+## ~day (Number of levels: 5) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     0.09      0.10     0.00     0.34 1.00     6500     6025
+## 
+## ~id (Number of levels: 95) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     0.21      0.13     0.01     0.48 1.00     2703     5036
+## 
+## Population-Level Effects: 
+##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept               4.96      0.09     4.78     5.13 1.00     8478     6767
+## openness_c             -0.06      0.08    -0.21     0.10 1.00    22685     9320
+## conscientiousness_c    -0.05      0.08    -0.21     0.11 1.00    19252     8685
+## extraversion_c          0.03      0.07    -0.11     0.17 1.00    17925     9147
+## agreeableness_c        -0.03      0.08    -0.18     0.13 1.00    21292     8943
+## neuroticism_c           0.04      0.08    -0.12     0.20 1.00    19320     9538
+## competence_trait_c     -0.08      0.07    -0.22     0.06 1.00    18448    10289
+## relatedness_trait_c    -0.02      0.06    -0.14     0.10 1.00    16023     9253
+## autonomy_trait_c       -0.08      0.07    -0.21     0.05 1.00    15905     9666
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## shape     0.62      0.04     0.55     0.70 1.00    11729     8244
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+The effects plot (Figure <a href="analysis-study-1.html#fig:effects-model2-study1">4.11</a>) visually confirms that none of the predictors seem influential.
+<div class="figure"><span id="fig:effects-model2-study1"></span>
+<img src="analysis_report_files/figure-html/effects-model2-study1-1.png" alt="Effects plot for Model 2" width="672" />
+<p class="caption">
+Figure 4.11: Effects plot for Model 2
+</p>
+</div>
+</div>
+<div id="model-3-trait-variables-predicting-accuracy" class="section level3">
+<h3><span class="header-section-number">4.3.3</span> Model 3: Trait variables predicting accuracy</h3>
+<p>For this model, it’s hard to choose informed priors, mainly because there’s no literature on the relation between personality traits and accuracy.
+Also, it’s unclear what distribution for accuracy we should expect prior to having seen the data.
+The few papers out there show that people generally overestimate their (social) media use, which would speak for centering the distribution on a positive value (i.e., positive error).
+Other than that, I’d expect a normal distribution, quite likely with fat tails, and possibly right skewed.
+Therefore, I’ll use a student-t distribution outcome family.
+I start with a t distribution as prior for the intercept that is slightly centered on overestimates (i.e., 20%), but with quite some potential for extreme values and fairly fat tails.
+See Figure <a href="analysis-study-1.html#fig:simulate-priors-model2-study1">4.12</a> left panel, for a visualization.</p>
+As for the effects of the personality traits, I’ll be skeptical of any effects and thus use weakly regularizing normal priors that are centered on zero, with a small range for the effect: If a person goes from average on a trait to one above average, we’d expect that 95% of the effects should be between -50% and +50% (i.e., SD of 25).
+See the right panel in the figure below for a visualization.
+<div class="figure"><span id="fig:simulate-priors-model2-study1"></span>
+<img src="analysis_report_files/figure-html/simulate-priors-model2-study1-1.png" alt="Prior simmulations for Model 2" width="672" />
+<p class="caption">
+Figure 4.12: Prior simmulations for Model 2
+</p>
+</div>
+<p>Then let’s set those priors we simulated above.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="analysis-study-1.html#cb56-1"></a>priors_model3 &lt;-<span class="st"> </span></span>
+<span id="cb56-2"><a href="analysis-study-1.html#cb56-2"></a><span class="st">  </span><span class="kw">c</span>(</span>
+<span id="cb56-3"><a href="analysis-study-1.html#cb56-3"></a>    <span class="co"># intercept</span></span>
+<span id="cb56-4"><a href="analysis-study-1.html#cb56-4"></a>    <span class="kw">prior</span>(<span class="kw">student_t</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">100</span>), <span class="dt">class =</span> Intercept),</span>
+<span id="cb56-5"><a href="analysis-study-1.html#cb56-5"></a>    </span>
+<span id="cb56-6"><a href="analysis-study-1.html#cb56-6"></a>    <span class="co"># all other effects</span></span>
+<span id="cb56-7"><a href="analysis-study-1.html#cb56-7"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="dv">0</span>, <span class="dv">25</span>), <span class="dt">class =</span> b)</span>
+<span id="cb56-8"><a href="analysis-study-1.html#cb56-8"></a>  )</span></code></pre></div>
+<p><code>error</code> had 3 missing values.
+Again, with such few cases, I’m fine with dropping those during model fitting.</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="analysis-study-1.html#cb57-1"></a>model3 &lt;-<span class="st"> </span></span>
+<span id="cb57-2"><a href="analysis-study-1.html#cb57-2"></a><span class="st">  </span><span class="kw">brm</span>(</span>
+<span id="cb57-3"><a href="analysis-study-1.html#cb57-3"></a>    <span class="dt">data =</span> study1,</span>
+<span id="cb57-4"><a href="analysis-study-1.html#cb57-4"></a>    <span class="dt">family =</span> student,</span>
+<span id="cb57-5"><a href="analysis-study-1.html#cb57-5"></a>    <span class="dt">prior =</span> priors_model3,</span>
+<span id="cb57-6"><a href="analysis-study-1.html#cb57-6"></a>    error <span class="op">~</span></span>
+<span id="cb57-7"><a href="analysis-study-1.html#cb57-7"></a><span class="st">      </span><span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb57-8"><a href="analysis-study-1.html#cb57-8"></a><span class="st">      </span>openness_c <span class="op">+</span></span>
+<span id="cb57-9"><a href="analysis-study-1.html#cb57-9"></a><span class="st">      </span>conscientiousness_c <span class="op">+</span></span>
+<span id="cb57-10"><a href="analysis-study-1.html#cb57-10"></a><span class="st">      </span>extraversion_c <span class="op">+</span></span>
+<span id="cb57-11"><a href="analysis-study-1.html#cb57-11"></a><span class="st">      </span>agreeableness_c <span class="op">+</span></span>
+<span id="cb57-12"><a href="analysis-study-1.html#cb57-12"></a><span class="st">      </span>neuroticism_c <span class="op">+</span></span>
+<span id="cb57-13"><a href="analysis-study-1.html#cb57-13"></a><span class="st">      </span>competence_trait_c <span class="op">+</span></span>
+<span id="cb57-14"><a href="analysis-study-1.html#cb57-14"></a><span class="st">      </span>relatedness_trait_c <span class="op">+</span></span>
+<span id="cb57-15"><a href="analysis-study-1.html#cb57-15"></a><span class="st">      </span>autonomy_trait_c <span class="op">+</span></span>
+<span id="cb57-16"><a href="analysis-study-1.html#cb57-16"></a><span class="st">      </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>id) <span class="op">+</span></span>
+<span id="cb57-17"><a href="analysis-study-1.html#cb57-17"></a><span class="st">      </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>day),</span>
+<span id="cb57-18"><a href="analysis-study-1.html#cb57-18"></a>    <span class="dt">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb57-19"><a href="analysis-study-1.html#cb57-19"></a>    <span class="dt">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb57-20"><a href="analysis-study-1.html#cb57-20"></a>    <span class="dt">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb57-21"><a href="analysis-study-1.html#cb57-21"></a>    <span class="dt">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb57-22"><a href="analysis-study-1.html#cb57-22"></a>    <span class="dt">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb57-23"><a href="analysis-study-1.html#cb57-23"></a>    <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">adapt_delta =</span> <span class="fl">0.99</span>),</span>
+<span id="cb57-24"><a href="analysis-study-1.html#cb57-24"></a>    <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model3_study1&quot;</span>)</span>
+<span id="cb57-25"><a href="analysis-study-1.html#cb57-25"></a>  )</span></code></pre></div>
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model3-study1"><strong>??</strong></a>).
+Again, the variance around the residuals for the day grouping is estimated to be small and zero often.
+<div class="figure"><span id="fig:inspect-model3-study1-1"></span>
+<img src="analysis_report_files/figure-html/inspect-model3-study1-1.png" alt="Traceplots and posterior distributions for Model 3" width="672" />
+<p class="caption">
+Figure 4.13: Traceplots and posterior distributions for Model 3
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model3-study1-2"></span>
+<img src="analysis_report_files/figure-html/inspect-model3-study1-2.png" alt="Traceplots and posterior distributions for Model 3" width="672" />
+<p class="caption">
+Figure 4.14: Traceplots and posterior distributions for Model 3
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model3-study1-3"></span>
+<img src="analysis_report_files/figure-html/inspect-model3-study1-3.png" alt="Traceplots and posterior distributions for Model 3" width="672" />
+<p class="caption">
+Figure 4.15: Traceplots and posterior distributions for Model 3
+</p>
+</div>
+The posterior predictive checks (Figure <a href="#fig:ppc-model3-study1"><strong>??</strong></a>) look good.
+Note that the upper left panel looks strange because of the massive scale on the x-axis, which is why I reproduce it again at the bottom.
+We see that the student t distribution assigns too much posterior mass to negative values, whereas the data are right skewed.
+For even better fit, we might think about fitting a skew-normal outcome distribution, but I’d say that the student-t was most appropriate before seeing the data.
+We see that the current models does an okay job in recovering the mean and the median.
+<div class="figure"><span id="fig:ppc-model3-study1-1"></span>
+<img src="analysis_report_files/figure-html/ppc-model3-study1-1.png" alt="Posterior predictive checks for Model 3" width="672" />
+<p class="caption">
+Figure 4.16: Posterior predictive checks for Model 3
+</p>
+</div>
+<div class="figure"><span id="fig:ppc-model3-study1-2"></span>
+<img src="analysis_report_files/figure-html/ppc-model3-study1-2.png" alt="Posterior predictive checks for Model 3" width="672" />
+<p class="caption">
+Figure 4.17: Posterior predictive checks for Model 3
+</p>
+</div>
+<p>Let’s again check for potentially influential values.
+Three potentially influential cases are flagged, which is why we calculate them precisely by setting <code>reloo</code> to <code>TRUE</code>.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="analysis-study-1.html#cb58-1"></a>model3_loo &lt;-<span class="st"> </span><span class="kw">loo</span>(model3, <span class="dt">reloo =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb58-2"><a href="analysis-study-1.html#cb58-2"></a><span class="kw">saveRDS</span>(model3_loo, <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model3_loo_study1.rds&quot;</span>))</span></code></pre></div>
+<p>When we calculate ELPD directly, all values appear unproblematic.
+The results seem trustworthy.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="analysis-study-1.html#cb59-1"></a>model3_loo &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model3_loo_study1.rds&quot;</span>))</span>
+<span id="cb59-2"><a href="analysis-study-1.html#cb59-2"></a>model3_loo</span></code></pre></div>
+<pre><code>## 
+## Computed from 12000 by 428 log-likelihood matrix
+## 
+##          Estimate   SE
+## elpd_loo  -2407.7 31.0
+## p_loo       141.9  7.1
+## looic      4815.4 62.0
+## ------
+## Monte Carlo SE of elpd_loo is 0.2.
+## 
+## Pareto k diagnostic values:
+##                          Count Pct.    Min. n_eff
+## (-Inf, 0.5]   (good)     422   98.6%   144       
+##  (0.5, 0.7]   (ok)         6    1.4%   2503      
+##    (0.7, 1]   (bad)        0    0.0%   &lt;NA&gt;      
+##    (1, Inf)   (very bad)   0    0.0%   &lt;NA&gt;      
+## 
+## All Pareto k estimates are ok (k &lt; 0.7).
+## See help(&#39;pareto-k-diagnostic&#39;) for details.</code></pre>
+<p>Let’s inspect the summary.
+There doesn’t seem to be much going on when it comes to the predictors.
+For all predictors, we cannot be 95% certain that zero isn’t the true effect (conditional on the model).</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="analysis-study-1.html#cb61-1"></a><span class="kw">summary</span>(model3, <span class="dt">priors =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>##  Family: student 
+##   Links: mu = identity; sigma = identity; nu = identity 
+## Formula: error ~ 1 + openness_c + conscientiousness_c + extraversion_c + agreeableness_c + neuroticism_c + competence_trait_c + relatedness_trait_c + autonomy_trait_c + (1 | id) + (1 | day) 
+##    Data: study1 (Number of observations: 428) 
+## Samples: 4 chains, each with iter = 5000; warmup = 2000; thin = 1;
+##          total post-warmup samples = 12000
+## 
+## Priors: 
+## b ~ normal(0, 25)
+## Intercept ~ student_t(10, 20, 100)
+## nu ~ gamma(2, 0.1)
+## sd ~ student_t(3, 0, 57.9)
+## sigma ~ student_t(3, 0, 57.9)
+## 
+## Group-Level Effects: 
+## ~day (Number of levels: 5) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     3.29      3.43     0.11    11.83 1.00     4989     5340
+## 
+## ~id (Number of levels: 95) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)    64.75      6.12    53.80    77.57 1.00     2095     4185
+## 
+## Population-Level Effects: 
+##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept               9.65      7.74    -5.42    24.93 1.00     2074     3521
+## openness_c            -18.33     13.16   -44.08     7.38 1.00     2776     5107
+## conscientiousness_c    -2.94     12.90   -28.51    22.68 1.00     2732     4193
+## extraversion_c         -6.71      9.44   -25.27    11.51 1.00     2108     4210
+## agreeableness_c        -6.27     12.82   -31.86    18.62 1.00     2406     4265
+## neuroticism_c         -21.50     13.74   -48.31     5.70 1.00     2794     4522
+## competence_trait_c      6.24     10.86   -15.36    27.03 1.00     2580     3557
+## relatedness_trait_c    -0.64      8.96   -18.15    16.70 1.00     2359     4329
+## autonomy_trait_c       -3.67      9.47   -22.17    14.82 1.00     2920     4850
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma    22.34      2.22    18.33    26.85 1.00     4881     7747
+## nu        1.21      0.12     1.02     1.48 1.00     5088     4131
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+The effects plot (Figure <a href="analysis-study-1.html#fig:effects-model3-study1">4.18</a>) visually confirms that none of the predictors seem largely influential.
+If anything, it appears neurotic people might underestimate their social media use, but again their interval contains zero.
+<div class="figure"><span id="fig:effects-model3-study1"></span>
+<img src="analysis_report_files/figure-html/effects-model3-study1-1.png" alt="Effects plot for Model 3" width="672" />
+<p class="caption">
+Figure 4.18: Effects plot for Model 3
+</p>
+</div>
+</div>
+</div>
+<div id="do-state-i.e.-day-level-variables-predict-social-media-use-and-accuracy" class="section level2">
+<h2><span class="header-section-number">4.4</span> Do state (i.e., day-level) variables predict social media use and accuracy?</h2>
+<p>For the next section, we look at whether day-level variables (i.e., variables reported during experience sampling) predict subjective use, objective use, and accuracy.
+Again, we have three questions:</p>
+<ol style="list-style-type: decimal">
+<li>Do day-level variables predict objective-only engagement?</li>
+<li>Do day-level variables predict subjective-only engagement?</li>
+<li>Do day-level variables predict accuracy?</li>
+</ol>
+<p>Once more I’ll construct a model for each of those three questions.
+Our dependent variables are the same as in the previous block of models: <code>social_media_objective</code>, <code>social_media_subjective</code>, and <code>error</code>.</p>
+<p>Our predictors will be variables on the day-level, so state variables: need satisfaction for autonomy, competence, and relatedness as well as four experiential qualities during participants’ days (boredom, enjoyment, satisfaction, and stress).</p>
+<div id="model-4-state-variables-predicting-objective-use" class="section level3">
+<h3><span class="header-section-number">4.4.1</span> Model 4: State variables predicting objective use</h3>
+<p>First, I choose sensible priors.
+In contrast to previous models, there isn’t much literature that could inform priors on our predictors.
+The same goes for the experiential qualities.
+We’ll go with a “maximal” model where each participant and day get their own intercept plus random slopes nested within participant, because it’s plausible that the effects vary per participant.
+They could also vary by day, but a) there was little to no variation for day in previous models, and b) that would lead to more parameters than our little data could handle.
+Just like before we assume a Gamma distribution for the social media variables.</p>
+<p>I’ll go step-by-step:</p>
+<ul>
+<li>For the intercepts, I use the same prior as above in Models 1 and 2.</li>
+<li>For basic psychological needs fixed effects, <a href="https://www.tandfonline.com/doi/abs/10.1080/15309576.2017.1400991">this</a> paper reports very small relations between self-determined motivations at work and social media use (<span class="math inline">\(\beta\)</span> &lt; .06).
+However, most of the literature focuses on those motivations and social media addiction, enjoyment of social media, or satisfaction with social media.
+Therefore, I’ll use weakly regularizing priors for those effects, which means I’ll go with the same prior for the effects as for Models 1 and 2.</li>
+<li>For the experiential qualities, there isn’t much literature out there that would allow choosing an informed prior.
+Most of those experiential qualities are about having a fulfilled and good day, which taps into the whole controversy over the relation between such experiences and social media.
+Therefore, I’ll take a skeptical stance here and again assign the same weakly regularizing priors (aka the priors we also used for Models 1 and 2).</li>
+<li>For the variances (sigmas) I’ll take the <code>brms</code> default priors because I have no prior information, nor how the effects vary across day and participant.</li>
+<li>For the correlation between intercepts and slopes, I’ll again use the default prior, mostly because those have shown to help with convergence and I don’t have good information on which correlation to expect.</li>
+</ul>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="analysis-study-1.html#cb63-1"></a>priors_model4 &lt;-<span class="st"> </span></span>
+<span id="cb63-2"><a href="analysis-study-1.html#cb63-2"></a><span class="st">  </span><span class="kw">c</span>(</span>
+<span id="cb63-3"><a href="analysis-study-1.html#cb63-3"></a>    <span class="co"># intercept</span></span>
+<span id="cb63-4"><a href="analysis-study-1.html#cb63-4"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="fl">4.5</span>, <span class="fl">0.8</span>), <span class="dt">class =</span> Intercept),</span>
+<span id="cb63-5"><a href="analysis-study-1.html#cb63-5"></a>    </span>
+<span id="cb63-6"><a href="analysis-study-1.html#cb63-6"></a>    <span class="co"># prior on effects</span></span>
+<span id="cb63-7"><a href="analysis-study-1.html#cb63-7"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="dt">class =</span> b),</span>
+<span id="cb63-8"><a href="analysis-study-1.html#cb63-8"></a>    </span>
+<span id="cb63-9"><a href="analysis-study-1.html#cb63-9"></a>    <span class="co"># prior on shape</span></span>
+<span id="cb63-10"><a href="analysis-study-1.html#cb63-10"></a>    <span class="kw">prior</span>(<span class="kw">gamma</span>(<span class="fl">2.5</span>, <span class="dv">100</span>), <span class="dt">class =</span> shape)</span>
+<span id="cb63-11"><a href="analysis-study-1.html#cb63-11"></a>  )</span></code></pre></div>
+<p>Let’s run the model.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="analysis-study-1.html#cb64-1"></a>model4 &lt;-<span class="st"> </span></span>
+<span id="cb64-2"><a href="analysis-study-1.html#cb64-2"></a><span class="st">  </span><span class="kw">brm</span>(</span>
+<span id="cb64-3"><a href="analysis-study-1.html#cb64-3"></a>    <span class="dt">data =</span> study1,</span>
+<span id="cb64-4"><a href="analysis-study-1.html#cb64-4"></a>    <span class="dt">family =</span> <span class="kw">Gamma</span>(<span class="dt">link =</span> <span class="st">&quot;log&quot;</span>),</span>
+<span id="cb64-5"><a href="analysis-study-1.html#cb64-5"></a>    <span class="dt">prior =</span> priors_model4,</span>
+<span id="cb64-6"><a href="analysis-study-1.html#cb64-6"></a>    social_media_objective <span class="op">+</span><span class="st"> </span><span class="fl">1e-6</span> <span class="op">~</span></span>
+<span id="cb64-7"><a href="analysis-study-1.html#cb64-7"></a><span class="st">      </span><span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb64-8"><a href="analysis-study-1.html#cb64-8"></a><span class="st">      </span>autonomy_state_c <span class="op">+</span></span>
+<span id="cb64-9"><a href="analysis-study-1.html#cb64-9"></a><span class="st">      </span>competence_state_c <span class="op">+</span></span>
+<span id="cb64-10"><a href="analysis-study-1.html#cb64-10"></a><span class="st">      </span>relatedness_state_c <span class="op">+</span></span>
+<span id="cb64-11"><a href="analysis-study-1.html#cb64-11"></a><span class="st">      </span>satisfied_c <span class="op">+</span></span>
+<span id="cb64-12"><a href="analysis-study-1.html#cb64-12"></a><span class="st">      </span>boring_c <span class="op">+</span></span>
+<span id="cb64-13"><a href="analysis-study-1.html#cb64-13"></a><span class="st">      </span>stressful_c <span class="op">+</span></span>
+<span id="cb64-14"><a href="analysis-study-1.html#cb64-14"></a><span class="st">      </span>enjoyable_c <span class="op">+</span></span>
+<span id="cb64-15"><a href="analysis-study-1.html#cb64-15"></a><span class="st">      </span>(</span>
+<span id="cb64-16"><a href="analysis-study-1.html#cb64-16"></a>        <span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb64-17"><a href="analysis-study-1.html#cb64-17"></a><span class="st">        </span>autonomy_state_c <span class="op">+</span></span>
+<span id="cb64-18"><a href="analysis-study-1.html#cb64-18"></a><span class="st">        </span>competence_state_c <span class="op">+</span></span>
+<span id="cb64-19"><a href="analysis-study-1.html#cb64-19"></a><span class="st">        </span>relatedness_state_c <span class="op">+</span></span>
+<span id="cb64-20"><a href="analysis-study-1.html#cb64-20"></a><span class="st">        </span>satisfied_c <span class="op">+</span></span>
+<span id="cb64-21"><a href="analysis-study-1.html#cb64-21"></a><span class="st">        </span>boring_c <span class="op">+</span></span>
+<span id="cb64-22"><a href="analysis-study-1.html#cb64-22"></a><span class="st">        </span>stressful_c <span class="op">+</span></span>
+<span id="cb64-23"><a href="analysis-study-1.html#cb64-23"></a><span class="st">        </span>enjoyable_c <span class="op">|</span></span>
+<span id="cb64-24"><a href="analysis-study-1.html#cb64-24"></a><span class="st">        </span>id</span>
+<span id="cb64-25"><a href="analysis-study-1.html#cb64-25"></a>      ) <span class="op">+</span></span>
+<span id="cb64-26"><a href="analysis-study-1.html#cb64-26"></a><span class="st">      </span>(<span class="dv">1</span> <span class="op">|</span>day),</span>
+<span id="cb64-27"><a href="analysis-study-1.html#cb64-27"></a>    <span class="dt">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb64-28"><a href="analysis-study-1.html#cb64-28"></a>    <span class="dt">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb64-29"><a href="analysis-study-1.html#cb64-29"></a>    <span class="dt">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb64-30"><a href="analysis-study-1.html#cb64-30"></a>    <span class="dt">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb64-31"><a href="analysis-study-1.html#cb64-31"></a>    <span class="dt">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb64-32"><a href="analysis-study-1.html#cb64-32"></a>    <span class="dt">control =</span> <span class="kw">list</span>(</span>
+<span id="cb64-33"><a href="analysis-study-1.html#cb64-33"></a>      <span class="dt">adapt_delta =</span> <span class="fl">0.99</span></span>
+<span id="cb64-34"><a href="analysis-study-1.html#cb64-34"></a>    ),</span>
+<span id="cb64-35"><a href="analysis-study-1.html#cb64-35"></a>    <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model4&quot;</span>)</span>
+<span id="cb64-36"><a href="analysis-study-1.html#cb64-36"></a>  )</span></code></pre></div>
+Overall, the traceplots look fine and the chains seem to have mixed well (Figure <a href="#fig:inspect-model5-study1"><strong>??</strong></a>).
+Again the variance around the day grouping is small and mostly estimated to be zero or close to zero.
+<div class="figure"><span id="fig:inspect-model4-study1-1"></span>
+<img src="analysis_report_files/figure-html/inspect-model4-study1-1.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.19: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model4-study1-2"></span>
+<img src="analysis_report_files/figure-html/inspect-model4-study1-2.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.20: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model4-study1-3"></span>
+<img src="analysis_report_files/figure-html/inspect-model4-study1-3.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.21: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model4-study1-4"></span>
+<img src="analysis_report_files/figure-html/inspect-model4-study1-4.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.22: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model4-study1-5"></span>
+<img src="analysis_report_files/figure-html/inspect-model4-study1-5.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.23: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model4-study1-6"></span>
+<img src="analysis_report_files/figure-html/inspect-model4-study1-6.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.24: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model4-study1-7"></span>
+<img src="analysis_report_files/figure-html/inspect-model4-study1-7.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.25: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model4-study1-8"></span>
+<img src="analysis_report_files/figure-html/inspect-model4-study1-8.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.26: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model4-study1-9"></span>
+<img src="analysis_report_files/figure-html/inspect-model4-study1-9.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.27: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model4-study1-10"></span>
+<img src="analysis_report_files/figure-html/inspect-model4-study1-10.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.28: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+The posterior predictive check shows that the model does a mediocre job.
+The model does a good job retrieving the mean, but underestimates social media use once more.
+Also, the LOO-PIT diagnostics look like a different distribution will fit better, potentially a skewed normal or beta-distribution.
+<div class="figure"><span id="fig:ppc-model4-study1"></span>
+<img src="analysis_report_files/figure-html/ppc-model4-study1-1.png" alt="Posterior predictive checks for Model 4" width="672" />
+<p class="caption">
+Figure 4.29: Posterior predictive checks for Model 4
+</p>
+</div>
+<p>Next, we check for potentially influential cases.
+One observation might be influential, which is why we compute ELPDs directly again.</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="analysis-study-1.html#cb65-1"></a>model4_loo &lt;-<span class="st"> </span><span class="kw">loo</span>(model4, <span class="dt">reloo =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb65-2"><a href="analysis-study-1.html#cb65-2"></a><span class="kw">saveRDS</span>(model4_loo, <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model4_loo_study1.rds&quot;</span>))</span></code></pre></div>
+<p>When we calculate ELPD directly, all values appear unproblematic.
+The results seem trustworthy.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="analysis-study-1.html#cb66-1"></a>model4_loo &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model4_loo_study1.rds&quot;</span>))</span>
+<span id="cb66-2"><a href="analysis-study-1.html#cb66-2"></a>model4_loo</span></code></pre></div>
+<pre><code>## 
+## Computed from 12000 by 427 log-likelihood matrix
+## 
+##          Estimate   SE
+## elpd_loo  -2462.7 15.0
+## p_loo        26.3  2.8
+## looic      4925.5 30.0
+## ------
+## Monte Carlo SE of elpd_loo is 0.1.
+## 
+## Pareto k diagnostic values:
+##                          Count Pct.    Min. n_eff
+## (-Inf, 0.5]   (good)     413   96.7%   771       
+##  (0.5, 0.7]   (ok)        14    3.3%   1643      
+##    (0.7, 1]   (bad)        0    0.0%   &lt;NA&gt;      
+##    (1, Inf)   (very bad)   0    0.0%   &lt;NA&gt;      
+## 
+## All Pareto k estimates are ok (k &lt; 0.7).
+## See help(&#39;pareto-k-diagnostic&#39;) for details.</code></pre>
+<p>Let’s inspect the summary.
+There doesn’t seem to be much going on when it comes to the predictors.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="analysis-study-1.html#cb68-1"></a><span class="kw">summary</span>(model4, <span class="dt">priors =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>##  Family: gamma 
+##   Links: mu = log; shape = identity 
+## Formula: social_media_objective + 1e-06 ~ 1 + autonomy_state_c + competence_state_c + relatedness_state_c + satisfied_c + boring_c + stressful_c + enjoyable_c + (1 + autonomy_state_c + competence_state_c + relatedness_state_c + satisfied_c + boring_c + stressful_c + enjoyable_c | id) + (1 | day) 
+##    Data: study1 (Number of observations: 427) 
+## Samples: 4 chains, each with iter = 5000; warmup = 2000; thin = 1;
+##          total post-warmup samples = 12000
+## 
+## Priors: 
+## b ~ normal(0, 0.1)
+## Intercept ~ normal(4.5, 0.8)
+## L ~ lkj_corr_cholesky(1)
+## sd ~ student_t(3, 0, 2.5)
+## shape ~ gamma(2.5, 100)
+## 
+## Group-Level Effects: 
+## ~day (Number of levels: 5) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     0.07      0.08     0.00     0.27 1.00     5988     5912
+## 
+## ~id (Number of levels: 95) 
+##                                             Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)                                   0.49      0.08     0.33     0.65 1.00     3361     5235
+## sd(autonomy_state_c)                            0.06      0.04     0.00     0.16 1.00     6297     5688
+## sd(competence_state_c)                          0.08      0.06     0.00     0.21 1.00     3610     5898
+## sd(relatedness_state_c)                         0.08      0.06     0.00     0.21 1.00     4470     5009
+## sd(satisfied_c)                                 0.05      0.03     0.00     0.13 1.00     6603     4506
+## sd(boring_c)                                    0.04      0.03     0.00     0.10 1.00     7082     5725
+## sd(stressful_c)                                 0.03      0.02     0.00     0.09 1.00     7071     5785
+## sd(enjoyable_c)                                 0.04      0.03     0.00     0.12 1.00     7689     6267
+## cor(Intercept,autonomy_state_c)                -0.07      0.33    -0.68     0.58 1.00    13774     8378
+## cor(Intercept,competence_state_c)              -0.27      0.32    -0.79     0.42 1.00     8631     9414
+## cor(autonomy_state_c,competence_state_c)       -0.05      0.34    -0.67     0.61 1.00    11838     9419
+## cor(Intercept,relatedness_state_c)             -0.15      0.33    -0.72     0.52 1.00    12399     9143
+## cor(autonomy_state_c,relatedness_state_c)      -0.02      0.34    -0.65     0.61 1.00    12074     9631
+## cor(competence_state_c,relatedness_state_c)     0.00      0.33    -0.63     0.63 1.00    11277     9708
+## cor(Intercept,satisfied_c)                     -0.06      0.33    -0.66     0.59 1.00    14659     8621
+## cor(autonomy_state_c,satisfied_c)              -0.03      0.33    -0.65     0.62 1.00    11911     8680
+## cor(competence_state_c,satisfied_c)            -0.04      0.33    -0.66     0.62 1.00    12116     9447
+## cor(relatedness_state_c,satisfied_c)           -0.03      0.33    -0.66     0.62 1.00    10345     8537
+## cor(Intercept,boring_c)                         0.09      0.33    -0.57     0.68 1.00    15739     8495
+## cor(autonomy_state_c,boring_c)                  0.01      0.33    -0.61     0.64 1.00    12619     9263
+## cor(competence_state_c,boring_c)               -0.01      0.33    -0.64     0.62 1.00    11480     9909
+## cor(relatedness_state_c,boring_c)              -0.00      0.34    -0.64     0.64 1.00    10818     9420
+## cor(satisfied_c,boring_c)                       0.01      0.33    -0.62     0.64 1.00     9294     9361
+## cor(Intercept,stressful_c)                     -0.03      0.33    -0.65     0.60 1.00    15352     9042
+## cor(autonomy_state_c,stressful_c)               0.03      0.33    -0.61     0.65 1.00    13456     9287
+## cor(competence_state_c,stressful_c)             0.05      0.34    -0.61     0.67 1.00    11695     9093
+## cor(relatedness_state_c,stressful_c)            0.01      0.33    -0.63     0.62 1.00    10650    10168
+## cor(satisfied_c,stressful_c)                    0.03      0.33    -0.61     0.66 1.00     8685     9664
+## cor(boring_c,stressful_c)                      -0.02      0.33    -0.64     0.62 1.00     8361     9288
+## cor(Intercept,enjoyable_c)                     -0.10      0.33    -0.69     0.57 1.00    14775     8680
+## cor(autonomy_state_c,enjoyable_c)              -0.03      0.33    -0.65     0.61 1.00    13769     9772
+## cor(competence_state_c,enjoyable_c)            -0.01      0.33    -0.63     0.62 1.00    12259     9054
+## cor(relatedness_state_c,enjoyable_c)           -0.02      0.34    -0.64     0.62 1.00    10656     9246
+## cor(satisfied_c,enjoyable_c)                   -0.04      0.34    -0.66     0.61 1.00     9709    10140
+## cor(boring_c,enjoyable_c)                       0.01      0.33    -0.62     0.64 1.00     8499     9265
+## cor(stressful_c,enjoyable_c)                    0.03      0.34    -0.61     0.65 1.00     7638     9268
+## 
+## Population-Level Effects: 
+##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept               4.82      0.08     4.65     4.98 1.00     5737     6513
+## autonomy_state_c       -0.01      0.05    -0.12     0.09 1.00    10600     9602
+## competence_state_c     -0.02      0.05    -0.12     0.08 1.00     9976     8912
+## relatedness_state_c    -0.00      0.05    -0.10     0.10 1.00    11212     9741
+## satisfied_c            -0.00      0.05    -0.09     0.09 1.00    11419     9390
+## boring_c                0.01      0.03    -0.06     0.08 1.00    10692     9199
+## stressful_c            -0.01      0.03    -0.07     0.05 1.00    11047     9348
+## enjoyable_c             0.06      0.04    -0.03     0.15 1.00    10696     8462
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## shape     1.30      0.09     1.13     1.49 1.00     9709     8707
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+The effects plot (Figure <a href="analysis-study-1.html#fig:effects-model4-study1">4.30</a>) visually confirms that none of the predictors seem influential.
+Note that the correlations between random effects are on different scales which explains why the CI around them are so wide.
+Except for the correlations, all effects are on the log scale because we used a Gamma distribution, but the correlations are regularly on a scale of -1 to 1.
+<div class="figure"><span id="fig:effects-model4-study1"></span>
+<img src="analysis_report_files/figure-html/effects-model4-study1-1.png" alt="Effects plot for Model 4" width="672" />
+<p class="caption">
+Figure 4.30: Effects plot for Model 4
+</p>
+</div>
+</div>
+<div id="model-5-state-variables-predicting-subjective-use" class="section level3">
+<h3><span class="header-section-number">4.4.2</span> Model 5: State variables predicting subjective use</h3>
+<p>The next model predicts subjective use from the same predictors.
+Once more, we know that subjective and objective use aren’t perfectly correlated, but the priors for Model 4 again are our best bet here.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="analysis-study-1.html#cb70-1"></a>priors_model5 &lt;-<span class="st"> </span></span>
+<span id="cb70-2"><a href="analysis-study-1.html#cb70-2"></a><span class="st">  </span><span class="kw">c</span>(</span>
+<span id="cb70-3"><a href="analysis-study-1.html#cb70-3"></a>    <span class="co"># intercept</span></span>
+<span id="cb70-4"><a href="analysis-study-1.html#cb70-4"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="fl">4.5</span>, <span class="fl">0.8</span>), <span class="dt">class =</span> Intercept),</span>
+<span id="cb70-5"><a href="analysis-study-1.html#cb70-5"></a>    </span>
+<span id="cb70-6"><a href="analysis-study-1.html#cb70-6"></a>    <span class="co"># prior on effects</span></span>
+<span id="cb70-7"><a href="analysis-study-1.html#cb70-7"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="dt">class =</span> b),</span>
+<span id="cb70-8"><a href="analysis-study-1.html#cb70-8"></a>    </span>
+<span id="cb70-9"><a href="analysis-study-1.html#cb70-9"></a>    <span class="co"># prior on shape</span></span>
+<span id="cb70-10"><a href="analysis-study-1.html#cb70-10"></a>    <span class="kw">prior</span>(<span class="kw">gamma</span>(<span class="fl">2.5</span>, <span class="dv">100</span>), <span class="dt">class =</span> shape)</span>
+<span id="cb70-11"><a href="analysis-study-1.html#cb70-11"></a>  )</span></code></pre></div>
+<p>Let’s run the model.
+Like with Model 2, we don’t separately model zeros.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="analysis-study-1.html#cb71-1"></a>model5 &lt;-<span class="st"> </span></span>
+<span id="cb71-2"><a href="analysis-study-1.html#cb71-2"></a><span class="st">  </span><span class="kw">brm</span>(</span>
+<span id="cb71-3"><a href="analysis-study-1.html#cb71-3"></a>    <span class="dt">data =</span> study1,</span>
+<span id="cb71-4"><a href="analysis-study-1.html#cb71-4"></a>    <span class="dt">family =</span> <span class="kw">Gamma</span>(<span class="dt">link =</span> <span class="st">&quot;log&quot;</span>),</span>
+<span id="cb71-5"><a href="analysis-study-1.html#cb71-5"></a>    <span class="dt">prior =</span> priors_model5,</span>
+<span id="cb71-6"><a href="analysis-study-1.html#cb71-6"></a>    social_media_subjective <span class="op">+</span><span class="st"> </span><span class="fl">1e-6</span> <span class="op">~</span></span>
+<span id="cb71-7"><a href="analysis-study-1.html#cb71-7"></a><span class="st">      </span><span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb71-8"><a href="analysis-study-1.html#cb71-8"></a><span class="st">      </span>autonomy_state_c <span class="op">+</span></span>
+<span id="cb71-9"><a href="analysis-study-1.html#cb71-9"></a><span class="st">      </span>competence_state_c <span class="op">+</span></span>
+<span id="cb71-10"><a href="analysis-study-1.html#cb71-10"></a><span class="st">      </span>relatedness_state_c <span class="op">+</span></span>
+<span id="cb71-11"><a href="analysis-study-1.html#cb71-11"></a><span class="st">      </span>satisfied_c <span class="op">+</span></span>
+<span id="cb71-12"><a href="analysis-study-1.html#cb71-12"></a><span class="st">      </span>boring_c <span class="op">+</span></span>
+<span id="cb71-13"><a href="analysis-study-1.html#cb71-13"></a><span class="st">      </span>stressful_c <span class="op">+</span></span>
+<span id="cb71-14"><a href="analysis-study-1.html#cb71-14"></a><span class="st">      </span>enjoyable_c <span class="op">+</span></span>
+<span id="cb71-15"><a href="analysis-study-1.html#cb71-15"></a><span class="st">      </span>(</span>
+<span id="cb71-16"><a href="analysis-study-1.html#cb71-16"></a>        <span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb71-17"><a href="analysis-study-1.html#cb71-17"></a><span class="st">        </span>autonomy_state_c <span class="op">+</span></span>
+<span id="cb71-18"><a href="analysis-study-1.html#cb71-18"></a><span class="st">        </span>competence_state_c <span class="op">+</span></span>
+<span id="cb71-19"><a href="analysis-study-1.html#cb71-19"></a><span class="st">        </span>relatedness_state_c <span class="op">+</span></span>
+<span id="cb71-20"><a href="analysis-study-1.html#cb71-20"></a><span class="st">        </span>satisfied_c <span class="op">+</span></span>
+<span id="cb71-21"><a href="analysis-study-1.html#cb71-21"></a><span class="st">        </span>boring_c <span class="op">+</span></span>
+<span id="cb71-22"><a href="analysis-study-1.html#cb71-22"></a><span class="st">        </span>stressful_c <span class="op">+</span></span>
+<span id="cb71-23"><a href="analysis-study-1.html#cb71-23"></a><span class="st">        </span>enjoyable_c <span class="op">|</span></span>
+<span id="cb71-24"><a href="analysis-study-1.html#cb71-24"></a><span class="st">        </span>id</span>
+<span id="cb71-25"><a href="analysis-study-1.html#cb71-25"></a>      ) <span class="op">+</span></span>
+<span id="cb71-26"><a href="analysis-study-1.html#cb71-26"></a><span class="st">      </span>(<span class="dv">1</span> <span class="op">|</span>day),</span>
+<span id="cb71-27"><a href="analysis-study-1.html#cb71-27"></a>    <span class="dt">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb71-28"><a href="analysis-study-1.html#cb71-28"></a>    <span class="dt">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb71-29"><a href="analysis-study-1.html#cb71-29"></a>    <span class="dt">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb71-30"><a href="analysis-study-1.html#cb71-30"></a>    <span class="dt">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb71-31"><a href="analysis-study-1.html#cb71-31"></a>    <span class="dt">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb71-32"><a href="analysis-study-1.html#cb71-32"></a>    <span class="dt">control =</span> <span class="kw">list</span>(</span>
+<span id="cb71-33"><a href="analysis-study-1.html#cb71-33"></a>      <span class="dt">adapt_delta =</span> <span class="fl">0.99</span></span>
+<span id="cb71-34"><a href="analysis-study-1.html#cb71-34"></a>    ),</span>
+<span id="cb71-35"><a href="analysis-study-1.html#cb71-35"></a>    <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model5_study1&quot;</span>)</span>
+<span id="cb71-36"><a href="analysis-study-1.html#cb71-36"></a>  )</span></code></pre></div>
+Overall, the traceplots look fine and the chains seem to have mixed well (Figure <a href="#fig:inspect-model5-study1"><strong>??</strong></a>).
+Like before, the variance around the day grouping is small and mostly estimated to be zero or close to zero.
+<div class="figure"><span id="fig:inspect-model5-study1-1"></span>
+<img src="analysis_report_files/figure-html/inspect-model5-study1-1.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.31: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model5-study1-2"></span>
+<img src="analysis_report_files/figure-html/inspect-model5-study1-2.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.32: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model5-study1-3"></span>
+<img src="analysis_report_files/figure-html/inspect-model5-study1-3.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.33: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model5-study1-4"></span>
+<img src="analysis_report_files/figure-html/inspect-model5-study1-4.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.34: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model5-study1-5"></span>
+<img src="analysis_report_files/figure-html/inspect-model5-study1-5.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.35: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model5-study1-6"></span>
+<img src="analysis_report_files/figure-html/inspect-model5-study1-6.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.36: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model5-study1-7"></span>
+<img src="analysis_report_files/figure-html/inspect-model5-study1-7.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.37: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model5-study1-8"></span>
+<img src="analysis_report_files/figure-html/inspect-model5-study1-8.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.38: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model5-study1-9"></span>
+<img src="analysis_report_files/figure-html/inspect-model5-study1-9.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.39: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model5-study1-10"></span>
+<img src="analysis_report_files/figure-html/inspect-model5-study1-10.png" alt="Traceplots and posterior distributions for Model 4" width="672" />
+<p class="caption">
+Figure 4.40: Traceplots and posterior distributions for Model 4
+</p>
+</div>
+The posterior predictive check shows about the same model fit as Model 4: mediocre.
+<div class="figure"><span id="fig:ppc-model5-study1"></span>
+<img src="analysis_report_files/figure-html/ppc-model5-study1-1.png" alt="Posterior predictive checks for Model 5" width="672" />
+<p class="caption">
+Figure 4.41: Posterior predictive checks for Model 5
+</p>
+</div>
+<p>There are no cases flagged as potentially influential outliers.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="analysis-study-1.html#cb72-1"></a><span class="kw">loo</span>(model5)</span></code></pre></div>
+<p>Let’s inspect the summary.
+Having an enjoyable and boring day might be related to more estimating more social media use.
+Conversely, a feeling of competence might decrease estimates.
+However, all three of those posterior distributions include zero, even though it’s close.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="analysis-study-1.html#cb73-1"></a><span class="kw">summary</span>(model5, <span class="dt">priors =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>##  Family: gamma 
+##   Links: mu = log; shape = identity 
+## Formula: social_media_subjective + 1e-06 ~ 1 + autonomy_state_c + competence_state_c + relatedness_state_c + satisfied_c + boring_c + stressful_c + enjoyable_c + (1 + autonomy_state_c + competence_state_c + relatedness_state_c + satisfied_c + boring_c + stressful_c + enjoyable_c | id) + (1 | day) 
+##    Data: study1 (Number of observations: 426) 
+## Samples: 4 chains, each with iter = 5000; warmup = 2000; thin = 1;
+##          total post-warmup samples = 12000
+## 
+## Priors: 
+## b ~ normal(0, 0.1)
+## Intercept ~ normal(4.5, 0.8)
+## L ~ lkj_corr_cholesky(1)
+## sd ~ student_t(3, 0, 2.5)
+## shape ~ gamma(2.5, 100)
+## 
+## Group-Level Effects: 
+## ~day (Number of levels: 5) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     0.10      0.11     0.00     0.36 1.00     6716     6747
+## 
+## ~id (Number of levels: 95) 
+##                                             Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)                                   0.19      0.12     0.01     0.46 1.00     2624     4947
+## sd(autonomy_state_c)                            0.08      0.06     0.00     0.22 1.00     8118     7038
+## sd(competence_state_c)                          0.07      0.05     0.00     0.19 1.00     8634     7397
+## sd(relatedness_state_c)                         0.12      0.09     0.00     0.35 1.00     3992     5945
+## sd(satisfied_c)                                 0.06      0.05     0.00     0.18 1.00     8140     6457
+## sd(boring_c)                                    0.05      0.04     0.00     0.14 1.00     7338     5912
+## sd(stressful_c)                                 0.05      0.03     0.00     0.13 1.00     8011     6130
+## sd(enjoyable_c)                                 0.06      0.04     0.00     0.16 1.00     8546     6756
+## cor(Intercept,autonomy_state_c)                 0.03      0.33    -0.60     0.65 1.00    19766     9671
+## cor(Intercept,competence_state_c)              -0.01      0.33    -0.62     0.62 1.00    20829     8619
+## cor(autonomy_state_c,competence_state_c)       -0.03      0.33    -0.64     0.61 1.00    14686     9239
+## cor(Intercept,relatedness_state_c)             -0.01      0.33    -0.64     0.61 1.00    14202     8647
+## cor(autonomy_state_c,relatedness_state_c)      -0.01      0.33    -0.64     0.63 1.00    13079     9793
+## cor(competence_state_c,relatedness_state_c)    -0.02      0.33    -0.65     0.61 1.00    10704     9286
+## cor(Intercept,satisfied_c)                      0.00      0.33    -0.63     0.64 1.00    21191     8140
+## cor(autonomy_state_c,satisfied_c)              -0.03      0.34    -0.65     0.61 1.00    16151     9263
+## cor(competence_state_c,satisfied_c)            -0.03      0.34    -0.66     0.62 1.00    12514     9638
+## cor(relatedness_state_c,satisfied_c)           -0.03      0.33    -0.66     0.60 1.00    11688     9998
+## cor(Intercept,boring_c)                         0.01      0.34    -0.63     0.64 1.00    21888     9090
+## cor(autonomy_state_c,boring_c)                  0.02      0.33    -0.61     0.65 1.00    14995     8960
+## cor(competence_state_c,boring_c)                0.00      0.33    -0.63     0.63 1.00    12703     9111
+## cor(relatedness_state_c,boring_c)               0.02      0.34    -0.62     0.66 1.00    10843     9431
+## cor(satisfied_c,boring_c)                       0.02      0.33    -0.63     0.65 1.00     9169     9297
+## cor(Intercept,stressful_c)                     -0.02      0.34    -0.65     0.62 1.00    20819     8451
+## cor(autonomy_state_c,stressful_c)               0.03      0.33    -0.61     0.65 1.00    15689     9281
+## cor(competence_state_c,stressful_c)             0.04      0.33    -0.61     0.66 1.00    12160     9773
+## cor(relatedness_state_c,stressful_c)            0.01      0.33    -0.62     0.62 1.00    12999     9498
+## cor(satisfied_c,stressful_c)                    0.02      0.33    -0.62     0.65 1.00     9181    10019
+## cor(boring_c,stressful_c)                      -0.01      0.33    -0.64     0.63 1.00     9333    10393
+## cor(Intercept,enjoyable_c)                     -0.05      0.33    -0.66     0.59 1.00    20048     8996
+## cor(autonomy_state_c,enjoyable_c)              -0.04      0.33    -0.66     0.60 1.00    15646     9684
+## cor(competence_state_c,enjoyable_c)            -0.03      0.34    -0.66     0.61 1.00    12632     9350
+## cor(relatedness_state_c,enjoyable_c)           -0.02      0.33    -0.64     0.61 1.00    11742    10033
+## cor(satisfied_c,enjoyable_c)                   -0.04      0.34    -0.67     0.62 1.00     9114     9812
+## cor(boring_c,enjoyable_c)                       0.02      0.34    -0.63     0.65 1.00     7898     8888
+## cor(stressful_c,enjoyable_c)                    0.01      0.34    -0.62     0.65 1.00     7066    10013
+## 
+## Population-Level Effects: 
+##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept               4.97      0.10     4.78     5.15 1.00     7666     6098
+## autonomy_state_c       -0.04      0.06    -0.17     0.08 1.00    18071     8710
+## competence_state_c     -0.06      0.06    -0.18     0.05 1.00    17567     9082
+## relatedness_state_c     0.01      0.06    -0.11     0.13 1.00    18496     8655
+## satisfied_c            -0.05      0.06    -0.16     0.06 1.00    18215     9688
+## boring_c                0.05      0.04    -0.03     0.14 1.00    20071     9549
+## stressful_c            -0.02      0.04    -0.09     0.05 1.00    18087    10101
+## enjoyable_c             0.08      0.06    -0.03     0.19 1.00    17084     9624
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## shape     0.61      0.04     0.54     0.69 1.00    14623     8831
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+The effects plot (Figure <a href="analysis-study-1.html#fig:effects-model5-study1">4.42</a>) visually that those three states might be influential, but their CIs overlap with zero.
+<div class="figure"><span id="fig:effects-model5-study1"></span>
+<img src="analysis_report_files/figure-html/effects-model5-study1-1.png" alt="Effects plot for Model 4" width="672" />
+<p class="caption">
+Figure 4.42: Effects plot for Model 4
+</p>
+</div>
+</div>
+<div id="model-6-state-variables-predicting-accuracy" class="section level3">
+<h3><span class="header-section-number">4.4.3</span> Model 6: State variables predicting accuracy</h3>
+<p>For this model, once more it’s hard to choose informed priors.
+Therefore, I choose the same skeptical, but weakly regularizing priors as for Model 3, with a student t distribution with fat tails, an intercept that reflects a tendency to overestimate, and slopes that are skeptical of large effects.
+For everything else, I’ll use the <code>brms</code> default priors because I don’t have information on what correlation or variances to expect.</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="analysis-study-1.html#cb75-1"></a>priors_model6 &lt;-<span class="st"> </span></span>
+<span id="cb75-2"><a href="analysis-study-1.html#cb75-2"></a><span class="st">  </span><span class="kw">c</span>(</span>
+<span id="cb75-3"><a href="analysis-study-1.html#cb75-3"></a>    <span class="co"># intercept</span></span>
+<span id="cb75-4"><a href="analysis-study-1.html#cb75-4"></a>    <span class="kw">prior</span>(<span class="kw">student_t</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">100</span>), <span class="dt">class =</span> Intercept),</span>
+<span id="cb75-5"><a href="analysis-study-1.html#cb75-5"></a>    </span>
+<span id="cb75-6"><a href="analysis-study-1.html#cb75-6"></a>    <span class="co"># all other effects</span></span>
+<span id="cb75-7"><a href="analysis-study-1.html#cb75-7"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="dv">0</span>, <span class="dv">25</span>), <span class="dt">class =</span> b)</span>
+<span id="cb75-8"><a href="analysis-study-1.html#cb75-8"></a>  )</span></code></pre></div>
+<p>Let’s run the model.</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="analysis-study-1.html#cb76-1"></a>model6 &lt;-<span class="st"> </span></span>
+<span id="cb76-2"><a href="analysis-study-1.html#cb76-2"></a><span class="st">  </span><span class="kw">brm</span>(</span>
+<span id="cb76-3"><a href="analysis-study-1.html#cb76-3"></a>    <span class="dt">data =</span> study1,</span>
+<span id="cb76-4"><a href="analysis-study-1.html#cb76-4"></a>    <span class="dt">family =</span> student,</span>
+<span id="cb76-5"><a href="analysis-study-1.html#cb76-5"></a>    <span class="dt">prior =</span> priors_model6,</span>
+<span id="cb76-6"><a href="analysis-study-1.html#cb76-6"></a>    error <span class="op">~</span></span>
+<span id="cb76-7"><a href="analysis-study-1.html#cb76-7"></a><span class="st">      </span><span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb76-8"><a href="analysis-study-1.html#cb76-8"></a><span class="st">      </span>autonomy_state_c <span class="op">+</span></span>
+<span id="cb76-9"><a href="analysis-study-1.html#cb76-9"></a><span class="st">      </span>competence_state_c <span class="op">+</span></span>
+<span id="cb76-10"><a href="analysis-study-1.html#cb76-10"></a><span class="st">      </span>relatedness_state_c <span class="op">+</span></span>
+<span id="cb76-11"><a href="analysis-study-1.html#cb76-11"></a><span class="st">      </span>satisfied_c <span class="op">+</span></span>
+<span id="cb76-12"><a href="analysis-study-1.html#cb76-12"></a><span class="st">      </span>boring_c <span class="op">+</span></span>
+<span id="cb76-13"><a href="analysis-study-1.html#cb76-13"></a><span class="st">      </span>stressful_c <span class="op">+</span></span>
+<span id="cb76-14"><a href="analysis-study-1.html#cb76-14"></a><span class="st">      </span>enjoyable_c <span class="op">+</span></span>
+<span id="cb76-15"><a href="analysis-study-1.html#cb76-15"></a><span class="st">      </span>(</span>
+<span id="cb76-16"><a href="analysis-study-1.html#cb76-16"></a>        <span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb76-17"><a href="analysis-study-1.html#cb76-17"></a><span class="st">        </span>autonomy_state_c <span class="op">+</span></span>
+<span id="cb76-18"><a href="analysis-study-1.html#cb76-18"></a><span class="st">        </span>competence_state_c <span class="op">+</span></span>
+<span id="cb76-19"><a href="analysis-study-1.html#cb76-19"></a><span class="st">        </span>relatedness_state_c <span class="op">+</span></span>
+<span id="cb76-20"><a href="analysis-study-1.html#cb76-20"></a><span class="st">        </span>satisfied_c <span class="op">+</span></span>
+<span id="cb76-21"><a href="analysis-study-1.html#cb76-21"></a><span class="st">        </span>boring_c <span class="op">+</span></span>
+<span id="cb76-22"><a href="analysis-study-1.html#cb76-22"></a><span class="st">        </span>stressful_c <span class="op">+</span></span>
+<span id="cb76-23"><a href="analysis-study-1.html#cb76-23"></a><span class="st">        </span>enjoyable_c <span class="op">|</span></span>
+<span id="cb76-24"><a href="analysis-study-1.html#cb76-24"></a><span class="st">        </span>id</span>
+<span id="cb76-25"><a href="analysis-study-1.html#cb76-25"></a>      ) <span class="op">+</span></span>
+<span id="cb76-26"><a href="analysis-study-1.html#cb76-26"></a><span class="st">      </span>(<span class="dv">1</span> <span class="op">|</span>day),</span>
+<span id="cb76-27"><a href="analysis-study-1.html#cb76-27"></a>    <span class="dt">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb76-28"><a href="analysis-study-1.html#cb76-28"></a>    <span class="dt">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb76-29"><a href="analysis-study-1.html#cb76-29"></a>    <span class="dt">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb76-30"><a href="analysis-study-1.html#cb76-30"></a>    <span class="dt">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb76-31"><a href="analysis-study-1.html#cb76-31"></a>    <span class="dt">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb76-32"><a href="analysis-study-1.html#cb76-32"></a>    <span class="dt">control =</span> <span class="kw">list</span>(</span>
+<span id="cb76-33"><a href="analysis-study-1.html#cb76-33"></a>      <span class="dt">adapt_delta =</span> <span class="fl">0.99</span></span>
+<span id="cb76-34"><a href="analysis-study-1.html#cb76-34"></a>    ),</span>
+<span id="cb76-35"><a href="analysis-study-1.html#cb76-35"></a>    <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model6_study1&quot;</span>)</span>
+<span id="cb76-36"><a href="analysis-study-1.html#cb76-36"></a>  )</span></code></pre></div>
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model6-study1"><strong>??</strong></a>), just like with Model 3.
+<div class="figure"><span id="fig:inspect-model6-study1-1"></span>
+<img src="analysis_report_files/figure-html/inspect-model6-study1-1.png" alt="Traceplots and posterior distributions for Model 6" width="672" />
+<p class="caption">
+Figure 4.43: Traceplots and posterior distributions for Model 6
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model6-study1-2"></span>
+<img src="analysis_report_files/figure-html/inspect-model6-study1-2.png" alt="Traceplots and posterior distributions for Model 6" width="672" />
+<p class="caption">
+Figure 4.44: Traceplots and posterior distributions for Model 6
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model6-study1-3"></span>
+<img src="analysis_report_files/figure-html/inspect-model6-study1-3.png" alt="Traceplots and posterior distributions for Model 6" width="672" />
+<p class="caption">
+Figure 4.45: Traceplots and posterior distributions for Model 6
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model6-study1-4"></span>
+<img src="analysis_report_files/figure-html/inspect-model6-study1-4.png" alt="Traceplots and posterior distributions for Model 6" width="672" />
+<p class="caption">
+Figure 4.46: Traceplots and posterior distributions for Model 6
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model6-study1-5"></span>
+<img src="analysis_report_files/figure-html/inspect-model6-study1-5.png" alt="Traceplots and posterior distributions for Model 6" width="672" />
+<p class="caption">
+Figure 4.47: Traceplots and posterior distributions for Model 6
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model6-study1-6"></span>
+<img src="analysis_report_files/figure-html/inspect-model6-study1-6.png" alt="Traceplots and posterior distributions for Model 6" width="672" />
+<p class="caption">
+Figure 4.48: Traceplots and posterior distributions for Model 6
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model6-study1-7"></span>
+<img src="analysis_report_files/figure-html/inspect-model6-study1-7.png" alt="Traceplots and posterior distributions for Model 6" width="672" />
+<p class="caption">
+Figure 4.49: Traceplots and posterior distributions for Model 6
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model6-study1-8"></span>
+<img src="analysis_report_files/figure-html/inspect-model6-study1-8.png" alt="Traceplots and posterior distributions for Model 6" width="672" />
+<p class="caption">
+Figure 4.50: Traceplots and posterior distributions for Model 6
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model6-study1-9"></span>
+<img src="analysis_report_files/figure-html/inspect-model6-study1-9.png" alt="Traceplots and posterior distributions for Model 6" width="672" />
+<p class="caption">
+Figure 4.51: Traceplots and posterior distributions for Model 6
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model6-study1-10"></span>
+<img src="analysis_report_files/figure-html/inspect-model6-study1-10.png" alt="Traceplots and posterior distributions for Model 6" width="672" />
+<p class="caption">
+Figure 4.52: Traceplots and posterior distributions for Model 6
+</p>
+</div>
+The posterior predictive checks (Figure <a href="#fig:ppc-model6-study1"><strong>??</strong></a>) look good.
+Like with Model 3, that the upper left panel looks strange because of the massive scale on the x-axis.
+I reproduce it again at the bottom with a more sensible x-axis.
+Once more, the student t distribution assigns too much posterior mass to negative values, whereas the data are right skewed.
+Otherwise, the model does an okay job in recovering the mean and the median.
+<div class="figure"><span id="fig:ppc-model6-study1-1"></span>
+<img src="analysis_report_files/figure-html/ppc-model6-study1-1.png" alt="Posterior predictive checks for Model 6" width="672" />
+<p class="caption">
+Figure 4.53: Posterior predictive checks for Model 6
+</p>
+</div>
+<div class="figure"><span id="fig:ppc-model6-study1-2"></span>
+<img src="analysis_report_files/figure-html/ppc-model6-study1-2.png" alt="Posterior predictive checks for Model 6" width="672" />
+<p class="caption">
+Figure 4.54: Posterior predictive checks for Model 6
+</p>
+</div>
+<p>No cases are flagged for potentially influential cases, which is nice.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="analysis-study-1.html#cb77-1"></a><span class="kw">loo</span>(model6)</span></code></pre></div>
+<p>Let’s inspect the summary.
+Only one predictor’s posterior distribution doesn’t include zero often, namely how satisfied people were with their days.
+Those who score one point above the average underestimate their use.
+However, the intercept is positive, so a one-point increase in satisfaction would lead people back to more accuracy, whereas a two-point increase would lead them to underestimate.
+Interestingly, the intercept’s 95% CI includes zero, so we can’t even be sure that data are compatible with an overestimation when all predictors are at their mean.</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="analysis-study-1.html#cb78-1"></a><span class="kw">summary</span>(model6, <span class="dt">priors =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>##  Family: student 
+##   Links: mu = identity; sigma = identity; nu = identity 
+## Formula: error ~ 1 + autonomy_state_c + competence_state_c + relatedness_state_c + satisfied_c + boring_c + stressful_c + enjoyable_c + (1 + autonomy_state_c + competence_state_c + relatedness_state_c + satisfied_c + boring_c + stressful_c + enjoyable_c | id) + (1 | day) 
+##    Data: study1 (Number of observations: 424) 
+## Samples: 4 chains, each with iter = 5000; warmup = 2000; thin = 1;
+##          total post-warmup samples = 12000
+## 
+## Priors: 
+## b ~ normal(0, 25)
+## Intercept ~ student_t(10, 20, 100)
+## L ~ lkj_corr_cholesky(1)
+## nu ~ gamma(2, 0.1)
+## sd ~ student_t(3, 0, 57.8)
+## sigma ~ student_t(3, 0, 57.8)
+## 
+## Group-Level Effects: 
+## ~day (Number of levels: 5) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     3.29      3.56     0.10    12.17 1.00     5696     5836
+## 
+## ~id (Number of levels: 95) 
+##                                             Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)                                  58.53      6.34    46.95    71.85 1.00     2242     3655
+## sd(autonomy_state_c)                            5.45      3.71     0.23    13.67 1.00     2622     4898
+## sd(competence_state_c)                          3.42      2.63     0.13     9.71 1.00     4394     5958
+## sd(relatedness_state_c)                         8.50      5.95     0.30    21.75 1.00      884     1696
+## sd(satisfied_c)                                 8.78      4.26     0.84    17.43 1.00     1677     2962
+## sd(boring_c)                                    2.62      2.05     0.10     7.68 1.00     3651     4898
+## sd(stressful_c)                                 6.02      3.51     0.34    13.02 1.00      901     3229
+## sd(enjoyable_c)                                 3.24      2.43     0.14     9.11 1.00     3446     5806
+## cor(Intercept,autonomy_state_c)                 0.02      0.32    -0.59     0.63 1.00    10230     8080
+## cor(Intercept,competence_state_c)              -0.06      0.33    -0.67     0.59 1.00    13778     9962
+## cor(autonomy_state_c,competence_state_c)       -0.04      0.33    -0.67     0.61 1.00    10785     9797
+## cor(Intercept,relatedness_state_c)             -0.05      0.30    -0.61     0.55 1.00     8744     7726
+## cor(autonomy_state_c,relatedness_state_c)      -0.04      0.33    -0.67     0.60 1.00     4557     6469
+## cor(competence_state_c,relatedness_state_c)    -0.01      0.33    -0.64     0.62 1.00     5190     8014
+## cor(Intercept,satisfied_c)                     -0.35      0.25    -0.77     0.23 1.00     7305     6663
+## cor(autonomy_state_c,satisfied_c)              -0.04      0.33    -0.65     0.61 1.00     4191     6255
+## cor(competence_state_c,satisfied_c)            -0.03      0.33    -0.64     0.60 1.00     4855     7714
+## cor(relatedness_state_c,satisfied_c)           -0.05      0.33    -0.65     0.59 1.00     4276     7903
+## cor(Intercept,boring_c)                        -0.01      0.32    -0.62     0.61 1.00    14136     9419
+## cor(autonomy_state_c,boring_c)                 -0.00      0.33    -0.64     0.63 1.00     9239     8023
+## cor(competence_state_c,boring_c)                0.01      0.33    -0.64     0.64 1.00     9786     9737
+## cor(relatedness_state_c,boring_c)              -0.03      0.33    -0.66     0.59 1.00     9912     9859
+## cor(satisfied_c,boring_c)                       0.01      0.33    -0.62     0.64 1.00    10878     9868
+## cor(Intercept,stressful_c)                     -0.17      0.27    -0.66     0.42 1.00     6567     5555
+## cor(autonomy_state_c,stressful_c)               0.06      0.34    -0.60     0.66 1.00     3229     5762
+## cor(competence_state_c,stressful_c)             0.04      0.34    -0.63     0.66 1.00     3792     6817
+## cor(relatedness_state_c,stressful_c)            0.07      0.33    -0.59     0.68 1.00     4262     7860
+## cor(satisfied_c,stressful_c)                    0.10      0.32    -0.53     0.67 1.00     4324     7363
+## cor(boring_c,stressful_c)                      -0.05      0.34    -0.68     0.62 1.00     4333     7972
+## cor(Intercept,enjoyable_c)                     -0.05      0.32    -0.64     0.59 1.00    10983     8549
+## cor(autonomy_state_c,enjoyable_c)              -0.04      0.33    -0.67     0.60 1.00    11222     9444
+## cor(competence_state_c,enjoyable_c)            -0.03      0.33    -0.65     0.61 1.00     9815     9618
+## cor(relatedness_state_c,enjoyable_c)           -0.05      0.34    -0.68     0.60 1.00     9693     9775
+## cor(satisfied_c,enjoyable_c)                   -0.06      0.33    -0.67     0.60 1.00    10453     9317
+## cor(boring_c,enjoyable_c)                       0.05      0.34    -0.62     0.69 1.00     7981    10174
+## cor(stressful_c,enjoyable_c)                    0.03      0.33    -0.61     0.65 1.00     9631    10616
+## 
+## Population-Level Effects: 
+##                     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept               7.37      7.21    -6.55    21.98 1.00     1743     3487
+## autonomy_state_c       -2.04      3.19    -8.42     4.16 1.00     6374     7774
+## competence_state_c     -0.41      2.94    -6.20     5.35 1.00     7521     8611
+## relatedness_state_c     2.21      3.82    -5.15    10.00 1.00     5037     6941
+## satisfied_c            -6.27      2.95   -12.12    -0.62 1.00     6729     7313
+## boring_c                2.55      1.84    -1.03     6.17 1.00     7307     8583
+## stressful_c            -1.29      1.89    -4.97     2.43 1.00     6271     6448
+## enjoyable_c             2.55      2.37    -2.04     7.33 1.00     6773     8358
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma    19.65      2.37    15.36    24.55 1.00     2275     4042
+## nu        1.16      0.11     1.01     1.42 1.00     5135     5852
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+The effects plot (Figure <a href="analysis-study-1.html#fig:effects-model6-study1">4.55</a>) visually confirms what I wrote above.
+Note the difference in scale: everything except the correlations are in percent error, whereas the correlations are on their -1 to 1 scale.
+<div class="figure"><span id="fig:effects-model6-study1"></span>
+<img src="analysis_report_files/figure-html/effects-model6-study1-1.png" alt="Effects plot for Model 6" width="672" />
+<p class="caption">
+Figure 4.55: Effects plot for Model 6
+</p>
+</div>
+</div>
+</div>
+<div id="does-social-media-use-predict-well-being-and-vice-versa" class="section level2">
+<h2><span class="header-section-number">4.5</span> Does social media use predict well-being and vice versa?</h2>
+<p>For this RQ, we have several blocks.
+We want to know how day-level social media use (both types) and accuracy are related to well-being, with predictions going both ways, and controlling for lagged values.</p>
+<p>The three blocks are:</p>
+<ol style="list-style-type: decimal">
+<li><p>Do day-level variables predict day-level well-being?</p>
+<p>1.1. Does objective-only engagement predict day-level well-being?</p>
+<p>1.2. Does subjective-only engagement predict day-level well-being?</p>
+<p>1.3. Does accuracy predict day-level well-being?</p></li>
+<li><p>Does the well-being on the prior day predict use and accuracy?</p>
+<p>2.1. Does day before well-being predict objective-only engagement?</p>
+<p>2.2. Does day before well-being predict subjective-only engagement?</p>
+<p>2.3. Does day before well-being predict accuracy?</p></li>
+<li><p>Does day-level variables on the previous day predict day-level well-being?</p>
+<p>3.1. Does objective-only engagement predict next day-level well-being?</p>
+<p>3.2. Does subjective-only engagement predict next day-level well-being?</p>
+<p>3.3. Does accuracy predict next day-level well-being?</p></li>
+</ol>
+<div id="do-day-level-variables-predict-day-level-well-being" class="section level3">
+<h3><span class="header-section-number">4.5.1</span> Do day-level variables predict day-level well-being?</h3>
+<div id="model-7-objective-use-predicting-well-being" class="section level4">
+<h4><span class="header-section-number">4.5.1.1</span> Model 7: Objective use predicting well-being</h4>
+<p>For this model, we’ll predict well-being on that day with objective social media use on that day.
+Priors here can be controversial, depending on what literature we look to.
+Well-being is often left-skewed, so we could go for a skewed normal distribution for the model.
+However, that might be too strong an assumption, which is why I’ll use a model that assumes a normal Gaussian distribution.</p>
+<p>As for the specific priors:</p>
+<ul>
+<li>When social media use is at its mean, I’ll simply assume a normal distribution centered on the midpoint of the scale (i.e., 3).
+As for the SD of that distribution, we know the bounds of the scale, so an SD of 1 will have 95% of cases within 1 and 5, which is exactly what we want.</li>
+<li>As for the slopes: There are two papers I know of that found a negative, small effect, but another paper that found a negligent one.
+The larger literature on self-reported media use and well-being also finds very small negative effects, in the range of <span class="math inline">\(\beta\)</span> = .05.
+We’re on the unstandardized scale here.
+So if we assume that well-being is at the midpoint of the scale (i.e., 3), the maximum effect an increase in social media time could have is to bring well-being to its ceiling or floor.
+That would imply a standard deviation of 1 again - that depends on the scale of the predictor, though.
+Right now, it’s in minutes and we’d need to scale the prior accordingly.
+This <a href="https://www.tandfonline.com/doi/full/10.1080/15213269.2020.1768122">paper</a> found that with each increase of one standard deviation in social media time, well-being on a 7-point Likert-scale went down by -.06 units.
+The standard deviation was 190.
+Therefore (with some crude math), one hour of social media use was associated with <code>190/60 * -.06</code> = -0.19 raw units on the outcome scale.
+From the literature we also know that massive (unstandardized) effects are rare if impossible.
+Therefore, I’ll center the slope distribution on a small negative value.
+To be conservative, I’ll take about 75% of the -.19 we found above (say -0.15 Likert-scales) with a somewhat tight standard deviation (say 0.2).
+This way, 95% of effects will be within -.55 (-.15 + (2 times 0.2)) and 0.25 Likert-points on the outcome scale.
+In other words: one hour more than average social media use will be associated with, on average, a .15 lower score on well-being.</li>
+<li>For everything else, I’ll once more go with the default <code>brms</code> priors.</li>
+</ul>
+<p>Let’s set those priors.
+Note that we’re still on the minute scale for the predictor, but I specified priors above for hours.
+That’s why I transform the social media variables to hours (and center) to make interpretation easier.
+That also helps us set the priors we specified above.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="analysis-study-1.html#cb80-1"></a><span class="co"># create hour variables</span></span>
+<span id="cb80-2"><a href="analysis-study-1.html#cb80-2"></a>study1 &lt;-<span class="st"> </span></span>
+<span id="cb80-3"><a href="analysis-study-1.html#cb80-3"></a><span class="st">  </span>study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb80-4"><a href="analysis-study-1.html#cb80-4"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb80-5"><a href="analysis-study-1.html#cb80-5"></a>    <span class="kw">across</span>(</span>
+<span id="cb80-6"><a href="analysis-study-1.html#cb80-6"></a>      <span class="kw">c</span>(social_media_objective, social_media_subjective),</span>
+<span id="cb80-7"><a href="analysis-study-1.html#cb80-7"></a>      <span class="op">~</span><span class="st"> </span><span class="kw">scale</span>(.x, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">scale =</span> <span class="ot">FALSE</span>) <span class="op">/</span><span class="st"> </span><span class="dv">60</span>, <span class="co">#  divide by 60 to get hours</span></span>
+<span id="cb80-8"><a href="analysis-study-1.html#cb80-8"></a>      <span class="dt">.names =</span> <span class="st">&quot;{col}_c&quot;</span></span>
+<span id="cb80-9"><a href="analysis-study-1.html#cb80-9"></a>    )</span>
+<span id="cb80-10"><a href="analysis-study-1.html#cb80-10"></a>  )</span>
+<span id="cb80-11"><a href="analysis-study-1.html#cb80-11"></a></span>
+<span id="cb80-12"><a href="analysis-study-1.html#cb80-12"></a><span class="co"># set priors</span></span>
+<span id="cb80-13"><a href="analysis-study-1.html#cb80-13"></a>priors_model7 &lt;-<span class="st"> </span></span>
+<span id="cb80-14"><a href="analysis-study-1.html#cb80-14"></a><span class="st">  </span><span class="kw">c</span>(</span>
+<span id="cb80-15"><a href="analysis-study-1.html#cb80-15"></a>    <span class="co"># intercept</span></span>
+<span id="cb80-16"><a href="analysis-study-1.html#cb80-16"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="dt">class =</span> Intercept),</span>
+<span id="cb80-17"><a href="analysis-study-1.html#cb80-17"></a>    </span>
+<span id="cb80-18"><a href="analysis-study-1.html#cb80-18"></a>    <span class="co"># slopes</span></span>
+<span id="cb80-19"><a href="analysis-study-1.html#cb80-19"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="op">-</span><span class="fl">0.15</span>, <span class="fl">0.20</span>), <span class="dt">class =</span> b)</span>
+<span id="cb80-20"><a href="analysis-study-1.html#cb80-20"></a>  )</span></code></pre></div>
+<p>Okay, let’s run the model.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="analysis-study-1.html#cb81-1"></a>model7 &lt;-<span class="st"> </span></span>
+<span id="cb81-2"><a href="analysis-study-1.html#cb81-2"></a><span class="st">  </span><span class="kw">brm</span>(</span>
+<span id="cb81-3"><a href="analysis-study-1.html#cb81-3"></a>    <span class="dt">data =</span> study1,</span>
+<span id="cb81-4"><a href="analysis-study-1.html#cb81-4"></a>    <span class="dt">family =</span> gaussian,</span>
+<span id="cb81-5"><a href="analysis-study-1.html#cb81-5"></a>    <span class="dt">prior =</span> priors_model7,</span>
+<span id="cb81-6"><a href="analysis-study-1.html#cb81-6"></a>    well_being_state <span class="op">~</span></span>
+<span id="cb81-7"><a href="analysis-study-1.html#cb81-7"></a><span class="st">      </span><span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb81-8"><a href="analysis-study-1.html#cb81-8"></a><span class="st">      </span>social_media_objective_c <span class="op">+</span></span>
+<span id="cb81-9"><a href="analysis-study-1.html#cb81-9"></a><span class="st">      </span>(</span>
+<span id="cb81-10"><a href="analysis-study-1.html#cb81-10"></a>        <span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb81-11"><a href="analysis-study-1.html#cb81-11"></a><span class="st">        </span>social_media_objective_c <span class="op">|</span></span>
+<span id="cb81-12"><a href="analysis-study-1.html#cb81-12"></a><span class="st">        </span>id</span>
+<span id="cb81-13"><a href="analysis-study-1.html#cb81-13"></a>      ) <span class="op">+</span></span>
+<span id="cb81-14"><a href="analysis-study-1.html#cb81-14"></a><span class="st">      </span>(<span class="dv">1</span> <span class="op">|</span>day),</span>
+<span id="cb81-15"><a href="analysis-study-1.html#cb81-15"></a>    <span class="dt">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb81-16"><a href="analysis-study-1.html#cb81-16"></a>    <span class="dt">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb81-17"><a href="analysis-study-1.html#cb81-17"></a>    <span class="dt">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb81-18"><a href="analysis-study-1.html#cb81-18"></a>    <span class="dt">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb81-19"><a href="analysis-study-1.html#cb81-19"></a>    <span class="dt">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb81-20"><a href="analysis-study-1.html#cb81-20"></a>    <span class="dt">control =</span> <span class="kw">list</span>(</span>
+<span id="cb81-21"><a href="analysis-study-1.html#cb81-21"></a>      <span class="dt">adapt_delta =</span> <span class="fl">0.99</span></span>
+<span id="cb81-22"><a href="analysis-study-1.html#cb81-22"></a>    ),</span>
+<span id="cb81-23"><a href="analysis-study-1.html#cb81-23"></a>    <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model7_study1&quot;</span>)</span>
+<span id="cb81-24"><a href="analysis-study-1.html#cb81-24"></a>  )</span></code></pre></div>
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model7-study1"><strong>??</strong></a>).
+<div class="figure"><span id="fig:inspect-model7-study1-1"></span>
+<img src="analysis_report_files/figure-html/inspect-model7-study1-1.png" alt="Traceplots and posterior distributions for Model 7" width="672" />
+<p class="caption">
+Figure 4.56: Traceplots and posterior distributions for Model 7
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model7-study1-2"></span>
+<img src="analysis_report_files/figure-html/inspect-model7-study1-2.png" alt="Traceplots and posterior distributions for Model 7" width="672" />
+<p class="caption">
+Figure 4.57: Traceplots and posterior distributions for Model 7
+</p>
+</div>
+The posterior predictive checks (Figure <a href="analysis-study-1.html#fig:ppc-model7-study1">4.58</a>) look excellent (no surprise with only one predictor).
+<div class="figure"><span id="fig:ppc-model7-study1"></span>
+<img src="analysis_report_files/figure-html/ppc-model7-study1-1.png" alt="Posterior predictive checks for Model 6" width="672" />
+<p class="caption">
+Figure 4.58: Posterior predictive checks for Model 6
+</p>
+</div>
+<p>No cases are flagged for potentially influential cases.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="analysis-study-1.html#cb82-1"></a><span class="kw">loo</span>(model7)</span></code></pre></div>
+<p>Let’s inspect the summary.
+The relation is estimated to be extremely close to zero, so really no interpretative wiggle room there.
+I think this is pretty convincing evidence for the lack of an effect.</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="analysis-study-1.html#cb83-1"></a><span class="kw">summary</span>(model7, <span class="dt">priors =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: well_being_state ~ 1 + social_media_objective_c + (1 + social_media_objective_c | id) + (1 | day) 
+##    Data: study1 (Number of observations: 431) 
+## Samples: 4 chains, each with iter = 5000; warmup = 2000; thin = 1;
+##          total post-warmup samples = 12000
+## 
+## Priors: 
+## b ~ normal(-0.15, 0.2)
+## Intercept ~ normal(3, 1)
+## L ~ lkj_corr_cholesky(1)
+## sd ~ student_t(3, 0, 2.5)
+## sigma ~ student_t(3, 0, 2.5)
+## 
+## Group-Level Effects: 
+## ~day (Number of levels: 5) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     0.18      0.12     0.05     0.50 1.00     2999     4372
+## 
+## ~id (Number of levels: 95) 
+##                                         Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)                               0.46      0.05     0.37     0.56 1.00     3609     6854
+## sd(social_media_objective_c)                0.08      0.05     0.00     0.18 1.00     1247     3476
+## cor(Intercept,social_media_objective_c)     0.07      0.39    -0.75     0.85 1.00     7496     5445
+## 
+## Population-Level Effects: 
+##                          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept                    3.24      0.11     3.03     3.44 1.00     5318     5720
+## social_media_objective_c     0.00      0.03    -0.05     0.06 1.00     7045     7675
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma     0.52      0.02     0.48     0.57 1.00     8888     9158
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+The effects plot (Figure <a href="analysis-study-1.html#fig:effects-model7-study1">4.59</a>) visually confirms what I wrote above.
+<div class="figure"><span id="fig:effects-model7-study1"></span>
+<img src="analysis_report_files/figure-html/effects-model7-study1-1.png" alt="Effects plot for Model 7" width="672" />
+<p class="caption">
+Figure 4.59: Effects plot for Model 7
+</p>
+</div>
+</div>
+<div id="model-8-subjective-use-predicting-well-being" class="section level4">
+<h4><span class="header-section-number">4.5.1.2</span> Model 8: Subjective use predicting well-being</h4>
+<p>Next, we’ll predict well-being on that day with subjective social media use on that day.
+The majority of the evidence shows that we should expect a small negative relation, but larger in absolute size than with objective use.</p>
+<p>The specific priors:</p>
+<ul>
+<li>For the intercept, I’ll use the same prior as with Model 7.</li>
+<li>As for the slopes: <a href="https://journals.sagepub.com/doi/suppl/10.1177/0956797619830329">This</a> paper reports median effect sizes across all specifications of <span class="math inline">\(\beta\)</span> = -.08.
+That’s among adolescents and for a longer time frame.
+<a href="https://osf.io/mpxra">This</a> explicitly compared subjective to objective and found that subjective is a much stronger predictor (up to four times the effect size).
+So I think it’s a good idea to at least double what we expect for the prior, which would lead us to believe a mean negative effect of .30 Likert-points on well-being and 0.4 standard deviation.
+That would bring 95% of effects within -1.1 and 0.5 Likert-points, which is rather generous for media effects.</li>
+<li>For everything else, I’ll once more go with the default <code>brms</code> priors.</li>
+</ul>
+<p>Let’s set those priors.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="analysis-study-1.html#cb85-1"></a>priors_model8 &lt;-<span class="st"> </span></span>
+<span id="cb85-2"><a href="analysis-study-1.html#cb85-2"></a><span class="st">  </span><span class="kw">c</span>(</span>
+<span id="cb85-3"><a href="analysis-study-1.html#cb85-3"></a>    <span class="co"># intercept</span></span>
+<span id="cb85-4"><a href="analysis-study-1.html#cb85-4"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="dt">class =</span> Intercept),</span>
+<span id="cb85-5"><a href="analysis-study-1.html#cb85-5"></a>    </span>
+<span id="cb85-6"><a href="analysis-study-1.html#cb85-6"></a>    <span class="co"># slopes</span></span>
+<span id="cb85-7"><a href="analysis-study-1.html#cb85-7"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="op">-</span><span class="fl">0.30</span>, <span class="fl">0.40</span>), <span class="dt">class =</span> b)</span>
+<span id="cb85-8"><a href="analysis-study-1.html#cb85-8"></a>  )</span></code></pre></div>
+<p>Okay, let’s run the model.</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="analysis-study-1.html#cb86-1"></a>model8 &lt;-<span class="st"> </span></span>
+<span id="cb86-2"><a href="analysis-study-1.html#cb86-2"></a><span class="st">  </span><span class="kw">brm</span>(</span>
+<span id="cb86-3"><a href="analysis-study-1.html#cb86-3"></a>    <span class="dt">data =</span> study1,</span>
+<span id="cb86-4"><a href="analysis-study-1.html#cb86-4"></a>    <span class="dt">family =</span> gaussian,</span>
+<span id="cb86-5"><a href="analysis-study-1.html#cb86-5"></a>    <span class="dt">prior =</span> priors_model8,</span>
+<span id="cb86-6"><a href="analysis-study-1.html#cb86-6"></a>    well_being_state <span class="op">~</span></span>
+<span id="cb86-7"><a href="analysis-study-1.html#cb86-7"></a><span class="st">      </span><span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb86-8"><a href="analysis-study-1.html#cb86-8"></a><span class="st">      </span>social_media_subjective_c <span class="op">+</span></span>
+<span id="cb86-9"><a href="analysis-study-1.html#cb86-9"></a><span class="st">      </span>(</span>
+<span id="cb86-10"><a href="analysis-study-1.html#cb86-10"></a>        <span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb86-11"><a href="analysis-study-1.html#cb86-11"></a><span class="st">        </span>social_media_subjective_c <span class="op">|</span></span>
+<span id="cb86-12"><a href="analysis-study-1.html#cb86-12"></a><span class="st">        </span>id</span>
+<span id="cb86-13"><a href="analysis-study-1.html#cb86-13"></a>      ) <span class="op">+</span></span>
+<span id="cb86-14"><a href="analysis-study-1.html#cb86-14"></a><span class="st">      </span>(<span class="dv">1</span> <span class="op">|</span>day),</span>
+<span id="cb86-15"><a href="analysis-study-1.html#cb86-15"></a>    <span class="dt">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb86-16"><a href="analysis-study-1.html#cb86-16"></a>    <span class="dt">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb86-17"><a href="analysis-study-1.html#cb86-17"></a>    <span class="dt">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb86-18"><a href="analysis-study-1.html#cb86-18"></a>    <span class="dt">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb86-19"><a href="analysis-study-1.html#cb86-19"></a>    <span class="dt">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb86-20"><a href="analysis-study-1.html#cb86-20"></a>    <span class="dt">control =</span> <span class="kw">list</span>(</span>
+<span id="cb86-21"><a href="analysis-study-1.html#cb86-21"></a>      <span class="dt">adapt_delta =</span> <span class="fl">0.99</span></span>
+<span id="cb86-22"><a href="analysis-study-1.html#cb86-22"></a>    ),</span>
+<span id="cb86-23"><a href="analysis-study-1.html#cb86-23"></a>    <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model8_study1&quot;</span>)</span>
+<span id="cb86-24"><a href="analysis-study-1.html#cb86-24"></a>  )</span></code></pre></div>
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model8-study1"><strong>??</strong></a>).
+<div class="figure"><span id="fig:inspect-model8-study1-1"></span>
+<img src="analysis_report_files/figure-html/inspect-model8-study1-1.png" alt="Traceplots and posterior distributions for Model 8" width="672" />
+<p class="caption">
+Figure 4.60: Traceplots and posterior distributions for Model 8
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model8-study1-2"></span>
+<img src="analysis_report_files/figure-html/inspect-model8-study1-2.png" alt="Traceplots and posterior distributions for Model 8" width="672" />
+<p class="caption">
+Figure 4.61: Traceplots and posterior distributions for Model 8
+</p>
+</div>
+The posterior predictive checks (Figure <a href="analysis-study-1.html#fig:ppc-model8-study1">4.62</a>) look excellent, just like with Model 7 (no surprise with only one predictor).
+<div class="figure"><span id="fig:ppc-model8-study1"></span>
+<img src="analysis_report_files/figure-html/ppc-model8-study1-1.png" alt="Posterior predictive checks for Model 8" width="672" />
+<p class="caption">
+Figure 4.62: Posterior predictive checks for Model 8
+</p>
+</div>
+<p>One case is flagged as potentially influential, which is why we calculate ELPD directly.</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="analysis-study-1.html#cb87-1"></a>model8_loo &lt;-<span class="st"> </span><span class="kw">loo</span>(model8, <span class="dt">reloo =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb87-2"><a href="analysis-study-1.html#cb87-2"></a><span class="kw">saveRDS</span>(model8_loo, <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model8_loo_study1.rds&quot;</span>))</span></code></pre></div>
+<p>When we calculate ELPD directly, all values appear unproblematic.
+The results seem trustworthy.</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="analysis-study-1.html#cb88-1"></a>model8_loo &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model8_loo_study1.rds&quot;</span>))</span>
+<span id="cb88-2"><a href="analysis-study-1.html#cb88-2"></a>model8_loo</span></code></pre></div>
+<pre><code>## 
+## Computed from 12000 by 430 log-likelihood matrix
+## 
+##          Estimate   SE
+## elpd_loo   -376.8 16.2
+## p_loo        77.4  5.2
+## looic       753.6 32.3
+## ------
+## Monte Carlo SE of elpd_loo is 0.2.
+## 
+## Pareto k diagnostic values:
+##                          Count Pct.    Min. n_eff
+## (-Inf, 0.5]   (good)     416   96.7%   415       
+##  (0.5, 0.7]   (ok)        14    3.3%   514       
+##    (0.7, 1]   (bad)        0    0.0%   &lt;NA&gt;      
+##    (1, Inf)   (very bad)   0    0.0%   &lt;NA&gt;      
+## 
+## All Pareto k estimates are ok (k &lt; 0.7).
+## See help(&#39;pareto-k-diagnostic&#39;) for details.</code></pre>
+<p>Let’s inspect the summary.
+The the effect is estimated to be negative, but much smaller than our prior specified.
+Also, the 95% CI includes zero, so we can’t be sure the effect is meaningful.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="analysis-study-1.html#cb90-1"></a><span class="kw">summary</span>(model8, <span class="dt">priors =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: well_being_state ~ 1 + social_media_subjective_c + (1 + social_media_subjective_c | id) + (1 | day) 
+##    Data: study1 (Number of observations: 430) 
+## Samples: 4 chains, each with iter = 5000; warmup = 2000; thin = 1;
+##          total post-warmup samples = 12000
+## 
+## Priors: 
+## b ~ normal(-0.3, 0.4)
+## Intercept ~ normal(3, 1)
+## L ~ lkj_corr_cholesky(1)
+## sd ~ student_t(3, 0, 2.5)
+## sigma ~ student_t(3, 0, 2.5)
+## 
+## Group-Level Effects: 
+## ~day (Number of levels: 5) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     0.19      0.14     0.06     0.55 1.00     3529     4637
+## 
+## ~id (Number of levels: 95) 
+##                                          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)                                0.47      0.05     0.38     0.56 1.00     4349     7119
+## sd(social_media_subjective_c)                0.04      0.03     0.00     0.11 1.00     1842     2973
+## cor(Intercept,social_media_subjective_c)     0.11      0.47    -0.85     0.93 1.00     7444     5359
+## 
+## Population-Level Effects: 
+##                           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept                     3.24      0.11     3.01     3.45 1.00     3596     4469
+## social_media_subjective_c    -0.02      0.02    -0.07     0.02 1.00     7976     8160
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma     0.52      0.02     0.48     0.57 1.00     8413     9071
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+The effects plot (Figure <a href="analysis-study-1.html#fig:effects-model8-study1">4.63</a>) shows that the effect, if even there, is small at best.
+<div class="figure"><span id="fig:effects-model8-study1"></span>
+<img src="analysis_report_files/figure-html/effects-model8-study1-1.png" alt="Effects plot for Model 8" width="672" />
+<p class="caption">
+Figure 4.63: Effects plot for Model 8
+</p>
+</div>
+</div>
+<div id="model-9-accuracy-predicting-well-being" class="section level4">
+<h4><span class="header-section-number">4.5.1.3</span> Model 9: Accuracy predicting well-being</h4>
+<p>For this model, we ask whether the error people make in their estimation is related to their well-being on the state level.
+As for as I know, there’s little prior knowledge we could build on for the relation between accuracy and well-being.</p>
+<p>As for the specific priors:</p>
+<ul>
+<li>Like before, at perfect accuracy (0% error) I’ll assume a normal distribution centered on the midpoint of the scale (i.e., 3) with the intercept.
+I’ll set the SD of that prior distribution to 1 once more.</li>
+<li>As for the slopes: There’s one <a href="https://doi.org/10.1177/2050157920902830">paper</a> that correlated the absolute discrepancy between subjective and objective social media use and well-being indicators aggregated over a week.
+They found a <span class="math inline">\(\beta\)</span> = .16 between log-transformed discrepancies and depression scores.
+Discrepancy is a different measurement than the error that we calculated for accuracy.
+Therefore, I’ll use a prior that’s centered on a negative relationship with a small SD.
+Like above, I don’t expect that there will be large effects just based on the literature.
+So I’ll assume a small effect (say -0.20 Likert-scales) with a somewhat wider standard deviation than in previous models (say 0.3).
+This way, 95% of effects will be within -.80 (-.20 + (2 times 0.3)) and 0.40 Likert-points on the outcome scale.
+However, <code>error</code> is in percent, so we wouldn’t expect -.20 Likert-points with every one-percent increase.
+Rather, I’d say the above effect is easier to specify for a standard deviation change in <code>error</code>, which is why I standardize <code>error</code>: one standard deviation increase in accuracy will be associated with, on average, a .20 lower score on well-being.</li>
+<li>For everything else, I’ll once more go with the default <code>brms</code> priors.</li>
+</ul>
+<p>Let’s set those priors.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="analysis-study-1.html#cb92-1"></a><span class="co"># standardize error</span></span>
+<span id="cb92-2"><a href="analysis-study-1.html#cb92-2"></a>study1 &lt;-<span class="st"> </span></span>
+<span id="cb92-3"><a href="analysis-study-1.html#cb92-3"></a><span class="st">  </span>study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb92-4"><a href="analysis-study-1.html#cb92-4"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb92-5"><a href="analysis-study-1.html#cb92-5"></a>    <span class="dt">error_s =</span> <span class="kw">scale</span>(error, <span class="dt">center =</span> <span class="ot">FALSE</span>, <span class="dt">scale =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb92-6"><a href="analysis-study-1.html#cb92-6"></a>  )</span>
+<span id="cb92-7"><a href="analysis-study-1.html#cb92-7"></a></span>
+<span id="cb92-8"><a href="analysis-study-1.html#cb92-8"></a><span class="co"># set priors</span></span>
+<span id="cb92-9"><a href="analysis-study-1.html#cb92-9"></a>priors_model9 &lt;-<span class="st"> </span></span>
+<span id="cb92-10"><a href="analysis-study-1.html#cb92-10"></a><span class="st">  </span><span class="kw">c</span>(</span>
+<span id="cb92-11"><a href="analysis-study-1.html#cb92-11"></a>    <span class="co"># intercept</span></span>
+<span id="cb92-12"><a href="analysis-study-1.html#cb92-12"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="dt">class =</span> Intercept),</span>
+<span id="cb92-13"><a href="analysis-study-1.html#cb92-13"></a>    </span>
+<span id="cb92-14"><a href="analysis-study-1.html#cb92-14"></a>    <span class="co"># slopes</span></span>
+<span id="cb92-15"><a href="analysis-study-1.html#cb92-15"></a>    <span class="kw">prior</span>(<span class="kw">normal</span>(<span class="op">-</span><span class="fl">0.20</span>, <span class="fl">0.30</span>), <span class="dt">class =</span> b)</span>
+<span id="cb92-16"><a href="analysis-study-1.html#cb92-16"></a>  )</span></code></pre></div>
+<p>And run the model.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="analysis-study-1.html#cb93-1"></a>model9 &lt;-<span class="st"> </span></span>
+<span id="cb93-2"><a href="analysis-study-1.html#cb93-2"></a><span class="st">  </span><span class="kw">brm</span>(</span>
+<span id="cb93-3"><a href="analysis-study-1.html#cb93-3"></a>    <span class="dt">data =</span> study1,</span>
+<span id="cb93-4"><a href="analysis-study-1.html#cb93-4"></a>    <span class="dt">family =</span> gaussian,</span>
+<span id="cb93-5"><a href="analysis-study-1.html#cb93-5"></a>    <span class="dt">prior =</span> priors_model9,</span>
+<span id="cb93-6"><a href="analysis-study-1.html#cb93-6"></a>    well_being_state <span class="op">~</span></span>
+<span id="cb93-7"><a href="analysis-study-1.html#cb93-7"></a><span class="st">      </span><span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb93-8"><a href="analysis-study-1.html#cb93-8"></a><span class="st">      </span>error_s <span class="op">+</span></span>
+<span id="cb93-9"><a href="analysis-study-1.html#cb93-9"></a><span class="st">      </span>(</span>
+<span id="cb93-10"><a href="analysis-study-1.html#cb93-10"></a>        <span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb93-11"><a href="analysis-study-1.html#cb93-11"></a><span class="st">        </span>error_s <span class="op">|</span></span>
+<span id="cb93-12"><a href="analysis-study-1.html#cb93-12"></a><span class="st">        </span>id</span>
+<span id="cb93-13"><a href="analysis-study-1.html#cb93-13"></a>      ) <span class="op">+</span></span>
+<span id="cb93-14"><a href="analysis-study-1.html#cb93-14"></a><span class="st">      </span>(<span class="dv">1</span> <span class="op">|</span>day),</span>
+<span id="cb93-15"><a href="analysis-study-1.html#cb93-15"></a>    <span class="dt">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb93-16"><a href="analysis-study-1.html#cb93-16"></a>    <span class="dt">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb93-17"><a href="analysis-study-1.html#cb93-17"></a>    <span class="dt">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb93-18"><a href="analysis-study-1.html#cb93-18"></a>    <span class="dt">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb93-19"><a href="analysis-study-1.html#cb93-19"></a>    <span class="dt">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb93-20"><a href="analysis-study-1.html#cb93-20"></a>    <span class="dt">control =</span> <span class="kw">list</span>(</span>
+<span id="cb93-21"><a href="analysis-study-1.html#cb93-21"></a>      <span class="dt">adapt_delta =</span> <span class="fl">0.99</span></span>
+<span id="cb93-22"><a href="analysis-study-1.html#cb93-22"></a>    ),</span>
+<span id="cb93-23"><a href="analysis-study-1.html#cb93-23"></a>    <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model9_study1&quot;</span>)</span>
+<span id="cb93-24"><a href="analysis-study-1.html#cb93-24"></a>  )</span></code></pre></div>
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model9-study1"><strong>??</strong></a>).
+<div class="figure"><span id="fig:inspect-model9-study1-1"></span>
+<img src="analysis_report_files/figure-html/inspect-model9-study1-1.png" alt="Traceplots and posterior distributions for Model 9" width="672" />
+<p class="caption">
+Figure 4.64: Traceplots and posterior distributions for Model 9
+</p>
+</div>
+<div class="figure"><span id="fig:inspect-model9-study1-2"></span>
+<img src="analysis_report_files/figure-html/inspect-model9-study1-2.png" alt="Traceplots and posterior distributions for Model 9" width="672" />
+<p class="caption">
+Figure 4.65: Traceplots and posterior distributions for Model 9
+</p>
+</div>
+The posterior predictive checks (Figure <a href="analysis-study-1.html#fig:ppc-model9-study1">4.66</a>) look excellent (no surprise with only one predictor).
+<div class="figure"><span id="fig:ppc-model9-study1"></span>
+<img src="analysis_report_files/figure-html/ppc-model9-study1-1.png" alt="Posterior predictive checks for Model 9" width="672" />
+<p class="caption">
+Figure 4.66: Posterior predictive checks for Model 9
+</p>
+</div>
+<p>Five cases are flagged as potentially influential, which is why we calculate ELPD directly.</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="analysis-study-1.html#cb94-1"></a>model9_loo &lt;-<span class="st"> </span><span class="kw">loo</span>(model9, <span class="dt">reloo =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb94-2"><a href="analysis-study-1.html#cb94-2"></a><span class="kw">saveRDS</span>(model9_loo, <span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model9_loo_study1.rds&quot;</span>))</span></code></pre></div>
+<p>When we calculate ELPD directly, all values appear unproblematic.
+The results seem trustworthy.</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="analysis-study-1.html#cb95-1"></a>model9_loo &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model9_loo_study1.rds&quot;</span>))</span>
+<span id="cb95-2"><a href="analysis-study-1.html#cb95-2"></a>model9_loo</span></code></pre></div>
+<pre><code>## 
+## Computed from 12000 by 428 log-likelihood matrix
+## 
+##          Estimate   SE
+## elpd_loo   -373.4 16.2
+## p_loo        81.3  5.7
+## looic       746.8 32.3
+## ------
+## Monte Carlo SE of elpd_loo is 0.2.
+## 
+## Pareto k diagnostic values:
+##                          Count Pct.    Min. n_eff
+## (-Inf, 0.5]   (good)     412   96.3%   50        
+##  (0.5, 0.7]   (ok)        16    3.7%   417       
+##    (0.7, 1]   (bad)        0    0.0%   &lt;NA&gt;      
+##    (1, Inf)   (very bad)   0    0.0%   &lt;NA&gt;      
+## 
+## All Pareto k estimates are ok (k &lt; 0.7).
+## See help(&#39;pareto-k-diagnostic&#39;) for details.</code></pre>
+<p>Let’s inspect the summary.
+The the effect is estimated to be negative, but much smaller than our prior specified.
+Also, the 95% CI includes zero and quite wide, so we can’t be sure the effect is meaningful.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="analysis-study-1.html#cb97-1"></a><span class="kw">summary</span>(model9, <span class="dt">priors =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>##  Family: gaussian 
+##   Links: mu = identity; sigma = identity 
+## Formula: well_being_state ~ 1 + error_s + (1 + error_s | id) + (1 | day) 
+##    Data: study1 (Number of observations: 428) 
+## Samples: 4 chains, each with iter = 5000; warmup = 2000; thin = 1;
+##          total post-warmup samples = 12000
+## 
+## Priors: 
+## b ~ normal(-0.2, 0.3)
+## Intercept ~ normal(3, 1)
+## L ~ lkj_corr_cholesky(1)
+## sd ~ student_t(3, 0, 2.5)
+## sigma ~ student_t(3, 0, 2.5)
+## 
+## Group-Level Effects: 
+## ~day (Number of levels: 5) 
+##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)     0.19      0.13     0.06     0.52 1.00     3269     5460
+## 
+## ~id (Number of levels: 95) 
+##                        Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sd(Intercept)              0.46      0.05     0.38     0.56 1.00     4206     6825
+## sd(error_s)                0.13      0.08     0.01     0.30 1.00     1418     3720
+## cor(Intercept,error_s)    -0.11      0.41    -0.80     0.82 1.00     6379     4829
+## 
+## Population-Level Effects: 
+##           Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## Intercept     3.24      0.11     3.01     3.46 1.00     4291     4664
+## error_s      -0.02      0.05    -0.12     0.07 1.00     8441     7466
+## 
+## Family Specific Parameters: 
+##       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
+## sigma     0.52      0.02     0.48     0.56 1.00     7046     8801
+## 
+## Samples were drawn using sampling(NUTS). For each parameter, Bulk_ESS
+## and Tail_ESS are effective sample size measures, and Rhat is the potential
+## scale reduction factor on split chains (at convergence, Rhat = 1).</code></pre>
+The effects plot (Figure <a href="analysis-study-1.html#fig:effects-model9-study1">4.67</a>) shows that the effect, if even there, is small at best.
+<div class="figure"><span id="fig:effects-model9-study1"></span>
+<img src="analysis_report_files/figure-html/effects-model9-study1-1.png" alt="Effects plot for Model 9" width="672" />
+<p class="caption">
+Figure 4.67: Effects plot for Model 9
+</p>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="descriptives-and-visualizations-study-1.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

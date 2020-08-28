@@ -1294,13 +1294,18 @@ dens_with_points(study1, "error")
 ```
 
 I checked their raw data: One participant indicated exactly five hours, but probably meant five minutes (i.e., the participant with an error of `r max(study1$error)`.
-Similarly, the second largest entry seems to be a type (i.e., 58 minutes).
+Similarly, the second largest entry seems to be a typo (i.e., 58 minutes).
 I'll set those all entries that are larger than 1500% to `NA`.
+Also, one participant had zero objective time and zero subjective time.
+Dividing by zero to get error above leads to `NaN`, so I'll set that to `NA`.
 ```{r remove-large-errors-study1}
 study1 <- 
   study1 %>% 
   mutate(
-    error = if_else(error > 1500, NA_real_, error)
+    error = if_else(error > 1500, NA_real_, error),
+    error = if_else(
+      social_media_subjective == 0 & social_media_objective == 0, 0, error
+    )
   )
 ```
 

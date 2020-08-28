@@ -1,0 +1,1222 @@
+# Analysis Study 1
+
+I move on to the analyses.
+We have about a dozen models to run.
+All of these models should take into account that the data are nested (in participants and days).
+That means quite complex model structures, especially when we have many predictors.
+The `lme4` package can handle such multi-level models, but in my experience suffers from many convergence issues that a Bayesian approach (i.e., the `brms` package) can handle better [paper on convergence comparison].
+Moreover, corrections for multiple comparisons are less of a problem with Bayesian models.
+Last, although the models here are mostly exploratory, we can still incorporate prior knowledge from the literature (and common sense about our variables).
+
+## Research questions
+
+We have a total of X research questions.
+I divide them in three blocks:
+
+1. To what extent do specific person-level variables such as personality and motivational factors shape the accuracy of social media time engagement?
+2. To what extent do subjective experiences such as mood predict and or interact with person-level factors to shape the accuracy of social media time engagement?
+3. What are the unique relations relating objective and subjective engagement to well-being outcomes?
+
+Each of those questions comes with a number of models.
+I'll structure the analysis section according to those blocks.
+
+## Data preparation
+
+I processed the `study1` data set in previous sections.
+Specifying priors on the untransformed variables can be tough.
+In some analyses (e.g., predicting social media use) I'll use centered predictors to make it easier to interpret the intercept.
+In other analyses (e.g., predicting error), I want to standardize outcomes and predictors of interest because standardized variables make it easier to choose sensible priors, especially because we can use standardized effect sizes reported in the literature.
+Standardizing also makes it easier to interpret the effect sizes.
+
+First, I transform all variables of interest (into new variables).
+```{r standardize-study1}
+load(here("data", "study1", "workspace_study1.RData"))
+
+study1 <- 
+  study1 %>% 
+  # center personality variables
+  mutate(
+    across(
+      c(
+        autonomy_state:relatedness_state,
+        satisfied:enjoyable,
+        autonomy_trait:openness
+      ),
+      ~ scale(.x, center = TRUE, scale = FALSE),
+      .names = "{col}_c" # add "_c" suffix to new variables for "centered"
+    )
+  )
+```
+
+Next, let's have a look of how many `NA`s there are per variable.
+Table \@ref(tab:missings-study1) shows that missing values aren't a big problem.
+Pickups is the only variable with many missing values, but pickups aren't a central variable in our research questions.
+```{r missings-study1, echo=FALSE}
+study1 %>% 
+  summarise(
+    across(
+      c(social_media_subjective:relatedness_state, satisfied:openness),
+      ~ sum(is.na(.x))
+    )
+  ) %>% 
+  pivot_longer(everything()) %>% 
+  knitr::kable(
+    .,
+    caption = "Missing values per variable (column)"
+  )
+```
+
+## Do trait variables predict social media use and accuracy?
+
+Our first research question asks whether personality traits and trait motivations predict the accuracy of social media time engagement.
+Specifically, we have three models that address the following sub-questions:
+
+1. Do person-level variables predict objective-only engagement?
+2. Do person-level variables predict subjective-only engagement?
+3. Do person-level variables predict accuracy? 
+
+I'll construct a model for each of those three questions.
+Our dependent variables are clear-cut: `social_media_objective`, `social_media_subjective`, and `error`.
+
+Our predictors will be variables on the person-level, so trait/personality variables: the Big Five and the three self-determination motivations.
+
+### Model 1: Trait variables predicting objective use
+
+First, I choose sensible priors.
+There's some literature out there on Big Five and smartphone use, as well as motivations and smartphone use.
+If we only knew the mean and variance of the social media estimates, a Gaussian distribution would be most appropriate.
+However, we do know more than just those two parameters.
+Namely, we know that the scale is continuous (i.e., time) and cannot be less than zero.
+Also, if we look at the distribution of time on an activity, the variance usually increases with the mean.
+Therefore, a gamma distribution appears more adequate to me.
+
+That means the models will use a log-link, which makes it hard to have an intuition about prior distributions (at least for me).
+Thus, I follow the recommendations of McElreath and simulate the priors.
+
+* For the intercept, we can look at previous research.
+For example, this [paper](https://www.sciencedirect.com/science/article/abs/pii/S1071581919300473) has average phone use times of about two hours per participant per day.
+Here, we only looked at social media use, so as a guess-timate with reasonable uncertainty, I'll choose a lognormal distribution with a meanlog of 4.5 and a meansd of 0.8. See the upper left panel of Figure \@ref(fig:simulate-priors-model1-study1). That intercept has mots its value below two hours, but allows substantial skew for a couple of heavy users.
+* For the shape of the gamma distribution, I also played around and settled on one that somewhat resembles our assumptions on the intercept, such that the majority of values will be below five hours with a couple of heavy users (see left side upper panel).
+* For the Big Five fixed effects, this [paper](https://www.liebertpub.com/doi/full/10.1089/cyber.2019.0744) predicted social media use with the Big Five over two time period in a longitudinal design. They found that only neuroticism was related to social media use, but that effect was extremely small ($\beta$ = .028). None of the other effects were large. Therefore, I'll use rather flat, weakly regularizing priors for those effects.
+In \@ref(fig:simulate-priors-model1-study1), lower panel, I'll use the prior on the left, because it's skeptical, but regularizing.
+The one on the right might be too optimistic by suggesting a small positive effect.
+* For basic psychological needs, there's quite some literature on these needs and pathological smartphone use ("smartphone addiction"). However, there's little info we could use for priors, so I'll just go with the same prior as for the Big Five.
+See the top right of the Figure below.
+* For all other parameters, I'll take the `brms` default priors.
+
+Credit for the code for the figures goes to [Solomon Kurz](https://bookdown.org/connect/#/apps/4857/access).
+```{r simulate-priors-model1-study1, echo=FALSE, fig.cap="Prior simmulations for Model 1"}
+p1 <- 
+  ggplot(
+    tibble(
+      y = rlnorm(1000, 4.7, 0.5)
+    ) %>%
+      mutate(Density = 1),
+    aes(
+      x = Density,
+      y = y
+    )
+  ) +
+  geom_flat_violin( # the "cloud"
+    position = position_nudge(x = .2, y = 0),
+    adjust = 2,
+    color = NA,
+    fill = "darkslateblue",
+    alpha = 0.5
+  ) +
+  geom_point( # the "rain"
+    position = position_jitter(width = .15),
+    size = 1,
+    color = "darkslateblue",
+    alpha = 0.5
+  ) +
+  ylab("Intercept") +
+  theme(
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.line = element_blank()
+  ) +
+  guides(
+    color = FALSE,
+    fill = FALSE
+  ) +
+  coord_flip()
+
+p2 <- 
+  ggplot(
+    tibble(
+      y = rgamma(1000, shape = 2.5, scale = 100)
+    ) %>%
+      mutate(Density = 1),
+    aes(
+      x = Density,
+      y = y
+    )
+  ) +
+  geom_flat_violin( # the "cloud"
+    position = position_nudge(x = .2, y = 0),
+    adjust = 2,
+    color = NA,
+    fill = "darkslateblue",
+    alpha = 0.5
+  ) +
+  geom_point( # the "rain"
+    position = position_jitter(width = .15),
+    size = 1,
+    color = "darkslateblue",
+    alpha = 0.5
+  ) +
+  ylab("Gamma shape") +
+  theme(
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.line = element_blank()
+  ) +
+  guides(
+    color = FALSE,
+    fill = FALSE
+  ) +
+  coord_flip()
+
+
+p3 <- 
+  tibble(
+    i = 1:100,
+    a = rnorm(100, mean = 4.5 , sd = 0.8)) %>%
+  mutate(`beta%~%Normal(0*', '*0.1)`  = rnorm(100, mean = 0 , sd = 0.1),
+         `beta%~%Normal(0.3*', '*0.2)` = rnorm(100, mean = 0.2 , sd = 0.15)) %>% 
+  pivot_longer(contains("beta"),
+               values_to = "b",
+               names_to = "prior") %>% 
+  expand(nesting(i, a, b, prior),
+         x = seq(from = -2, to = 2, length.out = 100)) %>% 
+  
+  # plot
+  ggplot(aes(x = x, y = exp(a + b * x), group = i)) +
+  geom_line(size = 1/4, alpha = 2/3,
+            color = "darkslateblue") +
+  labs(x = "personality effect",
+       y = "social media time") +
+  coord_cartesian(ylim = c(0, 700)) +
+  facet_wrap(~prior, labeller = label_parsed) +
+  theme(
+    strip.background = element_blank()
+  )
+
+plot_grid(
+  p1,
+  p2,
+  p3
+)
+```
+
+Let's set those priors we simulated above.
+```{r priors-model1-study1}
+priors_model1 <- 
+  c(
+    # intercept
+    prior(normal(4.5, 0.8), class = Intercept),
+    
+    # prior on effects
+    prior(normal(0, 0.1), class = b),
+    
+    # all other effects
+    prior(gamma(2.5, 100), class = shape)
+  )
+```
+
+Alright, time to run the model.
+Luckily, none of these variables have missing values, so I won't need to model missings in this model.
+Note that I ran the block below once and stored the model.
+Those fit objects are too large for Github, so you can download them here [give Onedrive link].
+Also, note that I add a constant to the social media use variable, because there's a single zero in that variable, which doesn't warrant a mixture model where we give zeros their own distribution.
+```{r model1-study1, eval=FALSE}
+model1 <- 
+  brm(
+    data = study1,
+    family = Gamma(link = "log"),
+    prior = priors_model1,
+    social_media_objective + 1e-6 ~
+      1 +
+      openness_c +
+      conscientiousness_c +
+      extraversion_c +
+      agreeableness_c +
+      neuroticism_c +
+      competence_trait_c +
+      relatedness_trait_c +
+      autonomy_trait_c +
+      (1 | id) +
+      (1 | day),
+    iter = 5000,
+    warmup = 2000,
+    chains = 4,
+    cores = 4,
+    seed = 42,
+    control = list(adapt_delta = 0.99),
+    file = here("models", "study1", "model1_study1")
+  )
+```
+
+Let's inspect the traceplots.
+Overall, they look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model1-study1)).
+The residual standard deviation around the day grouping doesn't look ideal though.
+Variation between days wasn't that great, so the model estimates quite a lot variances that are close to zero.
+We could remove the day grouping, but I think we have theoretical reasons to keep it, namely to account for all known sources of variation.
+```{r inspect-model1-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 1"}
+# load model
+model1 <- read_rds(here("models", "study1", "model1_study1.rds"))
+
+# plot traceplots and posterior distributions
+plot(model1, ask = FALSE)
+```
+
+The posterior predictive distribution (Figure \@ref(fig:ppc-model1-study1)) shows that the model does an okay job in predicting our outcome, with little indication of overfitting.
+If anything, it looks like the model somewhat underestimates the social media time of users.
+Then again, the LOO-PIT graphs show that the model could be better, possibly because it doesn't do the best job in predicting the majority of cases (i.e., the underestimate).
+```{r ppc-model1-study1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 1"}
+model_diagnostics(model1) # custom function, see 01-Setting-up-study1.Rmd
+```
+
+Let's also check for potentially influential values.
+None are tagged as influential, which increases my trust in the model.
+```{r outliers-model1-study1}
+loo(model1)
+```
+
+Alright, time to look at the summary: neuroticism and competence are the only predictors whose posterior distribution isn't centered on zero. 
+That said, we cannot be 95% certain the true value doesn't contain zero.
+```{r summary-model1-study1}
+summary(model1, priors = TRUE)
+```
+
+The effects plot (Figure \@ref(fig:effects-model1-study1)) shows that visually, but also shows that the model does a fine job in describing the data, given the relatively (at least on the log scale) narrow 95% credible interval.
+Overall, there's little evidence that personality traits are related so smartphone use, except for some tentative evidence that neurotic people use more social media and those who generally feel a level of competence in their lives use them less.
+```{r effects-model1-study1, echo=FALSE, fig.cap="Effects plot for Model 1"}
+mcmc_plot(model1)
+```
+
+### Model 2: Trait variables predicting subjective use
+
+Next up, I predict subjective use from the same predictors.
+We know that objective and subjective use aren't perfectly correlated.
+Then again, the priors for Model 1 were only weakly regularizing, which is why I use the same priors again.
+```{r priors-model2-study1}
+priors_model2 <- 
+  c(
+    # intercept
+    prior(normal(4.5, 0.8), class = Intercept),
+    
+    # prior on effects
+    prior(normal(0, 0.1), class = b),
+    
+    # all other effects
+    prior(gamma(2.5, 100), class = shape)
+  )
+```
+
+Alright, time to run the model.
+The subjective social media estimate had one missing value.
+Usually I'd impute missing values during model fitting, but with one, I think it's safe to drop it. 
+Again, I add a small constant to the zero values, of which there are `r study1 %>% filter(!is.na(social_media_subjective)) %>% summarize(zeroes = sum(social_media_subjective == 0)) %>% pull(zeroes)`; not enough, in my opinion, to model zeroes separately.
+```{r model2-study1, eval=FALSE}
+model2 <- 
+  brm(
+    data = study1,
+    family = Gamma(link = "log"),
+    prior = priors_model2,
+    social_media_subjective + 1e-6 ~
+      1 +
+      openness_c +
+      conscientiousness_c +
+      extraversion_c +
+      agreeableness_c +
+      neuroticism_c +
+      competence_trait_c +
+      relatedness_trait_c +
+      autonomy_trait_c +
+      (1 | id) +
+      (1 | day),
+    iter = 5000,
+    warmup = 2000,
+    chains = 4,
+    cores = 4,
+    seed = 42,
+    control = list(adapt_delta = 0.99),
+    file = here("models", "study1", "model2_study1")
+  )
+```
+
+Let's inspect the traceplots.
+Overall, they look fine and the chains seem to have mixed well (Figure \@ref(fig:inspect-model2-study1)).
+Again, everything looks fine.
+```{r inspect-model2-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 2"}
+# load model
+model2 <- read_rds(here("models", "study1", "model2_study1.rds"))
+
+# plot traceplots and posterior distributions
+plot(model2, ask = FALSE)
+```
+
+The posterior predictive distribution (Figure \@ref(fig:ppc-model2-study2)) looks similar to Model 1, with a tendency of the model to underestimate self-reported social media use.
+All other diagnostics look similar, which is not surprising given that the outcomes of Model 1 and Model 2 are correlated.
+Overall, the model fit is okay-ish, but certainly not excellent.
+```{r ppc-model2-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 2"}
+model_diagnostics(model2)
+```
+
+Let's again check for potentially influential values.
+The model diagnostics look good.
+Even though there were several rather large raw values on the outcome variable, the model expects them because we model the outcome as a Gamma distribution.
+```{r outliers-model2-study1, eval=FALSE}
+loo(model2)
+```
+
+Alright, time to look at the summary.
+This time, all posterior distributions are mostly centered around zero, so we can be 95% (always conditional on the model) certain that personality traits and motivations are not meaningfully (i.e., large effect) related to self-reported social media use. 
+```{r summary-model2-study1}
+summary(model2, priors = TRUE)
+```
+
+The effects plot (Figure \@ref(fig:effects-model2-study1)) visually confirms that none of the predictors seem influential.
+```{r effects-model2-study1, echo=FALSE, fig.cap="Effects plot for Model 2"}
+mcmc_plot(model2)
+```
+
+### Model 3: Trait variables predicting accuracy
+
+For this model, it's hard to choose informed priors, mainly because there's no literature on the relation between personality traits and accuracy.
+Also, it's unclear what distribution for accuracy we should expect prior to having seen the data.
+The few papers out there show that people generally overestimate their (social) media use, which would speak for centering the distribution on a positive value (i.e., positive error).
+Other than that, I'd expect a normal distribution, quite likely with fat tails, and possibly right skewed.
+Therefore, I'll use a student-t distribution outcome family.
+I start with a t distribution as prior for the intercept that is slightly centered on overestimates (i.e., 20%), but with quite some potential for extreme values and fairly fat tails.
+See Figure \@ref(fig:simulate-priors-model2-study1) left panel, for a visualization.
+
+As for the effects of the personality traits, I'll be skeptical of any effects and thus use weakly regularizing normal priors that are centered on zero, with a small range for the effect: If a person goes from average on a trait to one above average, we'd expect that 95% of the effects should be between -50% and +50% (i.e., SD of 25).
+See the right panel in the figure below for a visualization.
+```{r simulate-priors-model2-study1, echo=FALSE, fig.cap="Prior simmulations for Model 2"}
+p1 <- 
+  ggplot(
+    tibble(
+      y = rstudent_t(1000, 10, mu = 20, sigma = 100)
+    ) %>%
+      mutate(Density = 1),
+    aes(
+      x = Density,
+      y = y
+    )
+  ) +
+  geom_flat_violin( # the "cloud"
+    position = position_nudge(x = .2, y = 0),
+    adjust = 2,
+    color = NA,
+    fill = "darkslateblue",
+    alpha = 0.5
+  ) +
+  geom_point( # the "rain"
+    position = position_jitter(width = .15),
+    size = 1,
+    color = "darkslateblue",
+    alpha = 0.5
+  ) +
+  ylab("Intercept") +
+  theme(
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.ticks.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.line = element_blank()
+  ) +
+  guides(
+    color = FALSE,
+    fill = FALSE
+  ) +
+  coord_flip()
+
+p2 <- 
+  tibble(
+    i = 1:100,
+    a = rstudent_t(100, 4, mu = 20, sigma = 100)) %>%
+  mutate(`beta%~%Normal(0*', '*25)`  = rnorm(100, mean = 0 , sd = 25)) %>% 
+  pivot_longer(contains("beta"),
+               values_to = "b",
+               names_to = "prior") %>% 
+  expand(nesting(i, a, b, prior),
+         x = seq(from = -2, to = 2, length.out = 100)) %>% 
+  
+  # plot
+  ggplot(aes(x = x, y = a + b * x, group = i)) +
+  geom_line(size = 1/4, alpha = 2/3,
+            color = "darkslateblue") +
+  labs(x = "personality effect",
+       y = "error") +
+  coord_cartesian(ylim = c(-700, 700)) +
+  facet_wrap(~prior, labeller = label_parsed) +
+  theme(
+    strip.background = element_blank()
+  )
+
+plot_grid(
+  p1,
+  p2
+)
+```
+
+Then let's set those priors we simulated above.
+```{r priors-model3-study1}
+priors_model3 <- 
+  c(
+    # intercept
+    prior(student_t(10, 20, 100), class = Intercept),
+    
+    # all other effects
+    prior(normal(0, 25), class = b)
+  )
+```
+
+`error` had `r sum(is.na(study1$error))` missing values.
+Again, with such few cases, I'm fine with dropping those during model fitting. 
+```{r model1-study3, eval=FALSE}
+model3 <- 
+  brm(
+    data = study1,
+    family = student,
+    prior = priors_model3,
+    error ~
+      1 +
+      openness_c +
+      conscientiousness_c +
+      extraversion_c +
+      agreeableness_c +
+      neuroticism_c +
+      competence_trait_c +
+      relatedness_trait_c +
+      autonomy_trait_c +
+      (1 | id) +
+      (1 | day),
+    iter = 5000,
+    warmup = 2000,
+    chains = 4,
+    cores = 4,
+    seed = 42,
+    control = list(adapt_delta = 0.99),
+    file = here("models", "study1", "model3_study1")
+  )
+```
+
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model3-study1)).
+Again, the variance around the residuals for the day grouping is estimated to be small and zero often.
+```{r inspect-model3-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 3"}
+# load model
+model3 <- readRDS(here("models", "study1", "model3_study1.rds"))
+
+# plot traceplots and posterior distributions
+plot(model3, ask = FALSE)
+```
+
+The posterior predictive checks (Figure \@ref(fig:ppc-model3-study1)) look good.
+Note that the upper left panel looks strange because of the massive scale on the x-axis, which is why I reproduce it again at the bottom.
+We see that the student t distribution assigns too much posterior mass to negative values, whereas the data are right skewed.
+For even better fit, we might think about fitting a skew-normal outcome distribution, but I'd say that the student-t was most appropriate before seeing the data.
+We see that the current models does an okay job in recovering the mean and the median.
+```{r ppc-model3-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 3"}
+model_diagnostics(model3)
+pp_check(model3, nsamples = 100) + xlim(c(-1500, 1500))
+```
+
+Let's again check for potentially influential values.
+Three potentially influential cases are flagged, which is why we calculate them precisely by setting `reloo` to `TRUE`.
+```{r outliers-model3-study1, eval=FALSE}
+model3_loo <- loo(model3, reloo = TRUE)
+saveRDS(model3_loo, here("models", "study1", "model3_loo_study1.rds"))
+```
+
+When we calculate ELPD directly, all values appear unproblematic.
+The results seem trustworthy.
+```{r outliers-model3-study1-reloo}
+model3_loo <- read_rds(here("models", "study1", "model3_loo_study1.rds"))
+model3_loo
+```
+
+Let's inspect the summary.
+There doesn't seem to be much going on when it comes to the predictors.
+For all predictors, we cannot be 95% certain that zero isn't the true effect (conditional on the model).
+```{r summary-model3-study1}
+summary(model3, priors = TRUE)
+```
+
+The effects plot (Figure \@ref(fig:effects-model3-study1)) visually confirms that none of the predictors seem largely influential.
+If anything, it appears neurotic people might underestimate their social media use, but again their interval contains zero.
+```{r effects-model3-study1, echo=FALSE, fig.cap="Effects plot for Model 3"}
+mcmc_plot(model3)
+```
+
+## Do state (i.e., day-level) variables predict social media use and accuracy?
+
+For the next section, we look at whether day-level variables (i.e., variables reported during experience sampling) predict subjective use, objective use, and accuracy.
+Again, we have three questions:
+
+1. Do day-level variables predict objective-only engagement?
+2. Do day-level variables predict subjective-only engagement?
+3. Do day-level variables predict accuracy? 
+
+Once more I'll construct a model for each of those three questions.
+Our dependent variables are the same as in the previous block of models:  `social_media_objective`, `social_media_subjective`, and `error`.
+
+Our predictors will be variables on the day-level, so state variables: need satisfaction for autonomy, competence, and relatedness as well as four experiential qualities during participants' days (boredom, enjoyment, satisfaction, and stress).
+
+### Model 4: State variables predicting objective use
+
+First, I choose sensible priors.
+In contrast to previous models, there isn't much literature that could inform priors on our predictors.
+The same goes for the experiential qualities.
+We'll go with a "maximal" model where each participant and day get their own intercept plus random slopes nested within participant, because it's plausible that the effects vary per participant.
+They could also vary by day, but a) there was little to no variation for day in previous models, and b) that would lead to more parameters than our little data could handle.
+Just like before we assume a Gamma distribution for the social media variables.
+
+I'll go step-by-step:
+
+* For the intercepts, I use the same prior as above in Models 1 and 2.
+* For basic psychological needs fixed effects, [this](https://www.tandfonline.com/doi/abs/10.1080/15309576.2017.1400991) paper reports very small relations between self-determined motivations at work and social media use ($\beta$ < .06).
+However, most of the literature focuses on those motivations and social media addiction, enjoyment of social media, or satisfaction with social media.
+Therefore, I'll use weakly regularizing priors for those effects, which means I'll go with the same prior for the effects as for Models 1 and 2.
+* For the experiential qualities, there isn't much literature out there that would allow choosing an informed prior.
+Most of those experiential qualities are about having a fulfilled and good day, which taps into the whole controversy over the relation between such experiences and social media.
+Therefore, I'll take a skeptical stance here and again assign the same weakly regularizing priors (aka the priors we also used for Models 1 and 2).
+* For the variances (sigmas) I'll take the `brms` default priors because I have no prior information, nor how the effects vary across day and participant.
+* For the correlation between intercepts and slopes, I'll again use the default prior, mostly because those have shown to help with convergence and I don't have good information on which correlation to expect.
+```{r priors-model4-study1}
+priors_model4 <- 
+  c(
+    # intercept
+    prior(normal(4.5, 0.8), class = Intercept),
+    
+    # prior on effects
+    prior(normal(0, 0.1), class = b),
+    
+    # prior on shape
+    prior(gamma(2.5, 100), class = shape)
+  )
+
+```
+
+Let's run the model.
+```{r, model4-study1, eval=FALSE}
+model4 <- 
+  brm(
+    data = study1,
+    family = Gamma(link = "log"),
+    prior = priors_model4,
+    social_media_objective + 1e-6 ~
+      1 +
+      autonomy_state_c +
+      competence_state_c +
+      relatedness_state_c +
+      satisfied_c +
+      boring_c +
+      stressful_c +
+      enjoyable_c +
+      (
+        1 +
+        autonomy_state_c +
+        competence_state_c +
+        relatedness_state_c +
+        satisfied_c +
+        boring_c +
+        stressful_c +
+        enjoyable_c |
+        id
+      ) +
+      (1 |day),
+    iter = 5000,
+    warmup = 2000,
+    chains = 4,
+    cores = 4,
+    seed = 42,
+    control = list(
+      adapt_delta = 0.99
+    ),
+    file = here("models", "study1", "model4")
+  )
+```
+
+Overall, the traceplots look fine and the chains seem to have mixed well (Figure \@ref(fig:inspect-model5-study1)).
+Again the variance around the day grouping is small and mostly estimated to be zero or close to zero.
+```{r inspect-model4-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 4"}
+# load model
+model4 <- read_rds(here("models", "study1", "model4_study1.rds"))
+
+# plot traceplots and posterior distributions
+plot(model4, ask = FALSE)
+```
+
+The posterior predictive check shows that the model does a mediocre job.
+The model does a good job retrieving the mean, but underestimates social media use once more.
+Also, the LOO-PIT diagnostics look like a different distribution will fit better, potentially a skewed normal or beta-distribution.
+```{r ppc-model4-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 4"}
+model_diagnostics(model4)
+```
+
+Next, we check for potentially influential cases.
+One observation might be influential, which is why we compute ELPDs directly again.
+```{r outliers-model4-study1, eval=FALSE}
+model4_loo <- loo(model4, reloo = TRUE)
+saveRDS(model4_loo, here("models", "study1", "model4_loo_study1.rds"))
+```
+
+When we calculate ELPD directly, all values appear unproblematic.
+The results seem trustworthy.
+```{r outliers-model4-study1-reloo}
+model4_loo <- read_rds(here("models", "study1", "model4_loo_study1.rds"))
+model4_loo
+```
+
+Let's inspect the summary.
+There doesn't seem to be much going on when it comes to the predictors.
+```{r summary-model4-study1}
+summary(model4, priors = TRUE)
+```
+
+The effects plot (Figure \@ref(fig:effects-model4-study1)) visually confirms that none of the predictors seem influential.
+Note that the correlations between random effects are on different scales which explains why the CI around them are so wide.
+Except for the correlations, all effects are on the log scale because we used a Gamma distribution, but the correlations are regularly on a scale of -1 to 1.
+```{r effects-model4-study1, echo=FALSE, fig.cap="Effects plot for Model 4"}
+mcmc_plot(model4)
+```
+
+### Model 5: State variables predicting subjective use
+
+The next model predicts subjective use from the same predictors.
+Once more, we know that subjective and objective use aren't perfectly correlated, but the priors for Model 4 again are our best bet here.
+```{r priors-model5-study1}
+priors_model5 <- 
+  c(
+    # intercept
+    prior(normal(4.5, 0.8), class = Intercept),
+    
+    # prior on effects
+    prior(normal(0, 0.1), class = b),
+    
+    # prior on shape
+    prior(gamma(2.5, 100), class = shape)
+  )
+
+```
+
+Let's run the model.
+Like with Model 2, we don't separately model zeros.
+```{r, model5-study1, eval=FALSE}
+model5 <- 
+  brm(
+    data = study1,
+    family = Gamma(link = "log"),
+    prior = priors_model5,
+    social_media_subjective + 1e-6 ~
+      1 +
+      autonomy_state_c +
+      competence_state_c +
+      relatedness_state_c +
+      satisfied_c +
+      boring_c +
+      stressful_c +
+      enjoyable_c +
+      (
+        1 +
+        autonomy_state_c +
+        competence_state_c +
+        relatedness_state_c +
+        satisfied_c +
+        boring_c +
+        stressful_c +
+        enjoyable_c |
+        id
+      ) +
+      (1 |day),
+    iter = 5000,
+    warmup = 2000,
+    chains = 4,
+    cores = 4,
+    seed = 42,
+    control = list(
+      adapt_delta = 0.99
+    ),
+    file = here("models", "study1", "model5_study1")
+  )
+```
+Overall, the traceplots look fine and the chains seem to have mixed well (Figure \@ref(fig:inspect-model5-study1)).
+Like before, the variance around the day grouping is small and mostly estimated to be zero or close to zero.
+```{r inspect-model5-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 4"}
+# load model
+model5 <- read_rds(here("models", "study1", "model5_study1.rds"))
+
+# plot traceplots and posterior distributions
+plot(model5, ask = FALSE)
+```
+
+The posterior predictive check shows about the same model fit as Model 4: mediocre.
+```{r ppc-model5-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 5"}
+model_diagnostics(model5)
+```
+
+There are no cases flagged as potentially influential outliers.
+```{r outliers-model5-study1, eval=FALSE}
+loo(model5)
+```
+
+Let's inspect the summary.
+Having an enjoyable and boring day might be related to more estimating more social media use.
+Conversely, a feeling of competence might decrease estimates.
+However, all three of those posterior distributions include zero, even though it's close.
+```{r summary-model5-study1}
+summary(model5, priors = TRUE)
+```
+
+The effects plot (Figure \@ref(fig:effects-model5-study1)) visually that those three states might be influential, but their CIs overlap with zero.
+```{r effects-model5-study1, echo=FALSE, fig.cap="Effects plot for Model 4"}
+mcmc_plot(model5)
+```
+
+### Model 6: State variables predicting accuracy
+
+For this model, once more it's hard to choose informed priors.
+Therefore, I choose the same skeptical, but weakly regularizing priors as for Model 3, with a student t distribution with fat tails, an intercept that reflects a tendency to overestimate, and slopes that are skeptical of large effects.
+For everything else, I'll use the `brms` default priors because I don't have information on what correlation or variances to expect.
+```{r priors-model6-study1}
+priors_model6 <- 
+  c(
+    # intercept
+    prior(student_t(10, 20, 100), class = Intercept),
+    
+    # all other effects
+    prior(normal(0, 25), class = b)
+  )
+```
+
+Let's run the model.
+```{r, model6-study1, eval=FALSE}
+model6 <- 
+  brm(
+    data = study1,
+    family = student,
+    prior = priors_model6,
+    error ~
+      1 +
+      autonomy_state_c +
+      competence_state_c +
+      relatedness_state_c +
+      satisfied_c +
+      boring_c +
+      stressful_c +
+      enjoyable_c +
+      (
+        1 +
+        autonomy_state_c +
+        competence_state_c +
+        relatedness_state_c +
+        satisfied_c +
+        boring_c +
+        stressful_c +
+        enjoyable_c |
+        id
+      ) +
+      (1 |day),
+    iter = 5000,
+    warmup = 2000,
+    chains = 4,
+    cores = 4,
+    seed = 42,
+    control = list(
+      adapt_delta = 0.99
+    ),
+    file = here("models", "study1", "model6_study1")
+  )
+```
+
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model6-study1)), just like with Model 3.
+```{r inspect-model6-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 6"}
+# load model
+model6 <- readRDS(here("models", "study1", "model6_study1.rds"))
+
+# plot traceplots and posterior distributions
+plot(model6, ask = FALSE)
+```
+
+The posterior predictive checks (Figure \@ref(fig:ppc-model6-study1)) look good.
+Like with Model 3, that the upper left panel looks strange because of the massive scale on the x-axis.
+I reproduce it again at the bottom with a more sensible x-axis.
+Once more, the student t distribution assigns too much posterior mass to negative values, whereas the data are right skewed.
+Otherwise, the model does an okay job in recovering the mean and the median.
+```{r ppc-model6-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 6"}
+model_diagnostics(model6)
+pp_check(model6, nsamples = 100) + xlim(c(-1500, 1500))
+```
+
+No cases are flagged for potentially influential cases, which is nice.
+```{r outliers-model6-study1, eval=FALSE}
+loo(model6)
+```
+
+Let's inspect the summary.
+Only one predictor's posterior distribution doesn't include zero often, namely how satisfied people were with their days.
+Those who score one point above the average underestimate their use.
+However, the intercept is positive, so a one-point increase in satisfaction would lead people back to more accuracy, whereas a two-point increase would lead them to underestimate.
+Interestingly, the intercept's 95% CI includes zero, so we can't even be sure that data are compatible with an overestimation when all predictors are at their mean.
+```{r summary-model6-study1}
+summary(model6, priors = TRUE)
+```
+
+The effects plot (Figure \@ref(fig:effects-model6-study1)) visually confirms what I wrote above.
+Note the difference in scale: everything except the correlations are in percent error, whereas the correlations are on their -1 to 1 scale.
+```{r effects-model6-study1, echo=FALSE, fig.cap="Effects plot for Model 6"}
+mcmc_plot(model6)
+```
+
+## Does social media use predict well-being and vice versa?
+
+For this RQ, we have several blocks.
+We want to know how day-level social media use (both types) and accuracy are related to well-being, with predictions going both ways, and controlling for lagged values.
+
+The three blocks are:
+
+1. Do day-level variables predict day-level well-being?
+
+    1.1. Does objective-only engagement predict day-level well-being?
+    
+    1.2. Does subjective-only engagement predict day-level well-being?
+    
+    1.3. Does accuracy predict day-level well-being?
+
+2. Does the well-being on the prior day predict use and accuracy?
+
+    2.1. Does day before well-being predict objective-only engagement?
+    
+    2.2. Does day before well-being predict subjective-only engagement?
+    
+    2.3. Does day before well-being predict accuracy?
+
+3. Does day-level variables on the previous day predict day-level well-being?
+
+    3.1. Does objective-only engagement predict next day-level well-being?
+    
+    3.2. Does subjective-only engagement predict next day-level well-being?
+    
+    3.3. Does accuracy predict next day-level well-being?
+
+### Do day-level variables predict day-level well-being?
+
+#### Model 7: Objective use predicting well-being
+
+For this model, we'll predict well-being on that day with objective social media use on that day.
+Priors here can be controversial, depending on what literature we look to.
+Well-being is often left-skewed, so we could go for a skewed normal distribution for the model.
+However, that might be too strong an assumption, which is why I'll use a model that assumes a normal Gaussian distribution.
+
+As for the specific priors:
+
+* When social media use is at its mean, I'll simply assume a normal distribution centered on the midpoint of the scale (i.e., 3).
+As for the SD of that distribution, we know the bounds of the scale, so an SD of 1 will have 95% of cases within 1 and 5, which is exactly what we want.
+* As for the slopes: There are two papers I know of that found a negative, small effect, but another paper that found a negligent one.
+The larger literature on self-reported media use and well-being also finds very small negative effects, in the range of $\beta$ = .05.
+We're on the unstandardized scale here.
+So if we assume that well-being is at the midpoint of the scale (i.e., 3), the maximum effect an increase in social media time could have is to bring well-being to its ceiling or floor.
+That would imply a standard deviation of 1 again - that depends on the scale of the predictor, though.
+Right now, it's in minutes and we'd need to scale the prior accordingly.
+This [paper](https://www.tandfonline.com/doi/full/10.1080/15213269.2020.1768122) found that with each increase of one standard deviation in social media time, well-being on a 7-point Likert-scale went down by -.06 units.
+The standard deviation was 190.
+Therefore (with some crude math), one hour of social media use was associated with `190/60 * -.06` = `r 190/60 * -.06` raw units on the outcome scale.
+From the literature we also know that massive (unstandardized) effects are rare if impossible.
+Therefore, I'll center the slope distribution on a small negative value.
+To be conservative, I'll take about 75% of the -.19 we found above (say -0.15 Likert-scales) with a somewhat tight standard deviation (say 0.2).
+This way, 95% of effects will be within -.55 (-.15 + (2 times 0.2)) and 0.25 Likert-points on the outcome scale.
+In other words: one hour more than average social media use will be associated with, on average, a .15 lower score on well-being. 
+* For everything else, I'll once more go with the default `brms` priors.
+
+Let's set those priors.
+Note that we're still on the minute scale for the predictor, but I specified priors above for hours.
+That's why I transform the social media variables to hours (and center) to make interpretation easier.
+That also helps us set the priors we specified above.
+```{r priors-model7-study1}
+# create hour variables
+study1 <- 
+  study1 %>% 
+  mutate(
+    across(
+      c(social_media_objective, social_media_subjective),
+      ~ scale(.x, center = TRUE, scale = FALSE) / 60, #  divide by 60 to get hours
+      .names = "{col}_c"
+    )
+  )
+
+# set priors
+priors_model7 <- 
+  c(
+    # intercept
+    prior(normal(3, 1), class = Intercept),
+    
+    # slopes
+    prior(normal(-0.15, 0.20), class = b)
+  )
+```
+
+Okay, let's run the model.
+```{r, model7-study1, eval=FALSE}
+model7 <- 
+  brm(
+    data = study1,
+    family = gaussian,
+    prior = priors_model7,
+    well_being_state ~
+      1 +
+      social_media_objective_c +
+      (
+        1 +
+        social_media_objective_c |
+        id
+      ) +
+      (1 |day),
+    iter = 5000,
+    warmup = 2000,
+    chains = 4,
+    cores = 4,
+    seed = 42,
+    control = list(
+      adapt_delta = 0.99
+    ),
+    file = here("models", "study1", "model7_study1")
+  )
+```
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model7-study1)).
+```{r inspect-model7-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 7"}
+# load model
+model7 <- readRDS(here("models", "study1", "model7_study1.rds"))
+
+# plot traceplots and posterior distributions
+plot(model7, ask = FALSE)
+```
+
+The posterior predictive checks (Figure \@ref(fig:ppc-model7-study1)) look excellent (no surprise with only one predictor).
+```{r ppc-model7-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 6"}
+model_diagnostics(model7)
+```
+
+No cases are flagged for potentially influential cases.
+```{r outliers-model7-study1, eval=FALSE}
+loo(model7)
+```
+
+Let's inspect the summary.
+The relation is estimated to be extremely close to zero, so really no interpretative wiggle room there.
+I think this is pretty convincing evidence for the lack of an effect.
+```{r summary-model7-study1}
+summary(model7, priors = TRUE)
+```
+
+The effects plot (Figure \@ref(fig:effects-model7-study1)) visually confirms what I wrote above.
+```{r effects-model7-study1, echo=FALSE, fig.cap="Effects plot for Model 7"}
+mcmc_plot(model7)
+```
+
+#### Model 8: Subjective use predicting well-being
+
+Next, we'll predict well-being on that day with subjective social media use on that day.
+The majority of the evidence shows that we should expect a small negative relation, but larger in absolute size than with objective use.
+
+The specific priors:
+
+* For the intercept, I'll use the same prior as with Model 7.
+* As for the slopes: [This](https://journals.sagepub.com/doi/suppl/10.1177/0956797619830329) paper reports median effect sizes across all specifications of $\beta$ = -.08.
+That's among adolescents and for a longer time frame.
+[This](https://osf.io/mpxra) explicitly compared subjective to objective and found that subjective is a much stronger predictor (up to four times the effect size).
+So I think it's a good idea to at least double what we expect for the prior, which would lead us to believe a mean negative effect of .30 Likert-points on well-being and 0.4 standard deviation.
+That would bring 95% of effects within -1.1 and 0.5 Likert-points, which is rather generous for media effects.
+* For everything else, I'll once more go with the default `brms` priors.
+
+Let's set those priors.
+```{r priors-model8-study1}
+priors_model8 <- 
+  c(
+    # intercept
+    prior(normal(3, 1), class = Intercept),
+    
+    # slopes
+    prior(normal(-0.30, 0.40), class = b)
+  )
+```
+
+Okay, let's run the model.
+```{r, model8-study1, eval=FALSE}
+model8 <- 
+  brm(
+    data = study1,
+    family = gaussian,
+    prior = priors_model8,
+    well_being_state ~
+      1 +
+      social_media_subjective_c +
+      (
+        1 +
+        social_media_subjective_c |
+        id
+      ) +
+      (1 |day),
+    iter = 5000,
+    warmup = 2000,
+    chains = 4,
+    cores = 4,
+    seed = 42,
+    control = list(
+      adapt_delta = 0.99
+    ),
+    file = here("models", "study1", "model8_study1")
+  )
+```
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model8-study1)).
+```{r inspect-model8-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 8"}
+# load model
+model8 <- read_rds(here("models", "study1", "model8_study1.rds"))
+
+# plot traceplots and posterior distributions
+plot(model8, ask = FALSE)
+```
+
+The posterior predictive checks (Figure \@ref(fig:ppc-model8-study1)) look excellent, just like with Model 7 (no surprise with only one predictor).
+```{r ppc-model8-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 8"}
+model_diagnostics(model8)
+```
+
+One case is flagged as potentially influential, which is why we calculate ELPD directly.
+```{r outliers-model8-study1, eval=FALSE}
+model8_loo <- loo(model8, reloo = TRUE)
+saveRDS(model8_loo, here("models", "study1", "model8_loo_study1.rds"))
+```
+
+When we calculate ELPD directly, all values appear unproblematic.
+The results seem trustworthy.
+```{r outliers-model8-study1-reloo}
+model8_loo <- read_rds(here("models", "study1", "model8_loo_study1.rds"))
+model8_loo
+```
+
+Let's inspect the summary.
+The the effect is estimated to be negative, but much smaller than our prior specified.
+Also, the 95% CI includes zero, so we can't be sure the effect is meaningful.
+```{r summary-model8-study1}
+summary(model8, priors = TRUE)
+```
+
+The effects plot (Figure \@ref(fig:effects-model8-study1)) shows that the effect, if even there, is small at best.
+```{r effects-model8-study1, echo=FALSE, fig.cap="Effects plot for Model 8"}
+mcmc_plot(model8)
+```
+
+#### Model 9: Accuracy predicting well-being
+
+For this model, we ask whether the error people make in their estimation is related to their well-being on the state level.
+As for as I know, there's little prior knowledge we could build on for the relation between accuracy and well-being.
+
+As for the specific priors:
+
+* Like before, at perfect accuracy (0% error) I'll  assume a normal distribution centered on the midpoint of the scale (i.e., 3) with the intercept.
+I'll set the SD of that prior distribution to 1 once more.
+* As for the slopes: There's one [paper](https://doi.org/10.1177/2050157920902830) that correlated the absolute discrepancy between subjective and objective social media use and well-being indicators aggregated over a week.
+They found a $\beta$ = .16 between log-transformed discrepancies and depression scores.
+Discrepancy is a different measurement than the error that we calculated for accuracy.
+Therefore, I'll use a prior that's centered on a negative relationship with a small SD.
+Like above, I don't expect that there will be large effects just based on the literature.
+So I'll assume a small effect (say -0.20 Likert-scales) with a somewhat wider standard deviation than in previous models (say 0.3).
+This way, 95% of effects will be within -.80 (-.20 + (2 times 0.3)) and 0.40 Likert-points on the outcome scale.
+However, `error` is in percent, so we wouldn't expect -.20 Likert-points with every one-percent increase.
+Rather, I'd say the above effect is easier to specify for a standard deviation change in `error`, which is why I standardize `error`: one standard deviation increase in accuracy  will be associated with, on average, a .20 lower score on well-being. 
+* For everything else, I'll once more go with the default `brms` priors.
+
+Let's set those priors.
+```{r priors-model9-study1}
+# standardize error
+study1 <- 
+  study1 %>% 
+  mutate(
+    error_s = scale(error, center = FALSE, scale = TRUE)
+  )
+
+# set priors
+priors_model9 <- 
+  c(
+    # intercept
+    prior(normal(3, 1), class = Intercept),
+    
+    # slopes
+    prior(normal(-0.20, 0.30), class = b)
+  )
+```
+
+And run the model.
+```{r, model9-study1, eval=FALSE}
+model9 <- 
+  brm(
+    data = study1,
+    family = gaussian,
+    prior = priors_model9,
+    well_being_state ~
+      1 +
+      error_s +
+      (
+        1 +
+        error_s |
+        id
+      ) +
+      (1 |day),
+    iter = 5000,
+    warmup = 2000,
+    chains = 4,
+    cores = 4,
+    seed = 42,
+    control = list(
+      adapt_delta = 0.99
+    ),
+    file = here("models", "study1", "model9_study1")
+  )
+```
+
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model9-study1)).
+```{r inspect-model9-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 9"}
+# load model
+model9 <- read_rds(here("models", "study1", "model9_study1.rds"))
+
+# plot traceplots and posterior distributions
+plot(model9, ask = FALSE)
+```
+
+The posterior predictive checks (Figure \@ref(fig:ppc-model9-study1)) look excellent (no surprise with only one predictor).
+```{r ppc-model9-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 9"}
+model_diagnostics(model9)
+```
+
+Five cases are flagged as potentially influential, which is why we calculate ELPD directly.
+```{r outliers-model9-study1, eval=FALSE}
+model9_loo <- loo(model9, reloo = TRUE)
+saveRDS(model9_loo, here("models", "study1", "model9_loo_study1.rds"))
+```
+
+When we calculate ELPD directly, all values appear unproblematic.
+The results seem trustworthy.
+```{r outliers-model9-study1-reloo}
+model9_loo <- read_rds(here("models", "study1", "model9_loo_study1.rds"))
+model9_loo
+```
+
+Let's inspect the summary.
+The the effect is estimated to be negative, but much smaller than our prior specified.
+Also, the 95% CI includes zero and quite wide, so we can't be sure the effect is meaningful.
+```{r summary-model9-study1}
+summary(model9, priors = TRUE)
+```
+
+The effects plot (Figure \@ref(fig:effects-model9-study1)) shows that the effect, if even there, is small at best.
+```{r effects-model9-study1, echo=FALSE, fig.cap="Effects plot for Model 9"}
+mcmc_plot(model9)
+```

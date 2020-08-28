@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Data processing Study 1 | Analysis Report</title>
   <meta name="description" content="Analysis report detailing alls steps from data processing to final analyses." />
-  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Data processing Study 1 | Analysis Report" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Niklas Johannes" />
 
 
-<meta name="date" content="2020-06-25" />
+<meta name="date" content="2020-08-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -50,6 +50,7 @@
 
 
 
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
@@ -148,6 +149,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#person-level"><i class="fa fa-check"></i><b>3.3</b> Person-level</a></li>
 <li class="chapter" data-level="3.4" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#app-level"><i class="fa fa-check"></i><b>3.4</b> App-level</a></li>
 <li class="chapter" data-level="3.5" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#day-level"><i class="fa fa-check"></i><b>3.5</b> Day level</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="analysis-study-1.html"><a href="analysis-study-1.html"><i class="fa fa-check"></i><b>4</b> Analysis Study 1</a><ul>
+<li class="chapter" data-level="4.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#research-questions"><i class="fa fa-check"></i><b>4.1</b> Research questions</a></li>
+<li class="chapter" data-level="4.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#data-preparation"><i class="fa fa-check"></i><b>4.2</b> Data preparation</a></li>
+<li class="chapter" data-level="4.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#do-trait-variables-predict-social-media-use-and-accuracy"><i class="fa fa-check"></i><b>4.3</b> Do trait variables predict social media use and accuracy?</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-1-trait-variables-predicting-objective-use"><i class="fa fa-check"></i><b>4.3.1</b> Model 1: Trait variables predicting objective use</a></li>
+<li class="chapter" data-level="4.3.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-2-trait-variables-predicting-subjective-use"><i class="fa fa-check"></i><b>4.3.2</b> Model 2: Trait variables predicting subjective use</a></li>
+<li class="chapter" data-level="4.3.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-3-trait-variables-predicting-accuracy"><i class="fa fa-check"></i><b>4.3.3</b> Model 3: Trait variables predicting accuracy</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="analysis-study-1.html"><a href="analysis-study-1.html#do-state-i.e.-day-level-variables-predict-social-media-use-and-accuracy"><i class="fa fa-check"></i><b>4.4</b> Do state (i.e., day-level) variables predict social media use and accuracy?</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-4-state-variables-predicting-objective-use"><i class="fa fa-check"></i><b>4.4.1</b> Model 4: State variables predicting objective use</a></li>
+<li class="chapter" data-level="4.4.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-5-state-variables-predicting-subjective-use"><i class="fa fa-check"></i><b>4.4.2</b> Model 5: State variables predicting subjective use</a></li>
+<li class="chapter" data-level="4.4.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-6-state-variables-predicting-accuracy"><i class="fa fa-check"></i><b>4.4.3</b> Model 6: State variables predicting accuracy</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="analysis-study-1.html"><a href="analysis-study-1.html#does-social-media-use-predict-well-being-and-vice-versa"><i class="fa fa-check"></i><b>4.5</b> Does social media use predict well-being and vice versa?</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#do-day-level-variables-predict-day-level-well-being"><i class="fa fa-check"></i><b>4.5.1</b> Do day-level variables predict day-level well-being?</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -1699,13 +1717,18 @@ Figure 2.4: Distribution of percent error for screen time
 </p>
 </div>
 <p>I checked their raw data: One participant indicated exactly five hours, but probably meant five minutes (i.e., the participant with an error of NA.
-Similarly, the second largest entry seems to be a type (i.e., 58 minutes).
-I’ll set those all entries that are larger than 1500% to <code>NA</code>.</p>
+Similarly, the second largest entry seems to be a typo (i.e., 58 minutes).
+I’ll set those all entries that are larger than 1500% to <code>NA</code>.
+Also, one participant had zero objective time and zero subjective time.
+Dividing by zero to get error above leads to <code>NaN</code>, so I’ll set that to <code>NA</code>.</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="data-processing-study1.html#cb41-1"></a>study1 &lt;-<span class="st"> </span></span>
 <span id="cb41-2"><a href="data-processing-study1.html#cb41-2"></a><span class="st">  </span>study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb41-3"><a href="data-processing-study1.html#cb41-3"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb41-4"><a href="data-processing-study1.html#cb41-4"></a>    <span class="dt">error =</span> <span class="kw">if_else</span>(error <span class="op">&gt;</span><span class="st"> </span><span class="dv">1500</span>, <span class="ot">NA_real_</span>, error)</span>
-<span id="cb41-5"><a href="data-processing-study1.html#cb41-5"></a>  )</span></code></pre></div>
+<span id="cb41-4"><a href="data-processing-study1.html#cb41-4"></a>    <span class="dt">error =</span> <span class="kw">if_else</span>(error <span class="op">&gt;</span><span class="st"> </span><span class="dv">1500</span>, <span class="ot">NA_real_</span>, error),</span>
+<span id="cb41-5"><a href="data-processing-study1.html#cb41-5"></a>    <span class="dt">error =</span> <span class="kw">if_else</span>(</span>
+<span id="cb41-6"><a href="data-processing-study1.html#cb41-6"></a>      social_media_subjective <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>social_media_objective <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">0</span>, error</span>
+<span id="cb41-7"><a href="data-processing-study1.html#cb41-7"></a>    )</span>
+<span id="cb41-8"><a href="data-processing-study1.html#cb41-8"></a>  )</span></code></pre></div>
 <p>Last, some housekeeping, reordering variables and making sure they all have the correct variable type, plus reordering the <code>day</code> factor.</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="data-processing-study1.html#cb42-1"></a>study1 &lt;-<span class="st"> </span></span>
 <span id="cb42-2"><a href="data-processing-study1.html#cb42-2"></a><span class="st">  </span>study1 <span class="op">%&gt;%</span><span class="st"> </span></span>
