@@ -198,6 +198,13 @@
       "Repository": "CRAN",
       "Hash": "e2835c474c3bd9f2bbc3a5adf804254f"
     },
+    "beeswarm": {
+      "Package": "beeswarm",
+      "Version": "0.2.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "dc538ec663e38888807ef3034489403d"
+    },
     "blob": {
       "Package": "blob",
       "Version": "1.2.1",
@@ -463,6 +470,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "bae53c310be0adce98458355c38ef1bf"
+    },
+    "ggbeeswarm": {
+      "Package": "ggbeeswarm",
+      "Version": "0.6.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "dd68b9b215b2d3119603549a794003c3"
     },
     "ggplot2": {
       "Package": "ggplot2",
@@ -1219,6 +1233,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "1739235995f08583db4095a28c357207"
+    },
+    "vipor": {
+      "Package": "vipor",
+      "Version": "0.4.5",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "ea85683da7f2bfa63a98dc6416892591"
     },
     "viridisLite": {
       "Package": "viridisLite",
