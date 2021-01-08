@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Synthesis Study 1 | Analysis Report</title>
+  <meta name="description" content="Analysis report detailing alls steps from data processing to final analyses." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Synthesis Study 1 | Analysis Report" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://github.com/digital-wellbeing/smartphone-use" />
+  
+  <meta property="og:description" content="Analysis report detailing alls steps from data processing to final analyses." />
+  <meta name="github-repo" content="digital-wellbeing/smartphone-use" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Synthesis Study 1 | Analysis Report" />
+  
+  <meta name="twitter:description" content="Analysis report detailing alls steps from data processing to final analyses." />
+  
+
+<meta name="author" content="Niklas Johannes" />
+
+
+<meta name="date" content="2021-01-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="analysis-study-1.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Analysis Report</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="part"><span><b>I Study 1</b></span></li>
+<li class="chapter" data-level="1" data-path="setting-up-study1.html"><a href="setting-up-study1.html"><i class="fa fa-check"></i><b>1</b> Setting up</a></li>
+<li class="chapter" data-level="2" data-path="data-processing-study1.html"><a href="data-processing-study1.html"><i class="fa fa-check"></i><b>2</b> Data processing Study 1</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-processing-study1.html"><a href="data-processing-study1.html#personality-data"><i class="fa fa-check"></i><b>2.1</b> Personality data</a></li>
+<li class="chapter" data-level="2.2" data-path="data-processing-study1.html"><a href="data-processing-study1.html#diary-data"><i class="fa fa-check"></i><b>2.2</b> Diary data</a></li>
+<li class="chapter" data-level="2.3" data-path="data-processing-study1.html"><a href="data-processing-study1.html#screen-time-data"><i class="fa fa-check"></i><b>2.3</b> Screen time data</a></li>
+<li class="chapter" data-level="2.4" data-path="data-processing-study1.html"><a href="data-processing-study1.html#merge-data-sets"><i class="fa fa-check"></i><b>2.4</b> Merge data sets</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html"><i class="fa fa-check"></i><b>3</b> Descriptives and Visualizations Study 1</a><ul>
+<li class="chapter" data-level="3.1" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#overview"><i class="fa fa-check"></i><b>3.1</b> Overview</a></li>
+<li class="chapter" data-level="3.2" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#meta-level"><i class="fa fa-check"></i><b>3.2</b> Meta-level</a></li>
+<li class="chapter" data-level="3.3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#person-level"><i class="fa fa-check"></i><b>3.3</b> Person-level</a></li>
+<li class="chapter" data-level="3.4" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#app-level"><i class="fa fa-check"></i><b>3.4</b> App-level</a></li>
+<li class="chapter" data-level="3.5" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#day-level"><i class="fa fa-check"></i><b>3.5</b> Day level</a></li>
+<li class="chapter" data-level="3.6" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#plots-for-paper"><i class="fa fa-check"></i><b>3.6</b> Plots for paper</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="analysis-study-1.html"><a href="analysis-study-1.html"><i class="fa fa-check"></i><b>4</b> Analysis Study 1</a><ul>
+<li class="chapter" data-level="4.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#research-questions"><i class="fa fa-check"></i><b>4.1</b> Research questions</a></li>
+<li class="chapter" data-level="4.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#data-preparation"><i class="fa fa-check"></i><b>4.2</b> Data preparation</a></li>
+<li class="chapter" data-level="4.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#do-trait-variables-predict-social-media-use-and-accuracy"><i class="fa fa-check"></i><b>4.3</b> Do trait variables predict social media use and accuracy?</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-1-trait-variables-predicting-objective-use"><i class="fa fa-check"></i><b>4.3.1</b> Model 1: Trait variables predicting objective use</a></li>
+<li class="chapter" data-level="4.3.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-2-trait-variables-predicting-subjective-use"><i class="fa fa-check"></i><b>4.3.2</b> Model 2: Trait variables predicting subjective use</a></li>
+<li class="chapter" data-level="4.3.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-3-trait-variables-predicting-accuracy"><i class="fa fa-check"></i><b>4.3.3</b> Model 3: Trait variables predicting accuracy</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="analysis-study-1.html"><a href="analysis-study-1.html#do-state-i.e.-day-level-variables-predict-social-media-use-and-accuracy"><i class="fa fa-check"></i><b>4.4</b> Do state (i.e., day-level) variables predict social media use and accuracy?</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-4-state-variables-predicting-objective-use"><i class="fa fa-check"></i><b>4.4.1</b> Model 4: State variables predicting objective use</a></li>
+<li class="chapter" data-level="4.4.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-5-state-variables-predicting-subjective-use"><i class="fa fa-check"></i><b>4.4.2</b> Model 5: State variables predicting subjective use</a></li>
+<li class="chapter" data-level="4.4.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-6-state-variables-predicting-accuracy"><i class="fa fa-check"></i><b>4.4.3</b> Model 6: State variables predicting accuracy</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="analysis-study-1.html"><a href="analysis-study-1.html#does-social-media-use-predict-well-being"><i class="fa fa-check"></i><b>4.5</b> Does social media use predict well-being?</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-7-objective-use-predicting-well-being"><i class="fa fa-check"></i><b>4.5.1</b> Model 7: Objective use predicting well-being</a></li>
+<li class="chapter" data-level="4.5.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-8-subjective-use-predicting-well-being"><i class="fa fa-check"></i><b>4.5.2</b> Model 8: Subjective use predicting well-being</a></li>
+<li class="chapter" data-level="4.5.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-9-accuracy-predicting-well-being"><i class="fa fa-check"></i><b>4.5.3</b> Model 9: Accuracy predicting well-being</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="synthesis-study-1.html"><a href="synthesis-study-1.html"><i class="fa fa-check"></i><b>5</b> Synthesis Study 1</a><ul>
+<li class="chapter" data-level="5.1" data-path="synthesis-study-1.html"><a href="synthesis-study-1.html#personality-on-smartphone-use-trait"><i class="fa fa-check"></i><b>5.1</b> Personality on smartphone use (trait)</a></li>
+<li class="chapter" data-level="5.2" data-path="synthesis-study-1.html"><a href="synthesis-study-1.html#experiences-on-smartphone-use-state"><i class="fa fa-check"></i><b>5.2</b> Experiences on smartphone use (state)</a></li>
+<li class="chapter" data-level="5.3" data-path="synthesis-study-1.html"><a href="synthesis-study-1.html#smartphone-use-on-well-being-state"><i class="fa fa-check"></i><b>5.3</b> Smartphone use on well-being (state)</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analysis Report</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="synthesis-study-1" class="section level1">
+<h1><span class="header-section-number">5</span> Synthesis Study 1</h1>
+<p>Alright, here I visualize the findings from the analysis section.
+I’ll create a summary figure for each of the three blocks.</p>
+<p>For that, I’ll extract the model estimates of the effects from each model first.</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="synthesis-study-1.html#cb121-1"></a>model1 &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model1_study1.rds&quot;</span>))</span>
+<span id="cb121-2"><a href="synthesis-study-1.html#cb121-2"></a>model2 &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model2_study1.rds&quot;</span>))</span>
+<span id="cb121-3"><a href="synthesis-study-1.html#cb121-3"></a>model3 &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model3_study1.rds&quot;</span>))</span>
+<span id="cb121-4"><a href="synthesis-study-1.html#cb121-4"></a>model4 &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model4_study1.rds&quot;</span>))</span>
+<span id="cb121-5"><a href="synthesis-study-1.html#cb121-5"></a>model5 &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model5_study1.rds&quot;</span>))</span>
+<span id="cb121-6"><a href="synthesis-study-1.html#cb121-6"></a>model6 &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model6_study1.rds&quot;</span>))</span>
+<span id="cb121-7"><a href="synthesis-study-1.html#cb121-7"></a>model7 &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model7_study1.rds&quot;</span>))</span>
+<span id="cb121-8"><a href="synthesis-study-1.html#cb121-8"></a>model8 &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model8_study1.rds&quot;</span>))</span>
+<span id="cb121-9"><a href="synthesis-study-1.html#cb121-9"></a>model9 &lt;-<span class="st"> </span><span class="kw">read_rds</span>(<span class="kw">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;study1&quot;</span>, <span class="st">&quot;model9_study1.rds&quot;</span>))</span></code></pre></div>
+<p>First we get all estimates.</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="synthesis-study-1.html#cb122-1"></a>estimates &lt;-<span class="st"> </span></span>
+<span id="cb122-2"><a href="synthesis-study-1.html#cb122-2"></a><span class="st">  </span><span class="kw">tibble</span>(</span>
+<span id="cb122-3"><a href="synthesis-study-1.html#cb122-3"></a>    <span class="dt">block =</span> <span class="kw">as.character</span>(),</span>
+<span id="cb122-4"><a href="synthesis-study-1.html#cb122-4"></a>    <span class="dt">model =</span> <span class="kw">as.character</span>(),</span>
+<span id="cb122-5"><a href="synthesis-study-1.html#cb122-5"></a>    <span class="dt">predictor =</span> <span class="kw">as.character</span>(),</span>
+<span id="cb122-6"><a href="synthesis-study-1.html#cb122-6"></a>    <span class="dt">estimate =</span> <span class="kw">as.double</span>(),</span>
+<span id="cb122-7"><a href="synthesis-study-1.html#cb122-7"></a>    <span class="dt">ci_low =</span> <span class="kw">as.double</span>(),</span>
+<span id="cb122-8"><a href="synthesis-study-1.html#cb122-8"></a>    <span class="dt">ci_high =</span> <span class="kw">as.double</span>(),</span>
+<span id="cb122-9"><a href="synthesis-study-1.html#cb122-9"></a>    <span class="dt">outcome =</span> <span class="kw">as.character</span>()</span>
+<span id="cb122-10"><a href="synthesis-study-1.html#cb122-10"></a>  )</span>
+<span id="cb122-11"><a href="synthesis-study-1.html#cb122-11"></a></span>
+<span id="cb122-12"><a href="synthesis-study-1.html#cb122-12"></a>models &lt;-<span class="st"> </span></span>
+<span id="cb122-13"><a href="synthesis-study-1.html#cb122-13"></a><span class="st">  </span><span class="kw">paste0</span>(</span>
+<span id="cb122-14"><a href="synthesis-study-1.html#cb122-14"></a>    <span class="st">&quot;model&quot;</span>,</span>
+<span id="cb122-15"><a href="synthesis-study-1.html#cb122-15"></a>    <span class="dv">1</span><span class="op">:</span><span class="dv">9</span></span>
+<span id="cb122-16"><a href="synthesis-study-1.html#cb122-16"></a>  )</span>
+<span id="cb122-17"><a href="synthesis-study-1.html#cb122-17"></a></span>
+<span id="cb122-18"><a href="synthesis-study-1.html#cb122-18"></a><span class="cf">for</span> (model <span class="cf">in</span> models) {</span>
+<span id="cb122-19"><a href="synthesis-study-1.html#cb122-19"></a>  m &lt;-<span class="st"> </span><span class="kw">get</span>(model)</span>
+<span id="cb122-20"><a href="synthesis-study-1.html#cb122-20"></a>  </span>
+<span id="cb122-21"><a href="synthesis-study-1.html#cb122-21"></a>  dat &lt;-<span class="st"> </span></span>
+<span id="cb122-22"><a href="synthesis-study-1.html#cb122-22"></a><span class="st">    </span><span class="kw">fixef</span>(m) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># get fixed effects</span></span>
+<span id="cb122-23"><a href="synthesis-study-1.html#cb122-23"></a><span class="st">    </span><span class="kw">as_tibble</span>(., <span class="dt">rownames =</span> <span class="st">&quot;predictor&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># turn to tibble and save predictor variable </span></span>
+<span id="cb122-24"><a href="synthesis-study-1.html#cb122-24"></a><span class="st">    </span><span class="kw">filter</span>(predictor <span class="op">!=</span><span class="st"> &quot;Intercept&quot;</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># remove intercept</span></span>
+<span id="cb122-25"><a href="synthesis-study-1.html#cb122-25"></a><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>Est.Error) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># drop variable</span></span>
+<span id="cb122-26"><a href="synthesis-study-1.html#cb122-26"></a><span class="st">    </span><span class="kw">mutate</span>( <span class="co"># add the outcome by turning formula into character and selecting the first section</span></span>
+<span id="cb122-27"><a href="synthesis-study-1.html#cb122-27"></a>      <span class="dt">outcome =</span> <span class="kw">as.character</span>(m<span class="op">$</span>formula)[<span class="dv">1</span>] <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb122-28"><a href="synthesis-study-1.html#cb122-28"></a><span class="st">        </span><span class="kw">str_replace</span>(., <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># remove line breaks</span></span>
+<span id="cb122-29"><a href="synthesis-study-1.html#cb122-29"></a><span class="st">        </span><span class="kw">str_remove</span>(., <span class="st">&quot;</span><span class="ch">\\</span><span class="st"> (.*)&quot;</span>) <span class="co"># select the outcome name</span></span>
+<span id="cb122-30"><a href="synthesis-study-1.html#cb122-30"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb122-31"><a href="synthesis-study-1.html#cb122-31"></a><span class="st">    </span><span class="kw">rename</span>(</span>
+<span id="cb122-32"><a href="synthesis-study-1.html#cb122-32"></a>      <span class="dt">estimate =</span> Estimate,</span>
+<span id="cb122-33"><a href="synthesis-study-1.html#cb122-33"></a>      <span class="dt">ci_low =</span> <span class="st">`</span><span class="dt">Q2.5</span><span class="st">`</span>,</span>
+<span id="cb122-34"><a href="synthesis-study-1.html#cb122-34"></a>      <span class="dt">ci_high =</span> <span class="st">`</span><span class="dt">Q97.5</span><span class="st">`</span></span>
+<span id="cb122-35"><a href="synthesis-study-1.html#cb122-35"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb122-36"><a href="synthesis-study-1.html#cb122-36"></a><span class="st">    </span><span class="kw">mutate</span>(</span>
+<span id="cb122-37"><a href="synthesis-study-1.html#cb122-37"></a>      <span class="dt">model =</span> model, <span class="co"># original name</span></span>
+<span id="cb122-38"><a href="synthesis-study-1.html#cb122-38"></a>      <span class="co"># block of the RQ</span></span>
+<span id="cb122-39"><a href="synthesis-study-1.html#cb122-39"></a>      <span class="dt">block =</span> <span class="kw">case_when</span>(</span>
+<span id="cb122-40"><a href="synthesis-study-1.html#cb122-40"></a>        <span class="kw">parse_number</span>(model) <span class="op">%in%</span><span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span> <span class="op">~</span><span class="st"> &quot;Personality on smartphone use&quot;</span>,</span>
+<span id="cb122-41"><a href="synthesis-study-1.html#cb122-41"></a>        <span class="kw">parse_number</span>(model) <span class="op">%in%</span><span class="st"> </span><span class="dv">4</span><span class="op">:</span><span class="dv">6</span> <span class="op">~</span><span class="st"> &quot;Experiences on smartphone use&quot;</span>,</span>
+<span id="cb122-42"><a href="synthesis-study-1.html#cb122-42"></a>        <span class="kw">parse_number</span>(model)<span class="op">%in%</span><span class="st"> </span><span class="dv">7</span><span class="op">:</span><span class="dv">9</span> <span class="op">~</span><span class="st"> &quot;Smartphone use on well-being&quot;</span></span>
+<span id="cb122-43"><a href="synthesis-study-1.html#cb122-43"></a>      )</span>
+<span id="cb122-44"><a href="synthesis-study-1.html#cb122-44"></a>    )</span>
+<span id="cb122-45"><a href="synthesis-study-1.html#cb122-45"></a>  </span>
+<span id="cb122-46"><a href="synthesis-study-1.html#cb122-46"></a>  <span class="co"># bind them all into a tibble</span></span>
+<span id="cb122-47"><a href="synthesis-study-1.html#cb122-47"></a>  estimates &lt;-</span>
+<span id="cb122-48"><a href="synthesis-study-1.html#cb122-48"></a><span class="st">    </span><span class="kw">bind_rows</span>(</span>
+<span id="cb122-49"><a href="synthesis-study-1.html#cb122-49"></a>      estimates,</span>
+<span id="cb122-50"><a href="synthesis-study-1.html#cb122-50"></a>      dat</span>
+<span id="cb122-51"><a href="synthesis-study-1.html#cb122-51"></a>    )</span>
+<span id="cb122-52"><a href="synthesis-study-1.html#cb122-52"></a>}</span></code></pre></div>
+<p>Next, let’s make some cosmetic changes.</p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="synthesis-study-1.html#cb123-1"></a>estimates &lt;-<span class="st"> </span></span>
+<span id="cb123-2"><a href="synthesis-study-1.html#cb123-2"></a><span class="st">  </span>estimates <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb123-3"><a href="synthesis-study-1.html#cb123-3"></a><span class="st">  </span><span class="co"># get odds for estimates of the gamma models</span></span>
+<span id="cb123-4"><a href="synthesis-study-1.html#cb123-4"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb123-5"><a href="synthesis-study-1.html#cb123-5"></a>    <span class="kw">across</span>(</span>
+<span id="cb123-6"><a href="synthesis-study-1.html#cb123-6"></a>      estimate<span class="op">:</span>ci_high,</span>
+<span id="cb123-7"><a href="synthesis-study-1.html#cb123-7"></a>      <span class="op">~</span><span class="st"> </span><span class="kw">case_when</span>(</span>
+<span id="cb123-8"><a href="synthesis-study-1.html#cb123-8"></a>        <span class="kw">str_detect</span>(outcome, <span class="st">&quot;social_media&quot;</span>) <span class="op">~</span><span class="st"> </span><span class="kw">exp</span>(.x),</span>
+<span id="cb123-9"><a href="synthesis-study-1.html#cb123-9"></a>        <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span>.x</span>
+<span id="cb123-10"><a href="synthesis-study-1.html#cb123-10"></a>      )</span>
+<span id="cb123-11"><a href="synthesis-study-1.html#cb123-11"></a>    )</span>
+<span id="cb123-12"><a href="synthesis-study-1.html#cb123-12"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb123-13"><a href="synthesis-study-1.html#cb123-13"></a><span class="st">  </span><span class="co"># create variable that indicates within or between for models on the state level and whether predictors are state or trait</span></span>
+<span id="cb123-14"><a href="synthesis-study-1.html#cb123-14"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb123-15"><a href="synthesis-study-1.html#cb123-15"></a>    <span class="dt">between_within =</span> <span class="kw">case_when</span>(</span>
+<span id="cb123-16"><a href="synthesis-study-1.html#cb123-16"></a>      <span class="kw">str_detect</span>(predictor, <span class="st">&quot;between&quot;</span>) <span class="op">~</span><span class="st"> &quot;between&quot;</span>,</span>
+<span id="cb123-17"><a href="synthesis-study-1.html#cb123-17"></a>      <span class="kw">str_detect</span>(predictor, <span class="st">&quot;within&quot;</span>) <span class="op">~</span><span class="st"> &quot;within&quot;</span>,</span>
+<span id="cb123-18"><a href="synthesis-study-1.html#cb123-18"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span><span class="ot">NA_character_</span></span>
+<span id="cb123-19"><a href="synthesis-study-1.html#cb123-19"></a>    ),</span>
+<span id="cb123-20"><a href="synthesis-study-1.html#cb123-20"></a>    <span class="dt">trait_state =</span> <span class="kw">case_when</span>(</span>
+<span id="cb123-21"><a href="synthesis-study-1.html#cb123-21"></a>      block <span class="op">!=</span><span class="st"> &quot;Personality on smartphone use&quot;</span> <span class="op">~</span><span class="st"> &quot;state&quot;</span>,</span>
+<span id="cb123-22"><a href="synthesis-study-1.html#cb123-22"></a>      <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> &quot;trait&quot;</span></span>
+<span id="cb123-23"><a href="synthesis-study-1.html#cb123-23"></a>    )</span>
+<span id="cb123-24"><a href="synthesis-study-1.html#cb123-24"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb123-25"><a href="synthesis-study-1.html#cb123-25"></a><span class="st">  </span><span class="co"># clean up level names</span></span>
+<span id="cb123-26"><a href="synthesis-study-1.html#cb123-26"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb123-27"><a href="synthesis-study-1.html#cb123-27"></a>    <span class="kw">across</span>(</span>
+<span id="cb123-28"><a href="synthesis-study-1.html#cb123-28"></a>      <span class="kw">c</span>(predictor, outcome),</span>
+<span id="cb123-29"><a href="synthesis-study-1.html#cb123-29"></a>      <span class="op">~</span><span class="st"> </span><span class="kw">case_when</span>(</span>
+<span id="cb123-30"><a href="synthesis-study-1.html#cb123-30"></a>        <span class="kw">str_detect</span>(.x, <span class="st">&quot;objective&quot;</span>) <span class="op">~</span><span class="st"> &quot;Objective&quot;</span>,</span>
+<span id="cb123-31"><a href="synthesis-study-1.html#cb123-31"></a>        <span class="kw">str_detect</span>(.x, <span class="st">&quot;subjective&quot;</span>) <span class="op">~</span><span class="st"> &quot;Subjective&quot;</span>,</span>
+<span id="cb123-32"><a href="synthesis-study-1.html#cb123-32"></a>        <span class="kw">str_detect</span>(.x, <span class="st">&quot;_c$|between|within&quot;</span>) <span class="op">~</span><span class="st"> </span><span class="kw">str_to_title</span>(<span class="kw">str_remove</span>(.x, <span class="st">&quot;_.*&quot;</span>)),</span>
+<span id="cb123-33"><a href="synthesis-study-1.html#cb123-33"></a>        <span class="kw">str_detect</span>(.x, <span class="st">&quot;well&quot;</span>) <span class="op">~</span><span class="st"> &quot;Well-being&quot;</span>,</span>
+<span id="cb123-34"><a href="synthesis-study-1.html#cb123-34"></a>        <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span><span class="kw">str_to_title</span>(.x)</span>
+<span id="cb123-35"><a href="synthesis-study-1.html#cb123-35"></a>      )</span>
+<span id="cb123-36"><a href="synthesis-study-1.html#cb123-36"></a>    )</span>
+<span id="cb123-37"><a href="synthesis-study-1.html#cb123-37"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb123-38"><a href="synthesis-study-1.html#cb123-38"></a><span class="st">  </span><span class="co"># give a value for the line that signifies no effect</span></span>
+<span id="cb123-39"><a href="synthesis-study-1.html#cb123-39"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
+<span id="cb123-40"><a href="synthesis-study-1.html#cb123-40"></a>    <span class="dt">line =</span> <span class="kw">if_else</span>(outcome <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Objective&quot;</span>, <span class="st">&quot;Subjective&quot;</span>), <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb123-41"><a href="synthesis-study-1.html#cb123-41"></a>  )</span></code></pre></div>
+<div id="personality-on-smartphone-use-trait" class="section level2">
+<h2><span class="header-section-number">5.1</span> Personality on smartphone use (trait)</h2>
+<p>Okay, next I create the first summary figure.
+We see that none of the trait underlying true trait relations (conditional on our model) exclude zero.
+Neuroticism and openness might be related to less error in estimating smartphone use, but even their credible interval includes zero.</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="synthesis-study-1.html#cb124-1"></a><span class="co"># function for breaks</span></span>
+<span id="cb124-2"><a href="synthesis-study-1.html#cb124-2"></a>my_breaks &lt;-<span class="st"> </span></span>
+<span id="cb124-3"><a href="synthesis-study-1.html#cb124-3"></a><span class="st">  </span><span class="cf">function</span>(x) {</span>
+<span id="cb124-4"><a href="synthesis-study-1.html#cb124-4"></a>    <span class="cf">if</span> (<span class="kw">max</span>(x) <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span>){</span>
+<span id="cb124-5"><a href="synthesis-study-1.html#cb124-5"></a>      <span class="kw">c</span>(<span class="op">-</span><span class="dv">50</span>, <span class="dv">0</span>, <span class="dv">50</span>)</span>
+<span id="cb124-6"><a href="synthesis-study-1.html#cb124-6"></a>    } <span class="cf">else</span> {</span>
+<span id="cb124-7"><a href="synthesis-study-1.html#cb124-7"></a>    <span class="kw">c</span>(<span class="fl">0.8</span>, <span class="dv">1</span>, <span class="fl">1.2</span>)</span>
+<span id="cb124-8"><a href="synthesis-study-1.html#cb124-8"></a>    }</span>
+<span id="cb124-9"><a href="synthesis-study-1.html#cb124-9"></a>  }</span>
+<span id="cb124-10"><a href="synthesis-study-1.html#cb124-10"></a></span>
+<span id="cb124-11"><a href="synthesis-study-1.html#cb124-11"></a><span class="co"># function for limits</span></span>
+<span id="cb124-12"><a href="synthesis-study-1.html#cb124-12"></a>my_limits &lt;-<span class="st"> </span></span>
+<span id="cb124-13"><a href="synthesis-study-1.html#cb124-13"></a><span class="st">  </span><span class="cf">function</span>(x) {</span>
+<span id="cb124-14"><a href="synthesis-study-1.html#cb124-14"></a>    <span class="cf">if</span> (<span class="kw">max</span>(x) <span class="op">&gt;</span><span class="st"> </span><span class="dv">5</span>){</span>
+<span id="cb124-15"><a href="synthesis-study-1.html#cb124-15"></a>      <span class="kw">c</span>(<span class="op">-</span><span class="dv">50</span>, <span class="dv">50</span>)</span>
+<span id="cb124-16"><a href="synthesis-study-1.html#cb124-16"></a>    } <span class="cf">else</span> {</span>
+<span id="cb124-17"><a href="synthesis-study-1.html#cb124-17"></a>    <span class="kw">c</span>(<span class="fl">0.65</span>, <span class="fl">1.35</span>)</span>
+<span id="cb124-18"><a href="synthesis-study-1.html#cb124-18"></a>    }</span>
+<span id="cb124-19"><a href="synthesis-study-1.html#cb124-19"></a>  }</span>
+<span id="cb124-20"><a href="synthesis-study-1.html#cb124-20"></a></span>
+<span id="cb124-21"><a href="synthesis-study-1.html#cb124-21"></a><span class="co"># plot</span></span>
+<span id="cb124-22"><a href="synthesis-study-1.html#cb124-22"></a><span class="kw">ggplot</span>(</span>
+<span id="cb124-23"><a href="synthesis-study-1.html#cb124-23"></a>    estimates <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb124-24"><a href="synthesis-study-1.html#cb124-24"></a><span class="st">      </span><span class="kw">filter</span>(block <span class="op">==</span><span class="st"> &quot;Personality on smartphone use&quot;</span>),</span>
+<span id="cb124-25"><a href="synthesis-study-1.html#cb124-25"></a>  <span class="kw">aes</span>(</span>
+<span id="cb124-26"><a href="synthesis-study-1.html#cb124-26"></a>    <span class="dt">x =</span> estimate,</span>
+<span id="cb124-27"><a href="synthesis-study-1.html#cb124-27"></a>    <span class="dt">y =</span> predictor</span>
+<span id="cb124-28"><a href="synthesis-study-1.html#cb124-28"></a>  )</span>
+<span id="cb124-29"><a href="synthesis-study-1.html#cb124-29"></a>) <span class="op">+</span></span>
+<span id="cb124-30"><a href="synthesis-study-1.html#cb124-30"></a><span class="st">  </span><span class="kw">geom_vline</span>(</span>
+<span id="cb124-31"><a href="synthesis-study-1.html#cb124-31"></a>    <span class="kw">aes</span>(</span>
+<span id="cb124-32"><a href="synthesis-study-1.html#cb124-32"></a>      <span class="dt">xintercept =</span> line</span>
+<span id="cb124-33"><a href="synthesis-study-1.html#cb124-33"></a>    ),</span>
+<span id="cb124-34"><a href="synthesis-study-1.html#cb124-34"></a>    <span class="dt">color =</span> <span class="st">&quot;#999999&quot;</span>,</span>
+<span id="cb124-35"><a href="synthesis-study-1.html#cb124-35"></a>    <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span></span>
+<span id="cb124-36"><a href="synthesis-study-1.html#cb124-36"></a>  ) <span class="op">+</span></span>
+<span id="cb124-37"><a href="synthesis-study-1.html#cb124-37"></a><span class="st">  </span><span class="kw">geom_pointrange</span>(</span>
+<span id="cb124-38"><a href="synthesis-study-1.html#cb124-38"></a>    <span class="kw">aes</span>(</span>
+<span id="cb124-39"><a href="synthesis-study-1.html#cb124-39"></a>      <span class="dt">xmin =</span> ci_low,</span>
+<span id="cb124-40"><a href="synthesis-study-1.html#cb124-40"></a>      <span class="dt">xmax =</span> ci_high</span>
+<span id="cb124-41"><a href="synthesis-study-1.html#cb124-41"></a>    )<span class="co">#,</span></span>
+<span id="cb124-42"><a href="synthesis-study-1.html#cb124-42"></a>    <span class="co"># position = position_dodge2(.6, reverse = TRUE)</span></span>
+<span id="cb124-43"><a href="synthesis-study-1.html#cb124-43"></a>  ) <span class="op">+</span></span>
+<span id="cb124-44"><a href="synthesis-study-1.html#cb124-44"></a><span class="st">  </span><span class="kw">facet_wrap</span>(</span>
+<span id="cb124-45"><a href="synthesis-study-1.html#cb124-45"></a>    <span class="op">~</span><span class="st"> </span>outcome,</span>
+<span id="cb124-46"><a href="synthesis-study-1.html#cb124-46"></a>    <span class="dt">scales =</span> <span class="st">&quot;free_x&quot;</span></span>
+<span id="cb124-47"><a href="synthesis-study-1.html#cb124-47"></a>  ) <span class="op">+</span></span>
+<span id="cb124-48"><a href="synthesis-study-1.html#cb124-48"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> my_breaks, <span class="dt">limits =</span> my_limits) <span class="op">+</span></span>
+<span id="cb124-49"><a href="synthesis-study-1.html#cb124-49"></a><span class="st">  </span><span class="kw">theme</span>(</span>
+<span id="cb124-50"><a href="synthesis-study-1.html#cb124-50"></a>    <span class="dt">axis.title.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb124-51"><a href="synthesis-study-1.html#cb124-51"></a>    <span class="dt">axis.title.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb124-52"><a href="synthesis-study-1.html#cb124-52"></a>    <span class="dt">axis.ticks.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb124-53"><a href="synthesis-study-1.html#cb124-53"></a>    <span class="dt">axis.line.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb124-54"><a href="synthesis-study-1.html#cb124-54"></a>    <span class="dt">strip.background.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb124-55"><a href="synthesis-study-1.html#cb124-55"></a>    <span class="dt">strip.background.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb124-56"><a href="synthesis-study-1.html#cb124-56"></a>    <span class="dt">text =</span> <span class="kw">element_text</span>(<span class="dt">family =</span> <span class="st">&quot;Corbel&quot;</span>)</span>
+<span id="cb124-57"><a href="synthesis-study-1.html#cb124-57"></a>  ) -&gt;<span class="st"> </span>figure4</span>
+<span id="cb124-58"><a href="synthesis-study-1.html#cb124-58"></a></span>
+<span id="cb124-59"><a href="synthesis-study-1.html#cb124-59"></a>figure4</span></code></pre></div>
+<p><img src="analysis_report_files/figure-html/figure4-study1-1.png" width="672" /></p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="synthesis-study-1.html#cb125-1"></a><span class="kw">ggsave</span>(</span>
+<span id="cb125-2"><a href="synthesis-study-1.html#cb125-2"></a>  <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>, <span class="st">&quot;figure4.tiff&quot;</span>),</span>
+<span id="cb125-3"><a href="synthesis-study-1.html#cb125-3"></a>  <span class="dt">plot =</span> figure4,</span>
+<span id="cb125-4"><a href="synthesis-study-1.html#cb125-4"></a>  <span class="dt">width =</span> <span class="dv">21</span> <span class="op">*</span><span class="st"> </span><span class="fl">0.8</span>,</span>
+<span id="cb125-5"><a href="synthesis-study-1.html#cb125-5"></a>  <span class="dt">height =</span> <span class="fl">29.7</span> <span class="op">*</span><span class="st"> </span><span class="fl">0.4</span>,</span>
+<span id="cb125-6"><a href="synthesis-study-1.html#cb125-6"></a>  <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>,</span>
+<span id="cb125-7"><a href="synthesis-study-1.html#cb125-7"></a>  <span class="dt">dpi =</span> <span class="dv">300</span></span>
+<span id="cb125-8"><a href="synthesis-study-1.html#cb125-8"></a>)</span></code></pre></div>
+</div>
+<div id="experiences-on-smartphone-use-state" class="section level2">
+<h2><span class="header-section-number">5.2</span> Experiences on smartphone use (state)</h2>
+<p>I’ll move on to the next block investigating state relations between experiences and smartphone use.</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="synthesis-study-1.html#cb126-1"></a><span class="kw">ggplot</span>(</span>
+<span id="cb126-2"><a href="synthesis-study-1.html#cb126-2"></a>    estimates <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb126-3"><a href="synthesis-study-1.html#cb126-3"></a><span class="st">      </span><span class="kw">filter</span>(block <span class="op">==</span><span class="st"> &quot;Experiences on smartphone use&quot;</span>),</span>
+<span id="cb126-4"><a href="synthesis-study-1.html#cb126-4"></a>  <span class="kw">aes</span>(</span>
+<span id="cb126-5"><a href="synthesis-study-1.html#cb126-5"></a>    <span class="dt">x =</span> estimate,</span>
+<span id="cb126-6"><a href="synthesis-study-1.html#cb126-6"></a>    <span class="dt">y =</span> predictor,</span>
+<span id="cb126-7"><a href="synthesis-study-1.html#cb126-7"></a>    <span class="dt">color =</span> between_within</span>
+<span id="cb126-8"><a href="synthesis-study-1.html#cb126-8"></a>  )</span>
+<span id="cb126-9"><a href="synthesis-study-1.html#cb126-9"></a>) <span class="op">+</span></span>
+<span id="cb126-10"><a href="synthesis-study-1.html#cb126-10"></a><span class="st">  </span><span class="kw">geom_vline</span>(</span>
+<span id="cb126-11"><a href="synthesis-study-1.html#cb126-11"></a>    <span class="kw">aes</span>(</span>
+<span id="cb126-12"><a href="synthesis-study-1.html#cb126-12"></a>      <span class="dt">xintercept =</span> line</span>
+<span id="cb126-13"><a href="synthesis-study-1.html#cb126-13"></a>    ),</span>
+<span id="cb126-14"><a href="synthesis-study-1.html#cb126-14"></a>    <span class="dt">color =</span> <span class="st">&quot;#999999&quot;</span>,</span>
+<span id="cb126-15"><a href="synthesis-study-1.html#cb126-15"></a>    <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span></span>
+<span id="cb126-16"><a href="synthesis-study-1.html#cb126-16"></a>  ) <span class="op">+</span></span>
+<span id="cb126-17"><a href="synthesis-study-1.html#cb126-17"></a><span class="st">  </span><span class="kw">geom_pointrange</span>(</span>
+<span id="cb126-18"><a href="synthesis-study-1.html#cb126-18"></a>    <span class="kw">aes</span>(</span>
+<span id="cb126-19"><a href="synthesis-study-1.html#cb126-19"></a>      <span class="dt">xmin =</span> ci_low,</span>
+<span id="cb126-20"><a href="synthesis-study-1.html#cb126-20"></a>      <span class="dt">xmax =</span> ci_high</span>
+<span id="cb126-21"><a href="synthesis-study-1.html#cb126-21"></a>    ),</span>
+<span id="cb126-22"><a href="synthesis-study-1.html#cb126-22"></a>    <span class="dt">position =</span> <span class="kw">position_dodge2</span>(.<span class="dv">6</span>, <span class="dt">reverse =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb126-23"><a href="synthesis-study-1.html#cb126-23"></a>  ) <span class="op">+</span></span>
+<span id="cb126-24"><a href="synthesis-study-1.html#cb126-24"></a><span class="st">  </span><span class="kw">facet_wrap</span>(</span>
+<span id="cb126-25"><a href="synthesis-study-1.html#cb126-25"></a>    <span class="op">~</span><span class="st"> </span>outcome,</span>
+<span id="cb126-26"><a href="synthesis-study-1.html#cb126-26"></a>    <span class="dt">scales =</span> <span class="st">&quot;free_x&quot;</span></span>
+<span id="cb126-27"><a href="synthesis-study-1.html#cb126-27"></a>  ) <span class="op">+</span></span>
+<span id="cb126-28"><a href="synthesis-study-1.html#cb126-28"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> my_breaks, <span class="dt">limits =</span> my_limits) <span class="op">+</span></span>
+<span id="cb126-29"><a href="synthesis-study-1.html#cb126-29"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;#009E73&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>)) <span class="op">+</span></span>
+<span id="cb126-30"><a href="synthesis-study-1.html#cb126-30"></a><span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;#009E73&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>)) <span class="op">+</span></span>
+<span id="cb126-31"><a href="synthesis-study-1.html#cb126-31"></a><span class="st">  </span><span class="kw">theme</span>(</span>
+<span id="cb126-32"><a href="synthesis-study-1.html#cb126-32"></a>    <span class="dt">axis.title.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb126-33"><a href="synthesis-study-1.html#cb126-33"></a>    <span class="dt">axis.title.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb126-34"><a href="synthesis-study-1.html#cb126-34"></a>    <span class="dt">axis.ticks.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb126-35"><a href="synthesis-study-1.html#cb126-35"></a>    <span class="dt">axis.line.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb126-36"><a href="synthesis-study-1.html#cb126-36"></a>    <span class="dt">strip.background.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb126-37"><a href="synthesis-study-1.html#cb126-37"></a>    <span class="dt">strip.background.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb126-38"><a href="synthesis-study-1.html#cb126-38"></a>    <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb126-39"><a href="synthesis-study-1.html#cb126-39"></a>    <span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb126-40"><a href="synthesis-study-1.html#cb126-40"></a>    <span class="dt">text =</span> <span class="kw">element_text</span>(<span class="dt">family =</span> <span class="st">&quot;Corbel&quot;</span>)</span>
+<span id="cb126-41"><a href="synthesis-study-1.html#cb126-41"></a>  ) -&gt;<span class="st"> </span>figure5</span>
+<span id="cb126-42"><a href="synthesis-study-1.html#cb126-42"></a></span>
+<span id="cb126-43"><a href="synthesis-study-1.html#cb126-43"></a>figure5</span></code></pre></div>
+<p><img src="analysis_report_files/figure-html/figure5-study-1.png" width="672" /></p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="synthesis-study-1.html#cb127-1"></a><span class="kw">ggsave</span>(</span>
+<span id="cb127-2"><a href="synthesis-study-1.html#cb127-2"></a>  <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>, <span class="st">&quot;figure5.tiff&quot;</span>),</span>
+<span id="cb127-3"><a href="synthesis-study-1.html#cb127-3"></a>  <span class="dt">plot =</span> figure5,</span>
+<span id="cb127-4"><a href="synthesis-study-1.html#cb127-4"></a>  <span class="dt">width =</span> <span class="dv">21</span> <span class="op">*</span><span class="st"> </span><span class="fl">0.8</span>,</span>
+<span id="cb127-5"><a href="synthesis-study-1.html#cb127-5"></a>  <span class="dt">height =</span> <span class="fl">29.7</span> <span class="op">*</span><span class="st"> </span><span class="fl">0.4</span>,</span>
+<span id="cb127-6"><a href="synthesis-study-1.html#cb127-6"></a>  <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>,</span>
+<span id="cb127-7"><a href="synthesis-study-1.html#cb127-7"></a>  <span class="dt">dpi =</span> <span class="dv">300</span></span>
+<span id="cb127-8"><a href="synthesis-study-1.html#cb127-8"></a>)</span></code></pre></div>
+</div>
+<div id="smartphone-use-on-well-being-state" class="section level2">
+<h2><span class="header-section-number">5.3</span> Smartphone use on well-being (state)</h2>
+<p>I’ll move on to the next block investigating state relations between smartphone use and well-being.</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="synthesis-study-1.html#cb128-1"></a><span class="kw">ggplot</span>(</span>
+<span id="cb128-2"><a href="synthesis-study-1.html#cb128-2"></a>    estimates <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb128-3"><a href="synthesis-study-1.html#cb128-3"></a><span class="st">      </span><span class="kw">filter</span>(block <span class="op">==</span><span class="st"> &quot;Smartphone use on well-being&quot;</span>),</span>
+<span id="cb128-4"><a href="synthesis-study-1.html#cb128-4"></a>  <span class="kw">aes</span>(</span>
+<span id="cb128-5"><a href="synthesis-study-1.html#cb128-5"></a>    <span class="dt">x =</span> estimate,</span>
+<span id="cb128-6"><a href="synthesis-study-1.html#cb128-6"></a>    <span class="dt">y =</span> predictor,</span>
+<span id="cb128-7"><a href="synthesis-study-1.html#cb128-7"></a>    <span class="dt">color =</span> between_within</span>
+<span id="cb128-8"><a href="synthesis-study-1.html#cb128-8"></a>  )</span>
+<span id="cb128-9"><a href="synthesis-study-1.html#cb128-9"></a>) <span class="op">+</span></span>
+<span id="cb128-10"><a href="synthesis-study-1.html#cb128-10"></a><span class="st">  </span><span class="kw">geom_vline</span>(</span>
+<span id="cb128-11"><a href="synthesis-study-1.html#cb128-11"></a>    <span class="kw">aes</span>(</span>
+<span id="cb128-12"><a href="synthesis-study-1.html#cb128-12"></a>      <span class="dt">xintercept =</span> line</span>
+<span id="cb128-13"><a href="synthesis-study-1.html#cb128-13"></a>    ),</span>
+<span id="cb128-14"><a href="synthesis-study-1.html#cb128-14"></a>    <span class="dt">color =</span> <span class="st">&quot;#999999&quot;</span>,</span>
+<span id="cb128-15"><a href="synthesis-study-1.html#cb128-15"></a>    <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span></span>
+<span id="cb128-16"><a href="synthesis-study-1.html#cb128-16"></a>  ) <span class="op">+</span></span>
+<span id="cb128-17"><a href="synthesis-study-1.html#cb128-17"></a><span class="st">  </span><span class="kw">geom_pointrange</span>(</span>
+<span id="cb128-18"><a href="synthesis-study-1.html#cb128-18"></a>    <span class="kw">aes</span>(</span>
+<span id="cb128-19"><a href="synthesis-study-1.html#cb128-19"></a>      <span class="dt">xmin =</span> ci_low,</span>
+<span id="cb128-20"><a href="synthesis-study-1.html#cb128-20"></a>      <span class="dt">xmax =</span> ci_high</span>
+<span id="cb128-21"><a href="synthesis-study-1.html#cb128-21"></a>    ),</span>
+<span id="cb128-22"><a href="synthesis-study-1.html#cb128-22"></a>    <span class="dt">position =</span> <span class="kw">position_dodge2</span>(.<span class="dv">6</span>, <span class="dt">reverse =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb128-23"><a href="synthesis-study-1.html#cb128-23"></a>  ) <span class="op">+</span></span>
+<span id="cb128-24"><a href="synthesis-study-1.html#cb128-24"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">0.2</span>, <span class="dv">0</span>, <span class="fl">0.2</span>), <span class="dt">limits =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">0.21</span>, <span class="fl">0.21</span>)) <span class="op">+</span></span>
+<span id="cb128-25"><a href="synthesis-study-1.html#cb128-25"></a><span class="st">  </span><span class="kw">scale_color_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;#009E73&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>)) <span class="op">+</span></span>
+<span id="cb128-26"><a href="synthesis-study-1.html#cb128-26"></a><span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&quot;#009E73&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>)) <span class="op">+</span></span>
+<span id="cb128-27"><a href="synthesis-study-1.html#cb128-27"></a><span class="st">  </span><span class="kw">theme</span>(</span>
+<span id="cb128-28"><a href="synthesis-study-1.html#cb128-28"></a>    <span class="dt">axis.title.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb128-29"><a href="synthesis-study-1.html#cb128-29"></a>    <span class="dt">axis.title.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb128-30"><a href="synthesis-study-1.html#cb128-30"></a>    <span class="dt">axis.ticks.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb128-31"><a href="synthesis-study-1.html#cb128-31"></a>    <span class="dt">axis.line.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb128-32"><a href="synthesis-study-1.html#cb128-32"></a>    <span class="dt">strip.background.x =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb128-33"><a href="synthesis-study-1.html#cb128-33"></a>    <span class="dt">strip.background.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb128-34"><a href="synthesis-study-1.html#cb128-34"></a>    <span class="dt">legend.title =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb128-35"><a href="synthesis-study-1.html#cb128-35"></a>    <span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb128-36"><a href="synthesis-study-1.html#cb128-36"></a>    <span class="dt">text =</span> <span class="kw">element_text</span>(<span class="dt">family =</span> <span class="st">&quot;Corbel&quot;</span>)</span>
+<span id="cb128-37"><a href="synthesis-study-1.html#cb128-37"></a>  ) -&gt;<span class="st"> </span>figure6</span>
+<span id="cb128-38"><a href="synthesis-study-1.html#cb128-38"></a></span>
+<span id="cb128-39"><a href="synthesis-study-1.html#cb128-39"></a>figure6</span></code></pre></div>
+<p><img src="analysis_report_files/figure-html/figure6-study1-1.png" width="672" /></p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="synthesis-study-1.html#cb129-1"></a><span class="kw">ggsave</span>(</span>
+<span id="cb129-2"><a href="synthesis-study-1.html#cb129-2"></a>  <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>, <span class="st">&quot;figure6.tiff&quot;</span>),</span>
+<span id="cb129-3"><a href="synthesis-study-1.html#cb129-3"></a>  <span class="dt">plot =</span> figure6,</span>
+<span id="cb129-4"><a href="synthesis-study-1.html#cb129-4"></a>  <span class="dt">width =</span> <span class="dv">21</span> <span class="op">*</span><span class="st"> </span><span class="fl">0.8</span>,</span>
+<span id="cb129-5"><a href="synthesis-study-1.html#cb129-5"></a>  <span class="dt">height =</span> <span class="fl">29.7</span> <span class="op">*</span><span class="st"> </span><span class="fl">0.4</span>,</span>
+<span id="cb129-6"><a href="synthesis-study-1.html#cb129-6"></a>  <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>,</span>
+<span id="cb129-7"><a href="synthesis-study-1.html#cb129-7"></a>  <span class="dt">dpi =</span> <span class="dv">300</span></span>
+<span id="cb129-8"><a href="synthesis-study-1.html#cb129-8"></a>)</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="analysis-study-1.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

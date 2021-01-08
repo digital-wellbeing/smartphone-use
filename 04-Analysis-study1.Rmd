@@ -10,7 +10,7 @@ Last, although the models here are mostly exploratory, we can still incorporate 
 
 ## Research questions
 
-We have a total of X research questions.
+We have a total of 9 research questions.
 I divide them in three blocks:
 
 1. To what extent do specific person-level variables such as personality and motivational factors shape the accuracy of social media time engagement?
@@ -566,9 +566,30 @@ Again, we have three questions:
 3. Do day-level variables predict accuracy? 
 
 Once more I'll construct a model for each of those three questions.
-Our dependent variables are the same as in the previous block of models:  `social_media_objective`, `social_media_subjective`, and `error`.
+Our dependent variables are the same as in the previous block of models: `social_media_objective`, `social_media_subjective`, and `error`.
 
 Our predictors will be variables on the day-level, so state variables: need satisfaction for autonomy, competence, and relatedness as well as four experiential qualities during participants' days (boredom, enjoyment, satisfaction, and stress).
+
+Because we want to separate between-person and within-person effects, we'll do group-mean centering (i.e., per participant) and the calculate the deviation of each observation from that group mean.
+We enter both the person mean and their deviation as predictors, which will lead to a lot of variables, because each of the seven predictors will be separated into a between-person and a within-person predictor.
+See [this](https://philippmasur.de/2018/05/23/how-to-center-in-multilevel-models/) blogpost for a tutorial on centering.
+
+```{r between-within-centering}
+study1 <- 
+  study1 %>% 
+  group_by(id) %>% 
+  mutate(
+    across(
+      c(autonomy_state:relatedness_state, satisfied:enjoyable),
+      list(
+        between = ~ mean(.x, na.rm = TRUE),
+        within = ~.x - mean(.x, na.rm = TRUE)
+      )
+    )
+  ) %>% 
+  ungroup()
+```
+
 
 ### Model 4: State variables predicting objective use
 
@@ -585,6 +606,8 @@ I'll go step-by-step:
 * For basic psychological needs fixed effects, [this](https://www.tandfonline.com/doi/abs/10.1080/15309576.2017.1400991) paper reports very small relations between self-determined motivations at work and social media use ($\beta$ < .06).
 However, most of the literature focuses on those motivations and social media addiction, enjoyment of social media, or satisfaction with social media.
 Therefore, I'll use weakly regularizing priors for those effects, which means I'll go with the same prior for the effects as for Models 1 and 2.
+I would expect larger differences on the between-level, based on the literature on media use and well-being.
+However, we don't have that info for our predictors and the priors are rather weak, so I'll apply them to both between and within predictors.
 * For the experiential qualities, there isn't much literature out there that would allow choosing an informed prior.
 Most of those experiential qualities are about having a fulfilled and good day, which taps into the whole controversy over the relation between such experiences and social media.
 Therefore, I'll take a skeptical stance here and again assign the same weakly regularizing priors (aka the priors we also used for Models 1 and 2).
@@ -606,6 +629,7 @@ priors_model4 <-
 ```
 
 Let's run the model.
+Note that the within-deviations can vary per participant, but not the between effects.
 ```{r, model4-study1, eval=FALSE}
 model4 <- 
   brm(
@@ -614,22 +638,29 @@ model4 <-
     prior = priors_model4,
     social_media_objective + 1e-6 ~
       1 +
-      autonomy_state_c +
-      competence_state_c +
-      relatedness_state_c +
-      satisfied_c +
-      boring_c +
-      stressful_c +
-      enjoyable_c +
+      autonomy_state_between +
+      competence_state_between +
+      relatedness_state_between +
+      satisfied_between +
+      boring_between +
+      stressful_between +
+      enjoyable_between +
+      autonomy_state_within +
+      competence_state_within +
+      relatedness_state_within +
+      satisfied_within +
+      boring_within +
+      stressful_within +
+      enjoyable_within +
       (
         1 +
-        autonomy_state_c +
-        competence_state_c +
-        relatedness_state_c +
-        satisfied_c +
-        boring_c +
-        stressful_c +
-        enjoyable_c |
+        autonomy_state_within +
+        competence_state_within +
+        relatedness_state_within +
+        satisfied_within +
+        boring_within +
+        stressful_within +
+        enjoyable_within |
         id
       ) +
       (1 |day),
@@ -641,7 +672,7 @@ model4 <-
     control = list(
       adapt_delta = 0.99
     ),
-    file = here("models", "study1", "model4")
+    file = here("models", "study1", "model4_study1")
   )
 ```
 
@@ -663,17 +694,9 @@ model_diagnostics(model4)
 ```
 
 Next, we check for potentially influential cases.
-One observation might be influential, which is why we compute ELPDs directly again.
-```{r outliers-model4-study1, eval=FALSE}
-model4_loo <- loo(model4, reloo = TRUE)
-saveRDS(model4_loo, here("models", "study1", "model4_loo_study1.rds"))
-```
-
-When we calculate ELPD directly, all values appear unproblematic.
-The results seem trustworthy.
-```{r outliers-model4-study1-reloo}
-model4_loo <- read_rds(here("models", "study1", "model4_loo_study1.rds"))
-model4_loo
+There are none.
+```{r outliers-model4-study1, cache=TRUE}
+loo(model4, reloo = TRUE)
 ```
 
 Let's inspect the summary.
@@ -692,7 +715,7 @@ mcmc_plot(model4)
 ### Model 5: State variables predicting subjective use
 
 The next model predicts subjective use from the same predictors.
-Once more, we know that subjective and objective use aren't perfectly correlated, but the priors for Model 4 again are our best bet here.
+Once more, we know that subjective and objective use aren't perfectly correlated, but the priors for Model 4 again are our best bet here (for both within-person and between-person effects).
 ```{r priors-model5-study1}
 priors_model5 <- 
   c(
@@ -705,7 +728,6 @@ priors_model5 <-
     # prior on shape
     prior(gamma(2.5, 100), class = shape)
   )
-
 ```
 
 Let's run the model.
@@ -715,25 +737,32 @@ model5 <-
   brm(
     data = study1,
     family = Gamma(link = "log"),
-    prior = priors_model5,
+    prior = priors_model4,
     social_media_subjective + 1e-6 ~
       1 +
-      autonomy_state_c +
-      competence_state_c +
-      relatedness_state_c +
-      satisfied_c +
-      boring_c +
-      stressful_c +
-      enjoyable_c +
+      autonomy_state_between +
+      competence_state_between +
+      relatedness_state_between +
+      satisfied_between +
+      boring_between +
+      stressful_between +
+      enjoyable_between +
+      autonomy_state_within +
+      competence_state_within +
+      relatedness_state_within +
+      satisfied_within +
+      boring_within +
+      stressful_within +
+      enjoyable_within +
       (
         1 +
-        autonomy_state_c +
-        competence_state_c +
-        relatedness_state_c +
-        satisfied_c +
-        boring_c +
-        stressful_c +
-        enjoyable_c |
+        autonomy_state_within +
+        competence_state_within +
+        relatedness_state_within +
+        satisfied_within +
+        boring_within +
+        stressful_within +
+        enjoyable_within |
         id
       ) +
       (1 |day),
@@ -759,6 +788,8 @@ plot(model5, ask = FALSE)
 ```
 
 The posterior predictive check shows about the same model fit as Model 4: mediocre.
+It overestimates the frequency of low values compared to the raw data.
+I could change the prior, but I also don't want to overfit just based on the raw data.
 ```{r ppc-model5-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 5"}
 model_diagnostics(model5)
 ```
@@ -769,7 +800,7 @@ loo(model5)
 ```
 
 Let's inspect the summary.
-Having an enjoyable and boring day might be related to more estimating more social media use.
+Having an enjoyable and boring day might be related to estimating more social media use (on the between level).
 Conversely, a feeling of competence might decrease estimates.
 However, all three of those posterior distributions include zero, even though it's close.
 ```{r summary-model5-study1}
@@ -777,7 +808,7 @@ summary(model5, priors = TRUE)
 ```
 
 The effects plot (Figure \@ref(fig:effects-model5-study1)) visually that those three states might be influential, but their CIs overlap with zero.
-```{r effects-model5-study1, echo=FALSE, fig.cap="Effects plot for Model 4"}
+```{r effects-model5-study1, echo=FALSE, fig.cap="Effects plot for Model 5"}
 mcmc_plot(model5)
 ```
 
@@ -786,6 +817,7 @@ mcmc_plot(model5)
 For this model, once more it's hard to choose informed priors.
 Therefore, I choose the same skeptical, but weakly regularizing priors as for Model 3, with a student t distribution with fat tails, an intercept that reflects a tendency to overestimate, and slopes that are skeptical of large effects.
 For everything else, I'll use the `brms` default priors because I don't have information on what correlation or variances to expect.
+Note that I use the priors on the slope for both between and within effects, simply because I don't have an informed guess about the two being different.
 ```{r priors-model6-study1}
 priors_model6 <- 
   c(
@@ -806,22 +838,29 @@ model6 <-
     prior = priors_model6,
     error ~
       1 +
-      autonomy_state_c +
-      competence_state_c +
-      relatedness_state_c +
-      satisfied_c +
-      boring_c +
-      stressful_c +
-      enjoyable_c +
+      autonomy_state_between +
+      competence_state_between +
+      relatedness_state_between +
+      satisfied_between +
+      boring_between +
+      stressful_between +
+      enjoyable_between +
+      autonomy_state_within +
+      competence_state_within +
+      relatedness_state_within +
+      satisfied_within +
+      boring_within +
+      stressful_within +
+      enjoyable_within +
       (
         1 +
-        autonomy_state_c +
-        competence_state_c +
-        relatedness_state_c +
-        satisfied_c +
-        boring_c +
-        stressful_c +
-        enjoyable_c |
+        autonomy_state_within +
+        competence_state_within +
+        relatedness_state_within +
+        satisfied_within +
+        boring_within +
+        stressful_within +
+        enjoyable_within |
         id
       ) +
       (1 |day),
@@ -856,16 +895,20 @@ model_diagnostics(model6)
 pp_check(model6, nsamples = 100) + xlim(c(-1500, 1500))
 ```
 
-No cases are flagged for potentially influential cases, which is nice.
+Two cases are flagged as potential outliers.
 ```{r outliers-model6-study1, eval=FALSE}
-loo(model6)
+model6_loo <- loo(model6, reloo = TRUE)
+saveRDS(model6_loo, here("models", "study1", "model6_loo_study1.rds"))
+```
+
+I'll calculate them directly and they're fine.
+```{r}
+model6_loo <- read_rds(here("models", "study1", "model6_loo_study1.rds"))
+model6_loo
 ```
 
 Let's inspect the summary.
-Only one predictor's posterior distribution doesn't include zero often, namely how satisfied people were with their days.
-Those who score one point above the average underestimate their use.
-However, the intercept is positive, so a one-point increase in satisfaction would lead people back to more accuracy, whereas a two-point increase would lead them to underestimate.
-Interestingly, the intercept's 95% CI includes zero, so we can't even be sure that data are compatible with an overestimation when all predictors are at their mean.
+All posteriors include 0, only satisfaction (within) comes close.
 ```{r summary-model6-study1}
 summary(model6, priors = TRUE)
 ```
@@ -876,40 +919,17 @@ Note the difference in scale: everything except the correlations are in percent 
 mcmc_plot(model6)
 ```
 
-## Does social media use predict well-being and vice versa?
+## Does social media use predict well-being?
 
-For this RQ, we have several blocks.
-We want to know how day-level social media use (both types) and accuracy are related to well-being, with predictions going both ways, and controlling for lagged values.
+For this RQ, we have three questions blocks.
+We want to know how day-level social media use (both types) and accuracy are related to well-being.
 
-The three blocks are:
+The three questions are:
+1. Does objective-only engagement predict day-level well-being?
+2. Does subjective-only engagement predict day-level well-being?
+3. Does accuracy predict day-level well-being?
 
-1. Do day-level variables predict day-level well-being?
-
-    1.1. Does objective-only engagement predict day-level well-being?
-    
-    1.2. Does subjective-only engagement predict day-level well-being?
-    
-    1.3. Does accuracy predict day-level well-being?
-
-2. Does the well-being on the prior day predict use and accuracy?
-
-    2.1. Does day before well-being predict objective-only engagement?
-    
-    2.2. Does day before well-being predict subjective-only engagement?
-    
-    2.3. Does day before well-being predict accuracy?
-
-3. Does day-level variables on the previous day predict day-level well-being?
-
-    3.1. Does objective-only engagement predict next day-level well-being?
-    
-    3.2. Does subjective-only engagement predict next day-level well-being?
-    
-    3.3. Does accuracy predict next day-level well-being?
-
-### Do day-level variables predict day-level well-being?
-
-#### Model 7: Objective use predicting well-being
+### Model 7: Objective use predicting well-being
 
 For this model, we'll predict well-being on that day with objective social media use on that day.
 Priors here can be controversial, depending on what literature we look to.
@@ -918,7 +938,7 @@ However, that might be too strong an assumption, which is why I'll use a model t
 
 As for the specific priors:
 
-* When social media use is at its mean, I'll simply assume a normal distribution centered on the midpoint of the scale (i.e., 3).
+* When social media use is at zero between people and at zero within, I'll simply assume a normal distribution centered on the midpoint of the scale (i.e., 3).
 As for the SD of that distribution, we know the bounds of the scale, so an SD of 1 will have 95% of cases within 1 and 5, which is exactly what we want.
 * As for the slopes: There are two papers I know of that found a negative, small effect, but another paper that found a negligent one.
 The larger literature on self-reported media use and well-being also finds very small negative effects, in the range of $\beta$ = .05.
@@ -931,9 +951,12 @@ The standard deviation was 190.
 Therefore (with some crude math), one hour of social media use was associated with `190/60 * -.06` = `r 190/60 * -.06` raw units on the outcome scale.
 From the literature we also know that massive (unstandardized) effects are rare if impossible.
 Therefore, I'll center the slope distribution on a small negative value.
-To be conservative, I'll take about 75% of the -.19 we found above (say -0.15 Likert-scales) with a somewhat tight standard deviation (say 0.2).
-This way, 95% of effects will be within -.55 (-.15 + (2 times 0.2)) and 0.25 Likert-points on the outcome scale.
-In other words: one hour more than average social media use will be associated with, on average, a .15 lower score on well-being. 
+To be conservative, I'll take about 75% of the -.19 we found above (say -0.15 Likert-scales) with a somewhat tight standard deviation (say 0.3).
+This way, 95% of effects will be within -.75 (-.15 + (2 times 0.2)) and 0.45 Likert-points on the outcome scale.
+Note that we're on the between-level here: a user with one more hour of social media use will report, on average, a .15 lower score on well-being than someone else with an hour less.
+* As for the within-effect, most research points toward negligible within-effects, and all of them are on self-reported media use.
+So here I'll assume a slopes that varies around zero, but I'll allow a wider standard deviation than for the between-effect, 0.4.
+That way, the average within-person effect will be zero and it assumes that 95% of effects are within -0.8 and + 0.8 Likert-points.
 * For everything else, I'll once more go with the default `brms` priors.
 
 Let's set those priors.
@@ -947,10 +970,25 @@ study1 <-
   mutate(
     across(
       c(social_media_objective, social_media_subjective),
-      ~ scale(.x, center = TRUE, scale = FALSE) / 60, #  divide by 60 to get hours
-      .names = "{col}_c"
+      ~ .x / 60, #  divide by 60 to get hours
+      .names = "{col}_hours"
     )
   )
+
+# center to get between and within variables
+study1 <- 
+  study1 %>% 
+  group_by(id) %>% 
+  mutate(
+    across(
+      ends_with("hours"),
+      list(
+        between = ~ mean(.x, na.rm = TRUE),
+        within = ~.x - mean(.x, na.rm = TRUE)
+      )
+    )
+  ) %>% 
+  ungroup()
 
 # set priors
 priors_model7 <- 
@@ -958,8 +996,11 @@ priors_model7 <-
     # intercept
     prior(normal(3, 1), class = Intercept),
     
-    # slopes
-    prior(normal(-0.15, 0.20), class = b)
+    # slopes for between
+    prior(normal(-0.15, 0.30), class = b, coef = "social_media_objective_hours_between"),
+    
+    # slopes for between
+    prior(normal(0, 0.40), class = b, coef = "social_media_objective_hours_within")
   )
 ```
 
@@ -972,10 +1013,11 @@ model7 <-
     prior = priors_model7,
     well_being_state ~
       1 +
-      social_media_objective_c +
+      social_media_objective_hours_between +
+      social_media_objective_hours_within +
       (
         1 +
-        social_media_objective_c |
+        social_media_objective_hours_within |
         id
       ) +
       (1 |day),
@@ -1000,13 +1042,20 @@ plot(model7, ask = FALSE)
 ```
 
 The posterior predictive checks (Figure \@ref(fig:ppc-model7-study1)) look excellent (no surprise with only one predictor).
-```{r ppc-model7-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 6"}
+```{r ppc-model7-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 7"}
 model_diagnostics(model7)
 ```
 
-No cases are flagged for potentially influential cases.
+Two cases are flagged as potentially influential cases.
 ```{r outliers-model7-study1, eval=FALSE}
-loo(model7)
+model7_loo <- loo(model7, reloo = TRUE)
+saveRDS(model7_loo, here("models", "study1", "model7_loo_study1.rds"))
+```
+
+I'll calculate them directly and they're fine.
+```{r}
+model7_loo <- read_rds(here("models", "study1", "model7_loo_study1.rds"))
+model7_loo
 ```
 
 Let's inspect the summary.
@@ -1021,30 +1070,37 @@ The effects plot (Figure \@ref(fig:effects-model7-study1)) visually confirms wha
 mcmc_plot(model7)
 ```
 
-#### Model 8: Subjective use predicting well-being
+### Model 8: Subjective use predicting well-being
 
 Next, we'll predict well-being on that day with subjective social media use on that day.
-The majority of the evidence shows that we should expect a small negative relation, but larger in absolute size than with objective use.
+There's conflicting information in the literature: I'm aware of a paper that says subjective estimates overstate the relation, but of another that says the opposite.
+Therefore, 
 
 The specific priors:
 
 * For the intercept, I'll use the same prior as with Model 7.
-* As for the slopes: [This](https://journals.sagepub.com/doi/suppl/10.1177/0956797619830329) paper reports median effect sizes across all specifications of $\beta$ = -.08.
+* As for the slopes: [This](https://journals.sagepub.com/doi/suppl/10.1177/0956797619830329) paper reports median effect sizes across all specifications of $\beta$ = -.08, with effect sizes larger on the between-level, but small to negligible on the within-level.
 That's among adolescents and for a longer time frame.
 [This](https://osf.io/mpxra) explicitly compared subjective to objective and found that subjective is a much stronger predictor (up to four times the effect size).
-So I think it's a good idea to at least double what we expect for the prior, which would lead us to believe a mean negative effect of .30 Likert-points on well-being and 0.4 standard deviation.
-That would bring 95% of effects within -1.1 and 0.5 Likert-points, which is rather generous for media effects.
+[This](https://academic.oup.com/jcmc/article/25/5/346/5896236) says subjective estimates ever so slightly understimate relations between use and well-being, though.
+Overall, I'd say we can expect a somewhat more negative between-person relation, which would lead us to believe a mean negative effect of -.20 Likert-points on well-being and 0.4 standard deviation to allow for more extreme slopes.
+That would bring 95% of effects within -1 and 0.6 Likert-points, which is rather generous for media effects.
+* For the within-effect, I'll stick to the same prior as for the previous model.
 * For everything else, I'll once more go with the default `brms` priors.
 
 Let's set those priors.
 ```{r priors-model8-study1}
+# set priors
 priors_model8 <- 
   c(
     # intercept
     prior(normal(3, 1), class = Intercept),
     
-    # slopes
-    prior(normal(-0.30, 0.40), class = b)
+    # slopes for between
+    prior(normal(-0.2, 0.4), class = b, coef = "social_media_subjective_hours_between"),
+    
+    # slopes for between
+    prior(normal(0, 0.40), class = b, coef = "social_media_subjective_hours_within")
   )
 ```
 
@@ -1057,10 +1113,11 @@ model8 <-
     prior = priors_model8,
     well_being_state ~
       1 +
-      social_media_subjective_c +
+      social_media_subjective_hours_between +
+      social_media_subjective_hours_within +
       (
         1 +
-        social_media_subjective_c |
+        social_media_subjective_hours_within |
         id
       ) +
       (1 |day),
@@ -1089,21 +1146,13 @@ The posterior predictive checks (Figure \@ref(fig:ppc-model8-study1)) look excel
 model_diagnostics(model8)
 ```
 
-One case is flagged as potentially influential, which is why we calculate ELPD directly.
-```{r outliers-model8-study1, eval=FALSE}
-model8_loo <- loo(model8, reloo = TRUE)
-saveRDS(model8_loo, here("models", "study1", "model8_loo_study1.rds"))
-```
-
-When we calculate ELPD directly, all values appear unproblematic.
-The results seem trustworthy.
-```{r outliers-model8-study1-reloo}
-model8_loo <- read_rds(here("models", "study1", "model8_loo_study1.rds"))
-model8_loo
+No case is flagged as potentially influential.
+```{r outliers-model8-study1, eval=TRUE}
+loo(model8)
 ```
 
 Let's inspect the summary.
-The the effect is estimated to be negative, but much smaller than our prior specified.
+The within effect is estimated to be negative, but extremely small.
 Also, the 95% CI includes zero, so we can't be sure the effect is meaningful.
 ```{r summary-model8-study1}
 summary(model8, priors = TRUE)
@@ -1114,27 +1163,28 @@ The effects plot (Figure \@ref(fig:effects-model8-study1)) shows that the effect
 mcmc_plot(model8)
 ```
 
-#### Model 9: Accuracy predicting well-being
+### Model 9: Accuracy predicting well-being
 
 For this model, we ask whether the error people make in their estimation is related to their well-being on the state level.
 As for as I know, there's little prior knowledge we could build on for the relation between accuracy and well-being.
 
 As for the specific priors:
 
-* Like before, at perfect accuracy (0% error) I'll  assume a normal distribution centered on the midpoint of the scale (i.e., 3) with the intercept.
+* Like before, at perfect accuracy (0% error) and zero deviation I'll  assume a normal distribution centered on the midpoint of the scale (i.e., 3) with the intercept.
 I'll set the SD of that prior distribution to 1 once more.
 * As for the slopes: There's one [paper](https://doi.org/10.1177/2050157920902830) that correlated the absolute discrepancy between subjective and objective social media use and well-being indicators aggregated over a week.
 They found a $\beta$ = .16 between log-transformed discrepancies and depression scores.
 Discrepancy is a different measurement than the error that we calculated for accuracy.
 Therefore, I'll use a prior that's centered on a negative relationship with a small SD.
 Like above, I don't expect that there will be large effects just based on the literature.
-So I'll assume a small effect (say -0.20 Likert-scales) with a somewhat wider standard deviation than in previous models (say 0.3).
-This way, 95% of effects will be within -.80 (-.20 + (2 times 0.3)) and 0.40 Likert-points on the outcome scale.
+So I'll assume a small effect (say -0.20 Likert-scales) with a somewhat wider standard deviation than in previous models (say 0.4).
+This way, 95% of effects will be within -1 (-.20 + (2 times 0.3)) and 0.60 Likert-points on the outcome scale.
 However, `error` is in percent, so we wouldn't expect -.20 Likert-points with every one-percent increase.
-Rather, I'd say the above effect is easier to specify for a standard deviation change in `error`, which is why I standardize `error`: one standard deviation increase in accuracy  will be associated with, on average, a .20 lower score on well-being. 
+Rather, I'd say the above effect is easier to specify for a standard deviation change in `error`, which is why I standardize `error`: one standard deviation increase in accuracy  will be associated with, on average, a .20 lower score on well-being on the between level.
+* I have no information for the within-level, which is why I use a prior centered on zero with the same wide standard deviation.
 * For everything else, I'll once more go with the default `brms` priors.
 
-Let's set those priors.
+Let's set those priors and center at the same time.
 ```{r priors-model9-study1}
 # standardize error
 study1 <- 
@@ -1143,14 +1193,32 @@ study1 <-
     error_s = scale(error, center = FALSE, scale = TRUE)
   )
 
+# center to get between and within
+study1 <- 
+  study1 %>% 
+  group_by(id) %>% 
+  mutate(
+    across(
+      error_s,
+      list(
+        between = ~ mean(.x, na.rm = TRUE),
+        within = ~.x - mean(.x, na.rm = TRUE)
+      )
+    )
+  ) %>% 
+  ungroup()
+
 # set priors
 priors_model9 <- 
   c(
     # intercept
     prior(normal(3, 1), class = Intercept),
     
-    # slopes
-    prior(normal(-0.20, 0.30), class = b)
+    # slopes for between
+    prior(normal(-0.2, 0.4), class = b, coef = "error_s_between"),
+    
+    # slopes for between
+    prior(normal(0, 0.40), class = b, coef = "error_s_within")
   )
 ```
 
@@ -1163,10 +1231,11 @@ model9 <-
     prior = priors_model9,
     well_being_state ~
       1 +
-      error_s +
+      error_s_between +
+      error_s_within +
       (
         1 +
-        error_s |
+        error_s_within |
         id
       ) +
       (1 |day),
@@ -1176,7 +1245,7 @@ model9 <-
     cores = 4,
     seed = 42,
     control = list(
-      adapt_delta = 0.99
+      adapt_delta = 0.999
     ),
     file = here("models", "study1", "model9_study1")
   )
@@ -1210,7 +1279,7 @@ model9_loo
 ```
 
 Let's inspect the summary.
-The the effect is estimated to be negative, but much smaller than our prior specified.
+The within effect is estimated to be negative, but really small.
 Also, the 95% CI includes zero and quite wide, so we can't be sure the effect is meaningful.
 ```{r summary-model9-study1}
 summary(model9, priors = TRUE)

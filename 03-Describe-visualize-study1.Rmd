@@ -1367,3 +1367,400 @@ ggpairs(
     strip.background = element_blank()
   )
 ```
+
+## Plots for paper
+
+Here, I'll create summary figures for the paper.
+I'll begin with plotting the traits.
+
+For the plot, the data need to be in the long format.
+```{r data-figure1-study1}
+dat <- 
+  study1 %>% 
+  select(all_of(c("id", trait_descriptives$variable))) %>% 
+  pivot_longer(
+    -id,
+    names_to = "variable",
+    values_to = "value"
+  )
+
+rename_levels <- c(
+  "Autonomy",
+  "Competence",
+  "Relatedness",
+  "Agreeableness",
+  "Conscientiousness",
+  "Extraversion",
+  "Neuroticism",
+  "Openness"
+)
+
+my_string <- "_trait"
+
+# reorder and rename factor levels
+clean_plot_data <- 
+  function(
+    dat,
+    levels_to_rename,
+    string_to_remove
+  ){
+    dat <- 
+      dat %>% 
+      mutate(
+        # in case it's social media variables
+        variable = case_when(
+          variable == "social_media_objective" ~ "Objective (h)",
+          variable == "social_media_subjective" ~ "Subjective (h)",
+          variable == "error" ~ "Error (%)",
+          TRUE ~ variable
+        ),
+        # remove _trait at the end and capitalize
+        variable = str_to_sentence(str_remove(variable, string_to_remove)),
+        variable = as.factor(variable),
+        variable = str_replace(variable, "_", "-"),
+        
+        # reorder factor levels
+        variable = fct_relevel(
+          variable,
+          levels_to_rename
+        )
+      )
+    return(dat)
+  }
+
+dat <- clean_plot_data(dat, rename_levels, my_string)
+trait_descriptives <- clean_plot_data(trait_descriptives, rename_levels, my_string)
+```
+
+Okay, we already have the aggregated info in `trait_descriptives`, so we can get to plotting.
+```{r figure1-study1}
+# function for breaks
+my_breaks <- 
+  function(x) {
+    if (max(x) > 5){
+      1:7
+    } else {
+    1:5
+    }
+  }
+
+# function for limits
+my_limits <- 
+  function(x) {
+    if (max(x) > 5){
+      c(1,7)
+    } else {
+    c(1,5)
+    }
+  }
+
+# color palette
+cb_palette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+# plot
+ggplot(
+  dat,
+  aes(
+    x = value,
+    y = 1,
+    color = variable,
+    fill = variable
+  )
+) +
+  geom_quasirandom(groupOnX=FALSE, size = 0.1, alpha = 0.5) +
+  facet_wrap(
+    ~ variable, 
+    scales = "free_x"
+  ) +
+  scale_x_continuous(breaks = my_breaks, limits = my_limits) +
+  geom_text(
+    data = trait_descriptives,
+    aes(
+      x = 1.6,
+      y = 1.4,
+      label = paste0("M = ", mean),
+      family = "Corbel"
+    ),
+    size = 2.5,
+    color = "black"
+  ) +
+  geom_text(
+    data = trait_descriptives,
+    aes(
+      x = 1.6,
+      y = 1.3,
+      label = paste0("SD = ", sd),
+      family = "Corbel"
+    ),
+    size = 2.5,
+    color = "black"
+  ) +
+  geom_text(
+    data = trait_descriptives,
+    aes(
+      x = 1.6,
+      y = 1.2,
+      label = paste0("\u03a9 = ", omega),
+      family = "Corbel"
+    ),
+    size = 2.5,
+    color = "black"
+  ) +
+  theme_cowplot() +
+  scale_colour_manual(values=cb_palette) +
+  scale_fill_manual(values = cb_palette) +
+  theme(
+    axis.text.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.line.y = element_blank(),
+    strip.background.x = element_blank(),
+    strip.background.y = element_blank(),
+    legend.position = "none",
+    text = element_text(family = "Corbel")
+  ) -> figure1
+
+figure1
+
+ggsave(
+  here("figures", "figure1.tiff"),
+  plot = figure1,
+  width = 21 * 0.8,
+  height = 29.7 * 0.4,
+  units = "cm",
+  dpi = 300
+)
+```
+
+Okay, next the state variables.
+```{r data-figure2-study1}
+dat <- 
+  study1 %>% 
+  select(all_of(c("id", state_descriptives$variable))) %>% 
+  pivot_longer(
+    -id,
+    names_to = "variable",
+    values_to = "value"
+  )
+
+rename_levels <- c(
+  "Autonomy",
+  "Competence",
+  "Relatedness",
+  "Boring",
+  "Enjoyable",
+  "Satisfied",
+  "Stressful",
+  "Well-being"
+)
+
+my_string <- "_state"
+
+dat <- clean_plot_data(dat, rename_levels, my_string)
+state_descriptives <- clean_plot_data(state_descriptives, rename_levels, my_string)
+```
+
+Then to plotting.
+```{r figure2-study1}
+# plot
+ggplot(
+  dat,
+  aes(
+    x = value,
+    y = 1,
+    color = variable,
+    fill = variable
+  )
+) +
+  geom_quasirandom(groupOnX=FALSE, size = 0.1, alpha = 0.5) +
+  facet_wrap(
+    ~ variable, 
+    scales = "free_x"
+  ) +
+  scale_x_continuous(breaks = my_breaks, limits = my_limits) +
+  geom_text(
+    data = state_descriptives,
+    aes(
+      x = 1.6,
+      y = 1.4,
+      label = paste0("M = ", mean),
+      family = "Corbel"
+    ),
+    size = 2.5,
+    color = "black"
+  ) +
+  geom_text(
+    data = state_descriptives,
+    aes(
+      x = 1.6,
+      y = 1.3,
+      label = paste0("SD = ", sd),
+      family = "Corbel"
+    ),
+    size = 2.5,
+    color = "black"
+  ) +
+  geom_text(
+    data = state_descriptives,
+    aes(
+      x = 1.6,
+      y = 1.2,
+      label = paste0("\u03a9 = ", omega),
+      family = "Corbel"
+    ),
+    size = 2.5,
+    color = "black",
+    alpha = if_else(is.na(state_descriptives$omega), 0, 1) # one-item measure don't have omega, so I make those see through
+  ) +
+  theme_cowplot() +
+  scale_colour_manual(values=cb_palette) +
+  scale_fill_manual(values = cb_palette) +
+  theme(
+    axis.text.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.line.y = element_blank(),
+    strip.background.x = element_blank(),
+    strip.background.y = element_blank(),
+    legend.position = "none",
+    text = element_text(family = "Corbel")
+  ) -> figure2
+
+figure2
+
+ggsave(
+  here("figures", "figure2.tiff"),
+  plot = figure2,
+  width = 21 * 0.8,
+  height = 29.7 * 0.4,
+  units = "cm",
+  dpi = 300
+)
+```
+
+Alright, last the smartphone use variables.
+```{r data-figure3-study1}
+dat <- 
+  study1 %>% 
+  select(all_of(c("id", "social_media_objective", "social_media_subjective", "error"))) %>%
+  # turn to hours
+  mutate(
+    across(
+      contains("social_media"),
+      ~ .x /60
+    )
+  ) %>% 
+  pivot_longer(
+    -id,
+    names_to = "variable",
+    values_to = "value"
+  )
+
+rename_levels <- c(
+  "Objective (h)",
+  "Subjective (h)",
+  "Error (%)"
+)
+
+my_string <- "_state"
+
+dat <- clean_plot_data(dat, rename_levels, my_string)
+social_media2 <- clean_plot_data(social_media, rename_levels, my_string) %>% 
+  filter(variable %in% c("Objective (h)", "Subjective (h)", "Error (%)")) %>% 
+  # add x axis position for geom_text
+  mutate(
+    x_position = case_when(
+      variable == "Error (%)" ~ 1200*0.8,
+      TRUE ~ 0.8*13
+    )
+  )
+```
+
+And the plot.
+```{r figure3-study1}
+# function for breaks
+my_breaks <- 
+  function(x) {
+    if (max(x) < 100){
+      seq(0, 13, 2)
+    } else {
+    c(-200, 0, 400, 800, 1200)
+    }
+  }
+
+# function for limits
+my_limits <- 
+  function(x) {
+    if (max(x) < 100){
+      c(0, 13)
+    } else {
+    c(-200, 1200)
+    }
+  }
+
+# plot
+ggplot(
+  dat,
+  aes(
+    x = value,
+    y = 1,
+    color = variable,
+    fill = variable
+  )
+) +
+  geom_quasirandom(groupOnX=FALSE, size = 0.1, alpha = 0.5) +
+  facet_wrap(
+    ~ variable, 
+    scales = "free_x"
+  ) +
+  scale_x_continuous(breaks = my_breaks, limits = my_limits) +
+  geom_text(
+    data = social_media2,
+    aes(
+      x = x_position,
+      y = 0.7,
+      label = paste0("M = ", mean),
+      family = "Corbel"
+    ),
+    size = 3,
+    color = "black"
+  ) +
+  geom_text(
+    data = social_media2,
+    aes(
+      x = x_position,
+      y = 0.67,
+      label = paste0("SD = ", sd),
+      family = "Corbel"
+    ),
+    size = 3,
+    color = "black"
+  ) +
+  theme_cowplot() +
+  scale_colour_manual(values=cb_palette) +
+  scale_fill_manual(values = cb_palette) +
+  theme(
+    axis.text.y = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.line.y = element_blank(),
+    strip.background.x = element_blank(),
+    strip.background.y = element_blank(),
+    legend.position = "none",
+    text = element_text(family = "Corbel")
+  ) -> figure3
+
+figure3
+
+ggsave(
+  here("figures", "figure3.tiff"),
+  plot = figure3,
+  width = 21 * 0.8,
+  height = 29.7 * 0.4,
+  units = "cm",
+  dpi = 300
+)
+```

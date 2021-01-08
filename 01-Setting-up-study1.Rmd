@@ -24,7 +24,9 @@ p_load(
   GGally,
   ggalt,
   cowplot,
-  brms
+  brms,
+  ggbeeswarm,
+  extrafont
 )
 
 # set seed

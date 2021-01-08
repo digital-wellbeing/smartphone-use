@@ -24,7 +24,7 @@
 <meta name="author" content="Niklas Johannes" />
 
 
-<meta name="date" content="2020-08-28" />
+<meta name="date" content="2021-01-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -149,6 +149,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#person-level"><i class="fa fa-check"></i><b>3.3</b> Person-level</a></li>
 <li class="chapter" data-level="3.4" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#app-level"><i class="fa fa-check"></i><b>3.4</b> App-level</a></li>
 <li class="chapter" data-level="3.5" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#day-level"><i class="fa fa-check"></i><b>3.5</b> Day level</a></li>
+<li class="chapter" data-level="3.6" data-path="descriptives-and-visualizations-study-1.html"><a href="descriptives-and-visualizations-study-1.html#plots-for-paper"><i class="fa fa-check"></i><b>3.6</b> Plots for paper</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="analysis-study-1.html"><a href="analysis-study-1.html"><i class="fa fa-check"></i><b>4</b> Analysis Study 1</a><ul>
 <li class="chapter" data-level="4.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#research-questions"><i class="fa fa-check"></i><b>4.1</b> Research questions</a></li>
@@ -163,9 +164,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.4.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-5-state-variables-predicting-subjective-use"><i class="fa fa-check"></i><b>4.4.2</b> Model 5: State variables predicting subjective use</a></li>
 <li class="chapter" data-level="4.4.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-6-state-variables-predicting-accuracy"><i class="fa fa-check"></i><b>4.4.3</b> Model 6: State variables predicting accuracy</a></li>
 </ul></li>
-<li class="chapter" data-level="4.5" data-path="analysis-study-1.html"><a href="analysis-study-1.html#does-social-media-use-predict-well-being-and-vice-versa"><i class="fa fa-check"></i><b>4.5</b> Does social media use predict well-being and vice versa?</a><ul>
-<li class="chapter" data-level="4.5.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#do-day-level-variables-predict-day-level-well-being"><i class="fa fa-check"></i><b>4.5.1</b> Do day-level variables predict day-level well-being?</a></li>
+<li class="chapter" data-level="4.5" data-path="analysis-study-1.html"><a href="analysis-study-1.html#does-social-media-use-predict-well-being"><i class="fa fa-check"></i><b>4.5</b> Does social media use predict well-being?</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-7-objective-use-predicting-well-being"><i class="fa fa-check"></i><b>4.5.1</b> Model 7: Objective use predicting well-being</a></li>
+<li class="chapter" data-level="4.5.2" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-8-subjective-use-predicting-well-being"><i class="fa fa-check"></i><b>4.5.2</b> Model 8: Subjective use predicting well-being</a></li>
+<li class="chapter" data-level="4.5.3" data-path="analysis-study-1.html"><a href="analysis-study-1.html#model-9-accuracy-predicting-well-being"><i class="fa fa-check"></i><b>4.5.3</b> Model 9: Accuracy predicting well-being</a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="synthesis-study-1.html"><a href="synthesis-study-1.html"><i class="fa fa-check"></i><b>5</b> Synthesis Study 1</a><ul>
+<li class="chapter" data-level="5.1" data-path="synthesis-study-1.html"><a href="synthesis-study-1.html#personality-on-smartphone-use-trait"><i class="fa fa-check"></i><b>5.1</b> Personality on smartphone use (trait)</a></li>
+<li class="chapter" data-level="5.2" data-path="synthesis-study-1.html"><a href="synthesis-study-1.html#experiences-on-smartphone-use-state"><i class="fa fa-check"></i><b>5.2</b> Experiences on smartphone use (state)</a></li>
+<li class="chapter" data-level="5.3" data-path="synthesis-study-1.html"><a href="synthesis-study-1.html#smartphone-use-on-well-being-state"><i class="fa fa-check"></i><b>5.3</b> Smartphone use on well-being (state)</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -209,14 +217,16 @@ If you’re fine with them being installed, set <code>eval = TRUE</code>.</p>
 <span id="cb1-13"><a href="setting-up-study1.html#cb1-13"></a>  GGally,</span>
 <span id="cb1-14"><a href="setting-up-study1.html#cb1-14"></a>  ggalt,</span>
 <span id="cb1-15"><a href="setting-up-study1.html#cb1-15"></a>  cowplot,</span>
-<span id="cb1-16"><a href="setting-up-study1.html#cb1-16"></a>  brms</span>
-<span id="cb1-17"><a href="setting-up-study1.html#cb1-17"></a>)</span>
-<span id="cb1-18"><a href="setting-up-study1.html#cb1-18"></a></span>
-<span id="cb1-19"><a href="setting-up-study1.html#cb1-19"></a><span class="co"># set seed</span></span>
-<span id="cb1-20"><a href="setting-up-study1.html#cb1-20"></a><span class="kw">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb1-21"><a href="setting-up-study1.html#cb1-21"></a></span>
-<span id="cb1-22"><a href="setting-up-study1.html#cb1-22"></a><span class="co"># set theme</span></span>
-<span id="cb1-23"><a href="setting-up-study1.html#cb1-23"></a><span class="kw">theme_set</span>(<span class="kw">theme_cowplot</span>())</span></code></pre></div>
+<span id="cb1-16"><a href="setting-up-study1.html#cb1-16"></a>  brms,</span>
+<span id="cb1-17"><a href="setting-up-study1.html#cb1-17"></a>  ggbeeswarm,</span>
+<span id="cb1-18"><a href="setting-up-study1.html#cb1-18"></a>  extrafont</span>
+<span id="cb1-19"><a href="setting-up-study1.html#cb1-19"></a>)</span>
+<span id="cb1-20"><a href="setting-up-study1.html#cb1-20"></a></span>
+<span id="cb1-21"><a href="setting-up-study1.html#cb1-21"></a><span class="co"># set seed</span></span>
+<span id="cb1-22"><a href="setting-up-study1.html#cb1-22"></a><span class="kw">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb1-23"><a href="setting-up-study1.html#cb1-23"></a></span>
+<span id="cb1-24"><a href="setting-up-study1.html#cb1-24"></a><span class="co"># set theme</span></span>
+<span id="cb1-25"><a href="setting-up-study1.html#cb1-25"></a><span class="kw">theme_set</span>(<span class="kw">theme_cowplot</span>())</span></code></pre></div>
 
 </div>
             </section>
