@@ -559,7 +559,8 @@ ggpairs(
 First, Figure \@ref(fig:visualize-nominated-apps) shows what apps mostly nominated (i.e., used).
 We see that out of the sample, most participants had Messaging, Snapchat, Whatsapp etc. as part of their top ten.
 ```{r visualize-nominated-apps, echo=FALSE, fig.cap="Percentage of nominated apps", fig.dim=c(11,11)}
-app_names %>% 
+apps_long %>%
+  filter(day == "monday") %>% 
   mutate(
     app = str_to_lower(app)
   ) %>% 
@@ -607,7 +608,7 @@ In Figure \@ref(fig:visualize-minutes-per-app), I show the average objective tim
 Note that the CIs are across the entire data and not nested by app or day.
 Also, a high mean doesn't mean that much because it could just be from one participant who used it a lot on two days.
 The size of the points shows how often an app was reported across the entire sample.
-For apps that only had one or two entries, those CI will be nonexistent/small.
+For apps that only had one entry, those CI will be nonexistent.
 In addition, I now exclude entries on `social_media_objective` that have `NA`.
 The `NA` here can mean participants just didn't fill in anything, or they had zero duration on that day.
 Because adding up the raw scores across apps was so close to the daily total, I'll exclude `NA`s here.
@@ -764,6 +765,8 @@ I first look at how long people typically took for a survey.
 Table \@ref(tab:describe-survey-duration-study1) shows that the mean is highly skewed because of outliers and the median more appropriate to describe the duration.
 In Figure \@ref(fig:visualize-survey-duration-study1) we see that a couple of people took a long time from opening to submitting the survey.
 I checked those participants who took a long time in the [data processing section](#data-processing-study1).
+The maximum duration here from someone who didn't open the survey on a Friday.
+So that duration is just the survey closing automatically after two days, which really drives up the mean.
 ```{r describe-survey-duration-study1, echo=FALSE}
 knitr::kable(
   describe(
@@ -784,7 +787,7 @@ knitr::kable(
 )
 ```
 
-```{r visualize-survey-duration-study1, fig.cap= "Duration of daily surveys", echo=FALSE}
+```{r visualize-survey-duration-study1, fig.cap= "Duration of daily surveys", echo=FALSE, warning=FALSE}
 single_cloud(
   study1,
   describe(
@@ -798,7 +801,9 @@ single_cloud(
 )
 ```
 
-Alright, next I inspect overall response rate in the final sample, aka how many valid surveys do we have among the final sample. Each participant received five surveys, one for each day, so `r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow()` participants x 5 = `r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow() * 5`. We have `r nrow(study1)` surveys in the final sample, which means a `r round(nrow(study1) / (study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow() * 5) * 100)`% response rate among the final sample.
+Alright, next I inspect overall response rate in the final sample, aka how many valid surveys do we have among the final sample.
+Each participant received five surveys, one for each day, so `r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow()` participants x 5 = `r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow() * 5`.
+We have `r study1 %>% filter(!is.na(enjoyable)) %>% nrow()` surveys in the final sample where participants actually responded, which means a `r round(study1 %>% filter(!is.na(enjoyable)) %>% nrow() / (study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow() * 5) * 100)`% response rate among the final sample.
 
 Let's inspect response rate per day.
 As is to be expected, participants lost motivation over the course of the week.
@@ -806,6 +811,7 @@ However, even the response rate on Friday is really high (at least among our sam
 We should still consider to take the day grouping into account when modelling the data later in the analysis.
 ```{r responses-per-day-study1, echo=FALSE, fig.cap="Survey responses per day"}
 study1 %>% 
+  filter(!is.na(enjoyable)) %>% # last item of the diary, so going for complete responses here
   count(day) %>% 
   mutate(percent = round(n / nrow(study1 %>% group_by(id) %>% slice(1)) * 100)) %>%  # divide by maximum number of surveys, which is number of valid participants
   ggplot(
@@ -1056,7 +1062,7 @@ Again, I calculate $\omega$, but this time for the entire sample in Table \@ref(
 That will necessarily bias the estimate because there's multiple measures per person.
 I'm not aware of a consensus reliability procedure for repeated measures.
 Figure \@ref(fig:states-visualize-study1) shows that the data look pretty good.
-```{r states-descriptives-study1, echo=FALSE}
+```{r states-descriptives-study1, echo=FALSE, message=FALSE, warning=FALSE}
 ### well-being
 well_being <- 
   describe(
@@ -1377,6 +1383,9 @@ For the plot, the data need to be in the long format.
 ```{r data-figure1-study1}
 dat <- 
   study1 %>% 
+  group_by(id) %>% 
+  slice(1) %>% 
+  ungroup() %>% 
   select(all_of(c("id", trait_descriptives$variable))) %>% 
   pivot_longer(
     -id,
@@ -1411,7 +1420,7 @@ clean_plot_data <-
         variable = case_when(
           variable == "social_media_objective" ~ "Objective (h)",
           variable == "social_media_subjective" ~ "Subjective (h)",
-          variable == "error" ~ "Error (%)",
+          variable == "error" ~ "Accuracy (%)",
           TRUE ~ variable
         ),
         # remove _trait at the end and capitalize
@@ -1433,7 +1442,7 @@ trait_descriptives <- clean_plot_data(trait_descriptives, rename_levels, my_stri
 ```
 
 Okay, we already have the aggregated info in `trait_descriptives`, so we can get to plotting.
-```{r figure1-study1}
+```{r figure1-study1, warning=FALSE}
 # function for breaks
 my_breaks <- 
   function(x) {
@@ -1467,7 +1476,7 @@ ggplot(
     fill = variable
   )
 ) +
-  geom_quasirandom(groupOnX=FALSE, size = 0.1, alpha = 0.5) +
+  geom_quasirandom(groupOnX=FALSE, size = 0.3, alpha = 0.5) +
   facet_wrap(
     ~ variable, 
     scales = "free_x"
@@ -1562,7 +1571,7 @@ state_descriptives <- clean_plot_data(state_descriptives, rename_levels, my_stri
 ```
 
 Then to plotting.
-```{r figure2-study1}
+```{r figure2-study1, warning=FALSE}
 # plot
 ggplot(
   dat,
@@ -1661,25 +1670,25 @@ dat <-
 rename_levels <- c(
   "Objective (h)",
   "Subjective (h)",
-  "Error (%)"
+  "Accuracy (%)"
 )
 
 my_string <- "_state"
 
 dat <- clean_plot_data(dat, rename_levels, my_string)
 social_media2 <- clean_plot_data(social_media, rename_levels, my_string) %>% 
-  filter(variable %in% c("Objective (h)", "Subjective (h)", "Error (%)")) %>% 
+  filter(variable %in% c("Objective (h)", "Subjective (h)", "Accuracy (%)")) %>% 
   # add x axis position for geom_text
   mutate(
     x_position = case_when(
-      variable == "Error (%)" ~ 1200*0.8,
+      variable == "Accuracy (%)" ~ 1200*0.8,
       TRUE ~ 0.8*13
     )
   )
 ```
 
 And the plot.
-```{r figure3-study1}
+```{r figure3-study1, warning=FALSE}
 # function for breaks
 my_breaks <- 
   function(x) {
@@ -1710,7 +1719,7 @@ ggplot(
     fill = variable
   )
 ) +
-  geom_quasirandom(groupOnX=FALSE, size = 0.1, alpha = 0.5) +
+  geom_quasirandom(groupOnX=FALSE, size = 0.2, alpha = 0.5) +
   facet_wrap(
     ~ variable, 
     scales = "free_x"

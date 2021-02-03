@@ -8,6 +8,8 @@ The `pacman` package just makes it easier to load packages.
 Note that the final version of this page doesn't evaluate the code chunk below to avoid installing packages on your machine.
 If you're fine with them being installed, set `eval = TRUE`.
 
+If you run the entire project with the `renv` private library, installing packages should've happened with the `renv::restore` call.
+
 ```{r load_libraries, message=FALSE, eval=TRUE}
 if (!requireNamespace("pacman"))
   install.packages("pacman")
@@ -36,7 +38,8 @@ set.seed(42)
 theme_set(theme_cowplot())
 ```
 
-```{r custom_functions, echo=FALSE}
+Below custom functions that I use throughout the project.
+```{r custom_functions, echo=TRUE}
 dens_with_points <- 
   function(
     data,

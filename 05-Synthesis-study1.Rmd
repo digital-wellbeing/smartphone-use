@@ -147,7 +147,16 @@ my_limits <-
 # plot
 ggplot(
     estimates %>% 
-      filter(block == "Personality on smartphone use"),
+      filter(block == "Personality on smartphone use") %>% 
+      mutate(
+        outcome = as.factor(outcome),
+        outcome = fct_recode(
+          outcome,
+          "Objective (min)" = "Objective",
+          "Subjective (min)" = "Subjective",
+          "Accuracy (%)" = "Error"
+        )
+      ),
   aes(
     x = estimate,
     y = predictor
@@ -200,7 +209,16 @@ I'll move on to the next block investigating state relations between experiences
 ```{r figure5-study}
 ggplot(
     estimates %>% 
-      filter(block == "Experiences on smartphone use"),
+      filter(block == "Experiences on smartphone use") %>% 
+      mutate(
+        outcome = as.factor(outcome),
+        outcome = fct_recode(
+          outcome,
+          "Objective (min)" = "Objective",
+          "Subjective (min)" = "Subjective",
+          "Accuracy (%)" = "Error"
+        )
+      ),
   aes(
     x = estimate,
     y = predictor,
@@ -258,7 +276,16 @@ I'll move on to the next block investigating state relations between smartphone 
 ```{r figure6-study1}
 ggplot(
     estimates %>% 
-      filter(block == "Smartphone use on well-being"),
+      filter(block == "Smartphone use on well-being") %>% 
+      mutate(
+        predictor = as.factor(predictor),
+        predictor = fct_recode(
+          predictor,
+          "Objective (h)" = "Objective",
+          "Subjective (h)" = "Subjective",
+          "Accuracy (%, standardized)" = "Error"
+        )
+      ),
   aes(
     x = estimate,
     y = predictor,

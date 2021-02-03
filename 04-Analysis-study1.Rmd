@@ -30,8 +30,6 @@ Standardizing also makes it easier to interpret the effect sizes.
 
 First, I transform all variables of interest (into new variables).
 ```{r standardize-study1}
-load(here("data", "study1", "workspace_study1.RData"))
-
 study1 <- 
   study1 %>% 
   # center personality variables
@@ -50,7 +48,7 @@ study1 <-
 
 Next, let's have a look of how many `NA`s there are per variable.
 Table \@ref(tab:missings-study1) shows that missing values aren't a big problem.
-Pickups is the only variable with many missing values, but pickups aren't a central variable in our research questions.
+The missings come from rows where participants didn't answer the diary, but did report screen time mostly.
 ```{r missings-study1, echo=FALSE}
 study1 %>% 
   summarise(
@@ -233,14 +231,13 @@ Alright, time to run the model.
 Luckily, none of these variables have missing values, so I won't need to model missings in this model.
 Note that I ran the block below once and stored the model.
 Those fit objects are too large for Github, so you can download them here [give Onedrive link].
-Also, note that I add a constant to the social media use variable, because there's a single zero in that variable, which doesn't warrant a mixture model where we give zeros their own distribution.
 ```{r model1-study1, eval=FALSE}
 model1 <- 
   brm(
     data = study1,
     family = Gamma(link = "log"),
     prior = priors_model1,
-    social_media_objective + 1e-6 ~
+    social_media_objective ~
       1 +
       openness_c +
       conscientiousness_c +
@@ -278,13 +275,13 @@ plot(model1, ask = FALSE)
 The posterior predictive distribution (Figure \@ref(fig:ppc-model1-study1)) shows that the model does an okay job in predicting our outcome, with little indication of overfitting.
 If anything, it looks like the model somewhat underestimates the social media time of users.
 Then again, the LOO-PIT graphs show that the model could be better, possibly because it doesn't do the best job in predicting the majority of cases (i.e., the underestimate).
-```{r ppc-model1-study1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 1"}
+```{r ppc-model1-study1, cache=TRUE, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 1"}
 model_diagnostics(model1) # custom function, see 01-Setting-up-study1.Rmd
 ```
 
 Let's also check for potentially influential values.
 None are tagged as influential, which increases my trust in the model.
-```{r outliers-model1-study1}
+```{r outliers-model1-study1, cache=TRUE}
 loo(model1)
 ```
 
@@ -322,14 +319,13 @@ priors_model2 <-
 Alright, time to run the model.
 The subjective social media estimate had one missing value.
 Usually I'd impute missing values during model fitting, but with one, I think it's safe to drop it. 
-Again, I add a small constant to the zero values, of which there are `r study1 %>% filter(!is.na(social_media_subjective)) %>% summarize(zeroes = sum(social_media_subjective == 0)) %>% pull(zeroes)`; not enough, in my opinion, to model zeroes separately.
 ```{r model2-study1, eval=FALSE}
 model2 <- 
   brm(
     data = study1,
     family = Gamma(link = "log"),
     prior = priors_model2,
-    social_media_subjective + 1e-6 ~
+    social_media_subjective ~
       1 +
       openness_c +
       conscientiousness_c +
@@ -346,7 +342,7 @@ model2 <-
     chains = 4,
     cores = 4,
     seed = 42,
-    control = list(adapt_delta = 0.99),
+    control = list(adapt_delta = 0.999),
     file = here("models", "study1", "model2_study1")
   )
 ```
@@ -365,19 +361,21 @@ plot(model2, ask = FALSE)
 The posterior predictive distribution (Figure \@ref(fig:ppc-model2-study2)) looks similar to Model 1, with a tendency of the model to underestimate self-reported social media use.
 All other diagnostics look similar, which is not surprising given that the outcomes of Model 1 and Model 2 are correlated.
 Overall, the model fit is okay-ish, but certainly not excellent.
-```{r ppc-model2-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 2"}
+```{r ppc-model2-study1, cache=TRUE, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 2"}
 model_diagnostics(model2)
 ```
 
 Let's again check for potentially influential values.
 The model diagnostics look good.
 Even though there were several rather large raw values on the outcome variable, the model expects them because we model the outcome as a Gamma distribution.
-```{r outliers-model2-study1, eval=FALSE}
-loo(model2)
+We need to calculate ELPD directly, which shows no outliers.
+```{r outliers-model2-study1, cache=TRUE}
+loo(model2, reloo = TRUE)
 ```
 
 Alright, time to look at the summary.
 This time, all posterior distributions are mostly centered around zero, so we can be 95% (always conditional on the model) certain that personality traits and motivations are not meaningfully (i.e., large effect) related to self-reported social media use. 
+Maybe autonomy gets close, but the posterior distributions still includes zero and small negative effects.
 ```{r summary-model2-study1}
 summary(model2, priors = TRUE)
 ```
@@ -524,28 +522,23 @@ Note that the upper left panel looks strange because of the massive scale on the
 We see that the student t distribution assigns too much posterior mass to negative values, whereas the data are right skewed.
 For even better fit, we might think about fitting a skew-normal outcome distribution, but I'd say that the student-t was most appropriate before seeing the data.
 We see that the current models does an okay job in recovering the mean and the median.
-```{r ppc-model3-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 3"}
+```{r ppc-model3-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 3"}
 model_diagnostics(model3)
 pp_check(model3, nsamples = 100) + xlim(c(-1500, 1500))
 ```
 
 Let's again check for potentially influential values.
 Three potentially influential cases are flagged, which is why we calculate them precisely by setting `reloo` to `TRUE`.
-```{r outliers-model3-study1, eval=FALSE}
-model3_loo <- loo(model3, reloo = TRUE)
-saveRDS(model3_loo, here("models", "study1", "model3_loo_study1.rds"))
-```
-
 When we calculate ELPD directly, all values appear unproblematic.
 The results seem trustworthy.
-```{r outliers-model3-study1-reloo}
-model3_loo <- read_rds(here("models", "study1", "model3_loo_study1.rds"))
-model3_loo
+```{r outliers-model3-study1, cache=TRUE}
+loo(model3, reloo = TRUE)
 ```
 
 Let's inspect the summary.
 There doesn't seem to be much going on when it comes to the predictors.
 For all predictors, we cannot be 95% certain that zero isn't the true effect (conditional on the model).
+Again, neuroticism comes close.
 ```{r summary-model3-study1}
 summary(model3, priors = TRUE)
 ```
@@ -636,7 +629,7 @@ model4 <-
     data = study1,
     family = Gamma(link = "log"),
     prior = priors_model4,
-    social_media_objective + 1e-6 ~
+    social_media_objective ~
       1 +
       autonomy_state_between +
       competence_state_between +
@@ -689,14 +682,14 @@ plot(model4, ask = FALSE)
 The posterior predictive check shows that the model does a mediocre job.
 The model does a good job retrieving the mean, but underestimates social media use once more.
 Also, the LOO-PIT diagnostics look like a different distribution will fit better, potentially a skewed normal or beta-distribution.
-```{r ppc-model4-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 4"}
+```{r ppc-model4-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 4"}
 model_diagnostics(model4)
 ```
 
 Next, we check for potentially influential cases.
 There are none.
-```{r outliers-model4-study1, cache=TRUE}
-loo(model4, reloo = TRUE)
+```{r outliers-model4-study1}
+loo(model4)
 ```
 
 Let's inspect the summary.
@@ -738,7 +731,7 @@ model5 <-
     data = study1,
     family = Gamma(link = "log"),
     prior = priors_model4,
-    social_media_subjective + 1e-6 ~
+    social_media_subjective ~
       1 +
       autonomy_state_between +
       competence_state_between +
@@ -790,13 +783,13 @@ plot(model5, ask = FALSE)
 The posterior predictive check shows about the same model fit as Model 4: mediocre.
 It overestimates the frequency of low values compared to the raw data.
 I could change the prior, but I also don't want to overfit just based on the raw data.
-```{r ppc-model5-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 5"}
+```{r ppc-model5-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 5"}
 model_diagnostics(model5)
 ```
 
 There are no cases flagged as potentially influential outliers.
-```{r outliers-model5-study1, eval=FALSE}
-loo(model5)
+```{r outliers-model5-study1, cache=TRUE}
+loo(model5, reloo = TRUE)
 ```
 
 Let's inspect the summary.
@@ -890,21 +883,14 @@ Like with Model 3, that the upper left panel looks strange because of the massiv
 I reproduce it again at the bottom with a more sensible x-axis.
 Once more, the student t distribution assigns too much posterior mass to negative values, whereas the data are right skewed.
 Otherwise, the model does an okay job in recovering the mean and the median.
-```{r ppc-model6-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 6"}
+```{r ppc-model6-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 6"}
 model_diagnostics(model6)
 pp_check(model6, nsamples = 100) + xlim(c(-1500, 1500))
 ```
 
-Two cases are flagged as potential outliers.
-```{r outliers-model6-study1, eval=FALSE}
-model6_loo <- loo(model6, reloo = TRUE)
-saveRDS(model6_loo, here("models", "study1", "model6_loo_study1.rds"))
-```
-
-I'll calculate them directly and they're fine.
-```{r}
-model6_loo <- read_rds(here("models", "study1", "model6_loo_study1.rds"))
-model6_loo
+Two cases are flagged as potential outliers, which disappear once calculated directly.
+```{r outliers-model6-study1, cache=TRUE}
+loo(model6, reloo = TRUE)
 ```
 
 Let's inspect the summary.
@@ -1042,20 +1028,13 @@ plot(model7, ask = FALSE)
 ```
 
 The posterior predictive checks (Figure \@ref(fig:ppc-model7-study1)) look excellent (no surprise with only one predictor).
-```{r ppc-model7-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 7"}
+```{r ppc-model7-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 7"}
 model_diagnostics(model7)
 ```
 
-Two cases are flagged as potentially influential cases.
-```{r outliers-model7-study1, eval=FALSE}
-model7_loo <- loo(model7, reloo = TRUE)
-saveRDS(model7_loo, here("models", "study1", "model7_loo_study1.rds"))
-```
-
-I'll calculate them directly and they're fine.
-```{r}
-model7_loo <- read_rds(here("models", "study1", "model7_loo_study1.rds"))
-model7_loo
+One case is flagged as potentially influential, but unproblematic when calculated directly.
+```{r outliers-model7-study1, cache=TRUE}
+loo(model7, reloo = TRUE)
 ```
 
 Let's inspect the summary.
@@ -1142,13 +1121,13 @@ plot(model8, ask = FALSE)
 ```
 
 The posterior predictive checks (Figure \@ref(fig:ppc-model8-study1)) look excellent, just like with Model 7 (no surprise with only one predictor).
-```{r ppc-model8-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 8"}
+```{r ppc-model8-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 8"}
 model_diagnostics(model8)
 ```
 
-No case is flagged as potentially influential.
-```{r outliers-model8-study1, eval=TRUE}
-loo(model8)
+One case is flagged as potentially influential, but unproblematic after being calculated directly..
+```{r outliers-model8-study1, cache=TRUE}
+loo(model8, reloo = TRUE)
 ```
 
 Let's inspect the summary.
@@ -1261,21 +1240,13 @@ plot(model9, ask = FALSE)
 ```
 
 The posterior predictive checks (Figure \@ref(fig:ppc-model9-study1)) look excellent (no surprise with only one predictor).
-```{r ppc-model9-study1, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 9"}
+```{r ppc-model9-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 9"}
 model_diagnostics(model9)
 ```
 
-Five cases are flagged as potentially influential, which is why we calculate ELPD directly.
-```{r outliers-model9-study1, eval=FALSE}
-model9_loo <- loo(model9, reloo = TRUE)
-saveRDS(model9_loo, here("models", "study1", "model9_loo_study1.rds"))
-```
-
-When we calculate ELPD directly, all values appear unproblematic.
-The results seem trustworthy.
-```{r outliers-model9-study1-reloo}
-model9_loo <- read_rds(here("models", "study1", "model9_loo_study1.rds"))
-model9_loo
+Six cases are flagged as potentially influential, which is why we calculate ELPD directly.
+```{r outliers-model9-study1, cache=TRUE}
+loo(model9, reloo = TRUE)
 ```
 
 Let's inspect the summary.

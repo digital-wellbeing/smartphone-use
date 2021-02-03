@@ -136,16 +136,26 @@ personality <-
 ```
 
 Then I remove those cases without an `id` (aka test runs) and those with an `id` but not other entries.
+The latter are probably no-shows.
+Note: In the earlier versions of this script, I excluded per data set, which made it hard for reporting exact exclusions in the final paper.
+For example, at this point I don't know whether someone I exclude here even participated in the diary part of the study.
+Therefore, I save each exclusion criterion in a separate object and inspect how many people we actually need to exclude later in the data merging section.
 ```{r exclude-test-runs-personality}
+# remove test run
 personality <- 
   personality %>% 
-  filter(id != "pp_NA" & !is.na(start_date))
+  filter(id != "pp_NA")
+
+personality_exclusions_1 <-
+  personality %>% 
+  filter(is.na(start_date)) %>% 
+  pull(id)
 ```
 
 Let's see how many missing values there are left per participant (aka row) in \@ref(tab:check-personality-na). 
-Most participants filled out everything, but a couple of them have basically empty rows.
+Most participants filled out everything, but a couple of them have basically empty rows (especially those above with all empty rows).
 A couple of participants have quite a handful of empty cells.
-I inspected their data and most of them just didn't fill out the Big Five, but one participant didn't fill out anything.
+I inspected their data and most of them just didn't fill out the Big Five, but some participants didn't fill out anything.
 ```{r check-personality-na, echo=FALSE}
 # check nas per row
 personality %>% 
@@ -161,13 +171,14 @@ personality %>%
 
 I'll exclude the latter.
 ```{r}
-# exclude those with > 15 missing values
-personality<- 
+# exclude those with > 15 missing values (which identifies empty rows)
+personality_exclusions_2 <- 
   personality %>% 
   mutate(
     na_count_row = rowSums(is.na(.))
   ) %>% 
-  filter(na_count_row <=70)
+  filter(na_count_row >70) %>% 
+  pull(id)
 ```
 
 
@@ -194,9 +205,10 @@ knitr::kable(
 
 I'll exclude those participants because I don't think we can trust their data.
 ```{r exclude-failed-attention-personality}
-personality <- 
+personality_exclusions_3 <- 
   personality %>% 
-  filter(!(bpns_25 != 2 & big_five_45 != 5) | is.na(bpns_25) | is.na(big_five_45)) # otherwise filter automatically drops rows with NA
+  filter(bpns_25 != 2 & big_five_45 != 5) %>% 
+  pull(id)
 ```
 
 Next, I check for straightlining by inspecting the variance per daily survey on the BPNS and BF scales.
@@ -218,7 +230,7 @@ personality <-
   unnest(cols = c())
 ```
 
-If we visualize that variance in Figure \@ref(fig:plot-variance-personality), we can see that there's little cause for concern: nobody straightlined.
+If we visualize that variance in Figure \@ref(fig:plot-variance-personality), we can see that there's little cause for concern: few people straightlined.
 ```{r plot-variance-personality, echo = FALSE, warning=FALSE, message=FALSE, fig.cap="Distribution of variances per survey on two measures"}
 plot_grid( # from cowplot
   dens_with_points(personality, "bpns_sd"), # custom function, see custom functions under setting up
@@ -231,6 +243,14 @@ plot_grid( # from cowplot
   label_x = 0,
   label_y = 0.93
 )
+```
+
+Those two are already captured by the exclusion criteria above (I checked manually, but I'll still save them in an object).
+```{r personality-straightliners}
+personality_exclusions_4 <- 
+  personality %>% 
+  filter(bpns_sd == 0 | big_five_sd == 0) %>% 
+  pull(id)
 ```
 
 Alright, now we can aggregate the individual items to scale scores.
@@ -464,11 +484,12 @@ diary <-
   )
 ```
 
-Then I remove all empty rows (i.e., rows without a start date).
+Then I identify all empty rows (i.e., rows without a start date, so people who have placeholder `id`, but didn't participate on that day).
 ```{r check-diary-na}
-diary <- 
+diary_exclusions_1 <- 
   diary %>% 
-  filter(!is.na(start_date))
+  filter(is.na(start_date)) %>% 
+  select(id, day)
 ```
 
 Afterwards, I inspect how many `NA`s there are per row in Table \@ref(tab:table-diary-na).
@@ -490,13 +511,14 @@ I manually inspected those with more than 15 missing values and neither of them 
 Therefore, I'll exclude them here.
 ```{r exclude-missings-diary, message=FALSE}
 # exclude those with > 15 missing values
-diary <- 
+diary_exclusions_2 <- 
   diary %>% 
   mutate(
     na_count_row = rowSums(is.na(.))
   ) %>% 
-  filter(na_count_row <= 15) %>% 
-  mutate(id = droplevels(id))
+  filter(na_count_row > 15) %>% 
+  mutate(id = droplevels(id)) %>% 
+  select(id, day)
 ```
 
 Alright, time to construct the means for the scales.
@@ -596,7 +618,7 @@ diary <-
   )
 ```
 
-Overall, Table \@ref(tab:table-straightliners-diary) shows that 94% of the sample didn't staightline.
+Overall, Table \@ref(tab:table-straightliners-diary) shows that 95% of the sample didn't staightline.
 ```{r table-straightliners-diary, echo=FALSE, message=FALSE}
 # percentage of zero variances instances
 diary %>% 
@@ -612,9 +634,12 @@ diary %>%
 
 But there are a couple of participants who seemed to rush through the survey, see Table \@ref(tab:table-percentage-straightliners-diary).
 Manually inspecting them indeed shows that it's hard to trust their data.
+(Note that I temporarily remove the rows identified above because we only want to exclude those straightliners with valid data.)
 ```{r table-percentage-straightliners-diary, message=FALSE, echo=FALSE}
 # percentage of participants
 diary %>%
+  anti_join(., diary_exclusions_1) %>% 
+  anti_join(., diary_exclusions_2) %>% 
   group_by(id) %>%
   count(zero_variances) %>% 
   mutate(
@@ -637,18 +662,16 @@ diary %>%
 
 I will exclude those participants and then surveys with more than one instance of straightlining.
 ```{r exclude-straightliners-diary}
-diary <- 
-  diary %>% 
-  filter(!id %in% c("pp_172", "pp_121", "pp_164", "pp_169", "pp_103", "pp_168", "pp_290")) %>% 
-  filter(zero_variances < 2) %>% 
-  mutate(
-    id = droplevels(id)
-  )
+diary_exclusions_3 <- 
+  c("pp_172", "pp_121", "pp_164", "pp_169", "pp_103", "pp_168", "pp_290")
 ```
 
 Now there's very little straightlining left (see Table \@ref(tab:check-variances-again-diary) and compare to Table \@ref(tab:table-straightliners-diary)).
-```{r check-variances-again-diary, echo=FALSE}
+```{r check-variances-again-diary, echo=FALSE, message=FALSE}
 diary %>% 
+  anti_join(., diary_exclusions_1) %>% 
+  anti_join(., diary_exclusions_2) %>% 
+  filter(!id %in% diary_exclusions_3) %>% 
   count(zero_variances) %>% 
   mutate(
     percent = n / sum(n)
@@ -703,6 +726,7 @@ Some participants opened/recorded their answers right after midnight, which is f
 ```{r check-first-day, echo=FALSE}
 diary %>% 
   group_by(id) %>% 
+  filter(!is.na(start_date)) %>% 
   filter(day == "monday") %>% 
   select(id, start_date, recorded_date, duration, day) %>% 
   filter(!day(recorded_date) %in% c(15,22,29)) %>% 
@@ -715,8 +739,11 @@ diary %>%
 However, a handful of participants had their survey open for at least a day.
 In Table \@ref(tab:check-two-day-delay), we inspect all instances where there's more than one day delay between opening and responding to a survey.
 Only `pp_71` took two days to respond to a survey.
-```{r check-two-day-delay, echo=FALSE}
+```{r check-two-day-delay, echo=FALSE, message=FALSE}
 diary %>% 
+  anti_join(., diary_exclusions_1) %>% 
+  anti_join(., diary_exclusions_2) %>% 
+  filter(!id %in% diary_exclusions_3) %>% 
   select(id, start_date, recorded_date, duration, day) %>% 
   filter((day(recorded_date) - day(start_date)) > 1) %>% 
   knitr::kable(
@@ -730,6 +757,9 @@ Because they're students, waking up might be quite late, so I'll check in Table 
 Two participants were really late (i.e., responded after noon).
 ```{r next-day-late, echo=FALSE}
 diary %>% 
+  anti_join(., diary_exclusions_1) %>% 
+  anti_join(., diary_exclusions_2) %>% 
+  filter(!id %in% diary_exclusions_3) %>% 
   filter(day(recorded_date) != day(start_date)) %>% 
   filter(hour(recorded_date) > 9) %>% 
   select(id, start_date, recorded_date, duration, day) %>% 
@@ -746,9 +776,8 @@ All other participants are fine: They sometimes recorded their response late, bu
 
 Therefore, I remove the `day` one survey of `pp_71` because we can't tell to which day it refers, but leave the rest as is.
 ```{r remove-pp71}
-diary <-  
-  diary %>% 
-  filter(!(id == "pp_71" & day == "monday"))
+diary_exclusions_4 <- 
+  tibble(id = "pp_71", day = "monday")
 ```
 
 ## Screen time data
@@ -971,24 +1000,27 @@ screen_time <-
 ```
 
 Then I exclude empty rows.
-The data set has all participant numbers even when they didn't participate, so I'll exclude those without a start date as well as those who didn't fill in `app_1`, which means they have empty rows other than the meta-data.
+The data set has all participant numbers even when they didn't participate, so I'll identify those without a start date as well as those who didn't fill in `app_1`, which means they have empty rows other than the meta-data.
 ```{r exclude-empty-rows-screen-time}
-screen_time <- 
+screen_time_exclusions_1 <- 
   screen_time %>% 
-  filter(!is.na(start_date)) %>% 
-  filter(!is.na(app_1)) %>% 
-  mutate(id = droplevels(id))
+  filter(is.na(start_date) | is.na(app_1)) %>% 
+  mutate(id = droplevels(id)) %>% 
+  pull(id)
 ```
 
 At this point, the data set has measures on two levels: per app and time frame (day, full week), and the total times across all apps per day.
 I think it's easiest to separate the data.
 The per app data are only informative for plotting and descriptives, but the actual data we're interested in are the total times summed across all apps.
-So I'll first get the per data app.
+So I'll first get the per data app (excluding empty rows temporarily from `screen_time`).
 Note that I add the names of the apps in a separate step and then calculate the objective social media time.
 ```{r app-data-long-screen-time}
 # turn app data long
 apps_long <- 
   screen_time %>% 
+    filter(!is.na(start_date)) %>% 
+    filter(!is.na(app_1)) %>% 
+    mutate(id = droplevels(id)) %>% 
   select(
     start_date:id,
     app_1_hours_week:app_10_pickups_friday
@@ -1012,6 +1044,9 @@ apps_long <-
 # get the names of the apps
 app_names <- 
   screen_time %>% 
+  filter(!is.na(start_date)) %>% 
+  filter(!is.na(app_1)) %>% 
+  mutate(id = droplevels(id)) %>% 
   select(
     id,
     app_1:app_10
@@ -1065,6 +1100,9 @@ Thus, their reports for week will not be identical with the sum of Monday to Fri
 # get total screen time (of all social media apps in long format)
 totals_long <- 
   screen_time %>% 
+  filter(!is.na(start_date)) %>% 
+  filter(!is.na(app_1)) %>% 
+  mutate(id = droplevels(id)) %>% 
   select(
     id,
     hours_total_week:minutes_total_friday
@@ -1190,7 +1228,31 @@ totals_long <-
 ## Merge data sets
 
 Finally, we can merge the three data sets.
-The `diary` data set is the "master" because it has our variables of interest and the correct time structure.
+Before I do any merging, I'll check out the number of data points per data set and the ones they have in common before I count exclusions.
+This is mostly for reporting in the paper.
+```{r count-cases}
+# number of participants who took initial survey (take out empty rows)
+personality %>% 
+  filter(!id %in% personality_exclusions_1) %>% 
+  pull(id) -> personality_n
+
+length(personality_n)
+
+# number of those who also participated in diary part
+diary %>% 
+  anti_join(., diary_exclusions_1) -> diary_n
+
+length(unique(diary_n$id))
+
+# number of those who came back to report screen time
+screen_time %>% 
+  filter(!id %in% screen_time_exclusions_1) %>% 
+  pull(id) -> screen_time_n
+
+length(screen_time_n)  
+```
+
+The `diary` data set is the "base" because it has our variables of interest and the correct time structure.
 To that data set we add the objective social media measures from the `totals_long` data set.
 The identifier for a survey are the participant `id` and the `day` on which they filled out a survey/for which they reported objective use.
 Note that we omit the meta-data from `totals_long` (e.g., `start_date`) because they are different from the meta-data of `diary`.
@@ -1224,6 +1286,7 @@ study1 <-
 The merging above kept all cases of `diary` and added variables from `totals_long` when there was a match, otherwise setting the new variables to `NA`.
 Therefore, I remove all cases which have `NA` on the added variables to get to our final sample.
 (There were no missings in the `social_media_objective` variable.)
+In other words, this removes those participants who didn't fill out the screen time survey.
 ```{r remove-missing-objective-study1}
 study1 <- 
   study1 %>% 
@@ -1270,20 +1333,82 @@ study1 <-
   )
 ```
 
+Alright, only keeping those who had screen time measures already removed a large number of cases, some of them were part of the exclusions for both the `personality` and the `diary` parts.
+I now apply all exclusions (if necessary) to get to the final data set.
+Note that I don't exclude those in `diary_exclusions_2` after all: Those are the ones who didn't fill in an experience sampling survey, but all of them still have personality scores and the retrospective screen time estimates.
+```{r apply-exclusions}
+## personality
+
+# nobody left who didn't fill in the personality survey
+unique(study1$id %in% personality_exclusions_1)
+
+# and nobody with empty rows
+unique(study1$id %in% personality_exclusions_2)
+
+# the people who failed attention checks either didn't fill out the diary or the screen time part
+unique(study1$id %in% personality_exclusions_3)
+
+# same goes for personality straightliners
+unique(study1$id %in% personality_exclusions_4)
+
+## diary
+
+# some people with empty diary entries left, nobody left who didn't participate in the diary (no wonder, we used diary as the base for merging)
+# those people will have empty diary entries, but still data for screen time, so no need to exclude them here, they'll be dropped from analysis automatically because of NA
+inner_join(diary_exclusions_1, study1 %>% select(id, day)) %>% nrow()
+
+# don't exclude anyone who missed a diary entry
+
+# diary straightliners: need to exclude one person
+study1$id[study1$id %in% diary_exclusions_3]
+
+study1 <- 
+  study1 %>% 
+  filter(!id %in% diary_exclusions_3)
+
+# last, exclude one diary entry that was provided too late (see details above)
+study1 <- 
+  study1 %>% 
+  anti_join(., diary_exclusions_4)
+
+## screen time exclusions
+
+# those with empty rows will have been excluded as we merged diary with totals_long (totals long excluded those who had all NA)
+unique(study1$id %in% screen_time_exclusions_1)
+```
+
+Good, then we have our final data set.
+Because screen time was filled in retrospectively in the third session, those who didn't fill in an experience sample will have `NA`s on the self-reports, but still a row with data because screen time for that day is there.
+So each person has five rows, except for that one participant who filled in one of the surveys too late.
+
 Next, I create an accuracy score for the comparison of objective and subjective phone use indicators.
 The objective measure is our "true" estimate.
 We want to know how far off participants were, relative to that true value, in their estimate.
 For that, we calculate the percentage error by subtracting the objective value from the subjective value (to get difference) and dividing by the objective value (to get error percent).
 Afterwards, we multiply by 100 to get a percentage.
 Say I estimated 110 subjective minutes, but the true value (i.e., the objective minutes) is 100. Then the error is 10%, an overestimate.
-If I estimated 100 subjective minutes, but the true value is 110, the error is -10%, an underestimate.
-I calculate error percent for social media screen time.
+If I estimated 100 subjective minutes, but the true value is 110, the error is ~9%, an underestimate.
+
+In my opinion, that is more intuitive than a difference score.
+It's easier to understand the magnitude of an error in percent (say 80%) than raw units (say 10 minutes).
+However, percent error brings one complication with it: If participants estimated 0 social media use, percent error becomes meaningless.
+0 - objective / objective will always lead -100%.
+There's `r study1 %>% filter(social_media_subjective == 0 & social_media_objective > 0) %>% nrow()` cases with an estimate of zero, but actual, objective use.
+It's impossible in this case to determine an error percentage, simply because 0 is meaningless in the formula.
+I could use a difference score instead, but that'll make the interpretation less intuitive.
+Those zeros might've also been typos, given how rare zeros are in the sample.
+I could set those error instances to missing, but in the analysis, we want to be able to compare coefficient predicting both social media and error.
+Therefore, I'll set all three variables to `NA`.
 ```{r calculate-error-study1}
 study1 <- 
   study1 %>% 
   mutate(
     # error social media time
-    error = (social_media_subjective - social_media_objective) / social_media_objective * 100
+    error = (social_media_subjective - social_media_objective) / social_media_objective * 100,
+    across(
+      c(social_media_subjective, social_media_objective, error),
+      ~ if_else(error == -100, NA_real_, .x)
+    )
   )
 ```
 
@@ -1293,18 +1418,18 @@ We see that a couple of participants have massive overestimation errors.
 dens_with_points(study1, "error")
 ```
 
-I checked their raw data: One participant indicated exactly five hours, but probably meant five minutes (i.e., the participant with an error of `r max(study1$error)`.
+I checked their raw data: One participant indicated exactly five hours, but probably meant five minutes (i.e., the participant with an error of `r max(study1$error, na.rm = TRUE)`.
 Similarly, the second largest entry seems to be a typo (i.e., 58 minutes).
 I'll set those all entries that are larger than 1500% to `NA`.
 Also, one participant had zero objective time and zero subjective time.
-Dividing by zero to get error above leads to `NaN`, so I'll set that to `NA`.
+Dividing by zero to get error above leads to `NaN`, so I'll set that `NA`.
 ```{r remove-large-errors-study1}
 study1 <- 
   study1 %>% 
   mutate(
     error = if_else(error > 1500, NA_real_, error),
     error = if_else(
-      social_media_subjective == 0 & social_media_objective == 0, 0, error
+      social_media_subjective == 0 & social_media_objective == 0, NA_real_, error
     )
   )
 ```
@@ -1349,8 +1474,6 @@ When plotting the app data I want them to reflect the final sample, which is why
 I can't just exclude those participants in `apps_long` because I also excluded surveys in `diary` on which `study1` is based.
 Therefore, I only keep those entries in `apps_long` which have a corresponding row in `study1` (aka entries in both `id` and `day`).
 Also, I'll remove "week" as a time frame and add the notifications for that app over whole week as a constant per app.
-
-Sidenote: The participants with a failed attention check in the `personality` data are not included in `study1` because they were excluded at other steps during merging, so no need to manually remove them here.
 ```{r apps-long-valid-only}
 apps_week <- 
   apps_long %>% 
@@ -1389,3 +1512,17 @@ apps_long <-
   select(id, day, rank:notifications) %>% 
   rename(notifications_per_week = notifications)
 ```
+
+Last, there are some `NaN`s in the data set after the transformations.
+I'll turn them into missings (i.e., `NA`).
+```{r transform-nan}
+study1 <- 
+  study1 %>% 
+  mutate(
+    across(
+      everything(),
+      ~ na_if(.x, "NaN")
+    )
+  )
+```
+
