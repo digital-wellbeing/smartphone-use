@@ -105,6 +105,10 @@ fig:inspect-model9-study1-1
 fig:inspect-model9-study1-2
 fig:ppc-model9-study1
 fig:effects-model9-study1
+fig:inspect-model9-1
+fig:inspect-model9-2
+fig:ppc-model10
+fig:effects-model10
 setting-up-study1
 data-processing-study1
 personality-data
@@ -133,6 +137,7 @@ does-social-media-use-predict-well-being
 model-7-objective-use-predicting-well-being
 model-8-subjective-use-predicting-well-being
 model-9-accuracy-predicting-well-being
+relation-between-subjective-and-objective-use
 synthesis-study-1
 personality-on-smartphone-use-trait
 experiences-on-smartphone-use-state

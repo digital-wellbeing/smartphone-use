@@ -1526,3 +1526,8 @@ study1 <-
   )
 ```
 
+Write the analysis file.
+```{r write-file}
+write_rds(study1, here("data", "study1", "processed_data.rds"))
+```
+

@@ -107,7 +107,7 @@ Credit for the code for the figures goes to [Solomon Kurz](https://bookdown.org/
 p1 <- 
   ggplot(
     tibble(
-      y = rlnorm(1000, 4.7, 0.5)
+      y = rlnorm(1000, 4.5, 0.8)
     ) %>%
       mutate(Density = 1),
     aes(
@@ -186,7 +186,7 @@ p3 <-
     i = 1:100,
     a = rnorm(100, mean = 4.5 , sd = 0.8)) %>%
   mutate(`beta%~%Normal(0*', '*0.1)`  = rnorm(100, mean = 0 , sd = 0.1),
-         `beta%~%Normal(0.3*', '*0.2)` = rnorm(100, mean = 0.2 , sd = 0.15)) %>% 
+         `beta%~%Normal(0.2*', '*0.15)` = rnorm(100, mean = 0.2 , sd = 0.15)) %>% 
   pivot_longer(contains("beta"),
                values_to = "b",
                names_to = "prior") %>% 
@@ -1259,4 +1259,65 @@ summary(model9, priors = TRUE)
 The effects plot (Figure \@ref(fig:effects-model9-study1)) shows that the effect, if even there, is small at best.
 ```{r effects-model9-study1, echo=FALSE, fig.cap="Effects plot for Model 9"}
 mcmc_plot(model9)
+```
+
+## Relation between subjective and objective use
+
+Something that wasn't part of the original plan: inspecting the relation between subjective and objective use a bit closer.
+The absolute difference between the two wasn't that large, so it's possible that the difference isn't meaningfully different from zero.
+For that reason, I predict subjective use with objective use and then inspect the parameter.
+The intercept will tell us whether the subjective overestimate is different from zero (so an indicator of bias).
+The slope will tell us how sensitive subjective is to the true value.
+And the sigma will tell us how much error there is.
+
+Unfortunately, the model has huge problems with a Gamma distribution as outcome, so I went for a normal distribution with the predictor grand-mean centered instead.
+Also, I'm not using informed priors here and rely on the default `brms` priors.
+For this question, I'm not interested in distinguishing between- and within-person effects.
+```{r model10}
+model10 <- 
+  brm(
+    data = study1,
+    family = gaussian,
+    social_media_subjective ~
+      1 +
+      social_media_objective +
+      (1 + social_media_objective | id) +
+      (1 | day),
+    iter = 5000,
+    warmup = 2000,
+    chains = 4,
+    cores = 4,
+    seed = 42,
+    control = list(adapt_delta = 0.99),
+    file = here("models", "study1", "model10.rds")
+  )
+```
+
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model10)).
+```{r inspect-model9, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 10"}
+# load model
+model10 <- read_rds(here("models", "study1", "model10.rds"))
+
+# plot traceplots and posterior distributions
+plot(model10, ask = FALSE)
+```
+
+The posterior predictive checks (Figure \@ref(fig:ppc-model10)) look good, but overestimating how many negative values there are because it relies on a normal distribution.
+```{r ppc-model10, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 10"}
+model_diagnostics(model10)
+```
+
+Five cases are flagged as potentially influential, which is why we calculate ELPD directly.
+```{r outliers-model10, cache=TRUE}
+loo(model10, reloo = TRUE)
+```
+
+Let's inspect the summary: indeed the intercept is different from zero, which speaks for a bias/systematic error in overestimates of social media time.
+```{r summary-model10}
+summary(model10, priors = TRUE)
+```
+
+The effects plot (Figure \@ref(fig:effects-model10)) shows that visually.
+```{r effects-model10, echo=FALSE, fig.cap="Effects plot for Model 10"}
+mcmc_plot(model10)
 ```
