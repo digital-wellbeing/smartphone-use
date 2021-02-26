@@ -1,7 +1,7 @@
-# Data processing Study 1 {#data-processing-study1}
+# Data processing {#data-processing}
 
 Let's process the raw data and get them to a format that we can work with for the analysis.
-Study 1 has three raw data files:
+The study has three raw data files:
 
 * `personality_raw.csv` is the survey participants filled out at the beginning of the study, reporting personality traits
 * `diary_raw.csv` is the end of day survey participants filled out during the diary part of the study
@@ -11,7 +11,7 @@ Study 1 has three raw data files:
 
 Let's load the personality data.
 ```{r load-personality-data, message=FALSE}
-personality_raw <- read_csv(here("data", "study1", "personality_raw.csv"))
+personality_raw <- read_csv(here("data", "personality_raw.csv"))
 ```
 
 
@@ -397,7 +397,7 @@ personality <-
 Let's load and inspect the diary data.
 ```{r load-diary-data, message=FALSE}
 # load data
-diary_raw <- read_csv(here("data", "study1", "diary_raw.csv"))
+diary_raw <- read_csv(here("data", "diary_raw.csv"))
 ```
 
 Qualtrics names aren't very informative, so I give some sensible variable names.
@@ -784,7 +784,7 @@ diary_exclusions_4 <-
 
 Load the screen time data.
 ```{r load-screen-data, message=FALSE}
-screen_time_raw <- read_csv(here("data", "study1", "screen_time_raw.csv"))
+screen_time_raw <- read_csv(here("data", "screen_time_raw.csv"))
 ```
 
 Alright, the data are extremely wide because of the Qualtrics format.
@@ -940,7 +940,7 @@ rm(apps, apps_times, days, names1, names2, names3, names4)
 Before I assign variables types and factor levels, I saw that, for some reason, the past week's number of pickups for each app have text entries, not numerical (i.e., `"twenty one"` instead of `21`).
 I know that the `english` package can translate numbers to words, but not the other way around.
 Thank god, someone has written a function for this, see full details [here](https://stackoverflow.com/questions/18332463/convert-written-number-to-number-in-r).
-The function is in the [Setting up](#setting-up-study1) chapter.
+The function is in the [Setting up](#setting-up) chapter.
 Note that this `word2num` function doesn't work well with the word "and".
 For example, `"three hundred and eleven"` turns into ``r word2num("three hundred and eleven")``, but `"three hundred eleven"` turns into the correct ``r word2num("three hundred eleven")``.
 Therefore, I first remove all "and"s from those variables, then apply the function.
@@ -1258,7 +1258,7 @@ The identifier for a survey are the participant `id` and the `day` on which they
 Note that we omit the meta-data from `totals_long` (e.g., `start_date`) because they are different from the meta-data of `diary`.
 We also only keep the variables of interest from here on, meaning I'll exclude some variables that aren't informative.
 ```{r merge-diary-totals-long}
-study1 <- 
+dat <- 
   left_join(
     
     # the diary data with only relevant variables
@@ -1287,17 +1287,17 @@ The merging above kept all cases of `diary` and added variables from `totals_lon
 Therefore, I remove all cases which have `NA` on the added variables to get to our final sample.
 (There were no missings in the `social_media_objective` variable.)
 In other words, this removes those participants who didn't fill out the screen time survey.
-```{r remove-missing-objective-study1}
-study1 <- 
-  study1 %>% 
+```{r remove-missing-objective}
+dat <- 
+  dat %>% 
   filter(!is.na(social_media_objective))
 ```
 
 For descriptive information, I'll also add the survey duration of the screen time data.
 ```{r add-screen-time-duration}
-study1 <- 
+dat <- 
   left_join(
-    study1,
+    dat,
     screen_time %>% 
       select(id, duration) %>% 
       rename(
@@ -1308,11 +1308,11 @@ study1 <-
 ```
 
 Okay, then I add the personality variables.
-Again, `study1` is the "master" and we add personality variables (aka traits from `personality`), omitting variables that aren't of interest.
+Again, `dat` is the "master" and we add personality variables (aka traits from `personality`), omitting variables that aren't of interest.
 ```{r merge-diary-personality}
-study1 <- 
+dat <- 
   left_join(
-    study1,
+    dat,
     personality %>% 
       select(
         duration_personality = duration,
@@ -1324,10 +1324,10 @@ study1 <-
 ```
 
 Then, I add the notifications over one week as a constant.
-```{r add-notifications-study1}
-study1 <- 
+```{r add-notifications}
+dat <- 
   left_join(
-    study1,
+    dat,
     notifications_aggregated,
     by = "id"
   )
@@ -1340,41 +1340,41 @@ Note that I don't exclude those in `diary_exclusions_2` after all: Those are the
 ## personality
 
 # nobody left who didn't fill in the personality survey
-unique(study1$id %in% personality_exclusions_1)
+unique(dat$id %in% personality_exclusions_1)
 
 # and nobody with empty rows
-unique(study1$id %in% personality_exclusions_2)
+unique(dat$id %in% personality_exclusions_2)
 
 # the people who failed attention checks either didn't fill out the diary or the screen time part
-unique(study1$id %in% personality_exclusions_3)
+unique(dat$id %in% personality_exclusions_3)
 
 # same goes for personality straightliners
-unique(study1$id %in% personality_exclusions_4)
+unique(dat$id %in% personality_exclusions_4)
 
 ## diary
 
 # some people with empty diary entries left, nobody left who didn't participate in the diary (no wonder, we used diary as the base for merging)
 # those people will have empty diary entries, but still data for screen time, so no need to exclude them here, they'll be dropped from analysis automatically because of NA
-inner_join(diary_exclusions_1, study1 %>% select(id, day)) %>% nrow()
+inner_join(diary_exclusions_1, dat %>% select(id, day)) %>% nrow()
 
 # don't exclude anyone who missed a diary entry
 
 # diary straightliners: need to exclude one person
-study1$id[study1$id %in% diary_exclusions_3]
+dat$id[dat$id %in% diary_exclusions_3]
 
-study1 <- 
-  study1 %>% 
+dat <- 
+  dat %>% 
   filter(!id %in% diary_exclusions_3)
 
 # last, exclude one diary entry that was provided too late (see details above)
-study1 <- 
-  study1 %>% 
+dat <- 
+  dat %>% 
   anti_join(., diary_exclusions_4)
 
 ## screen time exclusions
 
 # those with empty rows will have been excluded as we merged diary with totals_long (totals long excluded those who had all NA)
-unique(study1$id %in% screen_time_exclusions_1)
+unique(dat$id %in% screen_time_exclusions_1)
 ```
 
 Good, then we have our final data set.
@@ -1393,15 +1393,15 @@ In my opinion, that is more intuitive than a difference score.
 It's easier to understand the magnitude of an error in percent (say 80%) than raw units (say 10 minutes).
 However, percent error brings one complication with it: If participants estimated 0 social media use, percent error becomes meaningless.
 0 - objective / objective will always lead -100%.
-There's `r study1 %>% filter(social_media_subjective == 0 & social_media_objective > 0) %>% nrow()` cases with an estimate of zero, but actual, objective use.
+There's `r dat %>% filter(social_media_subjective == 0 & social_media_objective > 0) %>% nrow()` cases with an estimate of zero, but actual, objective use.
 It's impossible in this case to determine an error percentage, simply because 0 is meaningless in the formula.
 I could use a difference score instead, but that'll make the interpretation less intuitive.
 Those zeros might've also been typos, given how rare zeros are in the sample.
 I could set those error instances to missing, but in the analysis, we want to be able to compare coefficient predicting both social media and error.
 Therefore, I'll set all three variables to `NA`.
-```{r calculate-error-study1}
-study1 <- 
-  study1 %>% 
+```{r calculate-error}
+dat <- 
+  dat %>% 
   mutate(
     # error social media time
     error = (social_media_subjective - social_media_objective) / social_media_objective * 100,
@@ -1412,20 +1412,20 @@ study1 <-
   )
 ```
 
-Let's inspect the distribution in Figure \@ref(fig:error-distribution-study1).
+Let's inspect the distribution in Figure \@ref(fig:error-distribution-dat).
 We see that a couple of participants have massive overestimation errors.
-```{r error-distribution-study1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Distribution of percent error for screen time"}
-dens_with_points(study1, "error")
+```{r error-distribution-dat, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Distribution of percent error for screen time"}
+dens_with_points(dat, "error")
 ```
 
-I checked their raw data: One participant indicated exactly five hours, but probably meant five minutes (i.e., the participant with an error of `r max(study1$error, na.rm = TRUE)`.
+I checked their raw data: One participant indicated exactly five hours, but probably meant five minutes (i.e., the participant with an error of `r max(dat$error, na.rm = TRUE)`.
 Similarly, the second largest entry seems to be a typo (i.e., 58 minutes).
 I'll set those all entries that are larger than 1500% to `NA`.
 Also, one participant had zero objective time and zero subjective time.
 Dividing by zero to get error above leads to `NaN`, so I'll set that `NA`.
-```{r remove-large-errors-study1}
-study1 <- 
-  study1 %>% 
+```{r remove-large-errors-dat}
+dat <- 
+  dat %>% 
   mutate(
     error = if_else(error > 1500, NA_real_, error),
     error = if_else(
@@ -1435,9 +1435,9 @@ study1 <-
 ```
 
 Last, some housekeeping, reordering variables and making sure they all have the correct variable type, plus reordering the `day` factor.
-```{r final-study1-data}
-study1 <- 
-  study1 %>% 
+```{r final-dat-data}
+dat <- 
+  dat %>% 
   select(
     id,
     age:ethnicity,
@@ -1470,9 +1470,9 @@ study1 <-
   )
 ```
 
-When plotting the app data I want them to reflect the final sample, which is why I only keep those participants and surveys in the `apps_long` data set that are also in the final data set (i.e., `study1`).
-I can't just exclude those participants in `apps_long` because I also excluded surveys in `diary` on which `study1` is based.
-Therefore, I only keep those entries in `apps_long` which have a corresponding row in `study1` (aka entries in both `id` and `day`).
+When plotting the app data I want them to reflect the final sample, which is why I only keep those participants and surveys in the `apps_long` data set that are also in the final data set (i.e., `dat`).
+I can't just exclude those participants in `apps_long` because I also excluded surveys in `diary` on which `dat` is based.
+Therefore, I only keep those entries in `apps_long` which have a corresponding row in `dat` (aka entries in both `id` and `day`).
 Also, I'll remove "week" as a time frame and add the notifications for that app over whole week as a constant per app.
 ```{r apps-long-valid-only}
 apps_week <- 
@@ -1491,7 +1491,7 @@ apps_long <-
   left_join(
     
     # only those participants and days that are in final data set
-    study1 %>% 
+    dat %>% 
       select(id, day),
     
     # and the rest of the variables from apps_long, but without week
@@ -1516,8 +1516,8 @@ apps_long <-
 Last, there are some `NaN`s in the data set after the transformations.
 I'll turn them into missings (i.e., `NA`).
 ```{r transform-nan}
-study1 <- 
-  study1 %>% 
+dat <- 
+  dat %>% 
   mutate(
     across(
       everything(),
@@ -1528,6 +1528,6 @@ study1 <-
 
 Write the analysis file.
 ```{r write-file}
-write_rds(study1, here("data", "study1", "processed_data.rds"))
+write_rds(dat, here("data", "processed_data.rds"))
 ```
 

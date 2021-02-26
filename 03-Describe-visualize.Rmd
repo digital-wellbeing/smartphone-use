@@ -1,10 +1,10 @@
-# Descriptives and Visualizations Study 1
+# Descriptives and Visualizations
 
 ## Overview
 
 In this section, I describe and visualize the sample and variables.
 We have variables on the meta-level (about the survey), the person-level, the app-level, and the day-level.
-App-level data is in the `apps_long` data file; all other in the `study1` data file.
+App-level data is in the `apps_long` data file; all other in the `dat` data file.
 
 **Meta-level**
 
@@ -44,21 +44,21 @@ App-level data is in the `apps_long` data file; all other in the `study1` data f
 ## Meta-level
 
 I begin with describing and plotting the duration of the entry and exit surveys.
-Table \@ref(tab:describe-durations-study1) shows descriptive stats; Figure \@ref(fig:visualize-durations-study1) shows that twp participants had their entry surveys open for a day before pressing send, which skews the mean massively.
+Table \@ref(tab:describe-durations) shows descriptive stats; Figure \@ref(fig:visualize-durations) shows that twp participants had their entry surveys open for a day before pressing send, which skews the mean massively.
 However, those people's data look good, so I wouldn't exclude them here.
 Note: Colors are from [here](https://www.datanovia.com/en/blog/ggplot-colors-best-tricks-you-will-love/#use-a-colorblind-friendly-palette).
-```{r describe-durations-study1, echo=FALSE}
+```{r describe-durations, echo=FALSE}
 # get the descriptives and bind them into a data frame (see custom functions)
 durations <- 
   bind_rows(
     list(
       describe(
-        study1,
+        dat,
         "duration_personality",
         trait = TRUE
       ),
       describe(
-        study1,
+        dat,
         "duration_screen_time",
         trait = TRUE
       )
@@ -85,10 +85,10 @@ knitr::kable(
 )
 ```
 
-```{r visualize-durations-study1, fig.cap= "Duration of surveys", echo=FALSE}
+```{r visualize-durations, fig.cap= "Duration of surveys", echo=FALSE}
 plot_grid(
   single_cloud( # custom function, see setting up chapter
-    study1,
+    dat,
     durations,
     "duration_personality",
     "#009E73",
@@ -96,7 +96,7 @@ plot_grid(
     trait = TRUE
   ),
   single_cloud(
-    study1,
+    dat,
     durations,
     "duration_screen_time",
     "#D55E00",
@@ -110,20 +110,20 @@ plot_grid(
 ## Person-level
 
 Let's have a look at the final sample.
-Overall, our sample size is **N = `r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow()`**.
-The sample has a mean age of *M* = `r round(study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% mean())`, *SD* = `r round(study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% sd())`.
-The sample consists mostly of women (`r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% filter(gender == "female") %>% nrow()` women, `r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% filter(gender == "male") %>% nrow()` men, and one non-binary participant).
-```{r describe-age-study1, echo=FALSE}
+Overall, our sample size is **N = `r dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow()`**.
+The sample has a mean age of *M* = `r round(dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% mean())`, *SD* = `r round(dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% sd())`.
+The sample consists mostly of women (`r dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% filter(gender == "female") %>% nrow()` women, `r dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% filter(gender == "male") %>% nrow()` men, and one non-binary participant).
+```{r describe-age, echo=FALSE}
 age <- 
   describe(
-    study1,
+    dat,
     "age",
     trait = TRUE
   )
 ```
-```{r visualize-age-study1, echo=FALSE}
+```{r visualize-age, echo=FALSE}
 single_cloud(
-  study1,
+  dat,
   age,
   "age",
   "#009E73",
@@ -132,9 +132,9 @@ single_cloud(
 )
 ```
 
-Most participants are Asian, followed by White, Black, and Hispanic, see Table \@ref(tab:ethnicity-table-study1)
-```{r ethnicity-table-study1, echo = FALSE}
-study1 %>% 
+Most participants are Asian, followed by White, Black, and Hispanic, see Table \@ref(tab:ethnicity-table)
+```{r ethnicity-table, echo = FALSE}
+dat %>% 
   group_by(id) %>% 
   slice(1) %>% 
   ungroup() %>% 
@@ -149,12 +149,12 @@ study1 %>%
 ```
 
 Alright, next we look at the objective count of notifications over the past week, aggregated across all apps.
-Table \@ref(tab:weekly-notifications-table-study1) shows that participants received quite a lot of notifications from social media apps only.
-That distribution is heavily skewed (Figure \@ref(fig:visualize-weekly-notifications-study1) by a couple of participants who received several thousand notifications over the week.
-```{r weekly-notifications-table-study1, echo=FALSE}
+Table \@ref(tab:weekly-notifications-table) shows that participants received quite a lot of notifications from social media apps only.
+That distribution is heavily skewed (Figure \@ref(fig:visualize-weekly-notifications) by a couple of participants who received several thousand notifications over the week.
+```{r weekly-notifications-table, echo=FALSE}
 notifications <- 
   describe(
-    study1,
+    dat,
     "weekly_notifications",
     trait = TRUE
   )
@@ -166,9 +166,9 @@ notifications %>%
   )
 ```
 
-```{r visualize-weekly-notifications-study1, echo=FALSE, fig.cap="Weekly notifications (objective) across all apps"}
+```{r visualize-weekly-notifications, echo=FALSE, fig.cap="Weekly notifications (objective) across all apps"}
 single_cloud(
-  study1,
+  dat,
   notifications,
   "weekly_notifications",
   "#009E73",
@@ -179,26 +179,26 @@ single_cloud(
 
 Now we look at the trait variables: the basic psychological need satisfaction and the big five.
 Note that I follow recent recommendations and calculate $\omega$ for reliability.
-Table \@ref(tab:traits-descriptives-study1) shows the descriptive information of the three psychological needs and the big five.
-Figure \@ref(fig:traits-visualize-study1) shows their distribution.
+Table \@ref(tab:traits-descriptives) shows the descriptive information of the three psychological needs and the big five.
+Figure \@ref(fig:traits-visualize) shows their distribution.
 The sample isn't too large, so considering the small size, I'd say everything looks pretty good.
-```{r traits-descriptives-study1, echo=FALSE}
+```{r traits-descriptives, echo=FALSE}
 ### descriptives for BPNS
 bpns <- 
   bind_rows(
     list(
       describe(
-        study1,
+        dat,
         "autonomy_trait",
         trait = TRUE
       ),
       describe(
-        study1,
+        dat,
         "competence_trait",
         trait = TRUE
       ),
       describe(
-        study1,
+        dat,
         "relatedness_trait",
         trait = TRUE
       )
@@ -208,7 +208,7 @@ bpns <-
 # get omega with the MBESS package
 autonomy_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       group_by(id) %>% 
       slice(1) %>% 
       ungroup() %>% 
@@ -219,7 +219,7 @@ autonomy_omega <-
 
 competence_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       group_by(id) %>% 
       slice(1) %>% 
       ungroup() %>% 
@@ -230,7 +230,7 @@ competence_omega <-
 
 competence_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       group_by(id) %>% 
       slice(1) %>% 
       ungroup() %>% 
@@ -241,7 +241,7 @@ competence_omega <-
 
 relatedness_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       group_by(id) %>% 
       slice(1) %>% 
       ungroup() %>% 
@@ -262,27 +262,27 @@ big_five <-
   bind_rows(
     list(
       describe(
-        study1,
+        dat,
         "extraversion",
         trait = TRUE
       ),
       describe(
-        study1,
+        dat,
         "agreeableness",
         trait = TRUE
       ),
       describe(
-        study1,
+        dat,
         "conscientiousness",
         trait = TRUE
       ),
       describe(
-        study1,
+        dat,
         "neuroticism",
         trait = TRUE
       ),
       describe(
-        study1,
+        dat,
         "openness",
         trait = TRUE
       )
@@ -292,7 +292,7 @@ big_five <-
 # get omegas
 extraversion_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       group_by(id) %>% 
       slice(1) %>% 
       ungroup() %>% 
@@ -312,7 +312,7 @@ extraversion_omega <-
 
 agreeableness_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       group_by(id) %>% 
       slice(1) %>% 
       ungroup() %>% 
@@ -333,7 +333,7 @@ agreeableness_omega <-
 
 conscientiousness_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       group_by(id) %>% 
       slice(1) %>% 
       ungroup() %>% 
@@ -354,7 +354,7 @@ conscientiousness_omega <-
 
 neuroticism_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       group_by(id) %>% 
       slice(1) %>% 
       ungroup() %>% 
@@ -374,7 +374,7 @@ neuroticism_omega <-
 
 openness_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       group_by(id) %>% 
       slice(1) %>% 
       ungroup() %>% 
@@ -440,11 +440,11 @@ rm(
 )
 ```
 
-```{r traits-visualize-study1, fig.cap="Distribution of trait variables", fig.dim=c(8.5,9), echo=FALSE}
+```{r traits-visualize, fig.cap="Distribution of trait variables", fig.dim=c(8.5,9), echo=FALSE}
 plot_grid(
   # bpns
   single_cloud(
-    study1,
+    dat,
     trait_descriptives,
     "autonomy_trait",
     "#999999",
@@ -452,7 +452,7 @@ plot_grid(
     trait = TRUE
   ),
   single_cloud(
-    study1,
+    dat,
     trait_descriptives,
     "competence_trait",
     "#E69F00",
@@ -460,7 +460,7 @@ plot_grid(
     trait = TRUE
   ),
   single_cloud(
-    study1,
+    dat,
     trait_descriptives,
     "relatedness_trait",
     "#56B4E9",
@@ -470,7 +470,7 @@ plot_grid(
   
   # big five
   single_cloud(
-    study1,
+    dat,
     trait_descriptives,
     "extraversion",
     "#009E73",
@@ -478,7 +478,7 @@ plot_grid(
     trait = TRUE
   ),
   single_cloud(
-    study1,
+    dat,
     trait_descriptives,
     "agreeableness",
     "#F0E442",
@@ -486,7 +486,7 @@ plot_grid(
     trait = TRUE
   ),
   single_cloud(
-    study1,
+    dat,
     trait_descriptives,
     "conscientiousness",
     "#0072B2",
@@ -494,7 +494,7 @@ plot_grid(
     trait = TRUE
   ),
   single_cloud(
-    study1,
+    dat,
     trait_descriptives,
     "neuroticism",
     "#D55E00",
@@ -502,7 +502,7 @@ plot_grid(
     trait = TRUE
   ),
   single_cloud(
-    study1,
+    dat,
     trait_descriptives,
     "openness",
     "#CC79A7",
@@ -513,12 +513,12 @@ plot_grid(
 )
 ```
 
-In Figure \@ref(fig:visualize-correlations-traits-study1) we see the correlations between those traits.
+In Figure \@ref(fig:visualize-correlations-traits) we see the correlations between those traits.
 As expected psychological needs are correlated highly with each other.
 Credit for the `lm` lines goes to [data prone](https://www.r-bloggers.com/multiple-regression-lines-in-ggpairs/), whose idea I adapted.
-```{r visualize-correlations-traits-study1, fig.cap="Correlation matrix of trait level variables", fig.dim=c(12,12), echo=FALSE, message=FALSE}
+```{r visualize-correlations-traits, fig.cap="Correlation matrix of trait level variables", fig.dim=c(12,12), echo=FALSE, message=FALSE}
 ggpairs(
-  data = study1 %>%
+  data = dat %>%
     group_by(id) %>% 
     slice(1) %>% 
     ungroup() %>% 
@@ -762,15 +762,15 @@ apps_long %>%
 
 Alright, we're at the most interesting section, the daily surveys.
 I first look at how long people typically took for a survey.
-Table \@ref(tab:describe-survey-duration-study1) shows that the mean is highly skewed because of outliers and the median more appropriate to describe the duration.
-In Figure \@ref(fig:visualize-survey-duration-study1) we see that a couple of people took a long time from opening to submitting the survey.
-I checked those participants who took a long time in the [data processing section](#data-processing-study1).
+Table \@ref(tab:describe-survey-duration) shows that the mean is highly skewed because of outliers and the median more appropriate to describe the duration.
+In Figure \@ref(fig:visualize-survey-duration) we see that a couple of people took a long time from opening to submitting the survey.
+I checked those participants who took a long time in the [data processing section](#data-processing).
 The maximum duration here from someone who didn't open the survey on a Friday.
 So that duration is just the survey closing automatically after two days, which really drives up the mean.
-```{r describe-survey-duration-study1, echo=FALSE}
+```{r describe-survey-duration, echo=FALSE}
 knitr::kable(
   describe(
-    study1,
+    dat,
     "duration_diary"
   ) %>% 
     mutate(
@@ -787,11 +787,11 @@ knitr::kable(
 )
 ```
 
-```{r visualize-survey-duration-study1, fig.cap= "Duration of daily surveys", echo=FALSE, warning=FALSE}
+```{r visualize-survey-duration, fig.cap= "Duration of daily surveys", echo=FALSE, warning=FALSE}
 single_cloud(
-  study1,
+  dat,
   describe(
-    study1,
+    dat,
     "duration_diary"
   ),
   "duration_diary",
@@ -802,18 +802,18 @@ single_cloud(
 ```
 
 Alright, next I inspect overall response rate in the final sample, aka how many valid surveys do we have among the final sample.
-Each participant received five surveys, one for each day, so `r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow()` participants x 5 = `r study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow() * 5`.
-We have `r study1 %>% filter(!is.na(enjoyable)) %>% nrow()` surveys in the final sample where participants actually responded, which means a `r round(study1 %>% filter(!is.na(enjoyable)) %>% nrow() / (study1 %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow() * 5) * 100)`% response rate among the final sample.
+Each participant received five surveys, one for each day, so `r dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow()` participants x 5 = `r dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow() * 5`.
+We have `r dat %>% filter(!is.na(enjoyable)) %>% nrow()` surveys in the final sample where participants actually responded, which means a `r round(dat %>% filter(!is.na(enjoyable)) %>% nrow() / (dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow() * 5) * 100)`% response rate among the final sample.
 
 Let's inspect response rate per day.
 As is to be expected, participants lost motivation over the course of the week.
 However, even the response rate on Friday is really high (at least among our sample of valid responses).
 We should still consider to take the day grouping into account when modelling the data later in the analysis.
-```{r responses-per-day-study1, echo=FALSE, fig.cap="Survey responses per day"}
-study1 %>% 
+```{r responses-per-day, echo=FALSE, fig.cap="Survey responses per day"}
+dat %>% 
   filter(!is.na(enjoyable)) %>% # last item of the diary, so going for complete responses here
   count(day) %>% 
-  mutate(percent = round(n / nrow(study1 %>% group_by(id) %>% slice(1)) * 100)) %>%  # divide by maximum number of surveys, which is number of valid participants
+  mutate(percent = round(n / nrow(dat %>% group_by(id) %>% slice(1)) * 100)) %>%  # divide by maximum number of surveys, which is number of valid participants
   ggplot(
     aes(
       x = day,
@@ -852,40 +852,40 @@ study1 %>%
 
 Next, I describe and plot the distributions of the social media use variables.
 The distribution and CI is of the entire sample, not aggregated by participant or day first.
-Table \@ref(tab:social-media-descriptives-study1) shows that participants weren't too far off in their estimates, which is interesting.
-As expected (Figure \@ref(fig:social-media-visualize-study1)), the social media variables are a bit skewed, but overall, they look fine.
-```{r social-media-descriptives-study1, echo=FALSE}
+Table \@ref(tab:social-media-descriptives) shows that participants weren't too far off in their estimates, which is interesting.
+As expected (Figure \@ref(fig:social-media-visualize)), the social media variables are a bit skewed, but overall, they look fine.
+```{r social-media-descriptives, echo=FALSE}
 ### descriptives for BPNS
 social_media <- 
   bind_rows(
     list(
       describe(
-        study1,
+        dat,
         "social_media_subjective",
         trait = FALSE
       ),
       describe(
-        study1,
+        dat,
         "social_media_objective",
         trait = FALSE
       ),
       describe(
-        study1,
+        dat,
         "error",
         trait = FALSE
       ),
       describe(
-        study1,
+        dat,
         "pickups_subjective",
         trait = FALSE
       ),
       describe(
-        study1,
+        dat,
         "pickups_objective",
         trait = FALSE
       ),
       describe(
-        study1,
+        dat,
         "notifications_subjective",
         trait = FALSE
       )
@@ -905,11 +905,11 @@ social_media %>%
   )
 ```
 
-```{r social-media-visualize-study1, warning=FALSE, message=FALSE, fig.cap="Distribution of social media variables", fig.dim=c(8.5,9), echo=FALSE}
+```{r social-media-visualize, warning=FALSE, message=FALSE, fig.cap="Distribution of social media variables", fig.dim=c(8.5,9), echo=FALSE}
 plot_grid(
   # screen time
   single_cloud(
-    study1,
+    dat,
     social_media,
     "social_media_subjective",
     "#999999",
@@ -917,7 +917,7 @@ plot_grid(
     trait = FALSE
   ),
   single_cloud(
-    study1,
+    dat,
     social_media,
     "social_media_objective",
     "#E69F00",
@@ -925,7 +925,7 @@ plot_grid(
     trait = FALSE
   ),
   single_cloud(
-    study1,
+    dat,
     social_media,
     "error",
     "#CC79A7",
@@ -933,7 +933,7 @@ plot_grid(
     trait = FALSE
   ),
   single_cloud(
-    study1,
+    dat,
     social_media,
     "pickups_subjective",
     "#56B4E9",
@@ -941,7 +941,7 @@ plot_grid(
     trait = FALSE
   ),
   single_cloud(
-    study1,
+    dat,
     social_media,
     "pickups_objective",
     "#009E73",
@@ -949,7 +949,7 @@ plot_grid(
     trait = FALSE
   ),
   single_cloud(
-    study1,
+    dat,
     social_media,
     "notifications_subjective",
     "#F0E442",
@@ -967,7 +967,7 @@ Inspiration for the plot from [here](https://rud.is/b/2016/04/17/ggplot2-exercis
 ```{r dumbbell-social-media, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Difference between subjective and objective social media use (difference in grey box)", fig.dim=c(8,20)}
 # aggregate by participant over day
 plot_data <- 
-  study1 %>% 
+  dat %>% 
   group_by(id) %>% 
   summarise(
     social_media_objective = mean(social_media_objective, na.rm = T),
@@ -980,7 +980,7 @@ plot_data <-
 
 # same as above, but in long format so we can get a legend
 plot_data_long <- 
-  study1 %>% 
+  dat %>% 
   group_by(id) %>% 
   summarise(
     social_media_objective = mean(social_media_objective, na.rm = T),
@@ -1058,15 +1058,15 @@ rm(
 
 
 Now let's look at the state well-being and psychological needs variables plus the four experiences (e.g., `boring`).
-Again, I calculate $\omega$, but this time for the entire sample in Table \@ref(tab:states-descriptives-study1).
+Again, I calculate $\omega$, but this time for the entire sample in Table \@ref(tab:states-descriptives).
 That will necessarily bias the estimate because there's multiple measures per person.
 I'm not aware of a consensus reliability procedure for repeated measures.
-Figure \@ref(fig:states-visualize-study1) shows that the data look pretty good.
-```{r states-descriptives-study1, echo=FALSE, message=FALSE, warning=FALSE}
+Figure \@ref(fig:states-visualize) shows that the data look pretty good.
+```{r states-descriptives, echo=FALSE, message=FALSE, warning=FALSE}
 ### well-being
 well_being <- 
   describe(
-    study1,
+    dat,
     "well_being_state",
     trait = FALSE
   )
@@ -1074,7 +1074,7 @@ well_being <-
 # get omega
 well_being_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       select(low_positive_peaceful:low_negative_gloomy),
     type = "omega",
     B = 1e4
@@ -1092,17 +1092,17 @@ needs <-
   bind_rows(
     list(
       describe(
-        study1,
+        dat,
         "autonomy_state",
         trait = FALSE
       ),
       describe(
-        study1,
+        dat,
         "competence_state",
         trait = FALSE
       ),
       describe(
-        study1,
+        dat,
         "relatedness_state",
         trait = FALSE
       )
@@ -1112,7 +1112,7 @@ needs <-
 # get omegas
 autonomy_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       select(
         autonomy_1:autonomy_4
       ),
@@ -1122,7 +1122,7 @@ autonomy_omega <-
 
 competence_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       select(
         competence_1:competence_4
       ),
@@ -1132,7 +1132,7 @@ competence_omega <-
 
 relatedness_omega <- 
   ci.reliability(
-    data = study1 %>% 
+    data = dat %>% 
       select(
         relatedness_1:relatedness_4
       ),
@@ -1156,22 +1156,22 @@ experiences <-
   bind_rows(
     list(
       describe(
-        study1,
+        dat,
         "satisfied",
         trait = FALSE
       ),
       describe(
-        study1,
+        dat,
         "boring",
         trait = FALSE
       ),
       describe(
-        study1,
+        dat,
         "stressful",
         trait = FALSE
       ),
       describe(
-        study1,
+        dat,
         "enjoyable",
         trait = FALSE
       )
@@ -1209,11 +1209,11 @@ rm(
 )
 ```
 
-```{r states-visualize-study1, warning=FALSE, message=FALSE, fig.cap="Distribution of state variables", fig.dim=c(8.5,9), echo=FALSE}
+```{r states-visualize, warning=FALSE, message=FALSE, fig.cap="Distribution of state variables", fig.dim=c(8.5,9), echo=FALSE}
 plot_grid(
   # well-being
   single_cloud(
-    study1,
+    dat,
     state_descriptives,
     "well_being_state",
     "#999999",
@@ -1222,7 +1222,7 @@ plot_grid(
     ),
   # needs
   single_cloud(
-    study1,
+    dat,
     state_descriptives,
     "autonomy_state",
     "#E69F00",
@@ -1230,7 +1230,7 @@ plot_grid(
     trait = FALSE
   ),
   single_cloud(
-    study1,
+    dat,
     state_descriptives,
     "competence_state",
     "#56B4E9",
@@ -1238,7 +1238,7 @@ plot_grid(
     trait = FALSE
   ),
   single_cloud(
-    study1,
+    dat,
     state_descriptives,
     "relatedness_state",
     "#009E73",
@@ -1246,7 +1246,7 @@ plot_grid(
     trait = FALSE
   ),
   single_cloud(
-    study1,
+    dat,
     experiences,
     "satisfied",
     "#F0E442",
@@ -1254,7 +1254,7 @@ plot_grid(
     trait = FALSE
   ),
   single_cloud(
-    study1,
+    dat,
     experiences,
     "boring",
     "#0072B2",
@@ -1262,7 +1262,7 @@ plot_grid(
     trait = FALSE
   ),
   single_cloud(
-    study1,
+    dat,
     experiences,
     "stressful",
     "#D55E00",
@@ -1270,7 +1270,7 @@ plot_grid(
     trait = FALSE
   ),
   single_cloud(
-    study1,
+    dat,
     experiences,
     "enjoyable",
     "#CC79A7",
@@ -1283,7 +1283,7 @@ plot_grid(
 In Figure \@ref(fig:visualize-correlations-objective-subjective) we see the correlations between variables on the state level.
 ```{r visualize-correlations-objective-subjective, message=FALSE, warning=F, echo=FALSE, fig.cap="Correlation matrix of state level variables. social = screen time on social media; _s = subjective; _o = objective; not = notifications", fig.dim=c(14,14)}
 ggpairs(
-  data = study1 %>%
+  data = dat %>%
     select(
       social_media_subjective:weekly_notifications,
       well_being_state:relatedness_state
@@ -1327,7 +1327,7 @@ ggpairs(
 In Figure \@ref(fig:visualize-correlations-objective-trait) we see the correlations between use variables on the state level and the trait level.
 ```{r visualize-correlations-objective-trait, message=FALSE, warning=F, echo=FALSE, fig.cap="Correlation matrix of use variables (state) and personality traits. social = screen time on social media; _s = subjective; _o = objective; not = notifications; extra = extraversion; agree = agreeableness; con = conscientiousness; neuo = neuroticism; open = openness", fig.dim=c(15,15)}
 ggpairs(
-  data = study1 %>%
+  data = dat %>%
     select(
       social_media_subjective:weekly_notifications,
       contains("trait"),
@@ -1380,9 +1380,9 @@ Here, I'll create summary figures for the paper.
 I'll begin with plotting the traits.
 
 For the plot, the data need to be in the long format.
-```{r data-figure1-study1}
-dat <- 
-  study1 %>% 
+```{r data-figure1}
+tmp <- 
+  dat %>% 
   group_by(id) %>% 
   slice(1) %>% 
   ungroup() %>% 
@@ -1437,12 +1437,12 @@ clean_plot_data <-
     return(dat)
   }
 
-dat <- clean_plot_data(dat, rename_levels, my_string)
+tmp <- clean_plot_data(tmp, rename_levels, my_string)
 trait_descriptives <- clean_plot_data(trait_descriptives, rename_levels, my_string)
 ```
 
 Okay, we already have the aggregated info in `trait_descriptives`, so we can get to plotting.
-```{r figure1-study1, warning=FALSE}
+```{r figure1, warning=FALSE}
 # function for breaks
 my_breaks <- 
   function(x) {
@@ -1468,7 +1468,7 @@ cb_palette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2"
 
 # plot
 ggplot(
-  dat,
+  tmp,
   aes(
     x = value,
     y = 1,
@@ -1543,9 +1543,9 @@ ggsave(
 ```
 
 Okay, next the state variables.
-```{r data-figure2-study1}
-dat <- 
-  study1 %>% 
+```{r data-figure2}
+tmp <- 
+  dat %>% 
   select(all_of(c("id", state_descriptives$variable))) %>% 
   pivot_longer(
     -id,
@@ -1566,15 +1566,15 @@ rename_levels <- c(
 
 my_string <- "_state"
 
-dat <- clean_plot_data(dat, rename_levels, my_string)
+tmp <- clean_plot_data(tmp, rename_levels, my_string)
 state_descriptives <- clean_plot_data(state_descriptives, rename_levels, my_string)
 ```
 
 Then to plotting.
-```{r figure2-study1, warning=FALSE}
+```{r figure2, warning=FALSE}
 # plot
 ggplot(
-  dat,
+  tmp,
   aes(
     x = value,
     y = 1,
@@ -1650,9 +1650,9 @@ ggsave(
 ```
 
 Alright, last the smartphone use variables.
-```{r data-figure3-study1}
-dat <- 
-  study1 %>% 
+```{r data-figure3}
+tmp <- 
+  dat %>% 
   select(all_of(c("id", "social_media_objective", "social_media_subjective", "error"))) %>%
   # turn to hours
   mutate(
@@ -1675,7 +1675,7 @@ rename_levels <- c(
 
 my_string <- "_state"
 
-dat <- clean_plot_data(dat, rename_levels, my_string)
+tmp <- clean_plot_data(tmp, rename_levels, my_string)
 social_media2 <- clean_plot_data(social_media, rename_levels, my_string) %>% 
   filter(variable %in% c("Objective (h)", "Subjective (h)", "Accuracy (%)")) %>% 
   # add x axis position for geom_text
@@ -1688,7 +1688,7 @@ social_media2 <- clean_plot_data(social_media, rename_levels, my_string) %>%
 ```
 
 And the plot.
-```{r figure3-study1, warning=FALSE}
+```{r figure3, warning=FALSE}
 # function for breaks
 my_breaks <- 
   function(x) {
@@ -1711,7 +1711,7 @@ my_limits <-
 
 # plot
 ggplot(
-  dat,
+  tmp,
   aes(
     x = value,
     y = 1,

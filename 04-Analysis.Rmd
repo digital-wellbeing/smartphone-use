@@ -1,4 +1,4 @@
-# Analysis Study 1
+# Analysis
 
 I move on to the analyses.
 We have about a dozen models to run.
@@ -22,16 +22,16 @@ I'll structure the analysis section according to those blocks.
 
 ## Data preparation
 
-I processed the `study1` data set in previous sections.
+I processed the `dat` data set in previous sections.
 Specifying priors on the untransformed variables can be tough.
 In some analyses (e.g., predicting social media use) I'll use centered predictors to make it easier to interpret the intercept.
 In other analyses (e.g., predicting error), I want to standardize outcomes and predictors of interest because standardized variables make it easier to choose sensible priors, especially because we can use standardized effect sizes reported in the literature.
 Standardizing also makes it easier to interpret the effect sizes.
 
 First, I transform all variables of interest (into new variables).
-```{r standardize-study1}
-study1 <- 
-  study1 %>% 
+```{r standardize}
+dat <- 
+  dat %>% 
   # center personality variables
   mutate(
     across(
@@ -47,10 +47,10 @@ study1 <-
 ```
 
 Next, let's have a look of how many `NA`s there are per variable.
-Table \@ref(tab:missings-study1) shows that missing values aren't a big problem.
+Table \@ref(tab:missings) shows that missing values aren't a big problem.
 The missings come from rows where participants didn't answer the diary, but did report screen time mostly.
-```{r missings-study1, echo=FALSE}
-study1 %>% 
+```{r missings, echo=FALSE}
+dat %>% 
   summarise(
     across(
       c(social_media_subjective:relatedness_state, satisfied:openness),
@@ -93,17 +93,17 @@ Thus, I follow the recommendations of McElreath and simulate the priors.
 
 * For the intercept, we can look at previous research.
 For example, this [paper](https://www.sciencedirect.com/science/article/abs/pii/S1071581919300473) has average phone use times of about two hours per participant per day.
-Here, we only looked at social media use, so as a guess-timate with reasonable uncertainty, I'll choose a lognormal distribution with a meanlog of 4.5 and a meansd of 0.8. See the upper left panel of Figure \@ref(fig:simulate-priors-model1-study1). That intercept has mots its value below two hours, but allows substantial skew for a couple of heavy users.
+Here, we only looked at social media use, so as a guess-timate with reasonable uncertainty, I'll choose a lognormal distribution with a meanlog of 4.5 and a meansd of 0.8. See the upper left panel of Figure \@ref(fig:simulate-priors-model1). That intercept has mots its value below two hours, but allows substantial skew for a couple of heavy users.
 * For the shape of the gamma distribution, I also played around and settled on one that somewhat resembles our assumptions on the intercept, such that the majority of values will be below five hours with a couple of heavy users (see left side upper panel).
 * For the Big Five fixed effects, this [paper](https://www.liebertpub.com/doi/full/10.1089/cyber.2019.0744) predicted social media use with the Big Five over two time period in a longitudinal design. They found that only neuroticism was related to social media use, but that effect was extremely small ($\beta$ = .028). None of the other effects were large. Therefore, I'll use rather flat, weakly regularizing priors for those effects.
-In \@ref(fig:simulate-priors-model1-study1), lower panel, I'll use the prior on the left, because it's skeptical, but regularizing.
+In \@ref(fig:simulate-priors-model1), lower panel, I'll use the prior on the left, because it's skeptical, but regularizing.
 The one on the right might be too optimistic by suggesting a small positive effect.
 * For basic psychological needs, there's quite some literature on these needs and pathological smartphone use ("smartphone addiction"). However, there's little info we could use for priors, so I'll just go with the same prior as for the Big Five.
 See the top right of the Figure below.
 * For all other parameters, I'll take the `brms` default priors.
 
 Credit for the code for the figures goes to [Solomon Kurz](https://bookdown.org/connect/#/apps/4857/access).
-```{r simulate-priors-model1-study1, echo=FALSE, fig.cap="Prior simmulations for Model 1"}
+```{r simulate-priors-model1, echo=FALSE, fig.cap="Prior simmulations for Model 1"}
 p1 <- 
   ggplot(
     tibble(
@@ -213,7 +213,7 @@ plot_grid(
 ```
 
 Let's set those priors we simulated above.
-```{r priors-model1-study1}
+```{r priors-model1}
 priors_model1 <- 
   c(
     # intercept
@@ -231,10 +231,10 @@ Alright, time to run the model.
 Luckily, none of these variables have missing values, so I won't need to model missings in this model.
 Note that I ran the block below once and stored the model.
 Those fit objects are too large for Github, so you can download them here [give Onedrive link].
-```{r model1-study1, eval=FALSE}
+```{r model1, eval=FALSE}
 model1 <- 
   brm(
-    data = study1,
+    data = dat,
     family = Gamma(link = "log"),
     prior = priors_model1,
     social_media_objective ~
@@ -255,45 +255,45 @@ model1 <-
     cores = 4,
     seed = 42,
     control = list(adapt_delta = 0.99),
-    file = here("models", "study1", "model1_study1")
+    file = here("models", "model1")
   )
 ```
 
 Let's inspect the traceplots.
-Overall, they look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model1-study1)).
+Overall, they look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model1)).
 The residual standard deviation around the day grouping doesn't look ideal though.
 Variation between days wasn't that great, so the model estimates quite a lot variances that are close to zero.
 We could remove the day grouping, but I think we have theoretical reasons to keep it, namely to account for all known sources of variation.
-```{r inspect-model1-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 1"}
+```{r inspect-model1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 1"}
 # load model
-model1 <- read_rds(here("models", "study1", "model1_study1.rds"))
+model1 <- read_rds(here("models", "model1.rds"))
 
 # plot traceplots and posterior distributions
 plot(model1, ask = FALSE)
 ```
 
-The posterior predictive distribution (Figure \@ref(fig:ppc-model1-study1)) shows that the model does an okay job in predicting our outcome, with little indication of overfitting.
+The posterior predictive distribution (Figure \@ref(fig:ppc-model1)) shows that the model does an okay job in predicting our outcome, with little indication of overfitting.
 If anything, it looks like the model somewhat underestimates the social media time of users.
 Then again, the LOO-PIT graphs show that the model could be better, possibly because it doesn't do the best job in predicting the majority of cases (i.e., the underestimate).
-```{r ppc-model1-study1, cache=TRUE, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 1"}
-model_diagnostics(model1) # custom function, see 01-Setting-up-study1.Rmd
+```{r ppc-model1, cache=TRUE, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 1"}
+model_diagnostics(model1) # custom function, see 01-Setting-up.Rmd
 ```
 
 Let's also check for potentially influential values.
 None are tagged as influential, which increases my trust in the model.
-```{r outliers-model1-study1, cache=TRUE}
+```{r outliers-model1, cache=TRUE}
 loo(model1)
 ```
 
 Alright, time to look at the summary: neuroticism and competence are the only predictors whose posterior distribution isn't centered on zero. 
 That said, we cannot be 95% certain the true value doesn't contain zero.
-```{r summary-model1-study1}
+```{r summary-model1}
 summary(model1, priors = TRUE)
 ```
 
-The effects plot (Figure \@ref(fig:effects-model1-study1)) shows that visually, but also shows that the model does a fine job in describing the data, given the relatively (at least on the log scale) narrow 95% credible interval.
+The effects plot (Figure \@ref(fig:effects-model1)) shows that visually, but also shows that the model does a fine job in describing the data, given the relatively (at least on the log scale) narrow 95% credible interval.
 Overall, there's little evidence that personality traits are related so smartphone use, except for some tentative evidence that neurotic people use more social media and those who generally feel a level of competence in their lives use them less.
-```{r effects-model1-study1, echo=FALSE, fig.cap="Effects plot for Model 1"}
+```{r effects-model1, echo=FALSE, fig.cap="Effects plot for Model 1"}
 mcmc_plot(model1)
 ```
 
@@ -302,7 +302,7 @@ mcmc_plot(model1)
 Next up, I predict subjective use from the same predictors.
 We know that objective and subjective use aren't perfectly correlated.
 Then again, the priors for Model 1 were only weakly regularizing, which is why I use the same priors again.
-```{r priors-model2-study1}
+```{r priors-model2}
 priors_model2 <- 
   c(
     # intercept
@@ -319,10 +319,10 @@ priors_model2 <-
 Alright, time to run the model.
 The subjective social media estimate had one missing value.
 Usually I'd impute missing values during model fitting, but with one, I think it's safe to drop it. 
-```{r model2-study1, eval=FALSE}
+```{r model2, eval=FALSE}
 model2 <- 
   brm(
-    data = study1,
+    data = dat,
     family = Gamma(link = "log"),
     prior = priors_model2,
     social_media_subjective ~
@@ -343,25 +343,25 @@ model2 <-
     cores = 4,
     seed = 42,
     control = list(adapt_delta = 0.999),
-    file = here("models", "study1", "model2_study1")
+    file = here("models", "model2")
   )
 ```
 
 Let's inspect the traceplots.
-Overall, they look fine and the chains seem to have mixed well (Figure \@ref(fig:inspect-model2-study1)).
+Overall, they look fine and the chains seem to have mixed well (Figure \@ref(fig:inspect-model2)).
 Again, everything looks fine.
-```{r inspect-model2-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 2"}
+```{r inspect-model2, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 2"}
 # load model
-model2 <- read_rds(here("models", "study1", "model2_study1.rds"))
+model2 <- read_rds(here("models", "model2.rds"))
 
 # plot traceplots and posterior distributions
 plot(model2, ask = FALSE)
 ```
 
-The posterior predictive distribution (Figure \@ref(fig:ppc-model2-study2)) looks similar to Model 1, with a tendency of the model to underestimate self-reported social media use.
+The posterior predictive distribution (Figure \@ref(fig:ppc-model2)) looks similar to Model 1, with a tendency of the model to underestimate self-reported social media use.
 All other diagnostics look similar, which is not surprising given that the outcomes of Model 1 and Model 2 are correlated.
 Overall, the model fit is okay-ish, but certainly not excellent.
-```{r ppc-model2-study1, cache=TRUE, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 2"}
+```{r ppc-model2, cache=TRUE, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 2"}
 model_diagnostics(model2)
 ```
 
@@ -369,19 +369,19 @@ Let's again check for potentially influential values.
 The model diagnostics look good.
 Even though there were several rather large raw values on the outcome variable, the model expects them because we model the outcome as a Gamma distribution.
 We need to calculate ELPD directly, which shows no outliers.
-```{r outliers-model2-study1, cache=TRUE}
+```{r outliers-model2, cache=TRUE}
 loo(model2, reloo = TRUE)
 ```
 
 Alright, time to look at the summary.
 This time, all posterior distributions are mostly centered around zero, so we can be 95% (always conditional on the model) certain that personality traits and motivations are not meaningfully (i.e., large effect) related to self-reported social media use. 
 Maybe autonomy gets close, but the posterior distributions still includes zero and small negative effects.
-```{r summary-model2-study1}
+```{r summary-model2}
 summary(model2, priors = TRUE)
 ```
 
-The effects plot (Figure \@ref(fig:effects-model2-study1)) visually confirms that none of the predictors seem influential.
-```{r effects-model2-study1, echo=FALSE, fig.cap="Effects plot for Model 2"}
+The effects plot (Figure \@ref(fig:effects-model2)) visually confirms that none of the predictors seem influential.
+```{r effects-model2, echo=FALSE, fig.cap="Effects plot for Model 2"}
 mcmc_plot(model2)
 ```
 
@@ -393,11 +393,11 @@ The few papers out there show that people generally overestimate their (social) 
 Other than that, I'd expect a normal distribution, quite likely with fat tails, and possibly right skewed.
 Therefore, I'll use a student-t distribution outcome family.
 I start with a t distribution as prior for the intercept that is slightly centered on overestimates (i.e., 20%), but with quite some potential for extreme values and fairly fat tails.
-See Figure \@ref(fig:simulate-priors-model2-study1) left panel, for a visualization.
+See Figure \@ref(fig:simulate-priors-model2) left panel, for a visualization.
 
 As for the effects of the personality traits, I'll be skeptical of any effects and thus use weakly regularizing normal priors that are centered on zero, with a small range for the effect: If a person goes from average on a trait to one above average, we'd expect that 95% of the effects should be between -50% and +50% (i.e., SD of 25).
 See the right panel in the figure below for a visualization.
-```{r simulate-priors-model2-study1, echo=FALSE, fig.cap="Prior simmulations for Model 2"}
+```{r simulate-priors-model2, echo=FALSE, fig.cap="Prior simmulations for Model 2"}
 p1 <- 
   ggplot(
     tibble(
@@ -466,7 +466,7 @@ plot_grid(
 ```
 
 Then let's set those priors we simulated above.
-```{r priors-model3-study1}
+```{r priors-model3}
 priors_model3 <- 
   c(
     # intercept
@@ -477,12 +477,12 @@ priors_model3 <-
   )
 ```
 
-`error` had `r sum(is.na(study1$error))` missing values.
+`error` had `r sum(is.na(dat$error))` missing values.
 Again, with such few cases, I'm fine with dropping those during model fitting. 
-```{r model1-study3, eval=FALSE}
+```{r model3, eval=FALSE}
 model3 <- 
   brm(
-    data = study1,
+    data = dat,
     family = student,
     prior = priors_model3,
     error ~
@@ -503,26 +503,26 @@ model3 <-
     cores = 4,
     seed = 42,
     control = list(adapt_delta = 0.99),
-    file = here("models", "study1", "model3_study1")
+    file = here("models", "model3")
   )
 ```
 
-Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model3-study1)).
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model3)).
 Again, the variance around the residuals for the day grouping is estimated to be small and zero often.
-```{r inspect-model3-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 3"}
+```{r inspect-model3, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 3"}
 # load model
-model3 <- readRDS(here("models", "study1", "model3_study1.rds"))
+model3 <- readRDS(here("models", "model3.rds"))
 
 # plot traceplots and posterior distributions
 plot(model3, ask = FALSE)
 ```
 
-The posterior predictive checks (Figure \@ref(fig:ppc-model3-study1)) look good.
+The posterior predictive checks (Figure \@ref(fig:ppc-model3)) look good.
 Note that the upper left panel looks strange because of the massive scale on the x-axis, which is why I reproduce it again at the bottom.
 We see that the student t distribution assigns too much posterior mass to negative values, whereas the data are right skewed.
 For even better fit, we might think about fitting a skew-normal outcome distribution, but I'd say that the student-t was most appropriate before seeing the data.
 We see that the current models does an okay job in recovering the mean and the median.
-```{r ppc-model3-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 3"}
+```{r ppc-model3, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 3"}
 model_diagnostics(model3)
 pp_check(model3, nsamples = 100) + xlim(c(-1500, 1500))
 ```
@@ -531,7 +531,7 @@ Let's again check for potentially influential values.
 Three potentially influential cases are flagged, which is why we calculate them precisely by setting `reloo` to `TRUE`.
 When we calculate ELPD directly, all values appear unproblematic.
 The results seem trustworthy.
-```{r outliers-model3-study1, cache=TRUE}
+```{r outliers-model3, cache=TRUE}
 loo(model3, reloo = TRUE)
 ```
 
@@ -539,13 +539,13 @@ Let's inspect the summary.
 There doesn't seem to be much going on when it comes to the predictors.
 For all predictors, we cannot be 95% certain that zero isn't the true effect (conditional on the model).
 Again, neuroticism comes close.
-```{r summary-model3-study1}
+```{r summary-model3}
 summary(model3, priors = TRUE)
 ```
 
-The effects plot (Figure \@ref(fig:effects-model3-study1)) visually confirms that none of the predictors seem largely influential.
+The effects plot (Figure \@ref(fig:effects-model3)) visually confirms that none of the predictors seem largely influential.
 If anything, it appears neurotic people might underestimate their social media use, but again their interval contains zero.
-```{r effects-model3-study1, echo=FALSE, fig.cap="Effects plot for Model 3"}
+```{r effects-model3, echo=FALSE, fig.cap="Effects plot for Model 3"}
 mcmc_plot(model3)
 ```
 
@@ -568,8 +568,8 @@ We enter both the person mean and their deviation as predictors, which will lead
 See [this](https://philippmasur.de/2018/05/23/how-to-center-in-multilevel-models/) blogpost for a tutorial on centering.
 
 ```{r between-within-centering}
-study1 <- 
-  study1 %>% 
+dat <- 
+  dat %>% 
   group_by(id) %>% 
   mutate(
     across(
@@ -606,7 +606,7 @@ Most of those experiential qualities are about having a fulfilled and good day, 
 Therefore, I'll take a skeptical stance here and again assign the same weakly regularizing priors (aka the priors we also used for Models 1 and 2).
 * For the variances (sigmas) I'll take the `brms` default priors because I have no prior information, nor how the effects vary across day and participant.
 * For the correlation between intercepts and slopes, I'll again use the default prior, mostly because those have shown to help with convergence and I don't have good information on which correlation to expect.
-```{r priors-model4-study1}
+```{r priors-model4}
 priors_model4 <- 
   c(
     # intercept
@@ -623,10 +623,10 @@ priors_model4 <-
 
 Let's run the model.
 Note that the within-deviations can vary per participant, but not the between effects.
-```{r, model4-study1, eval=FALSE}
+```{r, model4, eval=FALSE}
 model4 <- 
   brm(
-    data = study1,
+    data = dat,
     family = Gamma(link = "log"),
     prior = priors_model4,
     social_media_objective ~
@@ -665,15 +665,15 @@ model4 <-
     control = list(
       adapt_delta = 0.99
     ),
-    file = here("models", "study1", "model4_study1")
+    file = here("models", "model4")
   )
 ```
 
-Overall, the traceplots look fine and the chains seem to have mixed well (Figure \@ref(fig:inspect-model5-study1)).
+Overall, the traceplots look fine and the chains seem to have mixed well (Figure \@ref(fig:inspect-model5)).
 Again the variance around the day grouping is small and mostly estimated to be zero or close to zero.
-```{r inspect-model4-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 4"}
+```{r inspect-model4, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 4"}
 # load model
-model4 <- read_rds(here("models", "study1", "model4_study1.rds"))
+model4 <- read_rds(here("models", "model4.rds"))
 
 # plot traceplots and posterior distributions
 plot(model4, ask = FALSE)
@@ -682,26 +682,26 @@ plot(model4, ask = FALSE)
 The posterior predictive check shows that the model does a mediocre job.
 The model does a good job retrieving the mean, but underestimates social media use once more.
 Also, the LOO-PIT diagnostics look like a different distribution will fit better, potentially a skewed normal or beta-distribution.
-```{r ppc-model4-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 4"}
+```{r ppc-model4, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 4"}
 model_diagnostics(model4)
 ```
 
 Next, we check for potentially influential cases.
 There are none.
-```{r outliers-model4-study1}
+```{r outliers-model4}
 loo(model4)
 ```
 
 Let's inspect the summary.
 There doesn't seem to be much going on when it comes to the predictors.
-```{r summary-model4-study1}
+```{r summary-model4}
 summary(model4, priors = TRUE)
 ```
 
-The effects plot (Figure \@ref(fig:effects-model4-study1)) visually confirms that none of the predictors seem influential.
+The effects plot (Figure \@ref(fig:effects-model4)) visually confirms that none of the predictors seem influential.
 Note that the correlations between random effects are on different scales which explains why the CI around them are so wide.
 Except for the correlations, all effects are on the log scale because we used a Gamma distribution, but the correlations are regularly on a scale of -1 to 1.
-```{r effects-model4-study1, echo=FALSE, fig.cap="Effects plot for Model 4"}
+```{r effects-model4, echo=FALSE, fig.cap="Effects plot for Model 4"}
 mcmc_plot(model4)
 ```
 
@@ -709,7 +709,7 @@ mcmc_plot(model4)
 
 The next model predicts subjective use from the same predictors.
 Once more, we know that subjective and objective use aren't perfectly correlated, but the priors for Model 4 again are our best bet here (for both within-person and between-person effects).
-```{r priors-model5-study1}
+```{r priors-model5}
 priors_model5 <- 
   c(
     # intercept
@@ -725,10 +725,10 @@ priors_model5 <-
 
 Let's run the model.
 Like with Model 2, we don't separately model zeros.
-```{r, model5-study1, eval=FALSE}
+```{r, model5, eval=FALSE}
 model5 <- 
   brm(
-    data = study1,
+    data = dat,
     family = Gamma(link = "log"),
     prior = priors_model4,
     social_media_subjective ~
@@ -767,14 +767,14 @@ model5 <-
     control = list(
       adapt_delta = 0.99
     ),
-    file = here("models", "study1", "model5_study1")
+    file = here("models", "model5")
   )
 ```
-Overall, the traceplots look fine and the chains seem to have mixed well (Figure \@ref(fig:inspect-model5-study1)).
+Overall, the traceplots look fine and the chains seem to have mixed well (Figure \@ref(fig:inspect-model5)).
 Like before, the variance around the day grouping is small and mostly estimated to be zero or close to zero.
-```{r inspect-model5-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 4"}
+```{r inspect-model5, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 4"}
 # load model
-model5 <- read_rds(here("models", "study1", "model5_study1.rds"))
+model5 <- read_rds(here("models", "model5.rds"))
 
 # plot traceplots and posterior distributions
 plot(model5, ask = FALSE)
@@ -783,12 +783,12 @@ plot(model5, ask = FALSE)
 The posterior predictive check shows about the same model fit as Model 4: mediocre.
 It overestimates the frequency of low values compared to the raw data.
 I could change the prior, but I also don't want to overfit just based on the raw data.
-```{r ppc-model5-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 5"}
+```{r ppc-model5, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 5"}
 model_diagnostics(model5)
 ```
 
 There are no cases flagged as potentially influential outliers.
-```{r outliers-model5-study1, cache=TRUE}
+```{r outliers-model5, cache=TRUE}
 loo(model5, reloo = TRUE)
 ```
 
@@ -796,12 +796,12 @@ Let's inspect the summary.
 Having an enjoyable and boring day might be related to estimating more social media use (on the between level).
 Conversely, a feeling of competence might decrease estimates.
 However, all three of those posterior distributions include zero, even though it's close.
-```{r summary-model5-study1}
+```{r summary-model5}
 summary(model5, priors = TRUE)
 ```
 
-The effects plot (Figure \@ref(fig:effects-model5-study1)) visually that those three states might be influential, but their CIs overlap with zero.
-```{r effects-model5-study1, echo=FALSE, fig.cap="Effects plot for Model 5"}
+The effects plot (Figure \@ref(fig:effects-model5)) visually that those three states might be influential, but their CIs overlap with zero.
+```{r effects-model5, echo=FALSE, fig.cap="Effects plot for Model 5"}
 mcmc_plot(model5)
 ```
 
@@ -811,7 +811,7 @@ For this model, once more it's hard to choose informed priors.
 Therefore, I choose the same skeptical, but weakly regularizing priors as for Model 3, with a student t distribution with fat tails, an intercept that reflects a tendency to overestimate, and slopes that are skeptical of large effects.
 For everything else, I'll use the `brms` default priors because I don't have information on what correlation or variances to expect.
 Note that I use the priors on the slope for both between and within effects, simply because I don't have an informed guess about the two being different.
-```{r priors-model6-study1}
+```{r priors-model6}
 priors_model6 <- 
   c(
     # intercept
@@ -823,10 +823,10 @@ priors_model6 <-
 ```
 
 Let's run the model.
-```{r, model6-study1, eval=FALSE}
+```{r, model6, eval=FALSE}
 model6 <- 
   brm(
-    data = study1,
+    data = dat,
     family = student,
     prior = priors_model6,
     error ~
@@ -865,43 +865,43 @@ model6 <-
     control = list(
       adapt_delta = 0.99
     ),
-    file = here("models", "study1", "model6_study1")
+    file = here("models", "model6")
   )
 ```
 
-Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model6-study1)), just like with Model 3.
-```{r inspect-model6-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 6"}
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model6)), just like with Model 3.
+```{r inspect-model6, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 6"}
 # load model
-model6 <- readRDS(here("models", "study1", "model6_study1.rds"))
+model6 <- readRDS(here("models", "model6.rds"))
 
 # plot traceplots and posterior distributions
 plot(model6, ask = FALSE)
 ```
 
-The posterior predictive checks (Figure \@ref(fig:ppc-model6-study1)) look good.
+The posterior predictive checks (Figure \@ref(fig:ppc-model6)) look good.
 Like with Model 3, that the upper left panel looks strange because of the massive scale on the x-axis.
 I reproduce it again at the bottom with a more sensible x-axis.
 Once more, the student t distribution assigns too much posterior mass to negative values, whereas the data are right skewed.
 Otherwise, the model does an okay job in recovering the mean and the median.
-```{r ppc-model6-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 6"}
+```{r ppc-model6, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 6"}
 model_diagnostics(model6)
 pp_check(model6, nsamples = 100) + xlim(c(-1500, 1500))
 ```
 
 Two cases are flagged as potential outliers, which disappear once calculated directly.
-```{r outliers-model6-study1, cache=TRUE}
+```{r outliers-model6, cache=TRUE}
 loo(model6, reloo = TRUE)
 ```
 
 Let's inspect the summary.
 All posteriors include 0, only satisfaction (within) comes close.
-```{r summary-model6-study1}
+```{r summary-model6}
 summary(model6, priors = TRUE)
 ```
 
-The effects plot (Figure \@ref(fig:effects-model6-study1)) visually confirms what I wrote above.
+The effects plot (Figure \@ref(fig:effects-model6)) visually confirms what I wrote above.
 Note the difference in scale: everything except the correlations are in percent error, whereas the correlations are on their -1 to 1 scale.
-```{r effects-model6-study1, echo=FALSE, fig.cap="Effects plot for Model 6"}
+```{r effects-model6, echo=FALSE, fig.cap="Effects plot for Model 6"}
 mcmc_plot(model6)
 ```
 
@@ -949,10 +949,10 @@ Let's set those priors.
 Note that we're still on the minute scale for the predictor, but I specified priors above for hours.
 That's why I transform the social media variables to hours (and center) to make interpretation easier.
 That also helps us set the priors we specified above.
-```{r priors-model7-study1}
+```{r priors-model7}
 # create hour variables
-study1 <- 
-  study1 %>% 
+dat <- 
+  dat %>% 
   mutate(
     across(
       c(social_media_objective, social_media_subjective),
@@ -962,8 +962,8 @@ study1 <-
   )
 
 # center to get between and within variables
-study1 <- 
-  study1 %>% 
+dat <- 
+  dat %>% 
   group_by(id) %>% 
   mutate(
     across(
@@ -991,10 +991,10 @@ priors_model7 <-
 ```
 
 Okay, let's run the model.
-```{r, model7-study1, eval=FALSE}
+```{r, model7, eval=FALSE}
 model7 <- 
   brm(
-    data = study1,
+    data = dat,
     family = gaussian,
     prior = priors_model7,
     well_being_state ~
@@ -1015,37 +1015,37 @@ model7 <-
     control = list(
       adapt_delta = 0.99
     ),
-    file = here("models", "study1", "model7_study1")
+    file = here("models", "model7")
   )
 ```
-Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model7-study1)).
-```{r inspect-model7-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 7"}
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model7)).
+```{r inspect-model7, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 7"}
 # load model
-model7 <- readRDS(here("models", "study1", "model7_study1.rds"))
+model7 <- readRDS(here("models", "model7.rds"))
 
 # plot traceplots and posterior distributions
 plot(model7, ask = FALSE)
 ```
 
-The posterior predictive checks (Figure \@ref(fig:ppc-model7-study1)) look excellent (no surprise with only one predictor).
-```{r ppc-model7-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 7"}
+The posterior predictive checks (Figure \@ref(fig:ppc-model7)) look excellent (no surprise with only one predictor).
+```{r ppc-model7, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 7"}
 model_diagnostics(model7)
 ```
 
 One case is flagged as potentially influential, but unproblematic when calculated directly.
-```{r outliers-model7-study1, cache=TRUE}
+```{r outliers-model7, cache=TRUE}
 loo(model7, reloo = TRUE)
 ```
 
 Let's inspect the summary.
 The relation is estimated to be extremely close to zero, so really no interpretative wiggle room there.
 I think this is pretty convincing evidence for the lack of an effect.
-```{r summary-model7-study1}
+```{r summary-model7}
 summary(model7, priors = TRUE)
 ```
 
-The effects plot (Figure \@ref(fig:effects-model7-study1)) visually confirms what I wrote above.
-```{r effects-model7-study1, echo=FALSE, fig.cap="Effects plot for Model 7"}
+The effects plot (Figure \@ref(fig:effects-model7)) visually confirms what I wrote above.
+```{r effects-model7, echo=FALSE, fig.cap="Effects plot for Model 7"}
 mcmc_plot(model7)
 ```
 
@@ -1068,7 +1068,7 @@ That would bring 95% of effects within -1 and 0.6 Likert-points, which is rather
 * For everything else, I'll once more go with the default `brms` priors.
 
 Let's set those priors.
-```{r priors-model8-study1}
+```{r priors-model8}
 # set priors
 priors_model8 <- 
   c(
@@ -1084,10 +1084,10 @@ priors_model8 <-
 ```
 
 Okay, let's run the model.
-```{r, model8-study1, eval=FALSE}
+```{r, model8, eval=FALSE}
 model8 <- 
   brm(
-    data = study1,
+    data = dat,
     family = gaussian,
     prior = priors_model8,
     well_being_state ~
@@ -1108,37 +1108,37 @@ model8 <-
     control = list(
       adapt_delta = 0.99
     ),
-    file = here("models", "study1", "model8_study1")
+    file = here("models", "model8")
   )
 ```
-Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model8-study1)).
-```{r inspect-model8-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 8"}
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model8)).
+```{r inspect-model8, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 8"}
 # load model
-model8 <- read_rds(here("models", "study1", "model8_study1.rds"))
+model8 <- read_rds(here("models", "model8.rds"))
 
 # plot traceplots and posterior distributions
 plot(model8, ask = FALSE)
 ```
 
-The posterior predictive checks (Figure \@ref(fig:ppc-model8-study1)) look excellent, just like with Model 7 (no surprise with only one predictor).
-```{r ppc-model8-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 8"}
+The posterior predictive checks (Figure \@ref(fig:ppc-model8)) look excellent, just like with Model 7 (no surprise with only one predictor).
+```{r ppc-model8, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 8"}
 model_diagnostics(model8)
 ```
 
 One case is flagged as potentially influential, but unproblematic after being calculated directly..
-```{r outliers-model8-study1, cache=TRUE}
+```{r outliers-model8, cache=TRUE}
 loo(model8, reloo = TRUE)
 ```
 
 Let's inspect the summary.
 The within effect is estimated to be negative, but extremely small.
 Also, the 95% CI includes zero, so we can't be sure the effect is meaningful.
-```{r summary-model8-study1}
+```{r summary-model8}
 summary(model8, priors = TRUE)
 ```
 
-The effects plot (Figure \@ref(fig:effects-model8-study1)) shows that the effect, if even there, is small at best.
-```{r effects-model8-study1, echo=FALSE, fig.cap="Effects plot for Model 8"}
+The effects plot (Figure \@ref(fig:effects-model8)) shows that the effect, if even there, is small at best.
+```{r effects-model8, echo=FALSE, fig.cap="Effects plot for Model 8"}
 mcmc_plot(model8)
 ```
 
@@ -1164,17 +1164,17 @@ Rather, I'd say the above effect is easier to specify for a standard deviation c
 * For everything else, I'll once more go with the default `brms` priors.
 
 Let's set those priors and center at the same time.
-```{r priors-model9-study1}
+```{r priors-model9}
 # standardize error
-study1 <- 
-  study1 %>% 
+dat <- 
+  dat %>% 
   mutate(
     error_s = scale(error, center = FALSE, scale = TRUE)
   )
 
 # center to get between and within
-study1 <- 
-  study1 %>% 
+dat <- 
+  dat %>% 
   group_by(id) %>% 
   mutate(
     across(
@@ -1202,10 +1202,10 @@ priors_model9 <-
 ```
 
 And run the model.
-```{r, model9-study1, eval=FALSE}
+```{r, model9, eval=FALSE}
 model9 <- 
   brm(
-    data = study1,
+    data = dat,
     family = gaussian,
     prior = priors_model9,
     well_being_state ~
@@ -1226,38 +1226,38 @@ model9 <-
     control = list(
       adapt_delta = 0.999
     ),
-    file = here("models", "study1", "model9_study1")
+    file = here("models", "model9")
   )
 ```
 
-Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model9-study1)).
-```{r inspect-model9-study1, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 9"}
+Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model9)).
+```{r inspect-model9, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 9"}
 # load model
-model9 <- read_rds(here("models", "study1", "model9_study1.rds"))
+model9 <- read_rds(here("models", "model9.rds"))
 
 # plot traceplots and posterior distributions
 plot(model9, ask = FALSE)
 ```
 
-The posterior predictive checks (Figure \@ref(fig:ppc-model9-study1)) look excellent (no surprise with only one predictor).
-```{r ppc-model9-study1, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 9"}
+The posterior predictive checks (Figure \@ref(fig:ppc-model9)) look excellent (no surprise with only one predictor).
+```{r ppc-model9, echo=FALSE, cache=TRUE, message=FALSE, warning=FALSE, fig.cap="Posterior predictive checks for Model 9"}
 model_diagnostics(model9)
 ```
 
 Six cases are flagged as potentially influential, which is why we calculate ELPD directly.
-```{r outliers-model9-study1, cache=TRUE}
+```{r outliers-model9, cache=TRUE}
 loo(model9, reloo = TRUE)
 ```
 
 Let's inspect the summary.
 The within effect is estimated to be negative, but really small.
 Also, the 95% CI includes zero and quite wide, so we can't be sure the effect is meaningful.
-```{r summary-model9-study1}
+```{r summary-model9}
 summary(model9, priors = TRUE)
 ```
 
-The effects plot (Figure \@ref(fig:effects-model9-study1)) shows that the effect, if even there, is small at best.
-```{r effects-model9-study1, echo=FALSE, fig.cap="Effects plot for Model 9"}
+The effects plot (Figure \@ref(fig:effects-model9)) shows that the effect, if even there, is small at best.
+```{r effects-model9, echo=FALSE, fig.cap="Effects plot for Model 9"}
 mcmc_plot(model9)
 ```
 
@@ -1276,7 +1276,7 @@ For this question, I'm not interested in distinguishing between- and within-pers
 ```{r model10}
 model10 <- 
   brm(
-    data = study1,
+    data = dat,
     family = gaussian,
     social_media_subjective ~
       1 +
@@ -1289,14 +1289,14 @@ model10 <-
     cores = 4,
     seed = 42,
     control = list(adapt_delta = 0.99),
-    file = here("models", "study1", "model10.rds")
+    file = here("models", "model10.rds")
   )
 ```
 
 Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure \@ref(fig:inspect-model10)).
-```{r inspect-model9, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 10"}
+```{r inspect-model10, echo=FALSE, fig.cap="Traceplots and posterior distributions for Model 10"}
 # load model
-model10 <- read_rds(here("models", "study1", "model10.rds"))
+model10 <- read_rds(here("models", "model10.rds"))
 
 # plot traceplots and posterior distributions
 plot(model10, ask = FALSE)

@@ -1,24 +1,24 @@
-# Synthesis Study 1
+# Synthesis
 
 Alright, here I visualize the findings from the analysis section.
 I'll create a summary figure for each of the three blocks.
 
 For that, I'll extract the model estimates of the effects from each model first.
 
-```{r load-models-study1}
-model1 <- read_rds(here("models", "study1", "model1_study1.rds"))
-model2 <- read_rds(here("models", "study1", "model2_study1.rds"))
-model3 <- readRDS(here("models", "study1", "model3_study1.rds"))
-model4 <- read_rds(here("models", "study1", "model4_study1.rds"))
-model5 <- read_rds(here("models", "study1", "model5_study1.rds"))
-model6 <- readRDS(here("models", "study1", "model6_study1.rds"))
-model7 <- readRDS(here("models", "study1", "model7_study1.rds"))
-model8 <- read_rds(here("models", "study1", "model8_study1.rds"))
-model9 <- read_rds(here("models", "study1", "model9_study1.rds"))
+```{r load-models}
+model1 <- read_rds(here("models", "model1.rds"))
+model2 <- read_rds(here("models", "model2.rds"))
+model3 <- readRDS(here("models", "model3.rds"))
+model4 <- read_rds(here("models", "model4.rds"))
+model5 <- read_rds(here("models", "model5.rds"))
+model6 <- readRDS(here("models", "model6.rds"))
+model7 <- readRDS(here("models", "model7.rds"))
+model8 <- read_rds(here("models", "model8.rds"))
+model9 <- read_rds(here("models", "model9.rds"))
 ```
 
 First we get all estimates.
-```{r get-estimates-study1}
+```{r get-estimates}
 estimates <- 
   tibble(
     block = as.character(),
@@ -74,7 +74,7 @@ for (model in models) {
 ```
 
 Next, let's make some cosmetic changes.
-```{r process-estimates-study1}
+```{r process-estimates}
 estimates <- 
   estimates %>% 
   # get odds for estimates of the gamma models
@@ -123,7 +123,7 @@ estimates <-
 Okay, next I create the first summary figure.
 We see that none of the trait underlying true trait relations (conditional on our model) exclude zero.
 Neuroticism and openness might be related to less error in estimating smartphone use, but even their credible interval includes zero.
-```{r figure4-study1}
+```{r figure4}
 # function for breaks
 my_breaks <- 
   function(x) {
@@ -155,8 +155,22 @@ ggplot(
           "Objective (min)" = "Objective",
           "Subjective (min)" = "Subjective",
           "Accuracy (%)" = "Error"
+        ),
+        
+        # reorder predictors
+        predictor = as.factor(predictor),
+        predictor = fct_rev(fct_relevel(
+          predictor,
+          "Autonomy",
+          "Competence",
+          "Relatedness",
+          "Agreeableness",
+          "Conscientiousness",
+          "Extraversion",
+          "Neuroticism",
+          "Openness"
         )
-      ),
+      )),
   aes(
     x = estimate,
     y = predictor
@@ -206,7 +220,7 @@ ggsave(
 ## Experiences on smartphone use (state)
 
 I'll move on to the next block investigating state relations between experiences and smartphone use.
-```{r figure5-study}
+```{r figure5}
 ggplot(
     estimates %>% 
       filter(block == "Experiences on smartphone use") %>% 
@@ -273,7 +287,7 @@ ggsave(
 ## Smartphone use on well-being (state)
 
 I'll move on to the next block investigating state relations between smartphone use and well-being.
-```{r figure6-study1}
+```{r figure6}
 ggplot(
     estimates %>% 
       filter(block == "Smartphone use on well-being") %>% 
