@@ -231,7 +231,18 @@ ggplot(
           "Objective (min)" = "Objective",
           "Subjective (min)" = "Subjective",
           "Accuracy (%)" = "Error"
-        )
+        ),
+        predictor = as.factor(predictor),
+        predictor = fct_rev(fct_relevel(
+          predictor,
+          "Autonomy",
+          "Competence",
+          "Relatedness",
+          "Boring",
+          "Enjoyable",
+          "Satisfied",
+          "Stressful"
+        ))
       ),
   aes(
     x = estimate,
