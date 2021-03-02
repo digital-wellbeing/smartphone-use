@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>1 Setting up | Analysis Report</title>
+  <title>1 Setting up | Objective, subjective, and accurate reporting of social media use: No evidence that daily social media use correlates with personality traits, motivational states, or well-being</title>
   <meta name="description" content="Analysis report detailing alls steps from data processing to final analyses." />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="1 Setting up | Analysis Report" />
+  <meta property="og:title" content="1 Setting up | Objective, subjective, and accurate reporting of social media use: No evidence that daily social media use correlates with personality traits, motivational states, or well-being" />
   <meta property="og:type" content="book" />
   <meta property="og:url" content="https://github.com/digital-wellbeing/smartphone-use" />
   
@@ -16,15 +16,15 @@
   <meta name="github-repo" content="digital-wellbeing/smartphone-use" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="1 Setting up | Analysis Report" />
+  <meta name="twitter:title" content="1 Setting up | Objective, subjective, and accurate reporting of social media use: No evidence that daily social media use correlates with personality traits, motivational states, or well-being" />
   
   <meta name="twitter:description" content="Analysis report detailing alls steps from data processing to final analyses." />
   
 
-<meta name="author" content="Niklas Johannes" />
+<meta name="author" content="Niklas Johannes, Thuy-vy Nguyen, Netta Weinstein, Andrew K. Przybylski" />
 
 
-<meta name="date" content="2021-02-26" />
+<meta name="date" content="2021-03-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -133,7 +133,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./">Analysis Report</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#data-and-models"><i class="fa fa-check"></i><b>0.1</b> Data and models</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#how-to-reproduce-processing-and-analyses"><i class="fa fa-check"></i><b>0.2</b> How to reproduce processing and analyses</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="setting-up.html"><a href="setting-up.html"><i class="fa fa-check"></i><b>1</b> Setting up</a></li>
 <li class="chapter" data-level="2" data-path="data-processing.html"><a href="data-processing.html"><i class="fa fa-check"></i><b>2</b> Data processing</a>
 <ul>
@@ -193,7 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analysis Report</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Objective, subjective, and accurate reporting of social media use: No evidence that daily social media use correlates with personality traits, motivational states, or well-being</a>
           </h1>
         </div>
 
@@ -225,14 +229,15 @@ If you’re fine with them being installed, set <code>eval = TRUE</code>.</p>
 <span id="cb1-15"><a href="setting-up.html#cb1-15" aria-hidden="true" tabindex="-1"></a>  cowplot,</span>
 <span id="cb1-16"><a href="setting-up.html#cb1-16" aria-hidden="true" tabindex="-1"></a>  brms,</span>
 <span id="cb1-17"><a href="setting-up.html#cb1-17" aria-hidden="true" tabindex="-1"></a>  ggbeeswarm,</span>
-<span id="cb1-18"><a href="setting-up.html#cb1-18" aria-hidden="true" tabindex="-1"></a>  extrafont</span>
-<span id="cb1-19"><a href="setting-up.html#cb1-19" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-20"><a href="setting-up.html#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="setting-up.html#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed</span></span>
-<span id="cb1-22"><a href="setting-up.html#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb1-23"><a href="setting-up.html#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="setting-up.html#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># set theme</span></span>
-<span id="cb1-25"><a href="setting-up.html#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_cowplot</span>())</span></code></pre></div>
+<span id="cb1-18"><a href="setting-up.html#cb1-18" aria-hidden="true" tabindex="-1"></a>  extrafont,</span>
+<span id="cb1-19"><a href="setting-up.html#cb1-19" aria-hidden="true" tabindex="-1"></a>  osfr</span>
+<span id="cb1-20"><a href="setting-up.html#cb1-20" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-21"><a href="setting-up.html#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="setting-up.html#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed</span></span>
+<span id="cb1-23"><a href="setting-up.html#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb1-24"><a href="setting-up.html#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="setting-up.html#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># set theme</span></span>
+<span id="cb1-26"><a href="setting-up.html#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_cowplot</span>())</span></code></pre></div>
 <p>Below custom functions that I use throughout the project.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="setting-up.html#cb2-1" aria-hidden="true" tabindex="-1"></a>dens_with_points <span class="ot">&lt;-</span> </span>
 <span id="cb2-2"><a href="setting-up.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(</span>

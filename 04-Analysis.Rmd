@@ -78,6 +78,29 @@ Our dependent variables are clear-cut: `social_media_objective`, `social_media_s
 
 Our predictors will be variables on the person-level, so trait/personality variables: the Big Five and the three self-determination motivations.
 
+Note, I saved all `brms` model objects and load them below.
+Each model takes quite some time and the files get large (a total of half a GB).
+If you're reproducing the analysis and don't want to run the models yourself, you can download the model objects from the OSF.
+For that, you need to set the code chunk below to `eval=TRUE`, which creates a `model/` directory with all models inside.
+```{r download-models, eval=FALSE, message=FALSE}
+# create directory
+dir.create("models/", FALSE, TRUE)
+
+# download models
+osf_retrieve_node("https://osf.io/7byvt/") %>% 
+  osf_ls_nodes() %>% 
+  filter(name == "models") %>% 
+  osf_ls_files(
+    .,
+    n_max = Inf
+  ) %>% 
+  osf_download(
+    .,
+    path = here("models"),
+    progress = FALSE
+  )
+```
+
 ### Model 1: Trait variables predicting objective use
 
 First, I choose sensible priors.

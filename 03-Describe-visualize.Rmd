@@ -111,7 +111,7 @@ plot_grid(
 
 Let's have a look at the final sample.
 Overall, our sample size is **N = `r dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow()`**.
-The sample has a mean age of *M* = `r round(dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% mean())`, *SD* = `r round(dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% sd())`.
+The sample has a mean age of *M* = `r round(dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% mean(), digits = 2)`, *SD* = `r round(dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% sd(), digits = 2)`.
 The sample consists mostly of women (`r dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% filter(gender == "female") %>% nrow()` women, `r dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% filter(gender == "male") %>% nrow()` men, and one non-binary participant).
 ```{r describe-age, echo=FALSE}
 age <- 

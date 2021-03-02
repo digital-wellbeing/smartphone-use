@@ -25,7 +25,8 @@ p_load(
   cowplot,
   brms,
   ggbeeswarm,
-  extrafont
+  extrafont,
+  osfr
 )
 
 # set seed

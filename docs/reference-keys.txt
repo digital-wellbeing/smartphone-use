@@ -109,6 +109,8 @@ fig:inspect-model10-1
 fig:inspect-model10-2
 fig:ppc-model10
 fig:effects-model10
+data-and-models
+how-to-reproduce-processing-and-analyses
 setting-up
 data-processing
 personality-data
