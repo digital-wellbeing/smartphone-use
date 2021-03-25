@@ -1463,7 +1463,7 @@ my_limits <-
     }
   }
 
-# color palette
+# color palette (not needed anymore after review that colors made the figure harder to see)
 cb_palette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
 # plot
@@ -1471,12 +1471,10 @@ ggplot(
   tmp,
   aes(
     x = value,
-    y = 1,
-    color = variable,
-    fill = variable
+    y = 1
   )
 ) +
-  geom_quasirandom(groupOnX=FALSE, size = 0.3, alpha = 0.5) +
+  geom_quasirandom(groupOnX=FALSE, size = 0.7, shape = 20, color = "black") +
   facet_wrap(
     ~ variable, 
     scales = "free_x"
@@ -1516,8 +1514,8 @@ ggplot(
     color = "black"
   ) +
   theme_cowplot() +
-  scale_colour_manual(values=cb_palette) +
-  scale_fill_manual(values = cb_palette) +
+  # scale_colour_manual(values=cb_palette) +
+  # scale_fill_manual(values = cb_palette) +
   theme(
     axis.text.y = element_blank(),
     axis.title.x = element_blank(),
@@ -1568,6 +1566,14 @@ my_string <- "_state"
 
 tmp <- clean_plot_data(tmp, rename_levels, my_string)
 state_descriptives <- clean_plot_data(state_descriptives, rename_levels, my_string)
+
+# position of the text (so it doesn't overlap with points)
+state_descriptives <- 
+  state_descriptives %>% 
+  mutate(
+    x_position = 1.6,
+    y_position = 1.45
+  )
 ```
 
 Then to plotting.
@@ -1577,12 +1583,10 @@ ggplot(
   tmp,
   aes(
     x = value,
-    y = 1,
-    color = variable,
-    fill = variable
+    y = 1
   )
 ) +
-  geom_quasirandom(groupOnX=FALSE, size = 0.1, alpha = 0.5) +
+  geom_quasirandom(groupOnX=FALSE, size = 0.7, shape = 20, color = "black") +
   facet_wrap(
     ~ variable, 
     scales = "free_x"
@@ -1591,8 +1595,8 @@ ggplot(
   geom_text(
     data = state_descriptives,
     aes(
-      x = 1.6,
-      y = 1.4,
+      x = x_position,
+      y = y_position + 0.1,
       label = paste0("M = ", mean),
       family = "Corbel"
     ),
@@ -1602,8 +1606,8 @@ ggplot(
   geom_text(
     data = state_descriptives,
     aes(
-      x = 1.6,
-      y = 1.3,
+      x = x_position,
+      y = y_position,
       label = paste0("SD = ", sd),
       family = "Corbel"
     ),
@@ -1613,8 +1617,8 @@ ggplot(
   geom_text(
     data = state_descriptives,
     aes(
-      x = 1.6,
-      y = 1.2,
+      x = x_position,
+      y = y_position - 0.1,
       label = paste0("\u03a9 = ", omega),
       family = "Corbel"
     ),
@@ -1623,8 +1627,8 @@ ggplot(
     alpha = if_else(is.na(state_descriptives$omega), 0, 1) # one-item measure don't have omega, so I make those see through
   ) +
   theme_cowplot() +
-  scale_colour_manual(values=cb_palette) +
-  scale_fill_manual(values = cb_palette) +
+  # scale_colour_manual(values=cb_palette) +
+  # scale_fill_manual(values = cb_palette) +
   theme(
     axis.text.y = element_blank(),
     axis.title.x = element_blank(),
@@ -1714,12 +1718,10 @@ ggplot(
   tmp,
   aes(
     x = value,
-    y = 1,
-    color = variable,
-    fill = variable
+    y = 1
   )
 ) +
-  geom_quasirandom(groupOnX=FALSE, size = 0.2, alpha = 0.5) +
+  geom_quasirandom(groupOnX=FALSE, size = 0.7, shape = 20, color = "black") +
   facet_wrap(
     ~ variable, 
     scales = "free_x"

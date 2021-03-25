@@ -24,7 +24,7 @@
 <meta name="author" content="Niklas Johannes, Thuy-vy Nguyen, Netta Weinstein, Andrew K. Przybylski" />
 
 
-<meta name="date" content="2021-03-02" />
+<meta name="date" content="2021-03-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -982,7 +982,7 @@ I’ll begin with plotting the traits.</p>
 <span id="cb77-18"><a href="descriptives-and-visualizations.html#cb77-18" aria-hidden="true" tabindex="-1"></a>    }</span>
 <span id="cb77-19"><a href="descriptives-and-visualizations.html#cb77-19" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb77-20"><a href="descriptives-and-visualizations.html#cb77-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb77-21"><a href="descriptives-and-visualizations.html#cb77-21" aria-hidden="true" tabindex="-1"></a><span class="co"># color palette</span></span>
+<span id="cb77-21"><a href="descriptives-and-visualizations.html#cb77-21" aria-hidden="true" tabindex="-1"></a><span class="co"># color palette (not needed anymore after review that colors made the figure harder to see)</span></span>
 <span id="cb77-22"><a href="descriptives-and-visualizations.html#cb77-22" aria-hidden="true" tabindex="-1"></a>cb_palette <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;#000000&quot;</span>, <span class="st">&quot;#E69F00&quot;</span>, <span class="st">&quot;#56B4E9&quot;</span>, <span class="st">&quot;#009E73&quot;</span>, <span class="st">&quot;#F0E442&quot;</span>, <span class="st">&quot;#0072B2&quot;</span>, <span class="st">&quot;#D55E00&quot;</span>, <span class="st">&quot;#CC79A7&quot;</span>)</span>
 <span id="cb77-23"><a href="descriptives-and-visualizations.html#cb77-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb77-24"><a href="descriptives-and-visualizations.html#cb77-24" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
@@ -990,66 +990,64 @@ I’ll begin with plotting the traits.</p>
 <span id="cb77-26"><a href="descriptives-and-visualizations.html#cb77-26" aria-hidden="true" tabindex="-1"></a>  tmp,</span>
 <span id="cb77-27"><a href="descriptives-and-visualizations.html#cb77-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
 <span id="cb77-28"><a href="descriptives-and-visualizations.html#cb77-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> value,</span>
-<span id="cb77-29"><a href="descriptives-and-visualizations.html#cb77-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">1</span>,</span>
-<span id="cb77-30"><a href="descriptives-and-visualizations.html#cb77-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> variable,</span>
-<span id="cb77-31"><a href="descriptives-and-visualizations.html#cb77-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> variable</span>
-<span id="cb77-32"><a href="descriptives-and-visualizations.html#cb77-32" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb77-33"><a href="descriptives-and-visualizations.html#cb77-33" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb77-34"><a href="descriptives-and-visualizations.html#cb77-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_quasirandom</span>(<span class="at">groupOnX=</span><span class="cn">FALSE</span>, <span class="at">size =</span> <span class="fl">0.3</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb77-35"><a href="descriptives-and-visualizations.html#cb77-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(</span>
-<span id="cb77-36"><a href="descriptives-and-visualizations.html#cb77-36" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> variable, </span>
-<span id="cb77-37"><a href="descriptives-and-visualizations.html#cb77-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">scales =</span> <span class="st">&quot;free_x&quot;</span></span>
-<span id="cb77-38"><a href="descriptives-and-visualizations.html#cb77-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb77-39"><a href="descriptives-and-visualizations.html#cb77-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> my_breaks, <span class="at">limits =</span> my_limits) <span class="sc">+</span></span>
-<span id="cb77-40"><a href="descriptives-and-visualizations.html#cb77-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb77-41"><a href="descriptives-and-visualizations.html#cb77-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> trait_descriptives,</span>
-<span id="cb77-42"><a href="descriptives-and-visualizations.html#cb77-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb77-43"><a href="descriptives-and-visualizations.html#cb77-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fl">1.6</span>,</span>
-<span id="cb77-44"><a href="descriptives-and-visualizations.html#cb77-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">1.4</span>,</span>
-<span id="cb77-45"><a href="descriptives-and-visualizations.html#cb77-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;M = &quot;</span>, mean),</span>
-<span id="cb77-46"><a href="descriptives-and-visualizations.html#cb77-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
-<span id="cb77-47"><a href="descriptives-and-visualizations.html#cb77-47" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb77-48"><a href="descriptives-and-visualizations.html#cb77-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
-<span id="cb77-49"><a href="descriptives-and-visualizations.html#cb77-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
-<span id="cb77-50"><a href="descriptives-and-visualizations.html#cb77-50" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb77-51"><a href="descriptives-and-visualizations.html#cb77-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb77-52"><a href="descriptives-and-visualizations.html#cb77-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> trait_descriptives,</span>
-<span id="cb77-53"><a href="descriptives-and-visualizations.html#cb77-53" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb77-54"><a href="descriptives-and-visualizations.html#cb77-54" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fl">1.6</span>,</span>
-<span id="cb77-55"><a href="descriptives-and-visualizations.html#cb77-55" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">1.3</span>,</span>
-<span id="cb77-56"><a href="descriptives-and-visualizations.html#cb77-56" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;SD = &quot;</span>, sd),</span>
-<span id="cb77-57"><a href="descriptives-and-visualizations.html#cb77-57" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
-<span id="cb77-58"><a href="descriptives-and-visualizations.html#cb77-58" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb77-59"><a href="descriptives-and-visualizations.html#cb77-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
-<span id="cb77-60"><a href="descriptives-and-visualizations.html#cb77-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
-<span id="cb77-61"><a href="descriptives-and-visualizations.html#cb77-61" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb77-62"><a href="descriptives-and-visualizations.html#cb77-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb77-63"><a href="descriptives-and-visualizations.html#cb77-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> trait_descriptives,</span>
-<span id="cb77-64"><a href="descriptives-and-visualizations.html#cb77-64" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb77-65"><a href="descriptives-and-visualizations.html#cb77-65" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fl">1.6</span>,</span>
-<span id="cb77-66"><a href="descriptives-and-visualizations.html#cb77-66" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">1.2</span>,</span>
-<span id="cb77-67"><a href="descriptives-and-visualizations.html#cb77-67" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;\u03a9 = &quot;</span>, omega),</span>
-<span id="cb77-68"><a href="descriptives-and-visualizations.html#cb77-68" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
-<span id="cb77-69"><a href="descriptives-and-visualizations.html#cb77-69" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb77-70"><a href="descriptives-and-visualizations.html#cb77-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
-<span id="cb77-71"><a href="descriptives-and-visualizations.html#cb77-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
-<span id="cb77-72"><a href="descriptives-and-visualizations.html#cb77-72" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb77-73"><a href="descriptives-and-visualizations.html#cb77-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cowplot</span>() <span class="sc">+</span></span>
-<span id="cb77-74"><a href="descriptives-and-visualizations.html#cb77-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>cb_palette) <span class="sc">+</span></span>
-<span id="cb77-75"><a href="descriptives-and-visualizations.html#cb77-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> cb_palette) <span class="sc">+</span></span>
-<span id="cb77-76"><a href="descriptives-and-visualizations.html#cb77-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb77-77"><a href="descriptives-and-visualizations.html#cb77-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb77-78"><a href="descriptives-and-visualizations.html#cb77-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb77-79"><a href="descriptives-and-visualizations.html#cb77-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb77-80"><a href="descriptives-and-visualizations.html#cb77-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb77-81"><a href="descriptives-and-visualizations.html#cb77-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.line.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb77-82"><a href="descriptives-and-visualizations.html#cb77-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb77-83"><a href="descriptives-and-visualizations.html#cb77-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb77-84"><a href="descriptives-and-visualizations.html#cb77-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>,</span>
-<span id="cb77-85"><a href="descriptives-and-visualizations.html#cb77-85" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span>)</span>
-<span id="cb77-86"><a href="descriptives-and-visualizations.html#cb77-86" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> figure1</span>
-<span id="cb77-87"><a href="descriptives-and-visualizations.html#cb77-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb77-88"><a href="descriptives-and-visualizations.html#cb77-88" aria-hidden="true" tabindex="-1"></a>figure1</span></code></pre></div>
+<span id="cb77-29"><a href="descriptives-and-visualizations.html#cb77-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">1</span></span>
+<span id="cb77-30"><a href="descriptives-and-visualizations.html#cb77-30" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb77-31"><a href="descriptives-and-visualizations.html#cb77-31" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb77-32"><a href="descriptives-and-visualizations.html#cb77-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_quasirandom</span>(<span class="at">groupOnX=</span><span class="cn">FALSE</span>, <span class="at">size =</span> <span class="fl">0.7</span>, <span class="at">shape =</span> <span class="dv">20</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-33"><a href="descriptives-and-visualizations.html#cb77-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(</span>
+<span id="cb77-34"><a href="descriptives-and-visualizations.html#cb77-34" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> variable, </span>
+<span id="cb77-35"><a href="descriptives-and-visualizations.html#cb77-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">scales =</span> <span class="st">&quot;free_x&quot;</span></span>
+<span id="cb77-36"><a href="descriptives-and-visualizations.html#cb77-36" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb77-37"><a href="descriptives-and-visualizations.html#cb77-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> my_breaks, <span class="at">limits =</span> my_limits) <span class="sc">+</span></span>
+<span id="cb77-38"><a href="descriptives-and-visualizations.html#cb77-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb77-39"><a href="descriptives-and-visualizations.html#cb77-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> trait_descriptives,</span>
+<span id="cb77-40"><a href="descriptives-and-visualizations.html#cb77-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb77-41"><a href="descriptives-and-visualizations.html#cb77-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fl">1.6</span>,</span>
+<span id="cb77-42"><a href="descriptives-and-visualizations.html#cb77-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">1.4</span>,</span>
+<span id="cb77-43"><a href="descriptives-and-visualizations.html#cb77-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;M = &quot;</span>, mean),</span>
+<span id="cb77-44"><a href="descriptives-and-visualizations.html#cb77-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
+<span id="cb77-45"><a href="descriptives-and-visualizations.html#cb77-45" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb77-46"><a href="descriptives-and-visualizations.html#cb77-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb77-47"><a href="descriptives-and-visualizations.html#cb77-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb77-48"><a href="descriptives-and-visualizations.html#cb77-48" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb77-49"><a href="descriptives-and-visualizations.html#cb77-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb77-50"><a href="descriptives-and-visualizations.html#cb77-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> trait_descriptives,</span>
+<span id="cb77-51"><a href="descriptives-and-visualizations.html#cb77-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb77-52"><a href="descriptives-and-visualizations.html#cb77-52" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fl">1.6</span>,</span>
+<span id="cb77-53"><a href="descriptives-and-visualizations.html#cb77-53" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">1.3</span>,</span>
+<span id="cb77-54"><a href="descriptives-and-visualizations.html#cb77-54" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;SD = &quot;</span>, sd),</span>
+<span id="cb77-55"><a href="descriptives-and-visualizations.html#cb77-55" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
+<span id="cb77-56"><a href="descriptives-and-visualizations.html#cb77-56" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb77-57"><a href="descriptives-and-visualizations.html#cb77-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb77-58"><a href="descriptives-and-visualizations.html#cb77-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb77-59"><a href="descriptives-and-visualizations.html#cb77-59" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb77-60"><a href="descriptives-and-visualizations.html#cb77-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb77-61"><a href="descriptives-and-visualizations.html#cb77-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> trait_descriptives,</span>
+<span id="cb77-62"><a href="descriptives-and-visualizations.html#cb77-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb77-63"><a href="descriptives-and-visualizations.html#cb77-63" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fl">1.6</span>,</span>
+<span id="cb77-64"><a href="descriptives-and-visualizations.html#cb77-64" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">1.2</span>,</span>
+<span id="cb77-65"><a href="descriptives-and-visualizations.html#cb77-65" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;\u03a9 = &quot;</span>, omega),</span>
+<span id="cb77-66"><a href="descriptives-and-visualizations.html#cb77-66" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
+<span id="cb77-67"><a href="descriptives-and-visualizations.html#cb77-67" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb77-68"><a href="descriptives-and-visualizations.html#cb77-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb77-69"><a href="descriptives-and-visualizations.html#cb77-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb77-70"><a href="descriptives-and-visualizations.html#cb77-70" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb77-71"><a href="descriptives-and-visualizations.html#cb77-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cowplot</span>() <span class="sc">+</span></span>
+<span id="cb77-72"><a href="descriptives-and-visualizations.html#cb77-72" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_colour_manual(values=cb_palette) +</span></span>
+<span id="cb77-73"><a href="descriptives-and-visualizations.html#cb77-73" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_fill_manual(values = cb_palette) +</span></span>
+<span id="cb77-74"><a href="descriptives-and-visualizations.html#cb77-74" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb77-75"><a href="descriptives-and-visualizations.html#cb77-75" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb77-76"><a href="descriptives-and-visualizations.html#cb77-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb77-77"><a href="descriptives-and-visualizations.html#cb77-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb77-78"><a href="descriptives-and-visualizations.html#cb77-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb77-79"><a href="descriptives-and-visualizations.html#cb77-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.line.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb77-80"><a href="descriptives-and-visualizations.html#cb77-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb77-81"><a href="descriptives-and-visualizations.html#cb77-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb77-82"><a href="descriptives-and-visualizations.html#cb77-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb77-83"><a href="descriptives-and-visualizations.html#cb77-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span>)</span>
+<span id="cb77-84"><a href="descriptives-and-visualizations.html#cb77-84" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> figure1</span>
+<span id="cb77-85"><a href="descriptives-and-visualizations.html#cb77-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-86"><a href="descriptives-and-visualizations.html#cb77-86" aria-hidden="true" tabindex="-1"></a>figure1</span></code></pre></div>
 <p><img src="analysis_report_files/figure-html/figure1-1.png" width="672" /></p>
 <div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="descriptives-and-visualizations.html#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
 <span id="cb78-2"><a href="descriptives-and-visualizations.html#cb78-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">here</span>(<span class="st">&quot;figures&quot;</span>, <span class="st">&quot;figure1.tiff&quot;</span>),</span>
@@ -1083,74 +1081,80 @@ I’ll begin with plotting the traits.</p>
 <span id="cb79-21"><a href="descriptives-and-visualizations.html#cb79-21" aria-hidden="true" tabindex="-1"></a>my_string <span class="ot">&lt;-</span> <span class="st">&quot;_state&quot;</span></span>
 <span id="cb79-22"><a href="descriptives-and-visualizations.html#cb79-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb79-23"><a href="descriptives-and-visualizations.html#cb79-23" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">clean_plot_data</span>(tmp, rename_levels, my_string)</span>
-<span id="cb79-24"><a href="descriptives-and-visualizations.html#cb79-24" aria-hidden="true" tabindex="-1"></a>state_descriptives <span class="ot">&lt;-</span> <span class="fu">clean_plot_data</span>(state_descriptives, rename_levels, my_string)</span></code></pre></div>
+<span id="cb79-24"><a href="descriptives-and-visualizations.html#cb79-24" aria-hidden="true" tabindex="-1"></a>state_descriptives <span class="ot">&lt;-</span> <span class="fu">clean_plot_data</span>(state_descriptives, rename_levels, my_string)</span>
+<span id="cb79-25"><a href="descriptives-and-visualizations.html#cb79-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-26"><a href="descriptives-and-visualizations.html#cb79-26" aria-hidden="true" tabindex="-1"></a><span class="co"># position of the text (so it doesn&#39;t overlap with points)</span></span>
+<span id="cb79-27"><a href="descriptives-and-visualizations.html#cb79-27" aria-hidden="true" tabindex="-1"></a>state_descriptives <span class="ot">&lt;-</span> </span>
+<span id="cb79-28"><a href="descriptives-and-visualizations.html#cb79-28" aria-hidden="true" tabindex="-1"></a>  state_descriptives <span class="sc">%&gt;%</span> </span>
+<span id="cb79-29"><a href="descriptives-and-visualizations.html#cb79-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb79-30"><a href="descriptives-and-visualizations.html#cb79-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">x_position =</span> <span class="fl">1.6</span>,</span>
+<span id="cb79-31"><a href="descriptives-and-visualizations.html#cb79-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_position =</span> <span class="fl">1.45</span></span>
+<span id="cb79-32"><a href="descriptives-and-visualizations.html#cb79-32" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>Then to plotting.</p>
 <div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="descriptives-and-visualizations.html#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
 <span id="cb80-2"><a href="descriptives-and-visualizations.html#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
 <span id="cb80-3"><a href="descriptives-and-visualizations.html#cb80-3" aria-hidden="true" tabindex="-1"></a>  tmp,</span>
 <span id="cb80-4"><a href="descriptives-and-visualizations.html#cb80-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
 <span id="cb80-5"><a href="descriptives-and-visualizations.html#cb80-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> value,</span>
-<span id="cb80-6"><a href="descriptives-and-visualizations.html#cb80-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">1</span>,</span>
-<span id="cb80-7"><a href="descriptives-and-visualizations.html#cb80-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> variable,</span>
-<span id="cb80-8"><a href="descriptives-and-visualizations.html#cb80-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> variable</span>
-<span id="cb80-9"><a href="descriptives-and-visualizations.html#cb80-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb80-10"><a href="descriptives-and-visualizations.html#cb80-10" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb80-11"><a href="descriptives-and-visualizations.html#cb80-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_quasirandom</span>(<span class="at">groupOnX=</span><span class="cn">FALSE</span>, <span class="at">size =</span> <span class="fl">0.1</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb80-12"><a href="descriptives-and-visualizations.html#cb80-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(</span>
-<span id="cb80-13"><a href="descriptives-and-visualizations.html#cb80-13" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> variable, </span>
-<span id="cb80-14"><a href="descriptives-and-visualizations.html#cb80-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">scales =</span> <span class="st">&quot;free_x&quot;</span></span>
-<span id="cb80-15"><a href="descriptives-and-visualizations.html#cb80-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb80-16"><a href="descriptives-and-visualizations.html#cb80-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> my_breaks, <span class="at">limits =</span> my_limits) <span class="sc">+</span></span>
-<span id="cb80-17"><a href="descriptives-and-visualizations.html#cb80-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb80-18"><a href="descriptives-and-visualizations.html#cb80-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> state_descriptives,</span>
-<span id="cb80-19"><a href="descriptives-and-visualizations.html#cb80-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb80-20"><a href="descriptives-and-visualizations.html#cb80-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fl">1.6</span>,</span>
-<span id="cb80-21"><a href="descriptives-and-visualizations.html#cb80-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">1.4</span>,</span>
-<span id="cb80-22"><a href="descriptives-and-visualizations.html#cb80-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;M = &quot;</span>, mean),</span>
-<span id="cb80-23"><a href="descriptives-and-visualizations.html#cb80-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
-<span id="cb80-24"><a href="descriptives-and-visualizations.html#cb80-24" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb80-25"><a href="descriptives-and-visualizations.html#cb80-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
-<span id="cb80-26"><a href="descriptives-and-visualizations.html#cb80-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
-<span id="cb80-27"><a href="descriptives-and-visualizations.html#cb80-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb80-28"><a href="descriptives-and-visualizations.html#cb80-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb80-29"><a href="descriptives-and-visualizations.html#cb80-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> state_descriptives,</span>
-<span id="cb80-30"><a href="descriptives-and-visualizations.html#cb80-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb80-31"><a href="descriptives-and-visualizations.html#cb80-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fl">1.6</span>,</span>
-<span id="cb80-32"><a href="descriptives-and-visualizations.html#cb80-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">1.3</span>,</span>
-<span id="cb80-33"><a href="descriptives-and-visualizations.html#cb80-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;SD = &quot;</span>, sd),</span>
-<span id="cb80-34"><a href="descriptives-and-visualizations.html#cb80-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
-<span id="cb80-35"><a href="descriptives-and-visualizations.html#cb80-35" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb80-36"><a href="descriptives-and-visualizations.html#cb80-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
-<span id="cb80-37"><a href="descriptives-and-visualizations.html#cb80-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
-<span id="cb80-38"><a href="descriptives-and-visualizations.html#cb80-38" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb80-39"><a href="descriptives-and-visualizations.html#cb80-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb80-40"><a href="descriptives-and-visualizations.html#cb80-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> state_descriptives,</span>
-<span id="cb80-41"><a href="descriptives-and-visualizations.html#cb80-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb80-42"><a href="descriptives-and-visualizations.html#cb80-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fl">1.6</span>,</span>
-<span id="cb80-43"><a href="descriptives-and-visualizations.html#cb80-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">1.2</span>,</span>
-<span id="cb80-44"><a href="descriptives-and-visualizations.html#cb80-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;\u03a9 = &quot;</span>, omega),</span>
-<span id="cb80-45"><a href="descriptives-and-visualizations.html#cb80-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
-<span id="cb80-46"><a href="descriptives-and-visualizations.html#cb80-46" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb80-47"><a href="descriptives-and-visualizations.html#cb80-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
-<span id="cb80-48"><a href="descriptives-and-visualizations.html#cb80-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb80-49"><a href="descriptives-and-visualizations.html#cb80-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fu">if_else</span>(<span class="fu">is.na</span>(state_descriptives<span class="sc">$</span>omega), <span class="dv">0</span>, <span class="dv">1</span>) <span class="co"># one-item measure don&#39;t have omega, so I make those see through</span></span>
-<span id="cb80-50"><a href="descriptives-and-visualizations.html#cb80-50" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb80-51"><a href="descriptives-and-visualizations.html#cb80-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cowplot</span>() <span class="sc">+</span></span>
-<span id="cb80-52"><a href="descriptives-and-visualizations.html#cb80-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>cb_palette) <span class="sc">+</span></span>
-<span id="cb80-53"><a href="descriptives-and-visualizations.html#cb80-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> cb_palette) <span class="sc">+</span></span>
-<span id="cb80-54"><a href="descriptives-and-visualizations.html#cb80-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb80-55"><a href="descriptives-and-visualizations.html#cb80-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb80-56"><a href="descriptives-and-visualizations.html#cb80-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb80-57"><a href="descriptives-and-visualizations.html#cb80-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb80-58"><a href="descriptives-and-visualizations.html#cb80-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb80-59"><a href="descriptives-and-visualizations.html#cb80-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.line.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb80-60"><a href="descriptives-and-visualizations.html#cb80-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb80-61"><a href="descriptives-and-visualizations.html#cb80-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb80-62"><a href="descriptives-and-visualizations.html#cb80-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>,</span>
-<span id="cb80-63"><a href="descriptives-and-visualizations.html#cb80-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span>)</span>
-<span id="cb80-64"><a href="descriptives-and-visualizations.html#cb80-64" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> figure2</span>
-<span id="cb80-65"><a href="descriptives-and-visualizations.html#cb80-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb80-66"><a href="descriptives-and-visualizations.html#cb80-66" aria-hidden="true" tabindex="-1"></a>figure2</span></code></pre></div>
+<span id="cb80-6"><a href="descriptives-and-visualizations.html#cb80-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">1</span></span>
+<span id="cb80-7"><a href="descriptives-and-visualizations.html#cb80-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb80-8"><a href="descriptives-and-visualizations.html#cb80-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb80-9"><a href="descriptives-and-visualizations.html#cb80-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_quasirandom</span>(<span class="at">groupOnX=</span><span class="cn">FALSE</span>, <span class="at">size =</span> <span class="fl">0.7</span>, <span class="at">shape =</span> <span class="dv">20</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb80-10"><a href="descriptives-and-visualizations.html#cb80-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(</span>
+<span id="cb80-11"><a href="descriptives-and-visualizations.html#cb80-11" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> variable, </span>
+<span id="cb80-12"><a href="descriptives-and-visualizations.html#cb80-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">scales =</span> <span class="st">&quot;free_x&quot;</span></span>
+<span id="cb80-13"><a href="descriptives-and-visualizations.html#cb80-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb80-14"><a href="descriptives-and-visualizations.html#cb80-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> my_breaks, <span class="at">limits =</span> my_limits) <span class="sc">+</span></span>
+<span id="cb80-15"><a href="descriptives-and-visualizations.html#cb80-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb80-16"><a href="descriptives-and-visualizations.html#cb80-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> state_descriptives,</span>
+<span id="cb80-17"><a href="descriptives-and-visualizations.html#cb80-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb80-18"><a href="descriptives-and-visualizations.html#cb80-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x_position,</span>
+<span id="cb80-19"><a href="descriptives-and-visualizations.html#cb80-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y_position <span class="sc">+</span> <span class="fl">0.1</span>,</span>
+<span id="cb80-20"><a href="descriptives-and-visualizations.html#cb80-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;M = &quot;</span>, mean),</span>
+<span id="cb80-21"><a href="descriptives-and-visualizations.html#cb80-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
+<span id="cb80-22"><a href="descriptives-and-visualizations.html#cb80-22" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb80-23"><a href="descriptives-and-visualizations.html#cb80-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb80-24"><a href="descriptives-and-visualizations.html#cb80-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb80-25"><a href="descriptives-and-visualizations.html#cb80-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb80-26"><a href="descriptives-and-visualizations.html#cb80-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb80-27"><a href="descriptives-and-visualizations.html#cb80-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> state_descriptives,</span>
+<span id="cb80-28"><a href="descriptives-and-visualizations.html#cb80-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb80-29"><a href="descriptives-and-visualizations.html#cb80-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x_position,</span>
+<span id="cb80-30"><a href="descriptives-and-visualizations.html#cb80-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y_position,</span>
+<span id="cb80-31"><a href="descriptives-and-visualizations.html#cb80-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;SD = &quot;</span>, sd),</span>
+<span id="cb80-32"><a href="descriptives-and-visualizations.html#cb80-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
+<span id="cb80-33"><a href="descriptives-and-visualizations.html#cb80-33" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb80-34"><a href="descriptives-and-visualizations.html#cb80-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb80-35"><a href="descriptives-and-visualizations.html#cb80-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb80-36"><a href="descriptives-and-visualizations.html#cb80-36" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb80-37"><a href="descriptives-and-visualizations.html#cb80-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb80-38"><a href="descriptives-and-visualizations.html#cb80-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> state_descriptives,</span>
+<span id="cb80-39"><a href="descriptives-and-visualizations.html#cb80-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb80-40"><a href="descriptives-and-visualizations.html#cb80-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x_position,</span>
+<span id="cb80-41"><a href="descriptives-and-visualizations.html#cb80-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> y_position <span class="sc">-</span> <span class="fl">0.1</span>,</span>
+<span id="cb80-42"><a href="descriptives-and-visualizations.html#cb80-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;\u03a9 = &quot;</span>, omega),</span>
+<span id="cb80-43"><a href="descriptives-and-visualizations.html#cb80-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
+<span id="cb80-44"><a href="descriptives-and-visualizations.html#cb80-44" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb80-45"><a href="descriptives-and-visualizations.html#cb80-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb80-46"><a href="descriptives-and-visualizations.html#cb80-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb80-47"><a href="descriptives-and-visualizations.html#cb80-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fu">if_else</span>(<span class="fu">is.na</span>(state_descriptives<span class="sc">$</span>omega), <span class="dv">0</span>, <span class="dv">1</span>) <span class="co"># one-item measure don&#39;t have omega, so I make those see through</span></span>
+<span id="cb80-48"><a href="descriptives-and-visualizations.html#cb80-48" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb80-49"><a href="descriptives-and-visualizations.html#cb80-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cowplot</span>() <span class="sc">+</span></span>
+<span id="cb80-50"><a href="descriptives-and-visualizations.html#cb80-50" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_colour_manual(values=cb_palette) +</span></span>
+<span id="cb80-51"><a href="descriptives-and-visualizations.html#cb80-51" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_fill_manual(values = cb_palette) +</span></span>
+<span id="cb80-52"><a href="descriptives-and-visualizations.html#cb80-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb80-53"><a href="descriptives-and-visualizations.html#cb80-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb80-54"><a href="descriptives-and-visualizations.html#cb80-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb80-55"><a href="descriptives-and-visualizations.html#cb80-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb80-56"><a href="descriptives-and-visualizations.html#cb80-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb80-57"><a href="descriptives-and-visualizations.html#cb80-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.line.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb80-58"><a href="descriptives-and-visualizations.html#cb80-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb80-59"><a href="descriptives-and-visualizations.html#cb80-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb80-60"><a href="descriptives-and-visualizations.html#cb80-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb80-61"><a href="descriptives-and-visualizations.html#cb80-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span>)</span>
+<span id="cb80-62"><a href="descriptives-and-visualizations.html#cb80-62" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> figure2</span>
+<span id="cb80-63"><a href="descriptives-and-visualizations.html#cb80-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb80-64"><a href="descriptives-and-visualizations.html#cb80-64" aria-hidden="true" tabindex="-1"></a>figure2</span></code></pre></div>
 <p><img src="analysis_report_files/figure-html/figure2-1.png" width="672" /></p>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="descriptives-and-visualizations.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
 <span id="cb81-2"><a href="descriptives-and-visualizations.html#cb81-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">here</span>(<span class="st">&quot;figures&quot;</span>, <span class="st">&quot;figure2.tiff&quot;</span>),</span>
@@ -1221,55 +1225,53 @@ I’ll begin with plotting the traits.</p>
 <span id="cb83-23"><a href="descriptives-and-visualizations.html#cb83-23" aria-hidden="true" tabindex="-1"></a>  tmp,</span>
 <span id="cb83-24"><a href="descriptives-and-visualizations.html#cb83-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
 <span id="cb83-25"><a href="descriptives-and-visualizations.html#cb83-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> value,</span>
-<span id="cb83-26"><a href="descriptives-and-visualizations.html#cb83-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">1</span>,</span>
-<span id="cb83-27"><a href="descriptives-and-visualizations.html#cb83-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> variable,</span>
-<span id="cb83-28"><a href="descriptives-and-visualizations.html#cb83-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> variable</span>
-<span id="cb83-29"><a href="descriptives-and-visualizations.html#cb83-29" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb83-30"><a href="descriptives-and-visualizations.html#cb83-30" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb83-31"><a href="descriptives-and-visualizations.html#cb83-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_quasirandom</span>(<span class="at">groupOnX=</span><span class="cn">FALSE</span>, <span class="at">size =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb83-32"><a href="descriptives-and-visualizations.html#cb83-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(</span>
-<span id="cb83-33"><a href="descriptives-and-visualizations.html#cb83-33" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> variable, </span>
-<span id="cb83-34"><a href="descriptives-and-visualizations.html#cb83-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">scales =</span> <span class="st">&quot;free_x&quot;</span></span>
-<span id="cb83-35"><a href="descriptives-and-visualizations.html#cb83-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb83-36"><a href="descriptives-and-visualizations.html#cb83-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> my_breaks, <span class="at">limits =</span> my_limits) <span class="sc">+</span></span>
-<span id="cb83-37"><a href="descriptives-and-visualizations.html#cb83-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb83-38"><a href="descriptives-and-visualizations.html#cb83-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> social_media2,</span>
-<span id="cb83-39"><a href="descriptives-and-visualizations.html#cb83-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb83-40"><a href="descriptives-and-visualizations.html#cb83-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x_position,</span>
-<span id="cb83-41"><a href="descriptives-and-visualizations.html#cb83-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">0.7</span>,</span>
-<span id="cb83-42"><a href="descriptives-and-visualizations.html#cb83-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;M = &quot;</span>, mean),</span>
-<span id="cb83-43"><a href="descriptives-and-visualizations.html#cb83-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
-<span id="cb83-44"><a href="descriptives-and-visualizations.html#cb83-44" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb83-45"><a href="descriptives-and-visualizations.html#cb83-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
-<span id="cb83-46"><a href="descriptives-and-visualizations.html#cb83-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
-<span id="cb83-47"><a href="descriptives-and-visualizations.html#cb83-47" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb83-48"><a href="descriptives-and-visualizations.html#cb83-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb83-49"><a href="descriptives-and-visualizations.html#cb83-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> social_media2,</span>
-<span id="cb83-50"><a href="descriptives-and-visualizations.html#cb83-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb83-51"><a href="descriptives-and-visualizations.html#cb83-51" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x_position,</span>
-<span id="cb83-52"><a href="descriptives-and-visualizations.html#cb83-52" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">0.67</span>,</span>
-<span id="cb83-53"><a href="descriptives-and-visualizations.html#cb83-53" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;SD = &quot;</span>, sd),</span>
-<span id="cb83-54"><a href="descriptives-and-visualizations.html#cb83-54" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
-<span id="cb83-55"><a href="descriptives-and-visualizations.html#cb83-55" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb83-56"><a href="descriptives-and-visualizations.html#cb83-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
-<span id="cb83-57"><a href="descriptives-and-visualizations.html#cb83-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
-<span id="cb83-58"><a href="descriptives-and-visualizations.html#cb83-58" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb83-59"><a href="descriptives-and-visualizations.html#cb83-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cowplot</span>() <span class="sc">+</span></span>
-<span id="cb83-60"><a href="descriptives-and-visualizations.html#cb83-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>cb_palette) <span class="sc">+</span></span>
-<span id="cb83-61"><a href="descriptives-and-visualizations.html#cb83-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> cb_palette) <span class="sc">+</span></span>
-<span id="cb83-62"><a href="descriptives-and-visualizations.html#cb83-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb83-63"><a href="descriptives-and-visualizations.html#cb83-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb83-64"><a href="descriptives-and-visualizations.html#cb83-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb83-65"><a href="descriptives-and-visualizations.html#cb83-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb83-66"><a href="descriptives-and-visualizations.html#cb83-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb83-67"><a href="descriptives-and-visualizations.html#cb83-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.line.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb83-68"><a href="descriptives-and-visualizations.html#cb83-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb83-69"><a href="descriptives-and-visualizations.html#cb83-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb83-70"><a href="descriptives-and-visualizations.html#cb83-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>,</span>
-<span id="cb83-71"><a href="descriptives-and-visualizations.html#cb83-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span>)</span>
-<span id="cb83-72"><a href="descriptives-and-visualizations.html#cb83-72" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> figure3</span>
-<span id="cb83-73"><a href="descriptives-and-visualizations.html#cb83-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb83-74"><a href="descriptives-and-visualizations.html#cb83-74" aria-hidden="true" tabindex="-1"></a>figure3</span></code></pre></div>
+<span id="cb83-26"><a href="descriptives-and-visualizations.html#cb83-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">1</span></span>
+<span id="cb83-27"><a href="descriptives-and-visualizations.html#cb83-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb83-28"><a href="descriptives-and-visualizations.html#cb83-28" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb83-29"><a href="descriptives-and-visualizations.html#cb83-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_quasirandom</span>(<span class="at">groupOnX=</span><span class="cn">FALSE</span>, <span class="at">size =</span> <span class="fl">0.7</span>, <span class="at">shape =</span> <span class="dv">20</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb83-30"><a href="descriptives-and-visualizations.html#cb83-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(</span>
+<span id="cb83-31"><a href="descriptives-and-visualizations.html#cb83-31" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> variable, </span>
+<span id="cb83-32"><a href="descriptives-and-visualizations.html#cb83-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">scales =</span> <span class="st">&quot;free_x&quot;</span></span>
+<span id="cb83-33"><a href="descriptives-and-visualizations.html#cb83-33" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb83-34"><a href="descriptives-and-visualizations.html#cb83-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> my_breaks, <span class="at">limits =</span> my_limits) <span class="sc">+</span></span>
+<span id="cb83-35"><a href="descriptives-and-visualizations.html#cb83-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb83-36"><a href="descriptives-and-visualizations.html#cb83-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> social_media2,</span>
+<span id="cb83-37"><a href="descriptives-and-visualizations.html#cb83-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb83-38"><a href="descriptives-and-visualizations.html#cb83-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x_position,</span>
+<span id="cb83-39"><a href="descriptives-and-visualizations.html#cb83-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">0.7</span>,</span>
+<span id="cb83-40"><a href="descriptives-and-visualizations.html#cb83-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;M = &quot;</span>, mean),</span>
+<span id="cb83-41"><a href="descriptives-and-visualizations.html#cb83-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
+<span id="cb83-42"><a href="descriptives-and-visualizations.html#cb83-42" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb83-43"><a href="descriptives-and-visualizations.html#cb83-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb83-44"><a href="descriptives-and-visualizations.html#cb83-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb83-45"><a href="descriptives-and-visualizations.html#cb83-45" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb83-46"><a href="descriptives-and-visualizations.html#cb83-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
+<span id="cb83-47"><a href="descriptives-and-visualizations.html#cb83-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> social_media2,</span>
+<span id="cb83-48"><a href="descriptives-and-visualizations.html#cb83-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb83-49"><a href="descriptives-and-visualizations.html#cb83-49" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x_position,</span>
+<span id="cb83-50"><a href="descriptives-and-visualizations.html#cb83-50" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="fl">0.67</span>,</span>
+<span id="cb83-51"><a href="descriptives-and-visualizations.html#cb83-51" aria-hidden="true" tabindex="-1"></a>      <span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">&quot;SD = &quot;</span>, sd),</span>
+<span id="cb83-52"><a href="descriptives-and-visualizations.html#cb83-52" aria-hidden="true" tabindex="-1"></a>      <span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span></span>
+<span id="cb83-53"><a href="descriptives-and-visualizations.html#cb83-53" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb83-54"><a href="descriptives-and-visualizations.html#cb83-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">3</span>,</span>
+<span id="cb83-55"><a href="descriptives-and-visualizations.html#cb83-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb83-56"><a href="descriptives-and-visualizations.html#cb83-56" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb83-57"><a href="descriptives-and-visualizations.html#cb83-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_cowplot</span>() <span class="sc">+</span></span>
+<span id="cb83-58"><a href="descriptives-and-visualizations.html#cb83-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span>cb_palette) <span class="sc">+</span></span>
+<span id="cb83-59"><a href="descriptives-and-visualizations.html#cb83-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> cb_palette) <span class="sc">+</span></span>
+<span id="cb83-60"><a href="descriptives-and-visualizations.html#cb83-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb83-61"><a href="descriptives-and-visualizations.html#cb83-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb83-62"><a href="descriptives-and-visualizations.html#cb83-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb83-63"><a href="descriptives-and-visualizations.html#cb83-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb83-64"><a href="descriptives-and-visualizations.html#cb83-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb83-65"><a href="descriptives-and-visualizations.html#cb83-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.line.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb83-66"><a href="descriptives-and-visualizations.html#cb83-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb83-67"><a href="descriptives-and-visualizations.html#cb83-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb83-68"><a href="descriptives-and-visualizations.html#cb83-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb83-69"><a href="descriptives-and-visualizations.html#cb83-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">&quot;Corbel&quot;</span>)</span>
+<span id="cb83-70"><a href="descriptives-and-visualizations.html#cb83-70" aria-hidden="true" tabindex="-1"></a>  ) <span class="ot">-&gt;</span> figure3</span>
+<span id="cb83-71"><a href="descriptives-and-visualizations.html#cb83-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-72"><a href="descriptives-and-visualizations.html#cb83-72" aria-hidden="true" tabindex="-1"></a>figure3</span></code></pre></div>
 <p><img src="analysis_report_files/figure-html/figure3-1.png" width="672" /></p>
 <div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="descriptives-and-visualizations.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
 <span id="cb84-2"><a href="descriptives-and-visualizations.html#cb84-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">here</span>(<span class="st">&quot;figures&quot;</span>, <span class="st">&quot;figure3.tiff&quot;</span>),</span>
