@@ -24,7 +24,7 @@
 <meta name="author" content="Niklas Johannes, Thuy-vy Nguyen, Netta Weinstein, Andrew K. Przybylski" />
 
 
-<meta name="date" content="2021-03-25" />
+<meta name="date" content="2021-04-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,6 +51,8 @@
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -153,7 +155,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#person-level"><i class="fa fa-check"></i><b>3.3</b> Person-level</a></li>
 <li class="chapter" data-level="3.4" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#app-level"><i class="fa fa-check"></i><b>3.4</b> App-level</a></li>
 <li class="chapter" data-level="3.5" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#day-level"><i class="fa fa-check"></i><b>3.5</b> Day level</a></li>
-<li class="chapter" data-level="3.6" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#plots-for-paper"><i class="fa fa-check"></i><b>3.6</b> Plots for paper</a></li>
+<li class="chapter" data-level="3.6" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#demographics-and-social-media"><i class="fa fa-check"></i><b>3.6</b> Demographics and social media</a></li>
+<li class="chapter" data-level="3.7" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#plots-for-paper"><i class="fa fa-check"></i><b>3.7</b> Plots for paper</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>4</b> Analysis</a>
 <ul>
@@ -181,9 +184,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="5" data-path="synthesis.html"><a href="synthesis.html"><i class="fa fa-check"></i><b>5</b> Synthesis</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="synthesis.html"><a href="synthesis.html#personality-on-smartphone-use-trait"><i class="fa fa-check"></i><b>5.1</b> Personality on smartphone use (trait)</a></li>
-<li class="chapter" data-level="5.2" data-path="synthesis.html"><a href="synthesis.html#experiences-on-smartphone-use-state"><i class="fa fa-check"></i><b>5.2</b> Experiences on smartphone use (state)</a></li>
-<li class="chapter" data-level="5.3" data-path="synthesis.html"><a href="synthesis.html#smartphone-use-on-well-being-state"><i class="fa fa-check"></i><b>5.3</b> Smartphone use on well-being (state)</a></li>
+<li class="chapter" data-level="5.1" data-path="synthesis.html"><a href="synthesis.html#numerical-model-estimates"><i class="fa fa-check"></i><b>5.1</b> Numerical model estimates</a></li>
+<li class="chapter" data-level="5.2" data-path="synthesis.html"><a href="synthesis.html#personality-on-smartphone-use-trait"><i class="fa fa-check"></i><b>5.2</b> Personality on smartphone use (trait)</a></li>
+<li class="chapter" data-level="5.3" data-path="synthesis.html"><a href="synthesis.html#experiences-on-smartphone-use-state"><i class="fa fa-check"></i><b>5.3</b> Experiences on smartphone use (state)</a></li>
+<li class="chapter" data-level="5.4" data-path="synthesis.html"><a href="synthesis.html#smartphone-use-on-well-being-state"><i class="fa fa-check"></i><b>5.4</b> Smartphone use on well-being (state)</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -371,62 +375,112 @@ Therefore, I save each exclusion criterion in a separate object and inspect how 
 <span id="cb9-7"><a href="data-processing.html#cb9-7" aria-hidden="true" tabindex="-1"></a>  personality <span class="sc">%&gt;%</span> </span>
 <span id="cb9-8"><a href="data-processing.html#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(start_date)) <span class="sc">%&gt;%</span> </span>
 <span id="cb9-9"><a href="data-processing.html#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(id)</span></code></pre></div>
-<p>Let’s see how many missing values there are left per participant (aka row) in <a href="data-processing.html#tab:check-personality-na">2.1</a>.
+Let’s see how many missing values there are left per participant (aka row) in <a href="data-processing.html#tab:check-personality-na">2.1</a>.
 Most participants filled out everything, but a couple of them have basically empty rows (especially those above with all empty rows).
 A couple of participants have quite a handful of empty cells.
-I inspected their data and most of them just didn’t fill out the Big Five, but some participants didn’t fill out anything.</p>
+I inspected their data and most of them just didn’t fill out the Big Five, but some participants didn’t fill out anything.
 <table>
-<caption><span id="tab:check-personality-na">Table 2.1: </span>Count of number of missing values per row</caption>
+<caption>
+<span id="tab:check-personality-na">Table 2.1: </span>Count of number of missing values per row
+</caption>
 <thead>
-<tr class="header">
-<th align="right">na_count_row</th>
-<th align="right">n</th>
+<tr>
+<th style="text-align:right;">
+na_count_row
+</th>
+<th style="text-align:right;">
+n
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">0</td>
-<td align="right">1</td>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">246</td>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+246
+</td>
 </tr>
-<tr class="odd">
-<td align="right">2</td>
-<td align="right">29</td>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+29
+</td>
 </tr>
-<tr class="even">
-<td align="right">3</td>
-<td align="right">5</td>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+5
+</td>
 </tr>
-<tr class="odd">
-<td align="right">4</td>
-<td align="right">2</td>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
 </tr>
-<tr class="even">
-<td align="right">7</td>
-<td align="right">1</td>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
-<tr class="odd">
-<td align="right">9</td>
-<td align="right">2</td>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+2
+</td>
 </tr>
-<tr class="even">
-<td align="right">25</td>
-<td align="right">1</td>
+<tr>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
-<tr class="odd">
-<td align="right">49</td>
-<td align="right">4</td>
+<tr>
+<td style="text-align:right;">
+49
+</td>
+<td style="text-align:right;">
+4
+</td>
 </tr>
-<tr class="even">
-<td align="right">74</td>
-<td align="right">1</td>
+<tr>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
-<tr class="odd">
-<td align="right">81</td>
-<td align="right">10</td>
+<tr>
+<td style="text-align:right;">
+81
+</td>
+<td style="text-align:right;">
+10
+</td>
 </tr>
 </tbody>
 </table>
@@ -442,9 +496,9 @@ I inspected their data and most of them just didn’t fill out the Big Five, but
 <p>Alright, time to construct the means for the scales.
 But first, I check data quality by seeing whether there are instances of “straightlining” (i.e., choosing the same response option for all items of a scale).
 We also had attention checks in the survey.</p>
-<p>Let’s have a look at those attention checks.
+Let’s have a look at those attention checks.
 For item <code>bpns_25</code> participants had to choose <code>2</code> as a response and for item <code>big_five_45</code> they had to choose <code>5</code>.
-When we check Table <a href="data-processing.html#tab:attention-check-personality">2.2</a>, we see that 5 participants didn’t pass both attention checks.</p>
+When we check Table <a href="data-processing.html#tab:attention-check-personality">2.2</a>, we see that 5 participants didn’t pass both attention checks.
 <table class="kable_wrapper">
 <caption>
 <span id="tab:attention-check-personality">Table 2.2: </span>Failed attention checks
@@ -454,23 +508,39 @@ When we check Table <a href="data-processing.html#tab:attention-check-personalit
 <td>
 <table>
 <thead>
-<tr class="header">
-<th align="left">bpns_25 != 2</th>
-<th align="right">n</th>
+<tr>
+<th style="text-align:left;">
+bpns_25 != 2
+</th>
+<th style="text-align:right;">
+n
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">FALSE</td>
-<td align="right">277</td>
+<tr>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:right;">
+277
+</td>
 </tr>
-<tr class="even">
-<td align="left">TRUE</td>
-<td align="right">13</td>
+<tr>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+13
+</td>
 </tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="right">12</td>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+12
+</td>
 </tr>
 </tbody>
 </table>
@@ -478,23 +548,39 @@ When we check Table <a href="data-processing.html#tab:attention-check-personalit
 <td>
 <table>
 <thead>
-<tr class="header">
-<th align="left">big_five_45 != 5</th>
-<th align="right">n</th>
+<tr>
+<th style="text-align:left;">
+big_five_45 != 5
+</th>
+<th style="text-align:right;">
+n
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">FALSE</td>
-<td align="right">275</td>
+<tr>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:right;">
+275
+</td>
 </tr>
-<tr class="even">
-<td align="left">TRUE</td>
-<td align="right">7</td>
+<tr>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+7
+</td>
 </tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="right">20</td>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+20
+</td>
 </tr>
 </tbody>
 </table>
@@ -502,23 +588,39 @@ When we check Table <a href="data-processing.html#tab:attention-check-personalit
 <td>
 <table>
 <thead>
-<tr class="header">
-<th align="left">(bpns_25 != 2 &amp; big_five_45 != 5)</th>
-<th align="right">n</th>
+<tr>
+<th style="text-align:left;">
+(bpns_25 != 2 &amp; big_five_45 != 5)
+</th>
+<th style="text-align:right;">
+n
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">FALSE</td>
-<td align="right">286</td>
+<tr>
+<td style="text-align:left;">
+FALSE
+</td>
+<td style="text-align:right;">
+286
+</td>
 </tr>
-<tr class="even">
-<td align="left">TRUE</td>
-<td align="right">5</td>
+<tr>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:right;">
+5
+</td>
 </tr>
-<tr class="odd">
-<td align="left">NA</td>
-<td align="right">11</td>
+<tr>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+11
+</td>
 </tr>
 </tbody>
 </table>
@@ -778,72 +880,134 @@ All participants started on a Monday, which is why I turn <code>day</code> into 
 <span id="cb20-2"><a href="data-processing.html#cb20-2" aria-hidden="true" tabindex="-1"></a>  diary <span class="sc">%&gt;%</span> </span>
 <span id="cb20-3"><a href="data-processing.html#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(start_date)) <span class="sc">%&gt;%</span> </span>
 <span id="cb20-4"><a href="data-processing.html#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(id, day)</span></code></pre></div>
-<p>Afterwards, I inspect how many <code>NA</code>s there are per row in Table <a href="data-processing.html#tab:table-diary-na">2.3</a>.
-Most participants filled out everything, but a couple of them have basically empty rows (e.g., those with 30 or 40 missing values per row).</p>
+Afterwards, I inspect how many <code>NA</code>s there are per row in Table <a href="data-processing.html#tab:table-diary-na">2.3</a>.
+Most participants filled out everything, but a couple of them have basically empty rows (e.g., those with 30 or 40 missing values per row).
 <table>
-<caption><span id="tab:table-diary-na">Table 2.3: </span>Count of number of missing values per row</caption>
+<caption>
+<span id="tab:table-diary-na">Table 2.3: </span>Count of number of missing values per row
+</caption>
 <thead>
-<tr class="header">
-<th align="right">na_count_row</th>
-<th align="right">n</th>
+<tr>
+<th style="text-align:right;">
+na_count_row
+</th>
+<th style="text-align:right;">
+n
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">0</td>
-<td align="right">1072</td>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1072
+</td>
 </tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">49</td>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+49
+</td>
 </tr>
-<tr class="odd">
-<td align="right">2</td>
-<td align="right">16</td>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+16
+</td>
 </tr>
-<tr class="even">
-<td align="right">3</td>
-<td align="right">3</td>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
 </tr>
-<tr class="odd">
-<td align="right">4</td>
-<td align="right">1</td>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
-<tr class="even">
-<td align="right">6</td>
-<td align="right">1</td>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
-<tr class="odd">
-<td align="right">8</td>
-<td align="right">1</td>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
-<tr class="even">
-<td align="right">9</td>
-<td align="right">2</td>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+2
+</td>
 </tr>
-<tr class="odd">
-<td align="right">16</td>
-<td align="right">1</td>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
-<tr class="even">
-<td align="right">20</td>
-<td align="right">1</td>
+<tr>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
-<tr class="odd">
-<td align="right">23</td>
-<td align="right">1</td>
+<tr>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
-<tr class="even">
-<td align="right">28</td>
-<td align="right">2</td>
+<tr>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:right;">
+2
+</td>
 </tr>
-<tr class="odd">
-<td align="right">32</td>
-<td align="right">24</td>
+<tr>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+24
+</td>
 </tr>
-<tr class="even">
-<td align="right">39</td>
-<td align="right">336</td>
+<tr>
+<td style="text-align:right;">
+39
+</td>
+<td style="text-align:right;">
+336
+</td>
 </tr>
 </tbody>
 </table>
@@ -928,148 +1092,302 @@ I’ll check how many surveys there are that have zero variance across those sca
 <span id="cb24-6"><a href="data-processing.html#cb24-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">na.rm =</span> <span class="cn">TRUE</span></span>
 <span id="cb24-7"><a href="data-processing.html#cb24-7" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb24-8"><a href="data-processing.html#cb24-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p>Overall, Table <a href="data-processing.html#tab:table-straightliners-diary">2.4</a> shows that 95% of the sample didn’t staightline.</p>
+Overall, Table <a href="data-processing.html#tab:table-straightliners-diary">2.4</a> shows that 95% of the sample didn’t staightline.
 <table>
-<caption><span id="tab:table-straightliners-diary">Table 2.4: </span>Percentage of the number of zero variance per row</caption>
+<caption>
+<span id="tab:table-straightliners-diary">Table 2.4: </span>Percentage of the number of zero variance per row
+</caption>
 <thead>
-<tr class="header">
-<th align="right">zero_variances</th>
-<th align="right">n</th>
-<th align="right">percent</th>
+<tr>
+<th style="text-align:right;">
+zero_variances
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+percent
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">0</td>
-<td align="right">1440</td>
-<td align="right">0.9536424</td>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1440
+</td>
+<td style="text-align:right;">
+0.9536424
+</td>
 </tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">29</td>
-<td align="right">0.0192053</td>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:right;">
+0.0192053
+</td>
 </tr>
-<tr class="odd">
-<td align="right">2</td>
-<td align="right">21</td>
-<td align="right">0.0139073</td>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+0.0139073
+</td>
 </tr>
-<tr class="even">
-<td align="right">3</td>
-<td align="right">20</td>
-<td align="right">0.0132450</td>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+0.0132450
+</td>
 </tr>
 </tbody>
 </table>
-<p>But there are a couple of participants who seemed to rush through the survey, see Table <a href="data-processing.html#tab:table-percentage-straightliners-diary">2.5</a>.
+But there are a couple of participants who seemed to rush through the survey, see Table <a href="data-processing.html#tab:table-percentage-straightliners-diary">2.5</a>.
 Manually inspecting them indeed shows that it’s hard to trust their data.
-(Note that I temporarily remove the rows identified above because we only want to exclude those straightliners with valid data.)</p>
+(Note that I temporarily remove the rows identified above because we only want to exclude those straightliners with valid data.)
 <table>
-<caption><span id="tab:table-percentage-straightliners-diary">Table 2.5: </span>Percentage of participants with a number of zero-variance scales</caption>
+<caption>
+<span id="tab:table-percentage-straightliners-diary">Table 2.5: </span>Percentage of participants with a number of zero-variance scales
+</caption>
 <thead>
-<tr class="header">
-<th align="left">id</th>
-<th align="right">total_surveys</th>
-<th align="right">total_straightline_surveys</th>
-<th align="right">percentage</th>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:right;">
+total_surveys
+</th>
+<th style="text-align:right;">
+total_straightline_surveys
+</th>
+<th style="text-align:right;">
+percentage
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">pp_172</td>
-<td align="right">4</td>
-<td align="right">3</td>
-<td align="right">0.75</td>
+<tr>
+<td style="text-align:left;">
+pp_172
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.75
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_121</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="right">0.60</td>
+<tr>
+<td style="text-align:left;">
+pp_121
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.60
+</td>
 </tr>
-<tr class="odd">
-<td align="left">pp_164</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="right">0.60</td>
+<tr>
+<td style="text-align:left;">
+pp_164
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.60
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_169</td>
-<td align="right">5</td>
-<td align="right">3</td>
-<td align="right">0.60</td>
+<tr>
+<td style="text-align:left;">
+pp_169
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.60
+</td>
 </tr>
-<tr class="odd">
-<td align="left">pp_103</td>
-<td align="right">2</td>
-<td align="right">1</td>
-<td align="right">0.50</td>
+<tr>
+<td style="text-align:left;">
+pp_103
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.50
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_168</td>
-<td align="right">2</td>
-<td align="right">1</td>
-<td align="right">0.50</td>
+<tr>
+<td style="text-align:left;">
+pp_168
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.50
+</td>
 </tr>
-<tr class="odd">
-<td align="left">pp_290</td>
-<td align="right">2</td>
-<td align="right">1</td>
-<td align="right">0.50</td>
+<tr>
+<td style="text-align:left;">
+pp_290
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.50
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_154</td>
-<td align="right">5</td>
-<td align="right">2</td>
-<td align="right">0.40</td>
+<tr>
+<td style="text-align:left;">
+pp_154
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.40
+</td>
 </tr>
-<tr class="odd">
-<td align="left">pp_198</td>
-<td align="right">5</td>
-<td align="right">2</td>
-<td align="right">0.40</td>
+<tr>
+<td style="text-align:left;">
+pp_198
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.40
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_35</td>
-<td align="right">5</td>
-<td align="right">2</td>
-<td align="right">0.40</td>
+<tr>
+<td style="text-align:left;">
+pp_35
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.40
+</td>
 </tr>
 </tbody>
 </table>
 <p>I will exclude those participants and then surveys with more than one instance of straightlining.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="data-processing.html#cb25-1" aria-hidden="true" tabindex="-1"></a>diary_exclusions_3 <span class="ot">&lt;-</span> </span>
 <span id="cb25-2"><a href="data-processing.html#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">&quot;pp_172&quot;</span>, <span class="st">&quot;pp_121&quot;</span>, <span class="st">&quot;pp_164&quot;</span>, <span class="st">&quot;pp_169&quot;</span>, <span class="st">&quot;pp_103&quot;</span>, <span class="st">&quot;pp_168&quot;</span>, <span class="st">&quot;pp_290&quot;</span>)</span></code></pre></div>
-<p>Now there’s very little straightlining left (see Table <a href="data-processing.html#tab:check-variances-again-diary">2.6</a> and compare to Table <a href="data-processing.html#tab:table-straightliners-diary">2.4</a>).</p>
+Now there’s very little straightlining left (see Table <a href="data-processing.html#tab:check-variances-again-diary">2.6</a> and compare to Table <a href="data-processing.html#tab:table-straightliners-diary">2.4</a>).
 <table>
-<caption><span id="tab:check-variances-again-diary">Table 2.6: </span>Percentage of the number of zero variance per row</caption>
+<caption>
+<span id="tab:check-variances-again-diary">Table 2.6: </span>Percentage of the number of zero variance per row
+</caption>
 <thead>
-<tr class="header">
-<th align="right">zero_variances</th>
-<th align="right">n</th>
-<th align="right">percent</th>
+<tr>
+<th style="text-align:right;">
+zero_variances
+</th>
+<th style="text-align:right;">
+n
+</th>
+<th style="text-align:right;">
+percent
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">0</td>
-<td align="right">1072</td>
-<td align="right">0.9571429</td>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1072
+</td>
+<td style="text-align:right;">
+0.9571429
+</td>
 </tr>
-<tr class="even">
-<td align="right">1</td>
-<td align="right">20</td>
-<td align="right">0.0178571</td>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+0.0178571
+</td>
 </tr>
-<tr class="odd">
-<td align="right">2</td>
-<td align="right">14</td>
-<td align="right">0.0125000</td>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+0.0125000
+</td>
 </tr>
-<tr class="even">
-<td align="right">3</td>
-<td align="right">14</td>
-<td align="right">0.0125000</td>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+0.0125000
+</td>
 </tr>
 </tbody>
 </table>
@@ -1104,121 +1422,265 @@ I also create a <code>social_media_subjective</code> measure by combining hours 
 <p>Further, participants’ first day of participation was always a Monday.
 Specifically, three days in April 2019: the 15th, 22nd, 29th.
 Let’s check whether all of them indeed have their first day on one of those days.</p>
-<p>Table <a href="data-processing.html#tab:check-first-day">2.7</a> shows all day one surveys which were not recorded on one of those three dates.
+Table <a href="data-processing.html#tab:check-first-day">2.7</a> shows all day one surveys which were not recorded on one of those three dates.
 Indeed, everyone opened their first survey on one of the three start days.
-Some participants opened/recorded their answers right after midnight, which is fine.</p>
+Some participants opened/recorded their answers right after midnight, which is fine.
 <table>
-<caption><span id="tab:check-first-day">Table 2.7: </span>Recorded dates that weren’t on a Monday</caption>
+<caption>
+<span id="tab:check-first-day">Table 2.7: </span>Recorded dates that weren’t on a Monday
+</caption>
 <thead>
-<tr class="header">
-<th align="left">id</th>
-<th align="left">start_date</th>
-<th align="left">recorded_date</th>
-<th align="right">duration</th>
-<th align="left">day</th>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:left;">
+start_date
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+<th style="text-align:right;">
+duration
+</th>
+<th style="text-align:left;">
+day
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">pp_21</td>
-<td align="left">2019-04-30 00:35:48</td>
-<td align="left">2019-04-30 00:57:14</td>
-<td align="right">1284</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_21
+</td>
+<td style="text-align:left;">
+2019-04-30 00:35:48
+</td>
+<td style="text-align:left;">
+2019-04-30 00:57:14
+</td>
+<td style="text-align:right;">
+1284
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_61</td>
-<td align="left">2019-04-29 16:59:21</td>
-<td align="left">2019-05-06 17:00:41</td>
-<td align="right">72</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_61
+</td>
+<td style="text-align:left;">
+2019-04-29 16:59:21
+</td>
+<td style="text-align:left;">
+2019-05-06 17:00:41
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
-<tr class="odd">
-<td align="left">pp_71</td>
-<td align="left">2019-04-22 16:01:29</td>
-<td align="left">2019-04-24 11:00:01</td>
-<td align="right">154711</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_71
+</td>
+<td style="text-align:left;">
+2019-04-22 16:01:29
+</td>
+<td style="text-align:left;">
+2019-04-24 11:00:01
+</td>
+<td style="text-align:right;">
+154711
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_110</td>
-<td align="left">2019-04-22 20:16:35</td>
-<td align="left">2019-04-23 00:30:27</td>
-<td align="right">15231</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_110
+</td>
+<td style="text-align:left;">
+2019-04-22 20:16:35
+</td>
+<td style="text-align:left;">
+2019-04-23 00:30:27
+</td>
+<td style="text-align:right;">
+15231
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
-<tr class="odd">
-<td align="left">pp_120</td>
-<td align="left">2019-04-23 00:08:15</td>
-<td align="left">2019-04-23 00:20:35</td>
-<td align="right">739</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_120
+</td>
+<td style="text-align:left;">
+2019-04-23 00:08:15
+</td>
+<td style="text-align:left;">
+2019-04-23 00:20:35
+</td>
+<td style="text-align:right;">
+739
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_192</td>
-<td align="left">2019-04-15 20:36:47</td>
-<td align="left">2019-04-16 00:27:47</td>
-<td align="right">13859</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_192
+</td>
+<td style="text-align:left;">
+2019-04-15 20:36:47
+</td>
+<td style="text-align:left;">
+2019-04-16 00:27:47
+</td>
+<td style="text-align:right;">
+13859
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
-<tr class="odd">
-<td align="left">pp_201</td>
-<td align="left">2019-04-30 00:27:10</td>
-<td align="left">2019-04-30 00:52:59</td>
-<td align="right">1548</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_201
+</td>
+<td style="text-align:left;">
+2019-04-30 00:27:10
+</td>
+<td style="text-align:left;">
+2019-04-30 00:52:59
+</td>
+<td style="text-align:right;">
+1548
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_211</td>
-<td align="left">2019-04-22 17:24:37</td>
-<td align="left">2019-04-23 12:13:59</td>
-<td align="right">67761</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_211
+</td>
+<td style="text-align:left;">
+2019-04-22 17:24:37
+</td>
+<td style="text-align:left;">
+2019-04-23 12:13:59
+</td>
+<td style="text-align:right;">
+67761
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
-<tr class="odd">
-<td align="left">pp_257</td>
-<td align="left">2019-04-30 00:52:05</td>
-<td align="left">2019-04-30 01:21:55</td>
-<td align="right">1789</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_257
+</td>
+<td style="text-align:left;">
+2019-04-30 00:52:05
+</td>
+<td style="text-align:left;">
+2019-04-30 01:21:55
+</td>
+<td style="text-align:right;">
+1789
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_265</td>
-<td align="left">2019-04-29 23:28:18</td>
-<td align="left">2019-04-30 01:34:43</td>
-<td align="right">7584</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_265
+</td>
+<td style="text-align:left;">
+2019-04-29 23:28:18
+</td>
+<td style="text-align:left;">
+2019-04-30 01:34:43
+</td>
+<td style="text-align:right;">
+7584
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
-<tr class="odd">
-<td align="left">pp_275</td>
-<td align="left">2019-04-29 16:20:39</td>
-<td align="left">2019-05-06 16:31:47</td>
-<td align="right">648</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_275
+</td>
+<td style="text-align:left;">
+2019-04-29 16:20:39
+</td>
+<td style="text-align:left;">
+2019-05-06 16:31:47
+</td>
+<td style="text-align:right;">
+648
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
 </tbody>
 </table>
-<p>However, a handful of participants had their survey open for at least a day.
+However, a handful of participants had their survey open for at least a day.
 In Table <a href="data-processing.html#tab:check-two-day-delay">2.8</a>, we inspect all instances where there’s more than one day delay between opening and responding to a survey.
-Only <code>pp_71</code> took two days to respond to a survey.</p>
+Only <code>pp_71</code> took two days to respond to a survey.
 <table>
-<caption><span id="tab:check-two-day-delay">Table 2.8: </span>More than one day between begin and response to survey</caption>
+<caption>
+<span id="tab:check-two-day-delay">Table 2.8: </span>More than one day between begin and response to survey
+</caption>
 <thead>
-<tr class="header">
-<th align="left">id</th>
-<th align="left">start_date</th>
-<th align="left">recorded_date</th>
-<th align="right">duration</th>
-<th align="left">day</th>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:left;">
+start_date
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+<th style="text-align:right;">
+duration
+</th>
+<th style="text-align:left;">
+day
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">pp_71</td>
-<td align="left">2019-04-22 16:01:29</td>
-<td align="left">2019-04-24 11:00:01</td>
-<td align="right">154711</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_71
+</td>
+<td style="text-align:left;">
+2019-04-22 16:01:29
+</td>
+<td style="text-align:left;">
+2019-04-24 11:00:01
+</td>
+<td style="text-align:right;">
+154711
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
 </tbody>
 </table>
@@ -1228,72 +1690,164 @@ Two participants were really late (i.e., responded after noon).</p>
 <pre><code>## Joining, by = c(&quot;id&quot;, &quot;day&quot;)
 ## Joining, by = c(&quot;id&quot;, &quot;day&quot;)</code></pre>
 <table>
-<caption><span id="tab:next-day-late">Table 2.9: </span>Those who filled in the survey the next day</caption>
+<caption>
+<span id="tab:next-day-late">Table 2.9: </span>Those who filled in the survey the next day
+</caption>
 <thead>
-<tr class="header">
-<th align="left">id</th>
-<th align="left">start_date</th>
-<th align="left">recorded_date</th>
-<th align="right">duration</th>
-<th align="left">day</th>
+<tr>
+<th style="text-align:left;">
+id
+</th>
+<th style="text-align:left;">
+start_date
+</th>
+<th style="text-align:left;">
+recorded_date
+</th>
+<th style="text-align:right;">
+duration
+</th>
+<th style="text-align:left;">
+day
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">pp_53</td>
-<td align="left">2019-04-18 16:11:51</td>
-<td align="left">2019-04-19 10:08:16</td>
-<td align="right">64584</td>
-<td align="left">thursday</td>
+<tr>
+<td style="text-align:left;">
+pp_53
+</td>
+<td style="text-align:left;">
+2019-04-18 16:11:51
+</td>
+<td style="text-align:left;">
+2019-04-19 10:08:16
+</td>
+<td style="text-align:right;">
+64584
+</td>
+<td style="text-align:left;">
+thursday
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_71</td>
-<td align="left">2019-04-22 16:01:29</td>
-<td align="left">2019-04-24 11:00:01</td>
-<td align="right">154711</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_71
+</td>
+<td style="text-align:left;">
+2019-04-22 16:01:29
+</td>
+<td style="text-align:left;">
+2019-04-24 11:00:01
+</td>
+<td style="text-align:right;">
+154711
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
-<tr class="odd">
-<td align="left">pp_98</td>
-<td align="left">2019-04-30 17:21:21</td>
-<td align="left">2019-05-01 12:03:12</td>
-<td align="right">67310</td>
-<td align="left">tuesday</td>
+<tr>
+<td style="text-align:left;">
+pp_98
+</td>
+<td style="text-align:left;">
+2019-04-30 17:21:21
+</td>
+<td style="text-align:left;">
+2019-05-01 12:03:12
+</td>
+<td style="text-align:right;">
+67310
+</td>
+<td style="text-align:left;">
+tuesday
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_161</td>
-<td align="left">2019-05-02 18:15:49</td>
-<td align="left">2019-05-03 10:05:25</td>
-<td align="right">56975</td>
-<td align="left">thursday</td>
+<tr>
+<td style="text-align:left;">
+pp_161
+</td>
+<td style="text-align:left;">
+2019-05-02 18:15:49
+</td>
+<td style="text-align:left;">
+2019-05-03 10:05:25
+</td>
+<td style="text-align:right;">
+56975
+</td>
+<td style="text-align:left;">
+thursday
+</td>
 </tr>
-<tr class="odd">
-<td align="left">pp_162</td>
-<td align="left">2019-04-30 22:00:37</td>
-<td align="left">2019-05-01 10:52:15</td>
-<td align="right">46297</td>
-<td align="left">tuesday</td>
+<tr>
+<td style="text-align:left;">
+pp_162
+</td>
+<td style="text-align:left;">
+2019-04-30 22:00:37
+</td>
+<td style="text-align:left;">
+2019-05-01 10:52:15
+</td>
+<td style="text-align:right;">
+46297
+</td>
+<td style="text-align:left;">
+tuesday
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_211</td>
-<td align="left">2019-04-22 17:24:37</td>
-<td align="left">2019-04-23 12:13:59</td>
-<td align="right">67761</td>
-<td align="left">monday</td>
+<tr>
+<td style="text-align:left;">
+pp_211
+</td>
+<td style="text-align:left;">
+2019-04-22 17:24:37
+</td>
+<td style="text-align:left;">
+2019-04-23 12:13:59
+</td>
+<td style="text-align:right;">
+67761
+</td>
+<td style="text-align:left;">
+monday
+</td>
 </tr>
-<tr class="odd">
-<td align="left">pp_211</td>
-<td align="left">2019-04-23 23:40:53</td>
-<td align="left">2019-04-24 10:30:27</td>
-<td align="right">38972</td>
-<td align="left">tuesday</td>
+<tr>
+<td style="text-align:left;">
+pp_211
+</td>
+<td style="text-align:left;">
+2019-04-23 23:40:53
+</td>
+<td style="text-align:left;">
+2019-04-24 10:30:27
+</td>
+<td style="text-align:right;">
+38972
+</td>
+<td style="text-align:left;">
+tuesday
+</td>
 </tr>
-<tr class="even">
-<td align="left">pp_244</td>
-<td align="left">2019-04-19 18:45:44</td>
-<td align="left">2019-04-20 11:52:12</td>
-<td align="right">61587</td>
-<td align="left">friday</td>
+<tr>
+<td style="text-align:left;">
+pp_244
+</td>
+<td style="text-align:left;">
+2019-04-19 18:45:44
+</td>
+<td style="text-align:left;">
+2019-04-20 11:52:12
+</td>
+<td style="text-align:right;">
+61587
+</td>
+<td style="text-align:left;">
+friday
+</td>
 </tr>
 </tbody>
 </table>
@@ -1672,33 +2226,63 @@ Afterwards, per day, I see how much the two variables differ.</p>
 <span id="cb38-18"><a href="data-processing.html#cb38-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">difference =</span> social_media_objective <span class="sc">-</span> total_time</span>
 <span id="cb38-19"><a href="data-processing.html#cb38-19" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>Overall, the two sums of use across apps and days are highly similar, with a mean difference of <em>M</em> = 4.09, <em>SD</em> = 17.4 and an extremely high correlation, <em>r</em> = 0.98.</p>
-<p>There were some missing values in the total social media time per day that participants reported.
+There were some missing values in the total social media time per day that participants reported.
 I check who has missing data on any of the weekdays in the <code>totals_long</code> data set.
 We can check whether those participants have reported individual app use for that day and use an aggregate over apps on that day as a substitute, given their high correlation.
 In other words: When participants forgot to report their overall social media use for a day, but reported use for all social media apps they used on that day, we can just use the sum of those social media apps as a replacement for overall social media use.
-However, we see in <a href="data-processing.html#tab:check-social-media-na">2.10</a> that all participants reported social media screen time across all days, so no need for imputation.</p>
+However, we see in <a href="data-processing.html#tab:check-social-media-na">2.10</a> that all participants reported social media screen time across all days, so no need for imputation.
 <table>
-<caption><span id="tab:check-social-media-na">Table 2.10: </span>Amount of missing values in data comparing total screen time</caption>
+<caption>
+<span id="tab:check-social-media-na">Table 2.10: </span>Amount of missing values in data comparing total screen time
+</caption>
 <thead>
-<tr class="header">
-<th align="right">id</th>
-<th align="right">time_frame</th>
-<th align="right">hours</th>
-<th align="right">minutes</th>
-<th align="right">social_media_objective</th>
-<th align="right">total_time</th>
-<th align="right">difference</th>
+<tr>
+<th style="text-align:right;">
+id
+</th>
+<th style="text-align:right;">
+time_frame
+</th>
+<th style="text-align:right;">
+hours
+</th>
+<th style="text-align:right;">
+minutes
+</th>
+<th style="text-align:right;">
+social_media_objective
+</th>
+<th style="text-align:right;">
+total_time
+</th>
+<th style="text-align:right;">
+difference
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
 </tbody>
 </table>

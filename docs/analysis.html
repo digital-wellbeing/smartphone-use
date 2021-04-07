@@ -24,7 +24,7 @@
 <meta name="author" content="Niklas Johannes, Thuy-vy Nguyen, Netta Weinstein, Andrew K. Przybylski" />
 
 
-<meta name="date" content="2021-03-25" />
+<meta name="date" content="2021-04-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,6 +51,8 @@
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -153,7 +155,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#person-level"><i class="fa fa-check"></i><b>3.3</b> Person-level</a></li>
 <li class="chapter" data-level="3.4" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#app-level"><i class="fa fa-check"></i><b>3.4</b> App-level</a></li>
 <li class="chapter" data-level="3.5" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#day-level"><i class="fa fa-check"></i><b>3.5</b> Day level</a></li>
-<li class="chapter" data-level="3.6" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#plots-for-paper"><i class="fa fa-check"></i><b>3.6</b> Plots for paper</a></li>
+<li class="chapter" data-level="3.6" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#demographics-and-social-media"><i class="fa fa-check"></i><b>3.6</b> Demographics and social media</a></li>
+<li class="chapter" data-level="3.7" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#plots-for-paper"><i class="fa fa-check"></i><b>3.7</b> Plots for paper</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>4</b> Analysis</a>
 <ul>
@@ -181,9 +184,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="5" data-path="synthesis.html"><a href="synthesis.html"><i class="fa fa-check"></i><b>5</b> Synthesis</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="synthesis.html"><a href="synthesis.html#personality-on-smartphone-use-trait"><i class="fa fa-check"></i><b>5.1</b> Personality on smartphone use (trait)</a></li>
-<li class="chapter" data-level="5.2" data-path="synthesis.html"><a href="synthesis.html#experiences-on-smartphone-use-state"><i class="fa fa-check"></i><b>5.2</b> Experiences on smartphone use (state)</a></li>
-<li class="chapter" data-level="5.3" data-path="synthesis.html"><a href="synthesis.html#smartphone-use-on-well-being-state"><i class="fa fa-check"></i><b>5.3</b> Smartphone use on well-being (state)</a></li>
+<li class="chapter" data-level="5.1" data-path="synthesis.html"><a href="synthesis.html#numerical-model-estimates"><i class="fa fa-check"></i><b>5.1</b> Numerical model estimates</a></li>
+<li class="chapter" data-level="5.2" data-path="synthesis.html"><a href="synthesis.html#personality-on-smartphone-use-trait"><i class="fa fa-check"></i><b>5.2</b> Personality on smartphone use (trait)</a></li>
+<li class="chapter" data-level="5.3" data-path="synthesis.html"><a href="synthesis.html#experiences-on-smartphone-use-state"><i class="fa fa-check"></i><b>5.3</b> Experiences on smartphone use (state)</a></li>
+<li class="chapter" data-level="5.4" data-path="synthesis.html"><a href="synthesis.html#smartphone-use-on-well-being-state"><i class="fa fa-check"></i><b>5.4</b> Smartphone use on well-being (state)</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -211,7 +215,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 We have about a dozen models to run.
 All of these models should take into account that the data are nested (in participants and days).
 That means quite complex model structures, especially when we have many predictors.
-The <code>lme4</code> package can handle such multi-level models, but in my experience suffers from many convergence issues that a Bayesian approach (i.e., the <code>brms</code> package) can handle better [paper on convergence comparison].
+The <code>lme4</code> package can handle such multi-level models, but in my experience suffers from many convergence issues that a Bayesian approach (i.e., the <code>brms</code> package) can handle better (see <a href="https://arxiv.org/ftp/arxiv/papers/1701/1701.04858.pdf">this</a> paper for a comparison on convergence).
 Moreover, corrections for multiple comparisons are less of a problem with Bayesian models.
 Last, although the models here are mostly exploratory, we can still incorporate prior knowledge from the literature (and common sense about our variables).</p>
 <div id="research-questions" class="section level2" number="4.1">
@@ -234,123 +238,221 @@ In some analyses (e.g., predicting social media use) I’ll use centered predict
 In other analyses (e.g., predicting error), I want to standardize outcomes and predictors of interest because standardized variables make it easier to choose sensible priors, especially because we can use standardized effect sizes reported in the literature.
 Standardizing also makes it easier to interpret the effect sizes.</p>
 <p>First, I transform all variables of interest (into new variables).</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="analysis.html#cb85-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
-<span id="cb85-2"><a href="analysis.html#cb85-2" aria-hidden="true" tabindex="-1"></a>  dat <span class="sc">%&gt;%</span> </span>
-<span id="cb85-3"><a href="analysis.html#cb85-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># center personality variables</span></span>
-<span id="cb85-4"><a href="analysis.html#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb85-5"><a href="analysis.html#cb85-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
-<span id="cb85-6"><a href="analysis.html#cb85-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(</span>
-<span id="cb85-7"><a href="analysis.html#cb85-7" aria-hidden="true" tabindex="-1"></a>        autonomy_state<span class="sc">:</span>relatedness_state,</span>
-<span id="cb85-8"><a href="analysis.html#cb85-8" aria-hidden="true" tabindex="-1"></a>        satisfied<span class="sc">:</span>enjoyable,</span>
-<span id="cb85-9"><a href="analysis.html#cb85-9" aria-hidden="true" tabindex="-1"></a>        autonomy_trait<span class="sc">:</span>openness</span>
-<span id="cb85-10"><a href="analysis.html#cb85-10" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb85-11"><a href="analysis.html#cb85-11" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">scale</span>(.x, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale =</span> <span class="cn">FALSE</span>),</span>
-<span id="cb85-12"><a href="analysis.html#cb85-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">.names =</span> <span class="st">&quot;{col}_c&quot;</span> <span class="co"># add &quot;_c&quot; suffix to new variables for &quot;centered&quot;</span></span>
-<span id="cb85-13"><a href="analysis.html#cb85-13" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb85-14"><a href="analysis.html#cb85-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
-<p>Next, let’s have a look of how many <code>NA</code>s there are per variable.
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="analysis.html#cb86-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
+<span id="cb86-2"><a href="analysis.html#cb86-2" aria-hidden="true" tabindex="-1"></a>  dat <span class="sc">%&gt;%</span> </span>
+<span id="cb86-3"><a href="analysis.html#cb86-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># center personality variables</span></span>
+<span id="cb86-4"><a href="analysis.html#cb86-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb86-5"><a href="analysis.html#cb86-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb86-6"><a href="analysis.html#cb86-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(</span>
+<span id="cb86-7"><a href="analysis.html#cb86-7" aria-hidden="true" tabindex="-1"></a>        autonomy_state<span class="sc">:</span>relatedness_state,</span>
+<span id="cb86-8"><a href="analysis.html#cb86-8" aria-hidden="true" tabindex="-1"></a>        satisfied<span class="sc">:</span>enjoyable,</span>
+<span id="cb86-9"><a href="analysis.html#cb86-9" aria-hidden="true" tabindex="-1"></a>        autonomy_trait<span class="sc">:</span>openness</span>
+<span id="cb86-10"><a href="analysis.html#cb86-10" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb86-11"><a href="analysis.html#cb86-11" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> <span class="fu">scale</span>(.x, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb86-12"><a href="analysis.html#cb86-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">.names =</span> <span class="st">&quot;{col}_c&quot;</span> <span class="co"># add &quot;_c&quot; suffix to new variables for &quot;centered&quot;</span></span>
+<span id="cb86-13"><a href="analysis.html#cb86-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb86-14"><a href="analysis.html#cb86-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+Next, let’s have a look of how many <code>NA</code>s there are per variable.
 Table <a href="analysis.html#tab:missings">4.1</a> shows that missing values aren’t a big problem.
-The missings come from rows where participants didn’t answer the diary, but did report screen time mostly.</p>
+The missings come from rows where participants didn’t answer the diary, but did report screen time mostly.
 <table>
-<caption><span id="tab:missings">Table 4.1: </span>Missing values per variable (column)</caption>
+<caption>
+<span id="tab:missings">Table 4.1: </span>Missing values per variable (column)
+</caption>
 <thead>
-<tr class="header">
-<th align="left">name</th>
-<th align="right">value</th>
+<tr>
+<th style="text-align:left;">
+name
+</th>
+<th style="text-align:right;">
+value
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td align="left">social_media_subjective</td>
-<td align="right">51</td>
+<tr>
+<td style="text-align:left;">
+social_media_subjective
+</td>
+<td style="text-align:right;">
+51
+</td>
 </tr>
-<tr class="even">
-<td align="left">pickups_subjective</td>
-<td align="right">38</td>
+<tr>
+<td style="text-align:left;">
+pickups_subjective
+</td>
+<td style="text-align:right;">
+38
+</td>
 </tr>
-<tr class="odd">
-<td align="left">notifications_subjective</td>
-<td align="right">38</td>
+<tr>
+<td style="text-align:left;">
+notifications_subjective
+</td>
+<td style="text-align:right;">
+38
+</td>
 </tr>
-<tr class="even">
-<td align="left">social_media_objective</td>
-<td align="right">51</td>
+<tr>
+<td style="text-align:left;">
+social_media_objective
+</td>
+<td style="text-align:right;">
+51
+</td>
 </tr>
-<tr class="odd">
-<td align="left">error</td>
-<td align="right">53</td>
+<tr>
+<td style="text-align:left;">
+error
+</td>
+<td style="text-align:right;">
+53
+</td>
 </tr>
-<tr class="even">
-<td align="left">pickups_objective</td>
-<td align="right">30</td>
+<tr>
+<td style="text-align:left;">
+pickups_objective
+</td>
+<td style="text-align:right;">
+30
+</td>
 </tr>
-<tr class="odd">
-<td align="left">weekly_notifications</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+weekly_notifications
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="even">
-<td align="left">well_being_state</td>
-<td align="right">40</td>
+<tr>
+<td style="text-align:left;">
+well_being_state
+</td>
+<td style="text-align:right;">
+40
+</td>
 </tr>
-<tr class="odd">
-<td align="left">autonomy_state</td>
-<td align="right">39</td>
+<tr>
+<td style="text-align:left;">
+autonomy_state
+</td>
+<td style="text-align:right;">
+39
+</td>
 </tr>
-<tr class="even">
-<td align="left">competence_state</td>
-<td align="right">39</td>
+<tr>
+<td style="text-align:left;">
+competence_state
+</td>
+<td style="text-align:right;">
+39
+</td>
 </tr>
-<tr class="odd">
-<td align="left">relatedness_state</td>
-<td align="right">39</td>
+<tr>
+<td style="text-align:left;">
+relatedness_state
+</td>
+<td style="text-align:right;">
+39
+</td>
 </tr>
-<tr class="even">
-<td align="left">satisfied</td>
-<td align="right">42</td>
+<tr>
+<td style="text-align:left;">
+satisfied
+</td>
+<td style="text-align:right;">
+42
+</td>
 </tr>
-<tr class="odd">
-<td align="left">boring</td>
-<td align="right">42</td>
+<tr>
+<td style="text-align:left;">
+boring
+</td>
+<td style="text-align:right;">
+42
+</td>
 </tr>
-<tr class="even">
-<td align="left">stressful</td>
-<td align="right">41</td>
+<tr>
+<td style="text-align:left;">
+stressful
+</td>
+<td style="text-align:right;">
+41
+</td>
 </tr>
-<tr class="odd">
-<td align="left">enjoyable</td>
-<td align="right">44</td>
+<tr>
+<td style="text-align:left;">
+enjoyable
+</td>
+<td style="text-align:right;">
+44
+</td>
 </tr>
-<tr class="even">
-<td align="left">autonomy_trait</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+autonomy_trait
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">competence_trait</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+competence_trait
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="even">
-<td align="left">relatedness_trait</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+relatedness_trait
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">extraversion</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+extraversion
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="even">
-<td align="left">agreeableness</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+agreeableness
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">conscientiousness</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+conscientiousness
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="even">
-<td align="left">neuroticism</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+neuroticism
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
-<tr class="odd">
-<td align="left">openness</td>
-<td align="right">0</td>
+<tr>
+<td style="text-align:left;">
+openness
+</td>
+<td style="text-align:right;">
+0
+</td>
 </tr>
 </tbody>
 </table>
@@ -371,22 +473,22 @@ Our dependent variables are clear-cut: <code>social_media_objective</code>, <cod
 Each model takes quite some time and the files get large (a total of half a GB).
 If you’re reproducing the analysis and don’t want to run the models yourself, you can download the model objects from the OSF.
 For that, you need to set the code chunk below to <code>eval=TRUE</code>, which creates a <code>model/</code> directory with all models inside.</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="analysis.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create directory</span></span>
-<span id="cb86-2"><a href="analysis.html#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;models/&quot;</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>)</span>
-<span id="cb86-3"><a href="analysis.html#cb86-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-4"><a href="analysis.html#cb86-4" aria-hidden="true" tabindex="-1"></a><span class="co"># download models</span></span>
-<span id="cb86-5"><a href="analysis.html#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="fu">osf_retrieve_node</span>(<span class="st">&quot;https://osf.io/7byvt/&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb86-6"><a href="analysis.html#cb86-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osf_ls_nodes</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb86-7"><a href="analysis.html#cb86-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">==</span> <span class="st">&quot;models&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb86-8"><a href="analysis.html#cb86-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osf_ls_files</span>(</span>
-<span id="cb86-9"><a href="analysis.html#cb86-9" aria-hidden="true" tabindex="-1"></a>    .,</span>
-<span id="cb86-10"><a href="analysis.html#cb86-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_max =</span> <span class="cn">Inf</span></span>
-<span id="cb86-11"><a href="analysis.html#cb86-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb86-12"><a href="analysis.html#cb86-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osf_download</span>(</span>
-<span id="cb86-13"><a href="analysis.html#cb86-13" aria-hidden="true" tabindex="-1"></a>    .,</span>
-<span id="cb86-14"><a href="analysis.html#cb86-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">path =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>),</span>
-<span id="cb86-15"><a href="analysis.html#cb86-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">progress =</span> <span class="cn">FALSE</span></span>
-<span id="cb86-16"><a href="analysis.html#cb86-16" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="analysis.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create directory</span></span>
+<span id="cb87-2"><a href="analysis.html#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;models/&quot;</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb87-3"><a href="analysis.html#cb87-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-4"><a href="analysis.html#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="co"># download models</span></span>
+<span id="cb87-5"><a href="analysis.html#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="fu">osf_retrieve_node</span>(<span class="st">&quot;https://osf.io/7byvt/&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb87-6"><a href="analysis.html#cb87-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osf_ls_nodes</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb87-7"><a href="analysis.html#cb87-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(name <span class="sc">==</span> <span class="st">&quot;models&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb87-8"><a href="analysis.html#cb87-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osf_ls_files</span>(</span>
+<span id="cb87-9"><a href="analysis.html#cb87-9" aria-hidden="true" tabindex="-1"></a>    .,</span>
+<span id="cb87-10"><a href="analysis.html#cb87-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_max =</span> <span class="cn">Inf</span></span>
+<span id="cb87-11"><a href="analysis.html#cb87-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb87-12"><a href="analysis.html#cb87-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">osf_download</span>(</span>
+<span id="cb87-13"><a href="analysis.html#cb87-13" aria-hidden="true" tabindex="-1"></a>    .,</span>
+<span id="cb87-14"><a href="analysis.html#cb87-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">path =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>),</span>
+<span id="cb87-15"><a href="analysis.html#cb87-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">progress =</span> <span class="cn">FALSE</span></span>
+<span id="cb87-16"><a href="analysis.html#cb87-16" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <div id="model-1-trait-variables-predicting-objective-use" class="section level3" number="4.3.1">
 <h3><span class="header-section-number">4.3.1</span> Model 1: Trait variables predicting objective use</h3>
 <p>First, I choose sensible priors.
@@ -418,46 +520,47 @@ Figure 4.1: Prior simmulations for Model 1
 </p>
 </div>
 <p>Let’s set those priors we simulated above.</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="analysis.html#cb87-1" aria-hidden="true" tabindex="-1"></a>priors_model1 <span class="ot">&lt;-</span> </span>
-<span id="cb87-2"><a href="analysis.html#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb87-3"><a href="analysis.html#cb87-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
-<span id="cb87-4"><a href="analysis.html#cb87-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">4.5</span>, <span class="fl">0.8</span>), <span class="at">class =</span> Intercept),</span>
-<span id="cb87-5"><a href="analysis.html#cb87-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb87-6"><a href="analysis.html#cb87-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior on effects</span></span>
-<span id="cb87-7"><a href="analysis.html#cb87-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="at">class =</span> b),</span>
-<span id="cb87-8"><a href="analysis.html#cb87-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb87-9"><a href="analysis.html#cb87-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># all other effects</span></span>
-<span id="cb87-10"><a href="analysis.html#cb87-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">gamma</span>(<span class="fl">2.5</span>, <span class="dv">100</span>), <span class="at">class =</span> shape)</span>
-<span id="cb87-11"><a href="analysis.html#cb87-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="analysis.html#cb88-1" aria-hidden="true" tabindex="-1"></a>priors_model1 <span class="ot">&lt;-</span> </span>
+<span id="cb88-2"><a href="analysis.html#cb88-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb88-3"><a href="analysis.html#cb88-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
+<span id="cb88-4"><a href="analysis.html#cb88-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">4.5</span>, <span class="fl">0.8</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb88-5"><a href="analysis.html#cb88-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb88-6"><a href="analysis.html#cb88-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior on effects</span></span>
+<span id="cb88-7"><a href="analysis.html#cb88-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="at">class =</span> b),</span>
+<span id="cb88-8"><a href="analysis.html#cb88-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb88-9"><a href="analysis.html#cb88-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># all other effects</span></span>
+<span id="cb88-10"><a href="analysis.html#cb88-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">gamma</span>(<span class="fl">2.5</span>, <span class="dv">100</span>), <span class="at">class =</span> shape)</span>
+<span id="cb88-11"><a href="analysis.html#cb88-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>Alright, time to run the model.
 Luckily, none of these variables have missing values, so I won’t need to model missings in this model.
 Note that I ran the block below once and stored the model.
-Those fit objects are too large for Github, so you can download them here [give Onedrive link].</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="analysis.html#cb88-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> </span>
-<span id="cb88-2"><a href="analysis.html#cb88-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
-<span id="cb88-3"><a href="analysis.html#cb88-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
-<span id="cb88-4"><a href="analysis.html#cb88-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>),</span>
-<span id="cb88-5"><a href="analysis.html#cb88-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model1,</span>
-<span id="cb88-6"><a href="analysis.html#cb88-6" aria-hidden="true" tabindex="-1"></a>    social_media_objective <span class="sc">~</span></span>
-<span id="cb88-7"><a href="analysis.html#cb88-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb88-8"><a href="analysis.html#cb88-8" aria-hidden="true" tabindex="-1"></a>      openness_c <span class="sc">+</span></span>
-<span id="cb88-9"><a href="analysis.html#cb88-9" aria-hidden="true" tabindex="-1"></a>      conscientiousness_c <span class="sc">+</span></span>
-<span id="cb88-10"><a href="analysis.html#cb88-10" aria-hidden="true" tabindex="-1"></a>      extraversion_c <span class="sc">+</span></span>
-<span id="cb88-11"><a href="analysis.html#cb88-11" aria-hidden="true" tabindex="-1"></a>      agreeableness_c <span class="sc">+</span></span>
-<span id="cb88-12"><a href="analysis.html#cb88-12" aria-hidden="true" tabindex="-1"></a>      neuroticism_c <span class="sc">+</span></span>
-<span id="cb88-13"><a href="analysis.html#cb88-13" aria-hidden="true" tabindex="-1"></a>      competence_trait_c <span class="sc">+</span></span>
-<span id="cb88-14"><a href="analysis.html#cb88-14" aria-hidden="true" tabindex="-1"></a>      relatedness_trait_c <span class="sc">+</span></span>
-<span id="cb88-15"><a href="analysis.html#cb88-15" aria-hidden="true" tabindex="-1"></a>      autonomy_trait_c <span class="sc">+</span></span>
-<span id="cb88-16"><a href="analysis.html#cb88-16" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> id) <span class="sc">+</span></span>
-<span id="cb88-17"><a href="analysis.html#cb88-17" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> day),</span>
-<span id="cb88-18"><a href="analysis.html#cb88-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
-<span id="cb88-19"><a href="analysis.html#cb88-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
-<span id="cb88-20"><a href="analysis.html#cb88-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb88-21"><a href="analysis.html#cb88-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb88-22"><a href="analysis.html#cb88-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
-<span id="cb88-23"><a href="analysis.html#cb88-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.99</span>),</span>
-<span id="cb88-24"><a href="analysis.html#cb88-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model1&quot;</span>)</span>
-<span id="cb88-25"><a href="analysis.html#cb88-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+Those fit objects are too large for Github, so you can download them from the <a href="https://osf.io/7byvt/">OSF</a>.
+See the instructions in the Readme of the project.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="analysis.html#cb89-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> </span>
+<span id="cb89-2"><a href="analysis.html#cb89-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
+<span id="cb89-3"><a href="analysis.html#cb89-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
+<span id="cb89-4"><a href="analysis.html#cb89-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>),</span>
+<span id="cb89-5"><a href="analysis.html#cb89-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model1,</span>
+<span id="cb89-6"><a href="analysis.html#cb89-6" aria-hidden="true" tabindex="-1"></a>    social_media_objective <span class="sc">~</span></span>
+<span id="cb89-7"><a href="analysis.html#cb89-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb89-8"><a href="analysis.html#cb89-8" aria-hidden="true" tabindex="-1"></a>      openness_c <span class="sc">+</span></span>
+<span id="cb89-9"><a href="analysis.html#cb89-9" aria-hidden="true" tabindex="-1"></a>      conscientiousness_c <span class="sc">+</span></span>
+<span id="cb89-10"><a href="analysis.html#cb89-10" aria-hidden="true" tabindex="-1"></a>      extraversion_c <span class="sc">+</span></span>
+<span id="cb89-11"><a href="analysis.html#cb89-11" aria-hidden="true" tabindex="-1"></a>      agreeableness_c <span class="sc">+</span></span>
+<span id="cb89-12"><a href="analysis.html#cb89-12" aria-hidden="true" tabindex="-1"></a>      neuroticism_c <span class="sc">+</span></span>
+<span id="cb89-13"><a href="analysis.html#cb89-13" aria-hidden="true" tabindex="-1"></a>      competence_trait_c <span class="sc">+</span></span>
+<span id="cb89-14"><a href="analysis.html#cb89-14" aria-hidden="true" tabindex="-1"></a>      relatedness_trait_c <span class="sc">+</span></span>
+<span id="cb89-15"><a href="analysis.html#cb89-15" aria-hidden="true" tabindex="-1"></a>      autonomy_trait_c <span class="sc">+</span></span>
+<span id="cb89-16"><a href="analysis.html#cb89-16" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> id) <span class="sc">+</span></span>
+<span id="cb89-17"><a href="analysis.html#cb89-17" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> day),</span>
+<span id="cb89-18"><a href="analysis.html#cb89-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb89-19"><a href="analysis.html#cb89-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb89-20"><a href="analysis.html#cb89-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb89-21"><a href="analysis.html#cb89-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb89-22"><a href="analysis.html#cb89-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb89-23"><a href="analysis.html#cb89-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.99</span>),</span>
+<span id="cb89-24"><a href="analysis.html#cb89-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model1&quot;</span>)</span>
+<span id="cb89-25"><a href="analysis.html#cb89-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 Let’s inspect the traceplots.
 Overall, they look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model1"><strong>??</strong></a>).
 The residual standard deviation around the day grouping doesn’t look ideal though.
@@ -492,7 +595,7 @@ Figure 4.5: Posterior predictive checks for Model 1
 </div>
 <p>Let’s also check for potentially influential values.
 None are tagged as influential, which increases my trust in the model.</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="analysis.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model1)</span></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="analysis.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model1)</span></code></pre></div>
 <pre><code>## 
 ## Computed from 12000 by 428 log-likelihood matrix
 ## 
@@ -507,7 +610,7 @@ None are tagged as influential, which increases my trust in the model.</p>
 ## See help(&#39;pareto-k-diagnostic&#39;) for details.</code></pre>
 <p>Alright, time to look at the summary: neuroticism and competence are the only predictors whose posterior distribution isn’t centered on zero.
 That said, we cannot be 95% certain the true value doesn’t contain zero.</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="analysis.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="analysis.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##  Family: gamma 
 ##   Links: mu = log; shape = identity 
 ## Formula: social_media_objective ~ 1 + openness_c + conscientiousness_c + extraversion_c + agreeableness_c + neuroticism_c + competence_trait_c + relatedness_trait_c + autonomy_trait_c + (1 | id) + (1 | day) 
@@ -563,45 +666,45 @@ Figure 4.6: Effects plot for Model 1
 <p>Next up, I predict subjective use from the same predictors.
 We know that objective and subjective use aren’t perfectly correlated.
 Then again, the priors for Model 1 were only weakly regularizing, which is why I use the same priors again.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="analysis.html#cb93-1" aria-hidden="true" tabindex="-1"></a>priors_model2 <span class="ot">&lt;-</span> </span>
-<span id="cb93-2"><a href="analysis.html#cb93-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb93-3"><a href="analysis.html#cb93-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
-<span id="cb93-4"><a href="analysis.html#cb93-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">4.5</span>, <span class="fl">0.8</span>), <span class="at">class =</span> Intercept),</span>
-<span id="cb93-5"><a href="analysis.html#cb93-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb93-6"><a href="analysis.html#cb93-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior on effects</span></span>
-<span id="cb93-7"><a href="analysis.html#cb93-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="at">class =</span> b),</span>
-<span id="cb93-8"><a href="analysis.html#cb93-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb93-9"><a href="analysis.html#cb93-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># all other effects</span></span>
-<span id="cb93-10"><a href="analysis.html#cb93-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">gamma</span>(<span class="fl">2.5</span>, <span class="dv">100</span>), <span class="at">class =</span> shape)</span>
-<span id="cb93-11"><a href="analysis.html#cb93-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="analysis.html#cb94-1" aria-hidden="true" tabindex="-1"></a>priors_model2 <span class="ot">&lt;-</span> </span>
+<span id="cb94-2"><a href="analysis.html#cb94-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb94-3"><a href="analysis.html#cb94-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
+<span id="cb94-4"><a href="analysis.html#cb94-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">4.5</span>, <span class="fl">0.8</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb94-5"><a href="analysis.html#cb94-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb94-6"><a href="analysis.html#cb94-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior on effects</span></span>
+<span id="cb94-7"><a href="analysis.html#cb94-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="at">class =</span> b),</span>
+<span id="cb94-8"><a href="analysis.html#cb94-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb94-9"><a href="analysis.html#cb94-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># all other effects</span></span>
+<span id="cb94-10"><a href="analysis.html#cb94-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">gamma</span>(<span class="fl">2.5</span>, <span class="dv">100</span>), <span class="at">class =</span> shape)</span>
+<span id="cb94-11"><a href="analysis.html#cb94-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>Alright, time to run the model.
 The subjective social media estimate had one missing value.
 Usually I’d impute missing values during model fitting, but with one, I think it’s safe to drop it.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="analysis.html#cb94-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> </span>
-<span id="cb94-2"><a href="analysis.html#cb94-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
-<span id="cb94-3"><a href="analysis.html#cb94-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
-<span id="cb94-4"><a href="analysis.html#cb94-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>),</span>
-<span id="cb94-5"><a href="analysis.html#cb94-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model2,</span>
-<span id="cb94-6"><a href="analysis.html#cb94-6" aria-hidden="true" tabindex="-1"></a>    social_media_subjective <span class="sc">~</span></span>
-<span id="cb94-7"><a href="analysis.html#cb94-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb94-8"><a href="analysis.html#cb94-8" aria-hidden="true" tabindex="-1"></a>      openness_c <span class="sc">+</span></span>
-<span id="cb94-9"><a href="analysis.html#cb94-9" aria-hidden="true" tabindex="-1"></a>      conscientiousness_c <span class="sc">+</span></span>
-<span id="cb94-10"><a href="analysis.html#cb94-10" aria-hidden="true" tabindex="-1"></a>      extraversion_c <span class="sc">+</span></span>
-<span id="cb94-11"><a href="analysis.html#cb94-11" aria-hidden="true" tabindex="-1"></a>      agreeableness_c <span class="sc">+</span></span>
-<span id="cb94-12"><a href="analysis.html#cb94-12" aria-hidden="true" tabindex="-1"></a>      neuroticism_c <span class="sc">+</span></span>
-<span id="cb94-13"><a href="analysis.html#cb94-13" aria-hidden="true" tabindex="-1"></a>      competence_trait_c <span class="sc">+</span></span>
-<span id="cb94-14"><a href="analysis.html#cb94-14" aria-hidden="true" tabindex="-1"></a>      relatedness_trait_c <span class="sc">+</span></span>
-<span id="cb94-15"><a href="analysis.html#cb94-15" aria-hidden="true" tabindex="-1"></a>      autonomy_trait_c <span class="sc">+</span></span>
-<span id="cb94-16"><a href="analysis.html#cb94-16" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> id) <span class="sc">+</span></span>
-<span id="cb94-17"><a href="analysis.html#cb94-17" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> day),</span>
-<span id="cb94-18"><a href="analysis.html#cb94-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
-<span id="cb94-19"><a href="analysis.html#cb94-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
-<span id="cb94-20"><a href="analysis.html#cb94-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb94-21"><a href="analysis.html#cb94-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb94-22"><a href="analysis.html#cb94-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
-<span id="cb94-23"><a href="analysis.html#cb94-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.999</span>),</span>
-<span id="cb94-24"><a href="analysis.html#cb94-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model2&quot;</span>)</span>
-<span id="cb94-25"><a href="analysis.html#cb94-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="analysis.html#cb95-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> </span>
+<span id="cb95-2"><a href="analysis.html#cb95-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
+<span id="cb95-3"><a href="analysis.html#cb95-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
+<span id="cb95-4"><a href="analysis.html#cb95-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>),</span>
+<span id="cb95-5"><a href="analysis.html#cb95-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model2,</span>
+<span id="cb95-6"><a href="analysis.html#cb95-6" aria-hidden="true" tabindex="-1"></a>    social_media_subjective <span class="sc">~</span></span>
+<span id="cb95-7"><a href="analysis.html#cb95-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb95-8"><a href="analysis.html#cb95-8" aria-hidden="true" tabindex="-1"></a>      openness_c <span class="sc">+</span></span>
+<span id="cb95-9"><a href="analysis.html#cb95-9" aria-hidden="true" tabindex="-1"></a>      conscientiousness_c <span class="sc">+</span></span>
+<span id="cb95-10"><a href="analysis.html#cb95-10" aria-hidden="true" tabindex="-1"></a>      extraversion_c <span class="sc">+</span></span>
+<span id="cb95-11"><a href="analysis.html#cb95-11" aria-hidden="true" tabindex="-1"></a>      agreeableness_c <span class="sc">+</span></span>
+<span id="cb95-12"><a href="analysis.html#cb95-12" aria-hidden="true" tabindex="-1"></a>      neuroticism_c <span class="sc">+</span></span>
+<span id="cb95-13"><a href="analysis.html#cb95-13" aria-hidden="true" tabindex="-1"></a>      competence_trait_c <span class="sc">+</span></span>
+<span id="cb95-14"><a href="analysis.html#cb95-14" aria-hidden="true" tabindex="-1"></a>      relatedness_trait_c <span class="sc">+</span></span>
+<span id="cb95-15"><a href="analysis.html#cb95-15" aria-hidden="true" tabindex="-1"></a>      autonomy_trait_c <span class="sc">+</span></span>
+<span id="cb95-16"><a href="analysis.html#cb95-16" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> id) <span class="sc">+</span></span>
+<span id="cb95-17"><a href="analysis.html#cb95-17" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> day),</span>
+<span id="cb95-18"><a href="analysis.html#cb95-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb95-19"><a href="analysis.html#cb95-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb95-20"><a href="analysis.html#cb95-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb95-21"><a href="analysis.html#cb95-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb95-22"><a href="analysis.html#cb95-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb95-23"><a href="analysis.html#cb95-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.999</span>),</span>
+<span id="cb95-24"><a href="analysis.html#cb95-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model2&quot;</span>)</span>
+<span id="cb95-25"><a href="analysis.html#cb95-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 Let’s inspect the traceplots.
 Overall, they look fine and the chains seem to have mixed well (Figure <a href="#fig:inspect-model2"><strong>??</strong></a>).
 Again, everything looks fine.
@@ -636,7 +739,7 @@ Figure 4.10: Posterior predictive checks for Model 2
 The model diagnostics look good.
 Even though there were several rather large raw values on the outcome variable, the model expects them because we model the outcome as a Gamma distribution.
 We need to calculate ELPD directly, which shows no outliers.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="analysis.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model2, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="analysis.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model2, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 1 problematic observation(s) found.
 ## The model will be refit 1 times.</code></pre>
 <pre><code>## 
@@ -664,7 +767,7 @@ We need to calculate ELPD directly, which shows no outliers.</p>
 <p>Alright, time to look at the summary.
 This time, all posterior distributions are mostly centered around zero, so we can be 95% (always conditional on the model) certain that personality traits and motivations are not meaningfully (i.e., large effect) related to self-reported social media use.
 Maybe autonomy gets close, but the posterior distributions still includes zero and small negative effects.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="analysis.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="analysis.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##  Family: gamma 
 ##   Links: mu = log; shape = identity 
 ## Formula: social_media_subjective ~ 1 + openness_c + conscientiousness_c + extraversion_c + agreeableness_c + neuroticism_c + competence_trait_c + relatedness_trait_c + autonomy_trait_c + (1 | id) + (1 | day) 
@@ -732,41 +835,41 @@ Figure 4.12: Prior simmulations for Model 2
 </p>
 </div>
 <p>Then let’s set those priors we simulated above.</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="analysis.html#cb102-1" aria-hidden="true" tabindex="-1"></a>priors_model3 <span class="ot">&lt;-</span> </span>
-<span id="cb102-2"><a href="analysis.html#cb102-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb102-3"><a href="analysis.html#cb102-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
-<span id="cb102-4"><a href="analysis.html#cb102-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">student_t</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">100</span>), <span class="at">class =</span> Intercept),</span>
-<span id="cb102-5"><a href="analysis.html#cb102-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb102-6"><a href="analysis.html#cb102-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># all other effects</span></span>
-<span id="cb102-7"><a href="analysis.html#cb102-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">25</span>), <span class="at">class =</span> b)</span>
-<span id="cb102-8"><a href="analysis.html#cb102-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="analysis.html#cb103-1" aria-hidden="true" tabindex="-1"></a>priors_model3 <span class="ot">&lt;-</span> </span>
+<span id="cb103-2"><a href="analysis.html#cb103-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb103-3"><a href="analysis.html#cb103-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
+<span id="cb103-4"><a href="analysis.html#cb103-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">student_t</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">100</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb103-5"><a href="analysis.html#cb103-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb103-6"><a href="analysis.html#cb103-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># all other effects</span></span>
+<span id="cb103-7"><a href="analysis.html#cb103-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">25</span>), <span class="at">class =</span> b)</span>
+<span id="cb103-8"><a href="analysis.html#cb103-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p><code>error</code> had 53 missing values.
 Again, with such few cases, I’m fine with dropping those during model fitting.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="analysis.html#cb103-1" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> </span>
-<span id="cb103-2"><a href="analysis.html#cb103-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
-<span id="cb103-3"><a href="analysis.html#cb103-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
-<span id="cb103-4"><a href="analysis.html#cb103-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> student,</span>
-<span id="cb103-5"><a href="analysis.html#cb103-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model3,</span>
-<span id="cb103-6"><a href="analysis.html#cb103-6" aria-hidden="true" tabindex="-1"></a>    error <span class="sc">~</span></span>
-<span id="cb103-7"><a href="analysis.html#cb103-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb103-8"><a href="analysis.html#cb103-8" aria-hidden="true" tabindex="-1"></a>      openness_c <span class="sc">+</span></span>
-<span id="cb103-9"><a href="analysis.html#cb103-9" aria-hidden="true" tabindex="-1"></a>      conscientiousness_c <span class="sc">+</span></span>
-<span id="cb103-10"><a href="analysis.html#cb103-10" aria-hidden="true" tabindex="-1"></a>      extraversion_c <span class="sc">+</span></span>
-<span id="cb103-11"><a href="analysis.html#cb103-11" aria-hidden="true" tabindex="-1"></a>      agreeableness_c <span class="sc">+</span></span>
-<span id="cb103-12"><a href="analysis.html#cb103-12" aria-hidden="true" tabindex="-1"></a>      neuroticism_c <span class="sc">+</span></span>
-<span id="cb103-13"><a href="analysis.html#cb103-13" aria-hidden="true" tabindex="-1"></a>      competence_trait_c <span class="sc">+</span></span>
-<span id="cb103-14"><a href="analysis.html#cb103-14" aria-hidden="true" tabindex="-1"></a>      relatedness_trait_c <span class="sc">+</span></span>
-<span id="cb103-15"><a href="analysis.html#cb103-15" aria-hidden="true" tabindex="-1"></a>      autonomy_trait_c <span class="sc">+</span></span>
-<span id="cb103-16"><a href="analysis.html#cb103-16" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> id) <span class="sc">+</span></span>
-<span id="cb103-17"><a href="analysis.html#cb103-17" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> day),</span>
-<span id="cb103-18"><a href="analysis.html#cb103-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
-<span id="cb103-19"><a href="analysis.html#cb103-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
-<span id="cb103-20"><a href="analysis.html#cb103-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb103-21"><a href="analysis.html#cb103-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb103-22"><a href="analysis.html#cb103-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
-<span id="cb103-23"><a href="analysis.html#cb103-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.99</span>),</span>
-<span id="cb103-24"><a href="analysis.html#cb103-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model3&quot;</span>)</span>
-<span id="cb103-25"><a href="analysis.html#cb103-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="analysis.html#cb104-1" aria-hidden="true" tabindex="-1"></a>model3 <span class="ot">&lt;-</span> </span>
+<span id="cb104-2"><a href="analysis.html#cb104-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
+<span id="cb104-3"><a href="analysis.html#cb104-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
+<span id="cb104-4"><a href="analysis.html#cb104-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> student,</span>
+<span id="cb104-5"><a href="analysis.html#cb104-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model3,</span>
+<span id="cb104-6"><a href="analysis.html#cb104-6" aria-hidden="true" tabindex="-1"></a>    error <span class="sc">~</span></span>
+<span id="cb104-7"><a href="analysis.html#cb104-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb104-8"><a href="analysis.html#cb104-8" aria-hidden="true" tabindex="-1"></a>      openness_c <span class="sc">+</span></span>
+<span id="cb104-9"><a href="analysis.html#cb104-9" aria-hidden="true" tabindex="-1"></a>      conscientiousness_c <span class="sc">+</span></span>
+<span id="cb104-10"><a href="analysis.html#cb104-10" aria-hidden="true" tabindex="-1"></a>      extraversion_c <span class="sc">+</span></span>
+<span id="cb104-11"><a href="analysis.html#cb104-11" aria-hidden="true" tabindex="-1"></a>      agreeableness_c <span class="sc">+</span></span>
+<span id="cb104-12"><a href="analysis.html#cb104-12" aria-hidden="true" tabindex="-1"></a>      neuroticism_c <span class="sc">+</span></span>
+<span id="cb104-13"><a href="analysis.html#cb104-13" aria-hidden="true" tabindex="-1"></a>      competence_trait_c <span class="sc">+</span></span>
+<span id="cb104-14"><a href="analysis.html#cb104-14" aria-hidden="true" tabindex="-1"></a>      relatedness_trait_c <span class="sc">+</span></span>
+<span id="cb104-15"><a href="analysis.html#cb104-15" aria-hidden="true" tabindex="-1"></a>      autonomy_trait_c <span class="sc">+</span></span>
+<span id="cb104-16"><a href="analysis.html#cb104-16" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> id) <span class="sc">+</span></span>
+<span id="cb104-17"><a href="analysis.html#cb104-17" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> day),</span>
+<span id="cb104-18"><a href="analysis.html#cb104-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb104-19"><a href="analysis.html#cb104-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb104-20"><a href="analysis.html#cb104-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb104-21"><a href="analysis.html#cb104-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb104-22"><a href="analysis.html#cb104-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb104-23"><a href="analysis.html#cb104-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.99</span>),</span>
+<span id="cb104-24"><a href="analysis.html#cb104-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model3&quot;</span>)</span>
+<span id="cb104-25"><a href="analysis.html#cb104-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model3"><strong>??</strong></a>).
 Again, the variance around the residuals for the day grouping is estimated to be small and zero often.
 <div class="figure"><span id="fig:inspect-model3-1"></span>
@@ -808,7 +911,7 @@ Figure 4.17: Posterior predictive checks for Model 3
 Three potentially influential cases are flagged, which is why we calculate them precisely by setting <code>reloo</code> to <code>TRUE</code>.
 When we calculate ELPD directly, all values appear unproblematic.
 The results seem trustworthy.</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="analysis.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model3, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="analysis.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model3, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 3 problematic observation(s) found.
 ## The model will be refit 3 times.</code></pre>
 <pre><code>## 
@@ -843,7 +946,7 @@ The results seem trustworthy.</p>
 There doesn’t seem to be much going on when it comes to the predictors.
 For all predictors, we cannot be 95% certain that zero isn’t the true effect (conditional on the model).
 Again, neuroticism comes close.</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="analysis.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model3, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="analysis.html#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model3, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##  Family: student 
 ##   Links: mu = identity; sigma = identity; nu = identity 
 ## Formula: error ~ 1 + openness_c + conscientiousness_c + extraversion_c + agreeableness_c + neuroticism_c + competence_trait_c + relatedness_trait_c + autonomy_trait_c + (1 | id) + (1 | day) 
@@ -912,19 +1015,19 @@ Our dependent variables are the same as in the previous block of models: <code>s
 <p>Because we want to separate between-person and within-person effects, we’ll do group-mean centering (i.e., per participant) and the calculate the deviation of each observation from that group mean.
 We enter both the person mean and their deviation as predictors, which will lead to a lot of variables, because each of the seven predictors will be separated into a between-person and a within-person predictor.
 See <a href="https://philippmasur.de/2018/05/23/how-to-center-in-multilevel-models/">this</a> blogpost for a tutorial on centering.</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="analysis.html#cb113-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
-<span id="cb113-2"><a href="analysis.html#cb113-2" aria-hidden="true" tabindex="-1"></a>  dat <span class="sc">%&gt;%</span> </span>
-<span id="cb113-3"><a href="analysis.html#cb113-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
-<span id="cb113-4"><a href="analysis.html#cb113-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb113-5"><a href="analysis.html#cb113-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
-<span id="cb113-6"><a href="analysis.html#cb113-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(autonomy_state<span class="sc">:</span>relatedness_state, satisfied<span class="sc">:</span>enjoyable),</span>
-<span id="cb113-7"><a href="analysis.html#cb113-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(</span>
-<span id="cb113-8"><a href="analysis.html#cb113-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">between =</span> <span class="sc">~</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb113-9"><a href="analysis.html#cb113-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">within =</span> <span class="sc">~</span>.x <span class="sc">-</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb113-10"><a href="analysis.html#cb113-10" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb113-11"><a href="analysis.html#cb113-11" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb113-12"><a href="analysis.html#cb113-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb113-13"><a href="analysis.html#cb113-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="analysis.html#cb114-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
+<span id="cb114-2"><a href="analysis.html#cb114-2" aria-hidden="true" tabindex="-1"></a>  dat <span class="sc">%&gt;%</span> </span>
+<span id="cb114-3"><a href="analysis.html#cb114-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb114-4"><a href="analysis.html#cb114-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb114-5"><a href="analysis.html#cb114-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb114-6"><a href="analysis.html#cb114-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(autonomy_state<span class="sc">:</span>relatedness_state, satisfied<span class="sc">:</span>enjoyable),</span>
+<span id="cb114-7"><a href="analysis.html#cb114-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(</span>
+<span id="cb114-8"><a href="analysis.html#cb114-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">between =</span> <span class="sc">~</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb114-9"><a href="analysis.html#cb114-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">within =</span> <span class="sc">~</span>.x <span class="sc">-</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb114-10"><a href="analysis.html#cb114-10" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb114-11"><a href="analysis.html#cb114-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb114-12"><a href="analysis.html#cb114-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb114-13"><a href="analysis.html#cb114-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div>
 <div id="model-4-state-variables-predicting-objective-use" class="section level3" number="4.4.1">
 <h3><span class="header-section-number">4.4.1</span> Model 4: State variables predicting objective use</h3>
 <p>First, I choose sensible priors.
@@ -947,62 +1050,62 @@ Therefore, I’ll take a skeptical stance here and again assign the same weakly 
 <li>For the variances (sigmas) I’ll take the <code>brms</code> default priors because I have no prior information, nor how the effects vary across day and participant.</li>
 <li>For the correlation between intercepts and slopes, I’ll again use the default prior, mostly because those have shown to help with convergence and I don’t have good information on which correlation to expect.</li>
 </ul>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="analysis.html#cb114-1" aria-hidden="true" tabindex="-1"></a>priors_model4 <span class="ot">&lt;-</span> </span>
-<span id="cb114-2"><a href="analysis.html#cb114-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb114-3"><a href="analysis.html#cb114-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
-<span id="cb114-4"><a href="analysis.html#cb114-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">4.5</span>, <span class="fl">0.8</span>), <span class="at">class =</span> Intercept),</span>
-<span id="cb114-5"><a href="analysis.html#cb114-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb114-6"><a href="analysis.html#cb114-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior on effects</span></span>
-<span id="cb114-7"><a href="analysis.html#cb114-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="at">class =</span> b),</span>
-<span id="cb114-8"><a href="analysis.html#cb114-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb114-9"><a href="analysis.html#cb114-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior on shape</span></span>
-<span id="cb114-10"><a href="analysis.html#cb114-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">gamma</span>(<span class="fl">2.5</span>, <span class="dv">100</span>), <span class="at">class =</span> shape)</span>
-<span id="cb114-11"><a href="analysis.html#cb114-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="analysis.html#cb115-1" aria-hidden="true" tabindex="-1"></a>priors_model4 <span class="ot">&lt;-</span> </span>
+<span id="cb115-2"><a href="analysis.html#cb115-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb115-3"><a href="analysis.html#cb115-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
+<span id="cb115-4"><a href="analysis.html#cb115-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">4.5</span>, <span class="fl">0.8</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb115-5"><a href="analysis.html#cb115-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb115-6"><a href="analysis.html#cb115-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior on effects</span></span>
+<span id="cb115-7"><a href="analysis.html#cb115-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="at">class =</span> b),</span>
+<span id="cb115-8"><a href="analysis.html#cb115-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb115-9"><a href="analysis.html#cb115-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior on shape</span></span>
+<span id="cb115-10"><a href="analysis.html#cb115-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">gamma</span>(<span class="fl">2.5</span>, <span class="dv">100</span>), <span class="at">class =</span> shape)</span>
+<span id="cb115-11"><a href="analysis.html#cb115-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>Let’s run the model.
 Note that the within-deviations can vary per participant, but not the between effects.</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="analysis.html#cb115-1" aria-hidden="true" tabindex="-1"></a>model4 <span class="ot">&lt;-</span> </span>
-<span id="cb115-2"><a href="analysis.html#cb115-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
-<span id="cb115-3"><a href="analysis.html#cb115-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
-<span id="cb115-4"><a href="analysis.html#cb115-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>),</span>
-<span id="cb115-5"><a href="analysis.html#cb115-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model4,</span>
-<span id="cb115-6"><a href="analysis.html#cb115-6" aria-hidden="true" tabindex="-1"></a>    social_media_objective <span class="sc">~</span></span>
-<span id="cb115-7"><a href="analysis.html#cb115-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb115-8"><a href="analysis.html#cb115-8" aria-hidden="true" tabindex="-1"></a>      autonomy_state_between <span class="sc">+</span></span>
-<span id="cb115-9"><a href="analysis.html#cb115-9" aria-hidden="true" tabindex="-1"></a>      competence_state_between <span class="sc">+</span></span>
-<span id="cb115-10"><a href="analysis.html#cb115-10" aria-hidden="true" tabindex="-1"></a>      relatedness_state_between <span class="sc">+</span></span>
-<span id="cb115-11"><a href="analysis.html#cb115-11" aria-hidden="true" tabindex="-1"></a>      satisfied_between <span class="sc">+</span></span>
-<span id="cb115-12"><a href="analysis.html#cb115-12" aria-hidden="true" tabindex="-1"></a>      boring_between <span class="sc">+</span></span>
-<span id="cb115-13"><a href="analysis.html#cb115-13" aria-hidden="true" tabindex="-1"></a>      stressful_between <span class="sc">+</span></span>
-<span id="cb115-14"><a href="analysis.html#cb115-14" aria-hidden="true" tabindex="-1"></a>      enjoyable_between <span class="sc">+</span></span>
-<span id="cb115-15"><a href="analysis.html#cb115-15" aria-hidden="true" tabindex="-1"></a>      autonomy_state_within <span class="sc">+</span></span>
-<span id="cb115-16"><a href="analysis.html#cb115-16" aria-hidden="true" tabindex="-1"></a>      competence_state_within <span class="sc">+</span></span>
-<span id="cb115-17"><a href="analysis.html#cb115-17" aria-hidden="true" tabindex="-1"></a>      relatedness_state_within <span class="sc">+</span></span>
-<span id="cb115-18"><a href="analysis.html#cb115-18" aria-hidden="true" tabindex="-1"></a>      satisfied_within <span class="sc">+</span></span>
-<span id="cb115-19"><a href="analysis.html#cb115-19" aria-hidden="true" tabindex="-1"></a>      boring_within <span class="sc">+</span></span>
-<span id="cb115-20"><a href="analysis.html#cb115-20" aria-hidden="true" tabindex="-1"></a>      stressful_within <span class="sc">+</span></span>
-<span id="cb115-21"><a href="analysis.html#cb115-21" aria-hidden="true" tabindex="-1"></a>      enjoyable_within <span class="sc">+</span></span>
-<span id="cb115-22"><a href="analysis.html#cb115-22" aria-hidden="true" tabindex="-1"></a>      (</span>
-<span id="cb115-23"><a href="analysis.html#cb115-23" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb115-24"><a href="analysis.html#cb115-24" aria-hidden="true" tabindex="-1"></a>        autonomy_state_within <span class="sc">+</span></span>
-<span id="cb115-25"><a href="analysis.html#cb115-25" aria-hidden="true" tabindex="-1"></a>        competence_state_within <span class="sc">+</span></span>
-<span id="cb115-26"><a href="analysis.html#cb115-26" aria-hidden="true" tabindex="-1"></a>        relatedness_state_within <span class="sc">+</span></span>
-<span id="cb115-27"><a href="analysis.html#cb115-27" aria-hidden="true" tabindex="-1"></a>        satisfied_within <span class="sc">+</span></span>
-<span id="cb115-28"><a href="analysis.html#cb115-28" aria-hidden="true" tabindex="-1"></a>        boring_within <span class="sc">+</span></span>
-<span id="cb115-29"><a href="analysis.html#cb115-29" aria-hidden="true" tabindex="-1"></a>        stressful_within <span class="sc">+</span></span>
-<span id="cb115-30"><a href="analysis.html#cb115-30" aria-hidden="true" tabindex="-1"></a>        enjoyable_within <span class="sc">|</span></span>
-<span id="cb115-31"><a href="analysis.html#cb115-31" aria-hidden="true" tabindex="-1"></a>        id</span>
-<span id="cb115-32"><a href="analysis.html#cb115-32" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
-<span id="cb115-33"><a href="analysis.html#cb115-33" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span>day),</span>
-<span id="cb115-34"><a href="analysis.html#cb115-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
-<span id="cb115-35"><a href="analysis.html#cb115-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
-<span id="cb115-36"><a href="analysis.html#cb115-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb115-37"><a href="analysis.html#cb115-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb115-38"><a href="analysis.html#cb115-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
-<span id="cb115-39"><a href="analysis.html#cb115-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
-<span id="cb115-40"><a href="analysis.html#cb115-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.99</span></span>
-<span id="cb115-41"><a href="analysis.html#cb115-41" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb115-42"><a href="analysis.html#cb115-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model4&quot;</span>)</span>
-<span id="cb115-43"><a href="analysis.html#cb115-43" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="analysis.html#cb116-1" aria-hidden="true" tabindex="-1"></a>model4 <span class="ot">&lt;-</span> </span>
+<span id="cb116-2"><a href="analysis.html#cb116-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
+<span id="cb116-3"><a href="analysis.html#cb116-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
+<span id="cb116-4"><a href="analysis.html#cb116-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>),</span>
+<span id="cb116-5"><a href="analysis.html#cb116-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model4,</span>
+<span id="cb116-6"><a href="analysis.html#cb116-6" aria-hidden="true" tabindex="-1"></a>    social_media_objective <span class="sc">~</span></span>
+<span id="cb116-7"><a href="analysis.html#cb116-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb116-8"><a href="analysis.html#cb116-8" aria-hidden="true" tabindex="-1"></a>      autonomy_state_between <span class="sc">+</span></span>
+<span id="cb116-9"><a href="analysis.html#cb116-9" aria-hidden="true" tabindex="-1"></a>      competence_state_between <span class="sc">+</span></span>
+<span id="cb116-10"><a href="analysis.html#cb116-10" aria-hidden="true" tabindex="-1"></a>      relatedness_state_between <span class="sc">+</span></span>
+<span id="cb116-11"><a href="analysis.html#cb116-11" aria-hidden="true" tabindex="-1"></a>      satisfied_between <span class="sc">+</span></span>
+<span id="cb116-12"><a href="analysis.html#cb116-12" aria-hidden="true" tabindex="-1"></a>      boring_between <span class="sc">+</span></span>
+<span id="cb116-13"><a href="analysis.html#cb116-13" aria-hidden="true" tabindex="-1"></a>      stressful_between <span class="sc">+</span></span>
+<span id="cb116-14"><a href="analysis.html#cb116-14" aria-hidden="true" tabindex="-1"></a>      enjoyable_between <span class="sc">+</span></span>
+<span id="cb116-15"><a href="analysis.html#cb116-15" aria-hidden="true" tabindex="-1"></a>      autonomy_state_within <span class="sc">+</span></span>
+<span id="cb116-16"><a href="analysis.html#cb116-16" aria-hidden="true" tabindex="-1"></a>      competence_state_within <span class="sc">+</span></span>
+<span id="cb116-17"><a href="analysis.html#cb116-17" aria-hidden="true" tabindex="-1"></a>      relatedness_state_within <span class="sc">+</span></span>
+<span id="cb116-18"><a href="analysis.html#cb116-18" aria-hidden="true" tabindex="-1"></a>      satisfied_within <span class="sc">+</span></span>
+<span id="cb116-19"><a href="analysis.html#cb116-19" aria-hidden="true" tabindex="-1"></a>      boring_within <span class="sc">+</span></span>
+<span id="cb116-20"><a href="analysis.html#cb116-20" aria-hidden="true" tabindex="-1"></a>      stressful_within <span class="sc">+</span></span>
+<span id="cb116-21"><a href="analysis.html#cb116-21" aria-hidden="true" tabindex="-1"></a>      enjoyable_within <span class="sc">+</span></span>
+<span id="cb116-22"><a href="analysis.html#cb116-22" aria-hidden="true" tabindex="-1"></a>      (</span>
+<span id="cb116-23"><a href="analysis.html#cb116-23" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb116-24"><a href="analysis.html#cb116-24" aria-hidden="true" tabindex="-1"></a>        autonomy_state_within <span class="sc">+</span></span>
+<span id="cb116-25"><a href="analysis.html#cb116-25" aria-hidden="true" tabindex="-1"></a>        competence_state_within <span class="sc">+</span></span>
+<span id="cb116-26"><a href="analysis.html#cb116-26" aria-hidden="true" tabindex="-1"></a>        relatedness_state_within <span class="sc">+</span></span>
+<span id="cb116-27"><a href="analysis.html#cb116-27" aria-hidden="true" tabindex="-1"></a>        satisfied_within <span class="sc">+</span></span>
+<span id="cb116-28"><a href="analysis.html#cb116-28" aria-hidden="true" tabindex="-1"></a>        boring_within <span class="sc">+</span></span>
+<span id="cb116-29"><a href="analysis.html#cb116-29" aria-hidden="true" tabindex="-1"></a>        stressful_within <span class="sc">+</span></span>
+<span id="cb116-30"><a href="analysis.html#cb116-30" aria-hidden="true" tabindex="-1"></a>        enjoyable_within <span class="sc">|</span></span>
+<span id="cb116-31"><a href="analysis.html#cb116-31" aria-hidden="true" tabindex="-1"></a>        id</span>
+<span id="cb116-32"><a href="analysis.html#cb116-32" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb116-33"><a href="analysis.html#cb116-33" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span>day),</span>
+<span id="cb116-34"><a href="analysis.html#cb116-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb116-35"><a href="analysis.html#cb116-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb116-36"><a href="analysis.html#cb116-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb116-37"><a href="analysis.html#cb116-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb116-38"><a href="analysis.html#cb116-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb116-39"><a href="analysis.html#cb116-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
+<span id="cb116-40"><a href="analysis.html#cb116-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.99</span></span>
+<span id="cb116-41"><a href="analysis.html#cb116-41" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb116-42"><a href="analysis.html#cb116-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model4&quot;</span>)</span>
+<span id="cb116-43"><a href="analysis.html#cb116-43" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 Overall, the traceplots look fine and the chains seem to have mixed well (Figure <a href="#fig:inspect-model5"><strong>??</strong></a>).
 Again the variance around the day grouping is small and mostly estimated to be zero or close to zero.
 <div class="figure"><span id="fig:inspect-model4-1"></span>
@@ -1082,7 +1185,7 @@ Figure 4.30: Posterior predictive checks for Model 4
 </div>
 <p>Next, we check for potentially influential cases.
 There are none.</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="analysis.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model4)</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="analysis.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model4)</span></code></pre></div>
 <pre><code>## 
 ## Computed from 12000 by 420 log-likelihood matrix
 ## 
@@ -1104,7 +1207,7 @@ There are none.</p>
 ## See help(&#39;pareto-k-diagnostic&#39;) for details.</code></pre>
 <p>Let’s inspect the summary.
 There doesn’t seem to be much going on when it comes to the predictors.</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="analysis.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model4, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="analysis.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model4, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##  Family: gamma 
 ##   Links: mu = log; shape = identity 
 ## Formula: social_media_objective ~ 1 + autonomy_state_between + competence_state_between + relatedness_state_between + satisfied_between + boring_between + stressful_between + enjoyable_between + autonomy_state_within + competence_state_within + relatedness_state_within + satisfied_within + boring_within + stressful_within + enjoyable_within + (1 + autonomy_state_within + competence_state_within + relatedness_state_within + satisfied_within + boring_within + stressful_within + enjoyable_within | id) + (1 | day) 
@@ -1202,62 +1305,62 @@ Figure 4.31: Effects plot for Model 4
 <h3><span class="header-section-number">4.4.2</span> Model 5: State variables predicting subjective use</h3>
 <p>The next model predicts subjective use from the same predictors.
 Once more, we know that subjective and objective use aren’t perfectly correlated, but the priors for Model 4 again are our best bet here (for both within-person and between-person effects).</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="analysis.html#cb120-1" aria-hidden="true" tabindex="-1"></a>priors_model5 <span class="ot">&lt;-</span> </span>
-<span id="cb120-2"><a href="analysis.html#cb120-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb120-3"><a href="analysis.html#cb120-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
-<span id="cb120-4"><a href="analysis.html#cb120-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">4.5</span>, <span class="fl">0.8</span>), <span class="at">class =</span> Intercept),</span>
-<span id="cb120-5"><a href="analysis.html#cb120-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb120-6"><a href="analysis.html#cb120-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior on effects</span></span>
-<span id="cb120-7"><a href="analysis.html#cb120-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="at">class =</span> b),</span>
-<span id="cb120-8"><a href="analysis.html#cb120-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb120-9"><a href="analysis.html#cb120-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior on shape</span></span>
-<span id="cb120-10"><a href="analysis.html#cb120-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">gamma</span>(<span class="fl">2.5</span>, <span class="dv">100</span>), <span class="at">class =</span> shape)</span>
-<span id="cb120-11"><a href="analysis.html#cb120-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="analysis.html#cb121-1" aria-hidden="true" tabindex="-1"></a>priors_model5 <span class="ot">&lt;-</span> </span>
+<span id="cb121-2"><a href="analysis.html#cb121-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb121-3"><a href="analysis.html#cb121-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
+<span id="cb121-4"><a href="analysis.html#cb121-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">4.5</span>, <span class="fl">0.8</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb121-5"><a href="analysis.html#cb121-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb121-6"><a href="analysis.html#cb121-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior on effects</span></span>
+<span id="cb121-7"><a href="analysis.html#cb121-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>), <span class="at">class =</span> b),</span>
+<span id="cb121-8"><a href="analysis.html#cb121-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb121-9"><a href="analysis.html#cb121-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># prior on shape</span></span>
+<span id="cb121-10"><a href="analysis.html#cb121-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">gamma</span>(<span class="fl">2.5</span>, <span class="dv">100</span>), <span class="at">class =</span> shape)</span>
+<span id="cb121-11"><a href="analysis.html#cb121-11" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>Let’s run the model.
 Like with Model 2, we don’t separately model zeros.</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="analysis.html#cb121-1" aria-hidden="true" tabindex="-1"></a>model5 <span class="ot">&lt;-</span> </span>
-<span id="cb121-2"><a href="analysis.html#cb121-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
-<span id="cb121-3"><a href="analysis.html#cb121-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
-<span id="cb121-4"><a href="analysis.html#cb121-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>),</span>
-<span id="cb121-5"><a href="analysis.html#cb121-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model4,</span>
-<span id="cb121-6"><a href="analysis.html#cb121-6" aria-hidden="true" tabindex="-1"></a>    social_media_subjective <span class="sc">~</span></span>
-<span id="cb121-7"><a href="analysis.html#cb121-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb121-8"><a href="analysis.html#cb121-8" aria-hidden="true" tabindex="-1"></a>      autonomy_state_between <span class="sc">+</span></span>
-<span id="cb121-9"><a href="analysis.html#cb121-9" aria-hidden="true" tabindex="-1"></a>      competence_state_between <span class="sc">+</span></span>
-<span id="cb121-10"><a href="analysis.html#cb121-10" aria-hidden="true" tabindex="-1"></a>      relatedness_state_between <span class="sc">+</span></span>
-<span id="cb121-11"><a href="analysis.html#cb121-11" aria-hidden="true" tabindex="-1"></a>      satisfied_between <span class="sc">+</span></span>
-<span id="cb121-12"><a href="analysis.html#cb121-12" aria-hidden="true" tabindex="-1"></a>      boring_between <span class="sc">+</span></span>
-<span id="cb121-13"><a href="analysis.html#cb121-13" aria-hidden="true" tabindex="-1"></a>      stressful_between <span class="sc">+</span></span>
-<span id="cb121-14"><a href="analysis.html#cb121-14" aria-hidden="true" tabindex="-1"></a>      enjoyable_between <span class="sc">+</span></span>
-<span id="cb121-15"><a href="analysis.html#cb121-15" aria-hidden="true" tabindex="-1"></a>      autonomy_state_within <span class="sc">+</span></span>
-<span id="cb121-16"><a href="analysis.html#cb121-16" aria-hidden="true" tabindex="-1"></a>      competence_state_within <span class="sc">+</span></span>
-<span id="cb121-17"><a href="analysis.html#cb121-17" aria-hidden="true" tabindex="-1"></a>      relatedness_state_within <span class="sc">+</span></span>
-<span id="cb121-18"><a href="analysis.html#cb121-18" aria-hidden="true" tabindex="-1"></a>      satisfied_within <span class="sc">+</span></span>
-<span id="cb121-19"><a href="analysis.html#cb121-19" aria-hidden="true" tabindex="-1"></a>      boring_within <span class="sc">+</span></span>
-<span id="cb121-20"><a href="analysis.html#cb121-20" aria-hidden="true" tabindex="-1"></a>      stressful_within <span class="sc">+</span></span>
-<span id="cb121-21"><a href="analysis.html#cb121-21" aria-hidden="true" tabindex="-1"></a>      enjoyable_within <span class="sc">+</span></span>
-<span id="cb121-22"><a href="analysis.html#cb121-22" aria-hidden="true" tabindex="-1"></a>      (</span>
-<span id="cb121-23"><a href="analysis.html#cb121-23" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb121-24"><a href="analysis.html#cb121-24" aria-hidden="true" tabindex="-1"></a>        autonomy_state_within <span class="sc">+</span></span>
-<span id="cb121-25"><a href="analysis.html#cb121-25" aria-hidden="true" tabindex="-1"></a>        competence_state_within <span class="sc">+</span></span>
-<span id="cb121-26"><a href="analysis.html#cb121-26" aria-hidden="true" tabindex="-1"></a>        relatedness_state_within <span class="sc">+</span></span>
-<span id="cb121-27"><a href="analysis.html#cb121-27" aria-hidden="true" tabindex="-1"></a>        satisfied_within <span class="sc">+</span></span>
-<span id="cb121-28"><a href="analysis.html#cb121-28" aria-hidden="true" tabindex="-1"></a>        boring_within <span class="sc">+</span></span>
-<span id="cb121-29"><a href="analysis.html#cb121-29" aria-hidden="true" tabindex="-1"></a>        stressful_within <span class="sc">+</span></span>
-<span id="cb121-30"><a href="analysis.html#cb121-30" aria-hidden="true" tabindex="-1"></a>        enjoyable_within <span class="sc">|</span></span>
-<span id="cb121-31"><a href="analysis.html#cb121-31" aria-hidden="true" tabindex="-1"></a>        id</span>
-<span id="cb121-32"><a href="analysis.html#cb121-32" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
-<span id="cb121-33"><a href="analysis.html#cb121-33" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span>day),</span>
-<span id="cb121-34"><a href="analysis.html#cb121-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
-<span id="cb121-35"><a href="analysis.html#cb121-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
-<span id="cb121-36"><a href="analysis.html#cb121-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb121-37"><a href="analysis.html#cb121-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb121-38"><a href="analysis.html#cb121-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
-<span id="cb121-39"><a href="analysis.html#cb121-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
-<span id="cb121-40"><a href="analysis.html#cb121-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.99</span></span>
-<span id="cb121-41"><a href="analysis.html#cb121-41" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb121-42"><a href="analysis.html#cb121-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model5&quot;</span>)</span>
-<span id="cb121-43"><a href="analysis.html#cb121-43" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="analysis.html#cb122-1" aria-hidden="true" tabindex="-1"></a>model5 <span class="ot">&lt;-</span> </span>
+<span id="cb122-2"><a href="analysis.html#cb122-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
+<span id="cb122-3"><a href="analysis.html#cb122-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
+<span id="cb122-4"><a href="analysis.html#cb122-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> <span class="fu">Gamma</span>(<span class="at">link =</span> <span class="st">&quot;log&quot;</span>),</span>
+<span id="cb122-5"><a href="analysis.html#cb122-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model4,</span>
+<span id="cb122-6"><a href="analysis.html#cb122-6" aria-hidden="true" tabindex="-1"></a>    social_media_subjective <span class="sc">~</span></span>
+<span id="cb122-7"><a href="analysis.html#cb122-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb122-8"><a href="analysis.html#cb122-8" aria-hidden="true" tabindex="-1"></a>      autonomy_state_between <span class="sc">+</span></span>
+<span id="cb122-9"><a href="analysis.html#cb122-9" aria-hidden="true" tabindex="-1"></a>      competence_state_between <span class="sc">+</span></span>
+<span id="cb122-10"><a href="analysis.html#cb122-10" aria-hidden="true" tabindex="-1"></a>      relatedness_state_between <span class="sc">+</span></span>
+<span id="cb122-11"><a href="analysis.html#cb122-11" aria-hidden="true" tabindex="-1"></a>      satisfied_between <span class="sc">+</span></span>
+<span id="cb122-12"><a href="analysis.html#cb122-12" aria-hidden="true" tabindex="-1"></a>      boring_between <span class="sc">+</span></span>
+<span id="cb122-13"><a href="analysis.html#cb122-13" aria-hidden="true" tabindex="-1"></a>      stressful_between <span class="sc">+</span></span>
+<span id="cb122-14"><a href="analysis.html#cb122-14" aria-hidden="true" tabindex="-1"></a>      enjoyable_between <span class="sc">+</span></span>
+<span id="cb122-15"><a href="analysis.html#cb122-15" aria-hidden="true" tabindex="-1"></a>      autonomy_state_within <span class="sc">+</span></span>
+<span id="cb122-16"><a href="analysis.html#cb122-16" aria-hidden="true" tabindex="-1"></a>      competence_state_within <span class="sc">+</span></span>
+<span id="cb122-17"><a href="analysis.html#cb122-17" aria-hidden="true" tabindex="-1"></a>      relatedness_state_within <span class="sc">+</span></span>
+<span id="cb122-18"><a href="analysis.html#cb122-18" aria-hidden="true" tabindex="-1"></a>      satisfied_within <span class="sc">+</span></span>
+<span id="cb122-19"><a href="analysis.html#cb122-19" aria-hidden="true" tabindex="-1"></a>      boring_within <span class="sc">+</span></span>
+<span id="cb122-20"><a href="analysis.html#cb122-20" aria-hidden="true" tabindex="-1"></a>      stressful_within <span class="sc">+</span></span>
+<span id="cb122-21"><a href="analysis.html#cb122-21" aria-hidden="true" tabindex="-1"></a>      enjoyable_within <span class="sc">+</span></span>
+<span id="cb122-22"><a href="analysis.html#cb122-22" aria-hidden="true" tabindex="-1"></a>      (</span>
+<span id="cb122-23"><a href="analysis.html#cb122-23" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb122-24"><a href="analysis.html#cb122-24" aria-hidden="true" tabindex="-1"></a>        autonomy_state_within <span class="sc">+</span></span>
+<span id="cb122-25"><a href="analysis.html#cb122-25" aria-hidden="true" tabindex="-1"></a>        competence_state_within <span class="sc">+</span></span>
+<span id="cb122-26"><a href="analysis.html#cb122-26" aria-hidden="true" tabindex="-1"></a>        relatedness_state_within <span class="sc">+</span></span>
+<span id="cb122-27"><a href="analysis.html#cb122-27" aria-hidden="true" tabindex="-1"></a>        satisfied_within <span class="sc">+</span></span>
+<span id="cb122-28"><a href="analysis.html#cb122-28" aria-hidden="true" tabindex="-1"></a>        boring_within <span class="sc">+</span></span>
+<span id="cb122-29"><a href="analysis.html#cb122-29" aria-hidden="true" tabindex="-1"></a>        stressful_within <span class="sc">+</span></span>
+<span id="cb122-30"><a href="analysis.html#cb122-30" aria-hidden="true" tabindex="-1"></a>        enjoyable_within <span class="sc">|</span></span>
+<span id="cb122-31"><a href="analysis.html#cb122-31" aria-hidden="true" tabindex="-1"></a>        id</span>
+<span id="cb122-32"><a href="analysis.html#cb122-32" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb122-33"><a href="analysis.html#cb122-33" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span>day),</span>
+<span id="cb122-34"><a href="analysis.html#cb122-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb122-35"><a href="analysis.html#cb122-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb122-36"><a href="analysis.html#cb122-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb122-37"><a href="analysis.html#cb122-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb122-38"><a href="analysis.html#cb122-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb122-39"><a href="analysis.html#cb122-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
+<span id="cb122-40"><a href="analysis.html#cb122-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.99</span></span>
+<span id="cb122-41"><a href="analysis.html#cb122-41" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb122-42"><a href="analysis.html#cb122-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model5&quot;</span>)</span>
+<span id="cb122-43"><a href="analysis.html#cb122-43" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 Overall, the traceplots look fine and the chains seem to have mixed well (Figure <a href="#fig:inspect-model5"><strong>??</strong></a>).
 Like before, the variance around the day grouping is small and mostly estimated to be zero or close to zero.
 <div class="figure"><span id="fig:inspect-model5-1"></span>
@@ -1336,7 +1439,7 @@ Figure 4.43: Posterior predictive checks for Model 5
 </p>
 </div>
 <p>There are no cases flagged as potentially influential outliers.</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="analysis.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model5, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="analysis.html#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model5, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 1 problematic observation(s) found.
 ## The model will be refit 1 times.</code></pre>
 <pre><code>## 
@@ -1365,7 +1468,7 @@ Figure 4.43: Posterior predictive checks for Model 5
 Having an enjoyable and boring day might be related to estimating more social media use (on the between level).
 Conversely, a feeling of competence might decrease estimates.
 However, all three of those posterior distributions include zero, even though it’s close.</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="analysis.html#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model5, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="analysis.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model5, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##  Family: gamma 
 ##   Links: mu = log; shape = identity 
 ## Formula: social_media_subjective ~ 1 + autonomy_state_between + competence_state_between + relatedness_state_between + satisfied_between + boring_between + stressful_between + enjoyable_between + autonomy_state_within + competence_state_within + relatedness_state_within + satisfied_within + boring_within + stressful_within + enjoyable_within + (1 + autonomy_state_within + competence_state_within + relatedness_state_within + satisfied_within + boring_within + stressful_within + enjoyable_within | id) + (1 | day) 
@@ -1463,58 +1566,58 @@ Figure 4.44: Effects plot for Model 5
 Therefore, I choose the same skeptical, but weakly regularizing priors as for Model 3, with a student t distribution with fat tails, an intercept that reflects a tendency to overestimate, and slopes that are skeptical of large effects.
 For everything else, I’ll use the <code>brms</code> default priors because I don’t have information on what correlation or variances to expect.
 Note that I use the priors on the slope for both between and within effects, simply because I don’t have an informed guess about the two being different.</p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="analysis.html#cb129-1" aria-hidden="true" tabindex="-1"></a>priors_model6 <span class="ot">&lt;-</span> </span>
-<span id="cb129-2"><a href="analysis.html#cb129-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb129-3"><a href="analysis.html#cb129-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
-<span id="cb129-4"><a href="analysis.html#cb129-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">student_t</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">100</span>), <span class="at">class =</span> Intercept),</span>
-<span id="cb129-5"><a href="analysis.html#cb129-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb129-6"><a href="analysis.html#cb129-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># all other effects</span></span>
-<span id="cb129-7"><a href="analysis.html#cb129-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">25</span>), <span class="at">class =</span> b)</span>
-<span id="cb129-8"><a href="analysis.html#cb129-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="analysis.html#cb130-1" aria-hidden="true" tabindex="-1"></a>priors_model6 <span class="ot">&lt;-</span> </span>
+<span id="cb130-2"><a href="analysis.html#cb130-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb130-3"><a href="analysis.html#cb130-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
+<span id="cb130-4"><a href="analysis.html#cb130-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">student_t</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">100</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb130-5"><a href="analysis.html#cb130-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb130-6"><a href="analysis.html#cb130-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># all other effects</span></span>
+<span id="cb130-7"><a href="analysis.html#cb130-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="dv">25</span>), <span class="at">class =</span> b)</span>
+<span id="cb130-8"><a href="analysis.html#cb130-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>Let’s run the model.</p>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="analysis.html#cb130-1" aria-hidden="true" tabindex="-1"></a>model6 <span class="ot">&lt;-</span> </span>
-<span id="cb130-2"><a href="analysis.html#cb130-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
-<span id="cb130-3"><a href="analysis.html#cb130-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
-<span id="cb130-4"><a href="analysis.html#cb130-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> student,</span>
-<span id="cb130-5"><a href="analysis.html#cb130-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model6,</span>
-<span id="cb130-6"><a href="analysis.html#cb130-6" aria-hidden="true" tabindex="-1"></a>    error <span class="sc">~</span></span>
-<span id="cb130-7"><a href="analysis.html#cb130-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb130-8"><a href="analysis.html#cb130-8" aria-hidden="true" tabindex="-1"></a>      autonomy_state_between <span class="sc">+</span></span>
-<span id="cb130-9"><a href="analysis.html#cb130-9" aria-hidden="true" tabindex="-1"></a>      competence_state_between <span class="sc">+</span></span>
-<span id="cb130-10"><a href="analysis.html#cb130-10" aria-hidden="true" tabindex="-1"></a>      relatedness_state_between <span class="sc">+</span></span>
-<span id="cb130-11"><a href="analysis.html#cb130-11" aria-hidden="true" tabindex="-1"></a>      satisfied_between <span class="sc">+</span></span>
-<span id="cb130-12"><a href="analysis.html#cb130-12" aria-hidden="true" tabindex="-1"></a>      boring_between <span class="sc">+</span></span>
-<span id="cb130-13"><a href="analysis.html#cb130-13" aria-hidden="true" tabindex="-1"></a>      stressful_between <span class="sc">+</span></span>
-<span id="cb130-14"><a href="analysis.html#cb130-14" aria-hidden="true" tabindex="-1"></a>      enjoyable_between <span class="sc">+</span></span>
-<span id="cb130-15"><a href="analysis.html#cb130-15" aria-hidden="true" tabindex="-1"></a>      autonomy_state_within <span class="sc">+</span></span>
-<span id="cb130-16"><a href="analysis.html#cb130-16" aria-hidden="true" tabindex="-1"></a>      competence_state_within <span class="sc">+</span></span>
-<span id="cb130-17"><a href="analysis.html#cb130-17" aria-hidden="true" tabindex="-1"></a>      relatedness_state_within <span class="sc">+</span></span>
-<span id="cb130-18"><a href="analysis.html#cb130-18" aria-hidden="true" tabindex="-1"></a>      satisfied_within <span class="sc">+</span></span>
-<span id="cb130-19"><a href="analysis.html#cb130-19" aria-hidden="true" tabindex="-1"></a>      boring_within <span class="sc">+</span></span>
-<span id="cb130-20"><a href="analysis.html#cb130-20" aria-hidden="true" tabindex="-1"></a>      stressful_within <span class="sc">+</span></span>
-<span id="cb130-21"><a href="analysis.html#cb130-21" aria-hidden="true" tabindex="-1"></a>      enjoyable_within <span class="sc">+</span></span>
-<span id="cb130-22"><a href="analysis.html#cb130-22" aria-hidden="true" tabindex="-1"></a>      (</span>
-<span id="cb130-23"><a href="analysis.html#cb130-23" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb130-24"><a href="analysis.html#cb130-24" aria-hidden="true" tabindex="-1"></a>        autonomy_state_within <span class="sc">+</span></span>
-<span id="cb130-25"><a href="analysis.html#cb130-25" aria-hidden="true" tabindex="-1"></a>        competence_state_within <span class="sc">+</span></span>
-<span id="cb130-26"><a href="analysis.html#cb130-26" aria-hidden="true" tabindex="-1"></a>        relatedness_state_within <span class="sc">+</span></span>
-<span id="cb130-27"><a href="analysis.html#cb130-27" aria-hidden="true" tabindex="-1"></a>        satisfied_within <span class="sc">+</span></span>
-<span id="cb130-28"><a href="analysis.html#cb130-28" aria-hidden="true" tabindex="-1"></a>        boring_within <span class="sc">+</span></span>
-<span id="cb130-29"><a href="analysis.html#cb130-29" aria-hidden="true" tabindex="-1"></a>        stressful_within <span class="sc">+</span></span>
-<span id="cb130-30"><a href="analysis.html#cb130-30" aria-hidden="true" tabindex="-1"></a>        enjoyable_within <span class="sc">|</span></span>
-<span id="cb130-31"><a href="analysis.html#cb130-31" aria-hidden="true" tabindex="-1"></a>        id</span>
-<span id="cb130-32"><a href="analysis.html#cb130-32" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
-<span id="cb130-33"><a href="analysis.html#cb130-33" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span>day),</span>
-<span id="cb130-34"><a href="analysis.html#cb130-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
-<span id="cb130-35"><a href="analysis.html#cb130-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
-<span id="cb130-36"><a href="analysis.html#cb130-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb130-37"><a href="analysis.html#cb130-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb130-38"><a href="analysis.html#cb130-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
-<span id="cb130-39"><a href="analysis.html#cb130-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
-<span id="cb130-40"><a href="analysis.html#cb130-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.99</span></span>
-<span id="cb130-41"><a href="analysis.html#cb130-41" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb130-42"><a href="analysis.html#cb130-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model6&quot;</span>)</span>
-<span id="cb130-43"><a href="analysis.html#cb130-43" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="analysis.html#cb131-1" aria-hidden="true" tabindex="-1"></a>model6 <span class="ot">&lt;-</span> </span>
+<span id="cb131-2"><a href="analysis.html#cb131-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
+<span id="cb131-3"><a href="analysis.html#cb131-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
+<span id="cb131-4"><a href="analysis.html#cb131-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> student,</span>
+<span id="cb131-5"><a href="analysis.html#cb131-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model6,</span>
+<span id="cb131-6"><a href="analysis.html#cb131-6" aria-hidden="true" tabindex="-1"></a>    error <span class="sc">~</span></span>
+<span id="cb131-7"><a href="analysis.html#cb131-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb131-8"><a href="analysis.html#cb131-8" aria-hidden="true" tabindex="-1"></a>      autonomy_state_between <span class="sc">+</span></span>
+<span id="cb131-9"><a href="analysis.html#cb131-9" aria-hidden="true" tabindex="-1"></a>      competence_state_between <span class="sc">+</span></span>
+<span id="cb131-10"><a href="analysis.html#cb131-10" aria-hidden="true" tabindex="-1"></a>      relatedness_state_between <span class="sc">+</span></span>
+<span id="cb131-11"><a href="analysis.html#cb131-11" aria-hidden="true" tabindex="-1"></a>      satisfied_between <span class="sc">+</span></span>
+<span id="cb131-12"><a href="analysis.html#cb131-12" aria-hidden="true" tabindex="-1"></a>      boring_between <span class="sc">+</span></span>
+<span id="cb131-13"><a href="analysis.html#cb131-13" aria-hidden="true" tabindex="-1"></a>      stressful_between <span class="sc">+</span></span>
+<span id="cb131-14"><a href="analysis.html#cb131-14" aria-hidden="true" tabindex="-1"></a>      enjoyable_between <span class="sc">+</span></span>
+<span id="cb131-15"><a href="analysis.html#cb131-15" aria-hidden="true" tabindex="-1"></a>      autonomy_state_within <span class="sc">+</span></span>
+<span id="cb131-16"><a href="analysis.html#cb131-16" aria-hidden="true" tabindex="-1"></a>      competence_state_within <span class="sc">+</span></span>
+<span id="cb131-17"><a href="analysis.html#cb131-17" aria-hidden="true" tabindex="-1"></a>      relatedness_state_within <span class="sc">+</span></span>
+<span id="cb131-18"><a href="analysis.html#cb131-18" aria-hidden="true" tabindex="-1"></a>      satisfied_within <span class="sc">+</span></span>
+<span id="cb131-19"><a href="analysis.html#cb131-19" aria-hidden="true" tabindex="-1"></a>      boring_within <span class="sc">+</span></span>
+<span id="cb131-20"><a href="analysis.html#cb131-20" aria-hidden="true" tabindex="-1"></a>      stressful_within <span class="sc">+</span></span>
+<span id="cb131-21"><a href="analysis.html#cb131-21" aria-hidden="true" tabindex="-1"></a>      enjoyable_within <span class="sc">+</span></span>
+<span id="cb131-22"><a href="analysis.html#cb131-22" aria-hidden="true" tabindex="-1"></a>      (</span>
+<span id="cb131-23"><a href="analysis.html#cb131-23" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb131-24"><a href="analysis.html#cb131-24" aria-hidden="true" tabindex="-1"></a>        autonomy_state_within <span class="sc">+</span></span>
+<span id="cb131-25"><a href="analysis.html#cb131-25" aria-hidden="true" tabindex="-1"></a>        competence_state_within <span class="sc">+</span></span>
+<span id="cb131-26"><a href="analysis.html#cb131-26" aria-hidden="true" tabindex="-1"></a>        relatedness_state_within <span class="sc">+</span></span>
+<span id="cb131-27"><a href="analysis.html#cb131-27" aria-hidden="true" tabindex="-1"></a>        satisfied_within <span class="sc">+</span></span>
+<span id="cb131-28"><a href="analysis.html#cb131-28" aria-hidden="true" tabindex="-1"></a>        boring_within <span class="sc">+</span></span>
+<span id="cb131-29"><a href="analysis.html#cb131-29" aria-hidden="true" tabindex="-1"></a>        stressful_within <span class="sc">+</span></span>
+<span id="cb131-30"><a href="analysis.html#cb131-30" aria-hidden="true" tabindex="-1"></a>        enjoyable_within <span class="sc">|</span></span>
+<span id="cb131-31"><a href="analysis.html#cb131-31" aria-hidden="true" tabindex="-1"></a>        id</span>
+<span id="cb131-32"><a href="analysis.html#cb131-32" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb131-33"><a href="analysis.html#cb131-33" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span>day),</span>
+<span id="cb131-34"><a href="analysis.html#cb131-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb131-35"><a href="analysis.html#cb131-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb131-36"><a href="analysis.html#cb131-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb131-37"><a href="analysis.html#cb131-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb131-38"><a href="analysis.html#cb131-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb131-39"><a href="analysis.html#cb131-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
+<span id="cb131-40"><a href="analysis.html#cb131-40" aria-hidden="true" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.99</span></span>
+<span id="cb131-41"><a href="analysis.html#cb131-41" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb131-42"><a href="analysis.html#cb131-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model6&quot;</span>)</span>
+<span id="cb131-43"><a href="analysis.html#cb131-43" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model6"><strong>??</strong></a>), just like with Model 3.
 <div class="figure"><span id="fig:inspect-model6-1"></span>
 <img src="analysis_report_files/figure-html/inspect-model6-1.png" alt="Traceplots and posterior distributions for Model 6" width="672" />
@@ -1600,7 +1703,7 @@ Figure 4.57: Posterior predictive checks for Model 6
 </p>
 </div>
 <p>Two cases are flagged as potential outliers, which disappear once calculated directly.</p>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="analysis.html#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model6, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="analysis.html#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model6, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 2 problematic observation(s) found.
 ## The model will be refit 2 times.</code></pre>
 <pre><code>## 
@@ -1630,7 +1733,7 @@ Figure 4.57: Posterior predictive checks for Model 6
 ## See help(&#39;pareto-k-diagnostic&#39;) for details.</code></pre>
 <p>Let’s inspect the summary.
 All posteriors include 0, only satisfaction (within) comes close.</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="analysis.html#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model6, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="analysis.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model6, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##  Family: student 
 ##   Links: mu = identity; sigma = identity; nu = identity 
 ## Formula: error ~ 1 + autonomy_state_between + competence_state_between + relatedness_state_between + satisfied_between + boring_between + stressful_between + enjoyable_between + autonomy_state_within + competence_state_within + relatedness_state_within + satisfied_within + boring_within + stressful_within + enjoyable_within + (1 + autonomy_state_within + competence_state_within + relatedness_state_within + satisfied_within + boring_within + stressful_within + enjoyable_within | id) + (1 | day) 
@@ -1767,70 +1870,70 @@ That way, the average within-person effect will be zero and it assumes that 95% 
 Note that we’re still on the minute scale for the predictor, but I specified priors above for hours.
 That’s why I transform the social media variables to hours (and center) to make interpretation easier.
 That also helps us set the priors we specified above.</p>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="analysis.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create hour variables</span></span>
-<span id="cb139-2"><a href="analysis.html#cb139-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
-<span id="cb139-3"><a href="analysis.html#cb139-3" aria-hidden="true" tabindex="-1"></a>  dat <span class="sc">%&gt;%</span> </span>
-<span id="cb139-4"><a href="analysis.html#cb139-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb139-5"><a href="analysis.html#cb139-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
-<span id="cb139-6"><a href="analysis.html#cb139-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(social_media_objective, social_media_subjective),</span>
-<span id="cb139-7"><a href="analysis.html#cb139-7" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> .x <span class="sc">/</span> <span class="dv">60</span>, <span class="co">#  divide by 60 to get hours</span></span>
-<span id="cb139-8"><a href="analysis.html#cb139-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">.names =</span> <span class="st">&quot;{col}_hours&quot;</span></span>
-<span id="cb139-9"><a href="analysis.html#cb139-9" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb139-10"><a href="analysis.html#cb139-10" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb139-11"><a href="analysis.html#cb139-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb139-12"><a href="analysis.html#cb139-12" aria-hidden="true" tabindex="-1"></a><span class="co"># center to get between and within variables</span></span>
-<span id="cb139-13"><a href="analysis.html#cb139-13" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
-<span id="cb139-14"><a href="analysis.html#cb139-14" aria-hidden="true" tabindex="-1"></a>  dat <span class="sc">%&gt;%</span> </span>
-<span id="cb139-15"><a href="analysis.html#cb139-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
-<span id="cb139-16"><a href="analysis.html#cb139-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb139-17"><a href="analysis.html#cb139-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
-<span id="cb139-18"><a href="analysis.html#cb139-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ends_with</span>(<span class="st">&quot;hours&quot;</span>),</span>
-<span id="cb139-19"><a href="analysis.html#cb139-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(</span>
-<span id="cb139-20"><a href="analysis.html#cb139-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">between =</span> <span class="sc">~</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb139-21"><a href="analysis.html#cb139-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">within =</span> <span class="sc">~</span>.x <span class="sc">-</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb139-22"><a href="analysis.html#cb139-22" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb139-23"><a href="analysis.html#cb139-23" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb139-24"><a href="analysis.html#cb139-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb139-25"><a href="analysis.html#cb139-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb139-26"><a href="analysis.html#cb139-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb139-27"><a href="analysis.html#cb139-27" aria-hidden="true" tabindex="-1"></a><span class="co"># set priors</span></span>
-<span id="cb139-28"><a href="analysis.html#cb139-28" aria-hidden="true" tabindex="-1"></a>priors_model7 <span class="ot">&lt;-</span> </span>
-<span id="cb139-29"><a href="analysis.html#cb139-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb139-30"><a href="analysis.html#cb139-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
-<span id="cb139-31"><a href="analysis.html#cb139-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="at">class =</span> Intercept),</span>
-<span id="cb139-32"><a href="analysis.html#cb139-32" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb139-33"><a href="analysis.html#cb139-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># slopes for between</span></span>
-<span id="cb139-34"><a href="analysis.html#cb139-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="sc">-</span><span class="fl">0.15</span>, <span class="fl">0.30</span>), <span class="at">class =</span> b, <span class="at">coef =</span> <span class="st">&quot;social_media_objective_hours_between&quot;</span>),</span>
-<span id="cb139-35"><a href="analysis.html#cb139-35" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb139-36"><a href="analysis.html#cb139-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># slopes for between</span></span>
-<span id="cb139-37"><a href="analysis.html#cb139-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.40</span>), <span class="at">class =</span> b, <span class="at">coef =</span> <span class="st">&quot;social_media_objective_hours_within&quot;</span>)</span>
-<span id="cb139-38"><a href="analysis.html#cb139-38" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="analysis.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create hour variables</span></span>
+<span id="cb140-2"><a href="analysis.html#cb140-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
+<span id="cb140-3"><a href="analysis.html#cb140-3" aria-hidden="true" tabindex="-1"></a>  dat <span class="sc">%&gt;%</span> </span>
+<span id="cb140-4"><a href="analysis.html#cb140-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb140-5"><a href="analysis.html#cb140-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb140-6"><a href="analysis.html#cb140-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(social_media_objective, social_media_subjective),</span>
+<span id="cb140-7"><a href="analysis.html#cb140-7" aria-hidden="true" tabindex="-1"></a>      <span class="sc">~</span> .x <span class="sc">/</span> <span class="dv">60</span>, <span class="co">#  divide by 60 to get hours</span></span>
+<span id="cb140-8"><a href="analysis.html#cb140-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">.names =</span> <span class="st">&quot;{col}_hours&quot;</span></span>
+<span id="cb140-9"><a href="analysis.html#cb140-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb140-10"><a href="analysis.html#cb140-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb140-11"><a href="analysis.html#cb140-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb140-12"><a href="analysis.html#cb140-12" aria-hidden="true" tabindex="-1"></a><span class="co"># center to get between and within variables</span></span>
+<span id="cb140-13"><a href="analysis.html#cb140-13" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
+<span id="cb140-14"><a href="analysis.html#cb140-14" aria-hidden="true" tabindex="-1"></a>  dat <span class="sc">%&gt;%</span> </span>
+<span id="cb140-15"><a href="analysis.html#cb140-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb140-16"><a href="analysis.html#cb140-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb140-17"><a href="analysis.html#cb140-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb140-18"><a href="analysis.html#cb140-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ends_with</span>(<span class="st">&quot;hours&quot;</span>),</span>
+<span id="cb140-19"><a href="analysis.html#cb140-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(</span>
+<span id="cb140-20"><a href="analysis.html#cb140-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">between =</span> <span class="sc">~</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb140-21"><a href="analysis.html#cb140-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">within =</span> <span class="sc">~</span>.x <span class="sc">-</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb140-22"><a href="analysis.html#cb140-22" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb140-23"><a href="analysis.html#cb140-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb140-24"><a href="analysis.html#cb140-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb140-25"><a href="analysis.html#cb140-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb140-26"><a href="analysis.html#cb140-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb140-27"><a href="analysis.html#cb140-27" aria-hidden="true" tabindex="-1"></a><span class="co"># set priors</span></span>
+<span id="cb140-28"><a href="analysis.html#cb140-28" aria-hidden="true" tabindex="-1"></a>priors_model7 <span class="ot">&lt;-</span> </span>
+<span id="cb140-29"><a href="analysis.html#cb140-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb140-30"><a href="analysis.html#cb140-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
+<span id="cb140-31"><a href="analysis.html#cb140-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb140-32"><a href="analysis.html#cb140-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb140-33"><a href="analysis.html#cb140-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># slopes for between</span></span>
+<span id="cb140-34"><a href="analysis.html#cb140-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="sc">-</span><span class="fl">0.15</span>, <span class="fl">0.30</span>), <span class="at">class =</span> b, <span class="at">coef =</span> <span class="st">&quot;social_media_objective_hours_between&quot;</span>),</span>
+<span id="cb140-35"><a href="analysis.html#cb140-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb140-36"><a href="analysis.html#cb140-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># slopes for between</span></span>
+<span id="cb140-37"><a href="analysis.html#cb140-37" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.40</span>), <span class="at">class =</span> b, <span class="at">coef =</span> <span class="st">&quot;social_media_objective_hours_within&quot;</span>)</span>
+<span id="cb140-38"><a href="analysis.html#cb140-38" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>Okay, let’s run the model.</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="analysis.html#cb140-1" aria-hidden="true" tabindex="-1"></a>model7 <span class="ot">&lt;-</span> </span>
-<span id="cb140-2"><a href="analysis.html#cb140-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
-<span id="cb140-3"><a href="analysis.html#cb140-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
-<span id="cb140-4"><a href="analysis.html#cb140-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> gaussian,</span>
-<span id="cb140-5"><a href="analysis.html#cb140-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model7,</span>
-<span id="cb140-6"><a href="analysis.html#cb140-6" aria-hidden="true" tabindex="-1"></a>    well_being_state <span class="sc">~</span></span>
-<span id="cb140-7"><a href="analysis.html#cb140-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb140-8"><a href="analysis.html#cb140-8" aria-hidden="true" tabindex="-1"></a>      social_media_objective_hours_between <span class="sc">+</span></span>
-<span id="cb140-9"><a href="analysis.html#cb140-9" aria-hidden="true" tabindex="-1"></a>      social_media_objective_hours_within <span class="sc">+</span></span>
-<span id="cb140-10"><a href="analysis.html#cb140-10" aria-hidden="true" tabindex="-1"></a>      (</span>
-<span id="cb140-11"><a href="analysis.html#cb140-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb140-12"><a href="analysis.html#cb140-12" aria-hidden="true" tabindex="-1"></a>        social_media_objective_hours_within <span class="sc">|</span></span>
-<span id="cb140-13"><a href="analysis.html#cb140-13" aria-hidden="true" tabindex="-1"></a>        id</span>
-<span id="cb140-14"><a href="analysis.html#cb140-14" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
-<span id="cb140-15"><a href="analysis.html#cb140-15" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span>day),</span>
-<span id="cb140-16"><a href="analysis.html#cb140-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
-<span id="cb140-17"><a href="analysis.html#cb140-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
-<span id="cb140-18"><a href="analysis.html#cb140-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb140-19"><a href="analysis.html#cb140-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb140-20"><a href="analysis.html#cb140-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
-<span id="cb140-21"><a href="analysis.html#cb140-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
-<span id="cb140-22"><a href="analysis.html#cb140-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.99</span></span>
-<span id="cb140-23"><a href="analysis.html#cb140-23" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb140-24"><a href="analysis.html#cb140-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model7&quot;</span>)</span>
-<span id="cb140-25"><a href="analysis.html#cb140-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="analysis.html#cb141-1" aria-hidden="true" tabindex="-1"></a>model7 <span class="ot">&lt;-</span> </span>
+<span id="cb141-2"><a href="analysis.html#cb141-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
+<span id="cb141-3"><a href="analysis.html#cb141-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
+<span id="cb141-4"><a href="analysis.html#cb141-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> gaussian,</span>
+<span id="cb141-5"><a href="analysis.html#cb141-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model7,</span>
+<span id="cb141-6"><a href="analysis.html#cb141-6" aria-hidden="true" tabindex="-1"></a>    well_being_state <span class="sc">~</span></span>
+<span id="cb141-7"><a href="analysis.html#cb141-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb141-8"><a href="analysis.html#cb141-8" aria-hidden="true" tabindex="-1"></a>      social_media_objective_hours_between <span class="sc">+</span></span>
+<span id="cb141-9"><a href="analysis.html#cb141-9" aria-hidden="true" tabindex="-1"></a>      social_media_objective_hours_within <span class="sc">+</span></span>
+<span id="cb141-10"><a href="analysis.html#cb141-10" aria-hidden="true" tabindex="-1"></a>      (</span>
+<span id="cb141-11"><a href="analysis.html#cb141-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb141-12"><a href="analysis.html#cb141-12" aria-hidden="true" tabindex="-1"></a>        social_media_objective_hours_within <span class="sc">|</span></span>
+<span id="cb141-13"><a href="analysis.html#cb141-13" aria-hidden="true" tabindex="-1"></a>        id</span>
+<span id="cb141-14"><a href="analysis.html#cb141-14" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb141-15"><a href="analysis.html#cb141-15" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span>day),</span>
+<span id="cb141-16"><a href="analysis.html#cb141-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb141-17"><a href="analysis.html#cb141-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb141-18"><a href="analysis.html#cb141-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb141-19"><a href="analysis.html#cb141-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb141-20"><a href="analysis.html#cb141-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb141-21"><a href="analysis.html#cb141-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
+<span id="cb141-22"><a href="analysis.html#cb141-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.99</span></span>
+<span id="cb141-23"><a href="analysis.html#cb141-23" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb141-24"><a href="analysis.html#cb141-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model7&quot;</span>)</span>
+<span id="cb141-25"><a href="analysis.html#cb141-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model7"><strong>??</strong></a>).
 <div class="figure"><span id="fig:inspect-model7-1"></span>
 <img src="analysis_report_files/figure-html/inspect-model7-1.png" alt="Traceplots and posterior distributions for Model 7" width="672" />
@@ -1852,7 +1955,7 @@ Figure 4.61: Posterior predictive checks for Model 7
 </p>
 </div>
 <p>One case is flagged as potentially influential, but unproblematic when calculated directly.</p>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="analysis.html#cb141-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model7, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="analysis.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model7, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 1 problematic observation(s) found.
 ## The model will be refit 1 times.</code></pre>
 <pre><code>## 
@@ -1880,7 +1983,7 @@ Figure 4.61: Posterior predictive checks for Model 7
 <p>Let’s inspect the summary.
 The relation is estimated to be extremely close to zero, so really no interpretative wiggle room there.
 I think this is pretty convincing evidence for the lack of an effect.</p>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="analysis.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model7, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="analysis.html#cb147-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model7, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: well_being_state ~ 1 + social_media_objective_hours_between + social_media_objective_hours_within + (1 + social_media_objective_hours_within | id) + (1 | day) 
@@ -1946,44 +2049,44 @@ That would bring 95% of effects within -1 and 0.6 Likert-points, which is rather
 <li>For everything else, I’ll once more go with the default <code>brms</code> priors.</li>
 </ul>
 <p>Let’s set those priors.</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="analysis.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set priors</span></span>
-<span id="cb148-2"><a href="analysis.html#cb148-2" aria-hidden="true" tabindex="-1"></a>priors_model8 <span class="ot">&lt;-</span> </span>
-<span id="cb148-3"><a href="analysis.html#cb148-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb148-4"><a href="analysis.html#cb148-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
-<span id="cb148-5"><a href="analysis.html#cb148-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="at">class =</span> Intercept),</span>
-<span id="cb148-6"><a href="analysis.html#cb148-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb148-7"><a href="analysis.html#cb148-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># slopes for between</span></span>
-<span id="cb148-8"><a href="analysis.html#cb148-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">0.4</span>), <span class="at">class =</span> b, <span class="at">coef =</span> <span class="st">&quot;social_media_subjective_hours_between&quot;</span>),</span>
-<span id="cb148-9"><a href="analysis.html#cb148-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb148-10"><a href="analysis.html#cb148-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># slopes for between</span></span>
-<span id="cb148-11"><a href="analysis.html#cb148-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.40</span>), <span class="at">class =</span> b, <span class="at">coef =</span> <span class="st">&quot;social_media_subjective_hours_within&quot;</span>)</span>
-<span id="cb148-12"><a href="analysis.html#cb148-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="analysis.html#cb149-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set priors</span></span>
+<span id="cb149-2"><a href="analysis.html#cb149-2" aria-hidden="true" tabindex="-1"></a>priors_model8 <span class="ot">&lt;-</span> </span>
+<span id="cb149-3"><a href="analysis.html#cb149-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb149-4"><a href="analysis.html#cb149-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
+<span id="cb149-5"><a href="analysis.html#cb149-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb149-6"><a href="analysis.html#cb149-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb149-7"><a href="analysis.html#cb149-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># slopes for between</span></span>
+<span id="cb149-8"><a href="analysis.html#cb149-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">0.4</span>), <span class="at">class =</span> b, <span class="at">coef =</span> <span class="st">&quot;social_media_subjective_hours_between&quot;</span>),</span>
+<span id="cb149-9"><a href="analysis.html#cb149-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb149-10"><a href="analysis.html#cb149-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># slopes for between</span></span>
+<span id="cb149-11"><a href="analysis.html#cb149-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.40</span>), <span class="at">class =</span> b, <span class="at">coef =</span> <span class="st">&quot;social_media_subjective_hours_within&quot;</span>)</span>
+<span id="cb149-12"><a href="analysis.html#cb149-12" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>Okay, let’s run the model.</p>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="analysis.html#cb149-1" aria-hidden="true" tabindex="-1"></a>model8 <span class="ot">&lt;-</span> </span>
-<span id="cb149-2"><a href="analysis.html#cb149-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
-<span id="cb149-3"><a href="analysis.html#cb149-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
-<span id="cb149-4"><a href="analysis.html#cb149-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> gaussian,</span>
-<span id="cb149-5"><a href="analysis.html#cb149-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model8,</span>
-<span id="cb149-6"><a href="analysis.html#cb149-6" aria-hidden="true" tabindex="-1"></a>    well_being_state <span class="sc">~</span></span>
-<span id="cb149-7"><a href="analysis.html#cb149-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb149-8"><a href="analysis.html#cb149-8" aria-hidden="true" tabindex="-1"></a>      social_media_subjective_hours_between <span class="sc">+</span></span>
-<span id="cb149-9"><a href="analysis.html#cb149-9" aria-hidden="true" tabindex="-1"></a>      social_media_subjective_hours_within <span class="sc">+</span></span>
-<span id="cb149-10"><a href="analysis.html#cb149-10" aria-hidden="true" tabindex="-1"></a>      (</span>
-<span id="cb149-11"><a href="analysis.html#cb149-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb149-12"><a href="analysis.html#cb149-12" aria-hidden="true" tabindex="-1"></a>        social_media_subjective_hours_within <span class="sc">|</span></span>
-<span id="cb149-13"><a href="analysis.html#cb149-13" aria-hidden="true" tabindex="-1"></a>        id</span>
-<span id="cb149-14"><a href="analysis.html#cb149-14" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
-<span id="cb149-15"><a href="analysis.html#cb149-15" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span>day),</span>
-<span id="cb149-16"><a href="analysis.html#cb149-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
-<span id="cb149-17"><a href="analysis.html#cb149-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
-<span id="cb149-18"><a href="analysis.html#cb149-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb149-19"><a href="analysis.html#cb149-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb149-20"><a href="analysis.html#cb149-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
-<span id="cb149-21"><a href="analysis.html#cb149-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
-<span id="cb149-22"><a href="analysis.html#cb149-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.99</span></span>
-<span id="cb149-23"><a href="analysis.html#cb149-23" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb149-24"><a href="analysis.html#cb149-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model8&quot;</span>)</span>
-<span id="cb149-25"><a href="analysis.html#cb149-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="analysis.html#cb150-1" aria-hidden="true" tabindex="-1"></a>model8 <span class="ot">&lt;-</span> </span>
+<span id="cb150-2"><a href="analysis.html#cb150-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
+<span id="cb150-3"><a href="analysis.html#cb150-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
+<span id="cb150-4"><a href="analysis.html#cb150-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> gaussian,</span>
+<span id="cb150-5"><a href="analysis.html#cb150-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model8,</span>
+<span id="cb150-6"><a href="analysis.html#cb150-6" aria-hidden="true" tabindex="-1"></a>    well_being_state <span class="sc">~</span></span>
+<span id="cb150-7"><a href="analysis.html#cb150-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb150-8"><a href="analysis.html#cb150-8" aria-hidden="true" tabindex="-1"></a>      social_media_subjective_hours_between <span class="sc">+</span></span>
+<span id="cb150-9"><a href="analysis.html#cb150-9" aria-hidden="true" tabindex="-1"></a>      social_media_subjective_hours_within <span class="sc">+</span></span>
+<span id="cb150-10"><a href="analysis.html#cb150-10" aria-hidden="true" tabindex="-1"></a>      (</span>
+<span id="cb150-11"><a href="analysis.html#cb150-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb150-12"><a href="analysis.html#cb150-12" aria-hidden="true" tabindex="-1"></a>        social_media_subjective_hours_within <span class="sc">|</span></span>
+<span id="cb150-13"><a href="analysis.html#cb150-13" aria-hidden="true" tabindex="-1"></a>        id</span>
+<span id="cb150-14"><a href="analysis.html#cb150-14" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb150-15"><a href="analysis.html#cb150-15" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span>day),</span>
+<span id="cb150-16"><a href="analysis.html#cb150-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb150-17"><a href="analysis.html#cb150-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb150-18"><a href="analysis.html#cb150-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb150-19"><a href="analysis.html#cb150-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb150-20"><a href="analysis.html#cb150-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb150-21"><a href="analysis.html#cb150-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
+<span id="cb150-22"><a href="analysis.html#cb150-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.99</span></span>
+<span id="cb150-23"><a href="analysis.html#cb150-23" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb150-24"><a href="analysis.html#cb150-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model8&quot;</span>)</span>
+<span id="cb150-25"><a href="analysis.html#cb150-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model8"><strong>??</strong></a>).
 <div class="figure"><span id="fig:inspect-model8-1"></span>
 <img src="analysis_report_files/figure-html/inspect-model8-1.png" alt="Traceplots and posterior distributions for Model 8" width="672" />
@@ -2005,7 +2108,7 @@ Figure 4.65: Posterior predictive checks for Model 8
 </p>
 </div>
 <p>One case is flagged as potentially influential, but unproblematic after being calculated directly..</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="analysis.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model8, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="analysis.html#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model8, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 1 problematic observation(s) found.
 ## The model will be refit 1 times.</code></pre>
 <pre><code>## 
@@ -2033,7 +2136,7 @@ Figure 4.65: Posterior predictive checks for Model 8
 <p>Let’s inspect the summary.
 The within effect is estimated to be negative, but extremely small.
 Also, the 95% CI includes zero, so we can’t be sure the effect is meaningful.</p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="analysis.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model8, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="analysis.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model8, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: well_being_state ~ 1 + social_media_subjective_hours_between + social_media_subjective_hours_within + (1 + social_media_subjective_hours_within | id) + (1 | day) 
@@ -2102,66 +2205,66 @@ Rather, I’d say the above effect is easier to specify for a standard deviation
 <li>For everything else, I’ll once more go with the default <code>brms</code> priors.</li>
 </ul>
 <p>Let’s set those priors and center at the same time.</p>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="analysis.html#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standardize error</span></span>
-<span id="cb157-2"><a href="analysis.html#cb157-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
-<span id="cb157-3"><a href="analysis.html#cb157-3" aria-hidden="true" tabindex="-1"></a>  dat <span class="sc">%&gt;%</span> </span>
-<span id="cb157-4"><a href="analysis.html#cb157-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb157-5"><a href="analysis.html#cb157-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_s =</span> <span class="fu">scale</span>(error, <span class="at">center =</span> <span class="cn">FALSE</span>, <span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb157-6"><a href="analysis.html#cb157-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb157-7"><a href="analysis.html#cb157-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb157-8"><a href="analysis.html#cb157-8" aria-hidden="true" tabindex="-1"></a><span class="co"># center to get between and within</span></span>
-<span id="cb157-9"><a href="analysis.html#cb157-9" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
-<span id="cb157-10"><a href="analysis.html#cb157-10" aria-hidden="true" tabindex="-1"></a>  dat <span class="sc">%&gt;%</span> </span>
-<span id="cb157-11"><a href="analysis.html#cb157-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
-<span id="cb157-12"><a href="analysis.html#cb157-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb157-13"><a href="analysis.html#cb157-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
-<span id="cb157-14"><a href="analysis.html#cb157-14" aria-hidden="true" tabindex="-1"></a>      error_s,</span>
-<span id="cb157-15"><a href="analysis.html#cb157-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(</span>
-<span id="cb157-16"><a href="analysis.html#cb157-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">between =</span> <span class="sc">~</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb157-17"><a href="analysis.html#cb157-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">within =</span> <span class="sc">~</span>.x <span class="sc">-</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb157-18"><a href="analysis.html#cb157-18" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb157-19"><a href="analysis.html#cb157-19" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb157-20"><a href="analysis.html#cb157-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb157-21"><a href="analysis.html#cb157-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb157-22"><a href="analysis.html#cb157-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb157-23"><a href="analysis.html#cb157-23" aria-hidden="true" tabindex="-1"></a><span class="co"># set priors</span></span>
-<span id="cb157-24"><a href="analysis.html#cb157-24" aria-hidden="true" tabindex="-1"></a>priors_model9 <span class="ot">&lt;-</span> </span>
-<span id="cb157-25"><a href="analysis.html#cb157-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
-<span id="cb157-26"><a href="analysis.html#cb157-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
-<span id="cb157-27"><a href="analysis.html#cb157-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="at">class =</span> Intercept),</span>
-<span id="cb157-28"><a href="analysis.html#cb157-28" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb157-29"><a href="analysis.html#cb157-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># slopes for between</span></span>
-<span id="cb157-30"><a href="analysis.html#cb157-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">0.4</span>), <span class="at">class =</span> b, <span class="at">coef =</span> <span class="st">&quot;error_s_between&quot;</span>),</span>
-<span id="cb157-31"><a href="analysis.html#cb157-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb157-32"><a href="analysis.html#cb157-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># slopes for between</span></span>
-<span id="cb157-33"><a href="analysis.html#cb157-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.40</span>), <span class="at">class =</span> b, <span class="at">coef =</span> <span class="st">&quot;error_s_within&quot;</span>)</span>
-<span id="cb157-34"><a href="analysis.html#cb157-34" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="analysis.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="co"># standardize error</span></span>
+<span id="cb158-2"><a href="analysis.html#cb158-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
+<span id="cb158-3"><a href="analysis.html#cb158-3" aria-hidden="true" tabindex="-1"></a>  dat <span class="sc">%&gt;%</span> </span>
+<span id="cb158-4"><a href="analysis.html#cb158-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb158-5"><a href="analysis.html#cb158-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">error_s =</span> <span class="fu">scale</span>(error, <span class="at">center =</span> <span class="cn">FALSE</span>, <span class="at">scale =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb158-6"><a href="analysis.html#cb158-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb158-7"><a href="analysis.html#cb158-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb158-8"><a href="analysis.html#cb158-8" aria-hidden="true" tabindex="-1"></a><span class="co"># center to get between and within</span></span>
+<span id="cb158-9"><a href="analysis.html#cb158-9" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> </span>
+<span id="cb158-10"><a href="analysis.html#cb158-10" aria-hidden="true" tabindex="-1"></a>  dat <span class="sc">%&gt;%</span> </span>
+<span id="cb158-11"><a href="analysis.html#cb158-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span> </span>
+<span id="cb158-12"><a href="analysis.html#cb158-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb158-13"><a href="analysis.html#cb158-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(</span>
+<span id="cb158-14"><a href="analysis.html#cb158-14" aria-hidden="true" tabindex="-1"></a>      error_s,</span>
+<span id="cb158-15"><a href="analysis.html#cb158-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(</span>
+<span id="cb158-16"><a href="analysis.html#cb158-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">between =</span> <span class="sc">~</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb158-17"><a href="analysis.html#cb158-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">within =</span> <span class="sc">~</span>.x <span class="sc">-</span> <span class="fu">mean</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb158-18"><a href="analysis.html#cb158-18" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb158-19"><a href="analysis.html#cb158-19" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb158-20"><a href="analysis.html#cb158-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb158-21"><a href="analysis.html#cb158-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb158-22"><a href="analysis.html#cb158-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb158-23"><a href="analysis.html#cb158-23" aria-hidden="true" tabindex="-1"></a><span class="co"># set priors</span></span>
+<span id="cb158-24"><a href="analysis.html#cb158-24" aria-hidden="true" tabindex="-1"></a>priors_model9 <span class="ot">&lt;-</span> </span>
+<span id="cb158-25"><a href="analysis.html#cb158-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(</span>
+<span id="cb158-26"><a href="analysis.html#cb158-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># intercept</span></span>
+<span id="cb158-27"><a href="analysis.html#cb158-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">3</span>, <span class="dv">1</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb158-28"><a href="analysis.html#cb158-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb158-29"><a href="analysis.html#cb158-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># slopes for between</span></span>
+<span id="cb158-30"><a href="analysis.html#cb158-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">0.4</span>), <span class="at">class =</span> b, <span class="at">coef =</span> <span class="st">&quot;error_s_between&quot;</span>),</span>
+<span id="cb158-31"><a href="analysis.html#cb158-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb158-32"><a href="analysis.html#cb158-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># slopes for between</span></span>
+<span id="cb158-33"><a href="analysis.html#cb158-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.40</span>), <span class="at">class =</span> b, <span class="at">coef =</span> <span class="st">&quot;error_s_within&quot;</span>)</span>
+<span id="cb158-34"><a href="analysis.html#cb158-34" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 <p>And run the model.</p>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="analysis.html#cb158-1" aria-hidden="true" tabindex="-1"></a>model9 <span class="ot">&lt;-</span> </span>
-<span id="cb158-2"><a href="analysis.html#cb158-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
-<span id="cb158-3"><a href="analysis.html#cb158-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
-<span id="cb158-4"><a href="analysis.html#cb158-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> gaussian,</span>
-<span id="cb158-5"><a href="analysis.html#cb158-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model9,</span>
-<span id="cb158-6"><a href="analysis.html#cb158-6" aria-hidden="true" tabindex="-1"></a>    well_being_state <span class="sc">~</span></span>
-<span id="cb158-7"><a href="analysis.html#cb158-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb158-8"><a href="analysis.html#cb158-8" aria-hidden="true" tabindex="-1"></a>      error_s_between <span class="sc">+</span></span>
-<span id="cb158-9"><a href="analysis.html#cb158-9" aria-hidden="true" tabindex="-1"></a>      error_s_within <span class="sc">+</span></span>
-<span id="cb158-10"><a href="analysis.html#cb158-10" aria-hidden="true" tabindex="-1"></a>      (</span>
-<span id="cb158-11"><a href="analysis.html#cb158-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb158-12"><a href="analysis.html#cb158-12" aria-hidden="true" tabindex="-1"></a>        error_s_within <span class="sc">|</span></span>
-<span id="cb158-13"><a href="analysis.html#cb158-13" aria-hidden="true" tabindex="-1"></a>        id</span>
-<span id="cb158-14"><a href="analysis.html#cb158-14" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
-<span id="cb158-15"><a href="analysis.html#cb158-15" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span>day),</span>
-<span id="cb158-16"><a href="analysis.html#cb158-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
-<span id="cb158-17"><a href="analysis.html#cb158-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
-<span id="cb158-18"><a href="analysis.html#cb158-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb158-19"><a href="analysis.html#cb158-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb158-20"><a href="analysis.html#cb158-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
-<span id="cb158-21"><a href="analysis.html#cb158-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
-<span id="cb158-22"><a href="analysis.html#cb158-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.999</span></span>
-<span id="cb158-23"><a href="analysis.html#cb158-23" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb158-24"><a href="analysis.html#cb158-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model9&quot;</span>)</span>
-<span id="cb158-25"><a href="analysis.html#cb158-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="analysis.html#cb159-1" aria-hidden="true" tabindex="-1"></a>model9 <span class="ot">&lt;-</span> </span>
+<span id="cb159-2"><a href="analysis.html#cb159-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
+<span id="cb159-3"><a href="analysis.html#cb159-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
+<span id="cb159-4"><a href="analysis.html#cb159-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> gaussian,</span>
+<span id="cb159-5"><a href="analysis.html#cb159-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior =</span> priors_model9,</span>
+<span id="cb159-6"><a href="analysis.html#cb159-6" aria-hidden="true" tabindex="-1"></a>    well_being_state <span class="sc">~</span></span>
+<span id="cb159-7"><a href="analysis.html#cb159-7" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb159-8"><a href="analysis.html#cb159-8" aria-hidden="true" tabindex="-1"></a>      error_s_between <span class="sc">+</span></span>
+<span id="cb159-9"><a href="analysis.html#cb159-9" aria-hidden="true" tabindex="-1"></a>      error_s_within <span class="sc">+</span></span>
+<span id="cb159-10"><a href="analysis.html#cb159-10" aria-hidden="true" tabindex="-1"></a>      (</span>
+<span id="cb159-11"><a href="analysis.html#cb159-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb159-12"><a href="analysis.html#cb159-12" aria-hidden="true" tabindex="-1"></a>        error_s_within <span class="sc">|</span></span>
+<span id="cb159-13"><a href="analysis.html#cb159-13" aria-hidden="true" tabindex="-1"></a>        id</span>
+<span id="cb159-14"><a href="analysis.html#cb159-14" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb159-15"><a href="analysis.html#cb159-15" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span>day),</span>
+<span id="cb159-16"><a href="analysis.html#cb159-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb159-17"><a href="analysis.html#cb159-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb159-18"><a href="analysis.html#cb159-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb159-19"><a href="analysis.html#cb159-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb159-20"><a href="analysis.html#cb159-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb159-21"><a href="analysis.html#cb159-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(</span>
+<span id="cb159-22"><a href="analysis.html#cb159-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">adapt_delta =</span> <span class="fl">0.999</span></span>
+<span id="cb159-23"><a href="analysis.html#cb159-23" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb159-24"><a href="analysis.html#cb159-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model9&quot;</span>)</span>
+<span id="cb159-25"><a href="analysis.html#cb159-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model9"><strong>??</strong></a>).
 <div class="figure"><span id="fig:inspect-model9-1"></span>
 <img src="analysis_report_files/figure-html/inspect-model9-1.png" alt="Traceplots and posterior distributions for Model 9" width="672" />
@@ -2183,7 +2286,7 @@ Figure 4.69: Posterior predictive checks for Model 9
 </p>
 </div>
 <p>Six cases are flagged as potentially influential, which is why we calculate ELPD directly.</p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="analysis.html#cb159-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model9, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="analysis.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model9, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 6 problematic observation(s) found.
 ## The model will be refit 6 times.</code></pre>
 <pre><code>## 
@@ -2226,7 +2329,7 @@ Figure 4.69: Posterior predictive checks for Model 9
 <p>Let’s inspect the summary.
 The within effect is estimated to be negative, but really small.
 Also, the 95% CI includes zero and quite wide, so we can’t be sure the effect is meaningful.</p>
-<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="analysis.html#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model9, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="analysis.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model9, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: well_being_state ~ 1 + error_s_between + error_s_within + (1 + error_s_within | id) + (1 | day) 
@@ -2286,23 +2389,23 @@ And the sigma will tell us how much error there is.</p>
 <p>Unfortunately, the model has huge problems with a Gamma distribution as outcome, so I went for a normal distribution with the predictor grand-mean centered instead.
 Also, I’m not using informed priors here and rely on the default <code>brms</code> priors.
 For this question, I’m not interested in distinguishing between- and within-person effects.</p>
-<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="analysis.html#cb171-1" aria-hidden="true" tabindex="-1"></a>model10 <span class="ot">&lt;-</span> </span>
-<span id="cb171-2"><a href="analysis.html#cb171-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
-<span id="cb171-3"><a href="analysis.html#cb171-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
-<span id="cb171-4"><a href="analysis.html#cb171-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> gaussian,</span>
-<span id="cb171-5"><a href="analysis.html#cb171-5" aria-hidden="true" tabindex="-1"></a>    social_media_subjective <span class="sc">~</span></span>
-<span id="cb171-6"><a href="analysis.html#cb171-6" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb171-7"><a href="analysis.html#cb171-7" aria-hidden="true" tabindex="-1"></a>      social_media_objective <span class="sc">+</span></span>
-<span id="cb171-8"><a href="analysis.html#cb171-8" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">+</span> social_media_objective <span class="sc">|</span> id) <span class="sc">+</span></span>
-<span id="cb171-9"><a href="analysis.html#cb171-9" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> day),</span>
-<span id="cb171-10"><a href="analysis.html#cb171-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
-<span id="cb171-11"><a href="analysis.html#cb171-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
-<span id="cb171-12"><a href="analysis.html#cb171-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
-<span id="cb171-13"><a href="analysis.html#cb171-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb171-14"><a href="analysis.html#cb171-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
-<span id="cb171-15"><a href="analysis.html#cb171-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.99</span>),</span>
-<span id="cb171-16"><a href="analysis.html#cb171-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model10.rds&quot;</span>)</span>
-<span id="cb171-17"><a href="analysis.html#cb171-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="analysis.html#cb172-1" aria-hidden="true" tabindex="-1"></a>model10 <span class="ot">&lt;-</span> </span>
+<span id="cb172-2"><a href="analysis.html#cb172-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">brm</span>(</span>
+<span id="cb172-3"><a href="analysis.html#cb172-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> dat,</span>
+<span id="cb172-4"><a href="analysis.html#cb172-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">family =</span> gaussian,</span>
+<span id="cb172-5"><a href="analysis.html#cb172-5" aria-hidden="true" tabindex="-1"></a>    social_media_subjective <span class="sc">~</span></span>
+<span id="cb172-6"><a href="analysis.html#cb172-6" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb172-7"><a href="analysis.html#cb172-7" aria-hidden="true" tabindex="-1"></a>      social_media_objective <span class="sc">+</span></span>
+<span id="cb172-8"><a href="analysis.html#cb172-8" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">+</span> social_media_objective <span class="sc">|</span> id) <span class="sc">+</span></span>
+<span id="cb172-9"><a href="analysis.html#cb172-9" aria-hidden="true" tabindex="-1"></a>      (<span class="dv">1</span> <span class="sc">|</span> day),</span>
+<span id="cb172-10"><a href="analysis.html#cb172-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb172-11"><a href="analysis.html#cb172-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">warmup =</span> <span class="dv">2000</span>,</span>
+<span id="cb172-12"><a href="analysis.html#cb172-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb172-13"><a href="analysis.html#cb172-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">cores =</span> <span class="dv">4</span>,</span>
+<span id="cb172-14"><a href="analysis.html#cb172-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">42</span>,</span>
+<span id="cb172-15"><a href="analysis.html#cb172-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.99</span>),</span>
+<span id="cb172-16"><a href="analysis.html#cb172-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> <span class="fu">here</span>(<span class="st">&quot;models&quot;</span>, <span class="st">&quot;model10.rds&quot;</span>)</span>
+<span id="cb172-17"><a href="analysis.html#cb172-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div>
 Overall, the traceplots look fine and the chains seem to have mixed well, see (Figure <a href="#fig:inspect-model10"><strong>??</strong></a>).
 <div class="figure"><span id="fig:inspect-model10-1"></span>
 <img src="analysis_report_files/figure-html/inspect-model10-1.png" alt="Traceplots and posterior distributions for Model 10" width="672" />
@@ -2324,7 +2427,7 @@ Figure 4.73: Posterior predictive checks for Model 10
 </p>
 </div>
 <p>Five cases are flagged as potentially influential, which is why we calculate ELPD directly.</p>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="analysis.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model10, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="analysis.html#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="fu">loo</span>(model10, <span class="at">reloo =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 5 problematic observation(s) found.
 ## The model will be refit 5 times.</code></pre>
 <pre><code>## 
@@ -2362,7 +2465,7 @@ Figure 4.73: Posterior predictive checks for Model 10
 ## All Pareto k estimates are ok (k &lt; 0.7).
 ## See help(&#39;pareto-k-diagnostic&#39;) for details.</code></pre>
 <p>Let’s inspect the summary: indeed the intercept is different from zero, which speaks for a bias/systematic error in overestimates of social media time.</p>
-<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="analysis.html#cb181-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model10, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="analysis.html#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model10, <span class="at">priors =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>##  Family: gaussian 
 ##   Links: mu = identity; sigma = identity 
 ## Formula: social_media_subjective ~ 1 + social_media_objective + (1 + social_media_objective | id) + (1 | day) 

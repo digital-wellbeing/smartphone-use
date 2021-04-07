@@ -4,7 +4,7 @@ I move on to the analyses.
 We have about a dozen models to run.
 All of these models should take into account that the data are nested (in participants and days).
 That means quite complex model structures, especially when we have many predictors.
-The `lme4` package can handle such multi-level models, but in my experience suffers from many convergence issues that a Bayesian approach (i.e., the `brms` package) can handle better [paper on convergence comparison].
+The `lme4` package can handle such multi-level models, but in my experience suffers from many convergence issues that a Bayesian approach (i.e., the `brms` package) can handle better (see [this](https://arxiv.org/ftp/arxiv/papers/1701/1701.04858.pdf) paper for a comparison on convergence).
 Moreover, corrections for multiple comparisons are less of a problem with Bayesian models.
 Last, although the models here are mostly exploratory, we can still incorporate prior knowledge from the literature (and common sense about our variables).
 
@@ -253,7 +253,8 @@ priors_model1 <-
 Alright, time to run the model.
 Luckily, none of these variables have missing values, so I won't need to model missings in this model.
 Note that I ran the block below once and stored the model.
-Those fit objects are too large for Github, so you can download them here [give Onedrive link].
+Those fit objects are too large for Github, so you can download them from the [OSF](https://osf.io/7byvt/).
+See the instructions in the Readme of the project.
 ```{r model1, eval=FALSE}
 model1 <- 
   brm(

@@ -118,6 +118,27 @@ estimates <-
   )
 ```
 
+## Numerical model estimates 
+
+In the paper, we don't present numerical estimates because we ran that many models and believe a figure is more adequate to give readers a good idea of our data.
+Here, we show all estimates from the analysis section in one place.
+```{r show-estimates, echo=FALSE}
+knitr::kable(
+  estimates %>% 
+    select(
+      RQ = block,
+      Estimate = estimate,
+      Predictor = predictor,
+      Outcome = outcome,
+      `Lower 95% CI` = ci_low,
+      `Upper 95% CI` = ci_high,
+      `Predictor between or within` = between_within,
+      `Predictor trait or state` = trait_state
+    )
+) %>% 
+  kable_styling(font_size = 8)
+```
+
 ## Personality on smartphone use (trait)
 
 Okay, next I create the first summary figure.

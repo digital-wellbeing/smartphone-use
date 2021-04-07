@@ -26,6 +26,7 @@ p_load(
   brms,
   ggbeeswarm,
   extrafont,
+  kableExtra,
   osfr
 )
 

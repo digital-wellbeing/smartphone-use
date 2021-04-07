@@ -112,6 +112,7 @@ plot_grid(
 Let's have a look at the final sample.
 Overall, our sample size is **N = `r dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% nrow()`**.
 The sample has a mean age of *M* = `r round(dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% mean(), digits = 2)`, *SD* = `r round(dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% sd(), digits = 2)`.
+The age ranges from `r round(dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% min(), digits = 2)` to `r round(dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% pull(age) %>% max(), digits = 2)`
 The sample consists mostly of women (`r dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% filter(gender == "female") %>% nrow()` women, `r dat %>% group_by(id) %>% slice(1) %>% ungroup() %>% filter(gender == "male") %>% nrow()` men, and one non-binary participant).
 ```{r describe-age, echo=FALSE}
 age <- 
@@ -1372,6 +1373,113 @@ ggpairs(
     plot.background=element_blank(),
     strip.background = element_blank()
   )
+```
+
+## Demographics and social media
+
+To compare our findings with previous research which found gender and age differences in social media use, we also check for those differences in our data set.
+We don't report those results in the paper because a) they're less relevant to our research questions, b) space limits.
+
+First, let's create a correlation matrix between age and the social media use variables.
+Figure \@ref(fig:visualize-correlations-age-social) shows that age is pretty much unrelated to the social media use variables, possibly because the age range is quite narrow.
+```{r visualize-correlations-age-social, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Correlation between age and social media use"}
+ggpairs(
+  data = dat %>%
+    select(
+      age,
+      social_media_subjective,
+      error,
+      social_media_objective
+    ),
+  lower = list(
+    continuous = lm_function # custom helper function
+  ),
+  diag = list(
+    continuous = dens_function # custom helper function
+  )
+) +
+  theme(
+    axis.line=element_blank(),
+    axis.text.x=element_blank(),
+    axis.text.y=element_blank(),
+    axis.ticks=element_blank(),
+    axis.title.y=element_blank(),
+    axis.title.x=element_blank(),
+    legend.position="none",
+    panel.background=element_blank(),
+    panel.border=element_blank(),
+    panel.grid.major=element_blank(),
+    panel.grid.minor=element_blank(),
+    plot.background=element_blank(),
+    strip.background = element_blank()
+  )
+```
+
+Next, I visualize differences in the three social media use variables between genders.
+Figure \ref(fig:visualize-gender-differences) shows little visual indication that there might be differences.
+```{r visualize-gender-differences, echo=FALSE, warning=FALSE, message=FALSE, fig.cap="Comparison of social media variables between gender"}
+tmp <- 
+  dat %>% 
+  group_by(id, gender) %>%
+  summarise(
+    across(
+      c(error, social_media_objective, social_media_subjective),
+      ~ mean(.x, na.rm = TRUE)
+    )
+  ) %>% 
+  filter(
+    gender %in% c("male", "female")
+  ) %>% 
+  pivot_longer(
+    -c(id, gender),
+    names_to = "variable",
+    values_to = "value"
+  )
+
+ggplot(
+  data = tmp,
+  aes(gender, value, color = gender)
+) +
+  geom_beeswarm() +
+  scale_color_manual(values=c("#E69F00", "#56B4E9")) +
+  facet_wrap(~ variable) +
+  theme(
+    axis.ticks=element_blank(),
+    axis.title.y=element_blank(),
+    axis.title.x=element_blank(),
+    legend.position="none",
+    panel.background=element_blank(),
+    panel.border=element_blank(),
+    panel.grid.major=element_blank(),
+    panel.grid.minor=element_blank(),
+    plot.background=element_blank(),
+    strip.background = element_blank()
+  )
+```
+
+I'll test that formally with a t-test on the aggregated data.
+For none of the outcomes is the difference between genders significant.
+```{r t-tests-gender}
+my_t_test <- function(model) {
+  out1 <- broom::tidy(model) %>% 
+    select(
+      contains("estimate"),
+      statistic,
+      p.value
+    ) %>% 
+    rename(
+      Difference = estimate,
+      Men = estimate1,
+      Women = estimate2,
+      p = p.value
+    )
+}
+
+tmp %>% 
+  group_by(variable) %>% 
+  group_modify(~my_t_test(t.test(value ~ gender, data = .x))) %>% 
+  rename(Outcome = variable) %>% 
+  kable(digits = c(2,2,2,2))
 ```
 
 ## Plots for paper

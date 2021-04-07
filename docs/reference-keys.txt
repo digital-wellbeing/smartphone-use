@@ -34,6 +34,8 @@ tab:states-descriptives
 fig:states-visualize
 fig:visualize-correlations-objective-subjective
 fig:visualize-correlations-objective-trait
+fig:visualize-correlations-age-social
+fig:visualize-gender-differences
 tab:missings
 fig:simulate-priors-model1
 fig:inspect-model1-1
@@ -123,6 +125,7 @@ meta-level
 person-level
 app-level
 day-level
+demographics-and-social-media
 plots-for-paper
 analysis
 research-questions
@@ -141,6 +144,7 @@ model-8-subjective-use-predicting-well-being
 model-9-accuracy-predicting-well-being
 relation-between-subjective-and-objective-use
 synthesis
+numerical-model-estimates
 personality-on-smartphone-use-trait
 experiences-on-smartphone-use-state
 smartphone-use-on-well-being-state

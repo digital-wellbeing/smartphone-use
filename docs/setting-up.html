@@ -24,7 +24,7 @@
 <meta name="author" content="Niklas Johannes, Thuy-vy Nguyen, Netta Weinstein, Andrew K. Przybylski" />
 
 
-<meta name="date" content="2021-03-25" />
+<meta name="date" content="2021-04-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -51,6 +51,8 @@
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 <style type="text/css">
@@ -153,7 +155,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#person-level"><i class="fa fa-check"></i><b>3.3</b> Person-level</a></li>
 <li class="chapter" data-level="3.4" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#app-level"><i class="fa fa-check"></i><b>3.4</b> App-level</a></li>
 <li class="chapter" data-level="3.5" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#day-level"><i class="fa fa-check"></i><b>3.5</b> Day level</a></li>
-<li class="chapter" data-level="3.6" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#plots-for-paper"><i class="fa fa-check"></i><b>3.6</b> Plots for paper</a></li>
+<li class="chapter" data-level="3.6" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#demographics-and-social-media"><i class="fa fa-check"></i><b>3.6</b> Demographics and social media</a></li>
+<li class="chapter" data-level="3.7" data-path="descriptives-and-visualizations.html"><a href="descriptives-and-visualizations.html#plots-for-paper"><i class="fa fa-check"></i><b>3.7</b> Plots for paper</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>4</b> Analysis</a>
 <ul>
@@ -181,9 +184,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="5" data-path="synthesis.html"><a href="synthesis.html"><i class="fa fa-check"></i><b>5</b> Synthesis</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="synthesis.html"><a href="synthesis.html#personality-on-smartphone-use-trait"><i class="fa fa-check"></i><b>5.1</b> Personality on smartphone use (trait)</a></li>
-<li class="chapter" data-level="5.2" data-path="synthesis.html"><a href="synthesis.html#experiences-on-smartphone-use-state"><i class="fa fa-check"></i><b>5.2</b> Experiences on smartphone use (state)</a></li>
-<li class="chapter" data-level="5.3" data-path="synthesis.html"><a href="synthesis.html#smartphone-use-on-well-being-state"><i class="fa fa-check"></i><b>5.3</b> Smartphone use on well-being (state)</a></li>
+<li class="chapter" data-level="5.1" data-path="synthesis.html"><a href="synthesis.html#numerical-model-estimates"><i class="fa fa-check"></i><b>5.1</b> Numerical model estimates</a></li>
+<li class="chapter" data-level="5.2" data-path="synthesis.html"><a href="synthesis.html#personality-on-smartphone-use-trait"><i class="fa fa-check"></i><b>5.2</b> Personality on smartphone use (trait)</a></li>
+<li class="chapter" data-level="5.3" data-path="synthesis.html"><a href="synthesis.html#experiences-on-smartphone-use-state"><i class="fa fa-check"></i><b>5.3</b> Experiences on smartphone use (state)</a></li>
+<li class="chapter" data-level="5.4" data-path="synthesis.html"><a href="synthesis.html#smartphone-use-on-well-being-state"><i class="fa fa-check"></i><b>5.4</b> Smartphone use on well-being (state)</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -230,14 +234,15 @@ If you’re fine with them being installed, set <code>eval = TRUE</code>.</p>
 <span id="cb1-16"><a href="setting-up.html#cb1-16" aria-hidden="true" tabindex="-1"></a>  brms,</span>
 <span id="cb1-17"><a href="setting-up.html#cb1-17" aria-hidden="true" tabindex="-1"></a>  ggbeeswarm,</span>
 <span id="cb1-18"><a href="setting-up.html#cb1-18" aria-hidden="true" tabindex="-1"></a>  extrafont,</span>
-<span id="cb1-19"><a href="setting-up.html#cb1-19" aria-hidden="true" tabindex="-1"></a>  osfr</span>
-<span id="cb1-20"><a href="setting-up.html#cb1-20" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-21"><a href="setting-up.html#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="setting-up.html#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed</span></span>
-<span id="cb1-23"><a href="setting-up.html#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb1-24"><a href="setting-up.html#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="setting-up.html#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># set theme</span></span>
-<span id="cb1-26"><a href="setting-up.html#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_cowplot</span>())</span></code></pre></div>
+<span id="cb1-19"><a href="setting-up.html#cb1-19" aria-hidden="true" tabindex="-1"></a>  kableExtra,</span>
+<span id="cb1-20"><a href="setting-up.html#cb1-20" aria-hidden="true" tabindex="-1"></a>  osfr</span>
+<span id="cb1-21"><a href="setting-up.html#cb1-21" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-22"><a href="setting-up.html#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="setting-up.html#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed</span></span>
+<span id="cb1-24"><a href="setting-up.html#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb1-25"><a href="setting-up.html#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="setting-up.html#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># set theme</span></span>
+<span id="cb1-27"><a href="setting-up.html#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_cowplot</span>())</span></code></pre></div>
 <p>Below custom functions that I use throughout the project.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="setting-up.html#cb2-1" aria-hidden="true" tabindex="-1"></a>dens_with_points <span class="ot">&lt;-</span> </span>
 <span id="cb2-2"><a href="setting-up.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(</span>
